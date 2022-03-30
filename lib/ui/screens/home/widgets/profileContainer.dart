@@ -199,13 +199,13 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   ),
                   _buildProfileDetailsTile(
                       label: UiUtils.getTranslatedLabel(context, nameKey),
-                      value: "Student name",
+                      value: "Teacher name",
                       iconUrl: UiUtils.getImagePath("user_pro_icon.svg")),
                   _buildProfileDetailsTile(
-                      label: UiUtils.getTranslatedLabel(context, addressKey),
-                      value: "Haveli pe",
-                      iconUrl:
-                          UiUtils.getImagePath("user_pro_address_icon.svg")),
+                      label:
+                          UiUtils.getTranslatedLabel(context, phoneNumberKey),
+                      value: "0987654321",
+                      iconUrl: UiUtils.getImagePath("phone-call.svg")),
                   _buildProfileDetailsTile(
                       label:
                           UiUtils.getTranslatedLabel(context, dateOfBirthKey),
