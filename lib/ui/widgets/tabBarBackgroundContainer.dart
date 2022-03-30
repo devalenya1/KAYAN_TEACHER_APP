@@ -20,7 +20,7 @@ class TabBatBackgroundContainer extends StatelessWidget {
       margin: EdgeInsets.only(
           left: boxConstraints.maxWidth * (0.1),
           right: boxConstraints.maxWidth * (0.1),
-          top: boxConstraints.maxHeight * (0.125)),
+          top: boxConstraints.maxHeight * (0.3)),
       height: boxConstraints.maxHeight * (0.325),
       width: boxConstraints.maxWidth * (0.375),
     );

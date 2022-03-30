@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -119,61 +120,67 @@ class _HomeContainerState extends State<HomeContainer> {
 
   Widget _buildClassContainer(
       {required BoxConstraints boxConstraints, required int index}) {
-    return Container(
-      height: 80,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              "10 - A",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed(Routes.classScreen);
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        height: 80,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "10 - A",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600),
+              ),
             ),
-          ),
-          Positioned(
-              bottom: -15,
-              left: (boxConstraints.maxWidth * 0.225) - 15, //0.45
-              child: Container(
-                alignment: Alignment.center,
-                width: 30,
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Theme.of(context).colorScheme.primary,
-                  size: 18,
-                ),
-                height: 30,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withOpacity(0.2),
-                          offset: Offset(0, 4),
-                          blurRadius: 20)
-                    ],
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).scaffoldBackgroundColor),
-              ))
-        ],
+            Positioned(
+                bottom: -15,
+                left: (boxConstraints.maxWidth * 0.225) - 15, //0.45
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 30,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 18,
+                  ),
+                  height: 30,
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondary
+                                .withOpacity(0.2),
+                            offset: Offset(0, 4),
+                            blurRadius: 20)
+                      ],
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).scaffoldBackgroundColor),
+                ))
+          ],
+        ),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            //Diplaying different(4) class color
+            color: UiUtils.getClassColor(index),
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 10,
+                  color: UiUtils.getClassColor(index).withOpacity(0.2),
+                  offset: Offset(0, 2.5))
+            ]),
+        width: boxConstraints.maxWidth * 0.45,
       ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          //Diplaying different(4) class color
-          color: UiUtils.getClassColor(index),
-          boxShadow: [
-            BoxShadow(
-                blurRadius: 10,
-                color: UiUtils.getClassColor(index).withOpacity(0.2),
-                offset: Offset(0, 2.5))
-          ]),
-      width: boxConstraints.maxWidth * 0.45,
     );
   }
 

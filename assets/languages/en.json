@@ -14,6 +14,25 @@
     "information" : "Information",
     "assignments" : "Assignments",
     "studyMaterials" : "Study Materials",
-    "announcements" : "Announcements"
+    "announcements" : "Announcements",
+    "teacher":"Teacher",
+    "personalDetails": "Personal Details",
+    "name": "Name",
+    "dateOfBirth" : "Date of Birth",
+
+    "phoneNumber" : "Phone Number",
+    "logout" : "Logout",
+    "appVersion" : "App Version",
+    "address" : "Address",
+    "class" : "Class",
+    "chapters" : "Chapters",
+    "announcement" : "Announcement",
+    "chapterName" : "Chapter Name",
+    "chapterDescription" : "Chapter Description",
+    "createChapter" : "Create Chapter",
+    "createAnnouncement" : "Create Announcement",
+    "announcementDescription" : "Announcement Description",
+    "addAttatchments" : "Add Attatchments"
+   
 
 }

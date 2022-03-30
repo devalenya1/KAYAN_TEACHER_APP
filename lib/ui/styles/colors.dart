@@ -11,7 +11,7 @@ const Color onBackgroundColor = Color(0xff484848);
 const Color onPrimaryColor = Color(0xff3bcc97);
 const Color onSecondaryColor = Color(0xff57cc99);
 
-// my classes colors
+//classes colors
 const List<Color> myClassesColors = [
   Color(0xff65a3fe),
   Color(0xffff6769),

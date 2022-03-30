@@ -1,5 +1,7 @@
 import 'package:eschool_teacher/ui/screens/home/widgets/bottomNavigationItemContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/homeContainer.dart';
+import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
+import 'package:eschool_teacher/ui/screens/home/widgets/scheduleContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -139,8 +141,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             index: _currentSelectedBottomNavIndex,
             children: [
               HomeContainer(),
-              SizedBox(),
-              SizedBox(),
+              ScheduleContainer(),
+              ProfileContainer(),
               SizedBox(),
             ],
           ),

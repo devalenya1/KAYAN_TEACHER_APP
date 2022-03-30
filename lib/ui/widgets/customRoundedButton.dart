@@ -14,10 +14,12 @@ class CustomRoundedButton extends StatelessWidget {
   final double? textSize;
   final FontWeight? fontWeight;
   final double? elevation;
+  final int? maxLines;
   const CustomRoundedButton({
     Key? key,
     required this.widthPercentage,
     required this.backgroundColor,
+    this.maxLines,
     this.borderColor,
     this.elevation,
     required this.buttonTitle,
@@ -57,7 +59,7 @@ class CustomRoundedButton extends StatelessWidget {
           width: MediaQuery.of(context).size.width * widthPercentage,
           child: Text(
             "$buttonTitle",
-            maxLines: 2,
+            maxLines: maxLines ?? 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: textSize ?? 18.0,

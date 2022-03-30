@@ -8,6 +8,8 @@ class UiUtils {
   static double screenContentTopPadding = 15.0;
   static double screenContentHorizontalPadding = 25.0;
   static double screenTitleFontSize = 18.0;
+  static double screenSubTitleFontSize = 14.0;
+
   static double extraScreenContentTopPaddingForScrolling = 0.0275;
   static double appBarSmallerHeightPercentage = 0.175;
 
@@ -15,6 +17,8 @@ class UiUtils {
 
   static double bottomNavigationHeightPercentage = 0.075;
   static double bottomNavigationBottomMargin = 25;
+
+  static double bottomSheetHorizontalContentPadding = 20;
 
   static double appBarBiggerHeightPercentage = 0.25;
   static double appBarContentTopPadding = 25.0;
@@ -41,6 +45,10 @@ class UiUtils {
 
   static String getImagePath(String imageName) {
     return "assets/images/$imageName";
+  }
+
+  static String getLottieAnimationPath(String animationName) {
+    return "assets/animations/$animationName";
   }
 
   static ColorScheme getColorScheme(BuildContext context) {
