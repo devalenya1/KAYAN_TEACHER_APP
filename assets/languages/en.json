@@ -1,0 +1,19 @@
+{
+    "email" : "Email",
+    "password" : "Password",
+    "letsSignIn" : "Let's Sign in",
+    "welcomeBack" : "Welcome Back",
+    "youHaveBeenMissed" : "You've been missed!",
+    "signIn" : "Sign in",
+    "home": "Home",
+    "schedule": "Schedule",
+    "profile": "Profile",
+    "setting" : "Setting",
+    "myClasses" : "My Classes",
+    "classTeacher" : "Class Teacher",
+    "information" : "Information",
+    "assignments" : "Assignments",
+    "studyMaterials" : "Study Materials",
+    "announcements" : "Announcements"
+
+}
