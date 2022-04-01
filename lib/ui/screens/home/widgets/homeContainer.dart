@@ -236,58 +236,69 @@ class _HomeContainerState extends State<HomeContainer> {
   }
 
   Widget _buildMenuContainer(
-      {required String iconPath, required String title}) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 15.0),
-      height: 80,
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(14),
-              margin: EdgeInsets.symmetric(horizontal: 10.0),
-              height: 60,
-              child: SvgPicture.asset(iconPath),
-              decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSecondary
-                      .withOpacity(0.225),
-                  borderRadius: BorderRadius.circular(15.0)),
-              width: boxConstraints.maxWidth * (0.225),
-            ),
-            SizedBox(
-              width: 10.0,
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15),
-            ),
-            Spacer(),
-            CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              radius: 17.5,
-              child: Icon(
-                Icons.arrow_forward,
-                size: 22.5,
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-            ),
-            SizedBox(
-              width: 15.0,
-            ),
-          ],
-        );
-      }),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            width: 1.0,
-            color: Theme.of(context).colorScheme.secondary.withOpacity(0.25),
-          )),
+      {required String iconPath,
+      required String title,
+      required String route}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {
+          Navigator.of(context).pushNamed(route);
+        },
+        child: Container(
+          height: 80,
+          child: LayoutBuilder(builder: (context, boxConstraints) {
+            return Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(14),
+                  margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  height: 60,
+                  child: SvgPicture.asset(iconPath),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSecondary
+                          .withOpacity(0.225),
+                      borderRadius: BorderRadius.circular(15.0)),
+                  width: boxConstraints.maxWidth * (0.225),
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+                Spacer(),
+                CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  radius: 17.5,
+                  child: Icon(
+                    Icons.arrow_forward,
+                    size: 22.5,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                ),
+                SizedBox(
+                  width: 15.0,
+                ),
+              ],
+            );
+          }),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                width: 1.0,
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.25),
+              )),
+        ),
+      ),
     );
   }
 
@@ -306,14 +317,17 @@ class _HomeContainerState extends State<HomeContainer> {
         ),
         //TODO : add maxWidth and overflow checker
         _buildMenuContainer(
+            route: Routes.assignments,
             iconPath: UiUtils.getImagePath("assignment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, assignmentsKey)),
 
         _buildMenuContainer(
+            route: "",
             iconPath: UiUtils.getImagePath("study_material_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, studyMaterialsKey)),
 
         _buildMenuContainer(
+            route: "",
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, announcementsKey)),
       ],

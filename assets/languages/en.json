@@ -32,7 +32,18 @@
     "createChapter" : "Create Chapter",
     "createAnnouncement" : "Create Announcement",
     "announcementDescription" : "Announcement Description",
-    "addAttatchments" : "Add Attatchments"
+    "addAttatchments" : "Add Attatchments",
+    "subjectName": "Subject Name",
+    "dueDate": "Due Date",
+    "assignedDate": "Assigned Date",
+    "instructions": "Instructions",
+    "referenceMaterials" : "Reference Materials",
+    "points": "Points",
+    "lateSubmission" : "Late Submission",
+    "resubmissionOfRejectedAssignment": "Resubmission Of Rejected Assignment",
+    "extraDaysForRejectedAssignment": "Extra days for resubmission of rejected assignment",
+    "delete" : "Delete",
+    "edit" : "Edit"
    
 
 }

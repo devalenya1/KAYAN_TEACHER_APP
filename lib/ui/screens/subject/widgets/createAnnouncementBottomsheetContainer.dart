@@ -2,6 +2,7 @@ import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTopBarMenu.dart';
 import 'package:eschool_teacher/ui/widgets/bottomsheetAddFilesDottedBorderContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
+import 'package:eschool_teacher/ui/widgets/uploadFileContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +71,10 @@ class _CreateAnnouncementBottomsheetContainerState
                       buttonTitle: UiUtils.getTranslatedLabel(
                           context, createAnnouncementKey),
                       showBorder: false),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * (0.03),
+                  ),
+                  UploadFileContainer(),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * (0.05),
                   ),

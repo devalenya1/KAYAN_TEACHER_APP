@@ -27,7 +27,7 @@ class _ClassScreenState extends State<ClassScreen> {
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          Navigator.of(context).pushNamed(Routes.subjectScreen);
+          Navigator.of(context).pushNamed(Routes.subject);
         },
         child: Container(
           clipBehavior: Clip.none,

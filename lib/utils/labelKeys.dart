@@ -44,3 +44,17 @@ const String createAnnouncementKey = "createAnnouncement";
 
 const String announcementDescriptionKey = "announcementDescription";
 const String addAttatchmentsKey = "addAttatchments";
+
+const String subjectNameKey = "subjectName";
+const String dueDateKey = "dueDate";
+const String assignedDateKey = "assignedDate";
+const String instructionsKey = "instructions";
+const String referenceMaterialsKey = "referenceMaterials";
+const String pointsKey = "points";
+const String lateSubmissionKey = "lateSubmission";
+const String resubmissionOfRejectedAssignmentKey =
+    "resubmissionOfRejectedAssignment";
+const String extraDaysForRejectedAssignmentKey =
+    "extraDaysForRejectedAssignment";
+const String deleteKey = "delete";
+const String editKey = "edit";
