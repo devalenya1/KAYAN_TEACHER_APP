@@ -43,7 +43,20 @@
     "resubmissionOfRejectedAssignment": "Resubmission Of Rejected Assignment",
     "extraDaysForRejectedAssignment": "Extra days for resubmission of rejected assignment",
     "delete" : "Delete",
-    "edit" : "Edit"
+    "edit" : "Edit",
+    "view" : "View",
+    "all" : "All",
+    "submitted" : "Submitted",
+    "accepted" : "Accepted",
+    "rejected" : "Rejected",
+    "pending" : "Pending",
+    "reject" : "Reject",
+    "accept" : "Accept",
+    "download" : "Download",
+    "addRemark" : "Add remark",
+    "submit" : "Submit",
+    "submitting" : "Submitting",
+    "fileDownload" : "File Download"
    
 
 }

@@ -11,16 +11,10 @@ class AssignmentContainer extends StatefulWidget {
 
 class _AssignmentContainerState extends State<AssignmentContainer> {
   void showAssignmentBottomSheet() {
-    showModalBottomSheet(
+    UiUtils.showBottomSheet(
         enableDrag: true,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(UiUtils.bottomSheetTopRadius),
-          topRight: Radius.circular(UiUtils.bottomSheetTopRadius),
-        )),
-        context: context,
-        builder: (_) => AssignmentDetailsBottomsheetContainer());
+        child: AssignmentDetailsBottomsheetContainer(),
+        context: context);
   }
 
   @override

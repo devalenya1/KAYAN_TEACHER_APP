@@ -4,14 +4,25 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
-class DownloadFileBottomsheetContainer extends StatelessWidget {
+//TODO: Add View File Feature
+//add download file function direct in initstate
+//it will be in use to view assignment function
+//download it in local temporary storage if user choose the view the file
+class DownloadFileBottomsheetContainer extends StatefulWidget {
   const DownloadFileBottomsheetContainer({Key? key}) : super(key: key);
 
+  @override
+  State<DownloadFileBottomsheetContainer> createState() =>
+      _DownloadFileBottomsheetContainerState();
+}
+
+class _DownloadFileBottomsheetContainerState
+    extends State<DownloadFileBottomsheetContainer> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return Future.value(false);
+        return Future.value(true);
       },
       child: Container(
         padding: EdgeInsets.symmetric(

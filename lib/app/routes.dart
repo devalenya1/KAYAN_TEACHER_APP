@@ -1,5 +1,5 @@
 import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
-import 'package:eschool_teacher/ui/screens/assignmentScreen.dart';
+import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';

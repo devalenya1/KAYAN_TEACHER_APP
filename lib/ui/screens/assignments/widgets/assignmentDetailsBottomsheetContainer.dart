@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_teacher/ui/widgets/downloadFileButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -383,9 +384,11 @@ class _AssignmentDetailsBottomsheetContainerState
                     ),
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.assignment);
+                      },
                       child: Text(
-                        "View",
+                        UiUtils.getTranslatedLabel(context, viewKey),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       )),

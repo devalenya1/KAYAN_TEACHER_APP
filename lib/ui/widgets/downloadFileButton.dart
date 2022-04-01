@@ -12,14 +12,8 @@ class DownloadFileButton extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(15),
       onTap: () {
-        showModalBottomSheet(
-            enableDrag: false,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(UiUtils.bottomSheetTopRadius),
-                    topRight: Radius.circular(UiUtils.bottomSheetTopRadius))),
-            context: context,
-            builder: (_) => DownloadFileBottomsheetContainer());
+        UiUtils.showBottomSheet(
+            child: DownloadFileBottomsheetContainer(), context: context);
       },
       child: Container(
         width: 30,

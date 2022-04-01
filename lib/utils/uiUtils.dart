@@ -35,6 +35,21 @@ class UiUtils {
         UiUtils.bottomNavigationBottomMargin * (1.5);
   }
 
+  static void showBottomSheet(
+      {required Widget child,
+      required BuildContext context,
+      bool? enableDrag}) {
+    showModalBottomSheet(
+        enableDrag: enableDrag ?? false,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(bottomSheetTopRadius),
+                topRight: Radius.circular(bottomSheetTopRadius))),
+        context: context,
+        builder: (_) => child);
+  }
+
   //to give top scroll padding to screen content
   //
   static double getScrollViewTopPadding(

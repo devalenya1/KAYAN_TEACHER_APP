@@ -22,18 +22,11 @@ class _SubjectScreenState extends State<SubjectScreen> {
   late String _selectedTabTitle = chaptersKey;
 
   void _onTapFloatingActionAddButton() {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(UiUtils.bottomSheetTopRadius),
-              topRight: Radius.circular(UiUtils.bottomSheetTopRadius)),
-        ),
-        enableDrag: false,
-        context: context,
-        builder: (context) => _selectedTabTitle == chaptersKey
+    UiUtils.showBottomSheet(
+        child: _selectedTabTitle == chaptersKey
             ? CreateChapterBottomsheetContainer()
-            : CreateAnnouncementBottomsheetContainer());
+            : CreateAnnouncementBottomsheetContainer(),
+        context: context);
   }
 
   Widget _buildAppBar() {

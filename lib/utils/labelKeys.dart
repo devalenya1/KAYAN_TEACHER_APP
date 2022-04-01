@@ -58,3 +58,14 @@ const String extraDaysForRejectedAssignmentKey =
     "extraDaysForRejectedAssignment";
 const String deleteKey = "delete";
 const String editKey = "edit";
+const String viewKey = "view";
+const String allKey = "all";
+const String submittedKey = "submitted";
+const String acceptedKey = "accepted";
+const String rejectedKey = "rejected";
+const String pendingKey = "pending";
+const String rejectKey = "reject";
+const String acceptKey = "accept";
+const String addRemarkKey = "addRemark";
+const String submitKey = "submit";
+const String submittingKey = "submitting";

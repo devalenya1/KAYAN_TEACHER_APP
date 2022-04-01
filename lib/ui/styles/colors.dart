@@ -18,3 +18,6 @@ const List<Color> myClassesColors = [
   Color(0xfffdb46c),
   Color(0xff3bcc97),
 ];
+
+const Color assignmentViewButtonColor = Color(0xff65a3fe);
+const Color assignmentDownloadButtonColor = Color(0xfffdb46c);
