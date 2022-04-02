@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class CustomTabBarContainer extends StatelessWidget {
   final BoxConstraints boxConstraints;
-  final Alignment alignment;
+  final AlignmentGeometry alignment;
   final bool isSelected;
   final String titleKey;
   final Function onTap;

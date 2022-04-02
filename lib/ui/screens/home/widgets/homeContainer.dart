@@ -322,7 +322,7 @@ class _HomeContainerState extends State<HomeContainer> {
             title: UiUtils.getTranslatedLabel(context, assignmentsKey)),
 
         _buildMenuContainer(
-            route: "",
+            route: Routes.studyMaterials,
             iconPath: UiUtils.getImagePath("study_material_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, studyMaterialsKey)),
 
@@ -330,6 +330,10 @@ class _HomeContainerState extends State<HomeContainer> {
             route: "",
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, announcementsKey)),
+        _buildMenuContainer(
+            route: "",
+            iconPath: UiUtils.getImagePath("announcment_icon.svg"),
+            title: UiUtils.getTranslatedLabel(context, chaptersKey)),
       ],
     );
   }

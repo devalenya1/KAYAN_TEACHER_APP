@@ -53,7 +53,7 @@ class _CreateChapterBottomsheetContainerState
                     height: MediaQuery.of(context).size.height * (0.025),
                   ),
                   BottomSheetTextFieldContainer(
-                      contentAlignment: Alignment.topLeft,
+                      contentAlignment: AlignmentDirectional.topStart,
                       height: MediaQuery.of(context).size.height * (0.12),
                       hintText: UiUtils.getTranslatedLabel(
                           context, chapterDescriptionKey),

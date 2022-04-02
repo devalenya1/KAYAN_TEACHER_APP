@@ -46,7 +46,7 @@ class _CreateAnnouncementBottomsheetContainerState
                     height: MediaQuery.of(context).size.height * (0.0125),
                   ),
                   BottomSheetTextFieldContainer(
-                      contentAlignment: Alignment.topLeft,
+                      contentAlignment: AlignmentDirectional.topStart,
                       height: MediaQuery.of(context).size.height * (0.12),
                       maxLines: null,
                       textEditingController: _announcementTextEditingController,

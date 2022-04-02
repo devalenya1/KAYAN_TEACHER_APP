@@ -87,7 +87,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionAddButton(
         onTap: () {
-          //
+          Navigator.of(context).pushNamed(Routes.addAssignment);
         },
       ),
       body: Stack(

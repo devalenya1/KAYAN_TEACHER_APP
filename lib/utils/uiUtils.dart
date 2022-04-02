@@ -9,6 +9,7 @@ class UiUtils {
   static double screenContentHorizontalPadding = 25.0;
   static double screenTitleFontSize = 18.0;
   static double screenSubTitleFontSize = 14.0;
+  static double textFieldFontSize = 15.0;
 
   static double extraScreenContentTopPaddingForScrolling = 0.0275;
   static double appBarSmallerHeightPercentage = 0.175;

@@ -1,6 +1,6 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
 import 'package:eschool_teacher/app/routes.dart';
-import 'package:eschool_teacher/features/localization/appLocalizationCubit.dart';
+import 'package:eschool_teacher/cubits/localization/appLocalizationCubit.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/utils/constants.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';

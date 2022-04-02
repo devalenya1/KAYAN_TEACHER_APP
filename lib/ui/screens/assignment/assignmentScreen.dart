@@ -144,7 +144,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 10, color: Theme.of(context).scaffoldBackgroundColor),
+              fontSize: 10.75,
+              color: Theme.of(context).scaffoldBackgroundColor),
         ),
       ),
     );
@@ -205,7 +206,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                 ? Container(
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.only(
-                      left: boxConstraints.maxWidth * (0.25),
+                      left: boxConstraints.maxWidth * (0.225),
                     ),
                     child: Text("Not Done Properly, Do it Again 2 time.",
                         style: TextStyle(
@@ -219,7 +220,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                 ? Container(
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.only(
-                      left: boxConstraints.maxWidth * (0.25),
+                      left: boxConstraints.maxWidth * (0.225),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

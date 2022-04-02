@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/ui/widgets/customCupertinoSwitch.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_teacher/ui/widgets/downloadFileButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -236,12 +237,7 @@ class _AssignmentDetailsBottomsheetContainerState
           Spacer(),
           SizedBox(
             width: 30,
-            child: Transform.scale(
-                scale: 0.6,
-                child: CupertinoSwitch(
-                    activeColor: Theme.of(context).colorScheme.primary,
-                    value: true,
-                    onChanged: (_) {})),
+            child: CustomCupertinoSwitch(onChanged: (_) {}, value: true),
           )
         ],
       );
@@ -270,12 +266,10 @@ class _AssignmentDetailsBottomsheetContainerState
           Container(
             alignment: Alignment.centerRight,
             width: boxConstraints.maxWidth * (0.1),
-            child: Transform.scale(
-                scale: 0.6,
-                child: CupertinoSwitch(
-                    activeColor: Theme.of(context).colorScheme.primary,
-                    value: true,
-                    onChanged: (_) {})),
+            child: SizedBox(
+              width: 30,
+              child: CustomCupertinoSwitch(onChanged: (_) {}, value: false),
+            ),
           )
         ],
       );

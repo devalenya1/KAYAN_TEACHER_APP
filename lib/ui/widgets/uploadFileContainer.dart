@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/features/uploadFile/uploadFileCubit.dart';
+import 'package:eschool_teacher/cubits/uploadFile/uploadFileCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,13 +1,15 @@
+import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
 class BottomSheetTextFieldContainer extends StatelessWidget {
   final String hintText;
   final TextEditingController textEditingController;
-  final Alignment? contentAlignment;
-  final EdgeInsets? contentPadding;
+  final AlignmentGeometry? contentAlignment;
+  final EdgeInsetsGeometry? contentPadding;
   final double? height;
   final int? maxLines;
+  final EdgeInsetsGeometry? margin;
 
   const BottomSheetTextFieldContainer(
       {Key? key,
@@ -15,6 +17,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       required this.maxLines,
       required this.textEditingController,
       this.height,
+      this.margin,
       this.contentAlignment,
       this.contentPadding})
       : super(key: key);
@@ -22,12 +25,18 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: margin,
       alignment: contentAlignment ?? Alignment.center,
       padding: contentPadding ?? EdgeInsets.only(left: 20.0),
       child: TextField(
+        style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: UiUtils.textFieldFontSize),
         maxLines: maxLines,
         decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: TextStyle(
+              color: hintTextColor, fontSize: UiUtils.textFieldFontSize),
           border: InputBorder.none,
         ),
       ),

@@ -69,3 +69,9 @@ const String acceptKey = "accept";
 const String addRemarkKey = "addRemark";
 const String submitKey = "submit";
 const String submittingKey = "submitting";
+const String createAssignmentKey = "createAssignment";
+const String assignmentNameKey = "assignmentName";
+const String dueTimeKey = "dueTime";
+
+const String videosKey = "videos";
+const String filesKey = "files";

@@ -2,6 +2,7 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
+//TODO : onTap of chapter navigate to chapter screen
 class ChaptersContainer extends StatefulWidget {
   const ChaptersContainer({Key? key}) : super(key: key);
 

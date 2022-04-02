@@ -56,7 +56,13 @@
     "addRemark" : "Add remark",
     "submit" : "Submit",
     "submitting" : "Submitting",
-    "fileDownload" : "File Download"
+    "fileDownload" : "File Download",
+
+    "createAssignment" : "Create Assignment",
+    "assignmentName" : "Assignment Name",
+    "dueTime" : "Due Time",
+    "videos" : "Videos",
+    "files" : "Files"
    
 
 }

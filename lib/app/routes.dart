@@ -5,6 +5,7 @@ import 'package:eschool_teacher/ui/screens/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/loginScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
+import 'package:eschool_teacher/ui/screens/studyMaterials/studyMaterialsScreen.dart';
 import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class Routes {
   static const String subject = "/subject";
 
   static const String assignments = "/assignments";
+
+  static const String studyMaterials = "/studyMaterials";
 
   static const String assignment = "/assignment";
 
@@ -66,6 +69,12 @@ class Routes {
         {
           return CupertinoPageRoute(
               builder: (_) => AddAssignmentScreen()); //Splash screen
+        }
+
+      case studyMaterials:
+        {
+          return CupertinoPageRoute(
+              builder: (_) => StudyMaterialsScreen()); //Splash screen
         }
       default:
         {

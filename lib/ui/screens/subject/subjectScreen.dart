@@ -37,7 +37,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
           return Stack(
             children: [
               Align(
-                alignment: Alignment.topLeft,
+                alignment: AlignmentDirectional.topStart,
                 child: Padding(
                   child: SvgButton(
                       onTap: () {
@@ -75,14 +75,13 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 curve: UiUtils.tabBackgroundContainerAnimationCurve,
                 duration: UiUtils.tabBackgroundContainerAnimationDuration,
                 alignment: _selectedTabTitle == chaptersKey
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight,
-                child:
-                    TabBatBackgroundContainer(boxConstraints: boxConstraints),
+                    ? AlignmentDirectional.centerStart
+                    : AlignmentDirectional.centerEnd,
+                child: TabBackgroundContainer(boxConstraints: boxConstraints),
               ),
               CustomTabBarContainer(
                   boxConstraints: boxConstraints,
-                  alignment: Alignment.centerLeft,
+                  alignment: AlignmentDirectional.centerStart,
                   isSelected: _selectedTabTitle == chaptersKey,
                   onTap: () {
                     setState(() {
@@ -92,7 +91,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                   titleKey: chaptersKey),
               CustomTabBarContainer(
                   boxConstraints: boxConstraints,
-                  alignment: Alignment.centerRight,
+                  alignment: AlignmentDirectional.centerEnd,
                   isSelected: _selectedTabTitle == announcementKey,
                   onTap: () {
                     setState(() {
