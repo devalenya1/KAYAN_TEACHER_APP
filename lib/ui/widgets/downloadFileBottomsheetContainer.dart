@@ -69,9 +69,8 @@ class _DownloadFileBottomsheetContainerState
               height: MediaQuery.of(context).size.height * (0.025),
             ),
             CustomRoundedButton(
-                height: 40,
-                textSize: 16.0,
-                widthPercentage: 0.35,
+                height: UiUtils.bottomSheetButtonHeight,
+                widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
                 titleColor: Theme.of(context).scaffoldBackgroundColor,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 buttonTitle: UiUtils.getTranslatedLabel(context, downloadKey),

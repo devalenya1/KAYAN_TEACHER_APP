@@ -58,9 +58,9 @@ class _AcceptAssignmentBottomsheetContainerState
                       height: MediaQuery.of(context).size.height * (0.025),
                     ),
                     CustomRoundedButton(
-                        height: 50,
-                        radius: 10,
-                        widthPercentage: 0.7,
+                        height: UiUtils.bottomSheetButtonHeight,
+                        widthPercentage:
+                            UiUtils.bottomSheetButtonWidthPercentage,
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         buttonTitle:
                             UiUtils.getTranslatedLabel(context, submitKey),

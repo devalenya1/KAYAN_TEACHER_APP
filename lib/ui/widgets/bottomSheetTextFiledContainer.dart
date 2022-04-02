@@ -29,6 +29,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       alignment: contentAlignment ?? Alignment.center,
       padding: contentPadding ?? EdgeInsets.only(left: 20.0),
       child: TextField(
+        controller: textEditingController,
         style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
             fontSize: UiUtils.textFieldFontSize),

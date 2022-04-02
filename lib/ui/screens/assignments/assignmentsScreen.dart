@@ -19,10 +19,6 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
 
   late String _selectedClass = _classes.first;
 
-  List<String> _divisions = ["Division"];
-
-  late String _selectedDivision = _divisions.first;
-
   List<String> _subjects = ["Subject"];
 
   late String _selectedSubject = _subjects.first;
@@ -39,20 +35,21 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomDropDownMenu(
-                  width: boxConstraints.maxWidth * (0.45),
-                  menu: _classes,
-                  currentSelectedItem: _selectedClass),
-              CustomDropDownMenu(
-                  width: boxConstraints.maxWidth * (0.45),
-                  menu: _divisions,
-                  currentSelectedItem: _selectedDivision),
-            ],
-          ),
           CustomDropDownMenu(
+              onChanged: (value) {
+                setState(() {
+                  _selectedClass = value ?? _selectedClass;
+                });
+              },
+              width: boxConstraints.maxWidth,
+              menu: _classes,
+              currentSelectedItem: _selectedClass),
+          CustomDropDownMenu(
+              onChanged: (value) {
+                setState(() {
+                  _selectedSubject = value ?? _selectedSubject;
+                });
+              },
               width: boxConstraints.maxWidth,
               menu: _subjects,
               currentSelectedItem: _selectedSubject),

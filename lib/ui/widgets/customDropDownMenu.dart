@@ -6,11 +6,19 @@ class CustomDropDownMenu extends StatelessWidget {
   final double width;
   final double? height;
   final List<String> menu;
+  final Function(String?) onChanged;
   final String currentSelectedItem;
   final Color? backgroundColor;
+  final double? borderRadius;
+  final double? bottomMargin;
+  final TextStyle? textStyle;
   const CustomDropDownMenu(
       {Key? key,
       required this.width,
+      required this.onChanged,
+      this.borderRadius,
+      this.textStyle,
+      this.bottomMargin,
       this.backgroundColor,
       this.height,
       required this.menu,
@@ -20,12 +28,12 @@ class CustomDropDownMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: (bottomMargin ?? 20)),
       padding: EdgeInsets.symmetric(horizontal: 10),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: backgroundColor ?? Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(borderRadius ?? 5),
           border: Border.all(
               color:
                   Theme.of(context).colorScheme.onBackground.withOpacity(0.3))),
@@ -52,11 +60,10 @@ class CustomDropDownMenu extends StatelessWidget {
                     e,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    style: textStyle,
                   )))
               .toList(),
-          onChanged: (value) {
-            //
-          }),
+          onChanged: onChanged),
     );
   }
 }

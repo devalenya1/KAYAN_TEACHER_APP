@@ -22,10 +22,6 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
 
   late String _selectedClass = _classes.first;
 
-  List<String> _divisions = ["Division"];
-
-  late String _selectedDivision = _divisions.first;
-
   List<String> _subjects = ["Subject"];
 
   late String _selectedSubject = _subjects.first;
@@ -59,6 +55,40 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     });
   }
 
+  late DateTime? dueDate;
+
+  void openDatePicker() async {
+    dueDate = await showDatePicker(
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+                colorScheme: Theme.of(context).colorScheme.copyWith(
+                    onPrimary: Theme.of(context).scaffoldBackgroundColor)),
+            child: child!,
+          );
+        },
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(Duration(days: 30)));
+
+    setState(() {});
+  }
+
+  void openTimePicker() async {
+    await showTimePicker(
+        builder: (context, child) {
+          return Theme(
+            data: Theme.of(context).copyWith(
+                colorScheme: Theme.of(context).colorScheme.copyWith(
+                    onPrimary: Theme.of(context).scaffoldBackgroundColor)),
+            child: child!,
+          );
+        },
+        context: context,
+        initialTime: TimeOfDay.now());
+  }
+
   Widget _buildAppBar() {
     return Align(
       alignment: Alignment.topCenter,
@@ -71,20 +101,21 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomDropDownMenu(
-                  width: boxConstraints.maxWidth * (0.45),
-                  menu: _classes,
-                  currentSelectedItem: _selectedClass),
-              CustomDropDownMenu(
-                  width: boxConstraints.maxWidth * (0.45),
-                  menu: _divisions,
-                  currentSelectedItem: _selectedDivision),
-            ],
-          ),
           CustomDropDownMenu(
+              onChanged: (value) {
+                setState(() {
+                  _selectedClass = value ?? _selectedClass;
+                });
+              },
+              width: boxConstraints.maxWidth,
+              menu: _classes,
+              currentSelectedItem: _selectedClass),
+          CustomDropDownMenu(
+              onChanged: (value) {
+                setState(() {
+                  _selectedSubject = value ?? _selectedSubject;
+                });
+              },
               width: boxConstraints.maxWidth,
               menu: _subjects,
               currentSelectedItem: _selectedSubject),
@@ -94,53 +125,72 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   }
 
   Widget _buildAddDueDateAndTimeContainer() {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Row(
-        children: [
-          Container(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              UiUtils.getTranslatedLabel(context, dueDateKey),
-              style: TextStyle(
-                  color: hintTextColor, fontSize: UiUtils.textFieldFontSize),
-            ),
-            margin: EdgeInsets.only(bottom: _textFieldBottomPadding),
-            padding: EdgeInsetsDirectional.only(start: 20.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
+    return Padding(
+      padding: EdgeInsets.only(bottom: _textFieldBottomPadding),
+      child: LayoutBuilder(builder: (context, boxConstraints) {
+        return Row(
+          children: [
+            InkWell(
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              onTap: () {
+                openDatePicker();
+              },
+              child: Container(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  UiUtils.getTranslatedLabel(context, dueDateKey),
+                  style: TextStyle(
+                      color: hintTextColor,
+                      fontSize: UiUtils.textFieldFontSize),
+                ),
+                padding: EdgeInsetsDirectional.only(start: 20.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.5),
+                  ),
+                ),
+                width: boxConstraints.maxWidth * (0.475),
+                height: 50,
               ),
             ),
-            width: boxConstraints.maxWidth * (0.475),
-            height: 50,
-          ),
-          Spacer(),
-          Container(
-            alignment: AlignmentDirectional.centerStart,
-            child: Text(
-              UiUtils.getTranslatedLabel(context, dueTimeKey),
-              style: TextStyle(
-                  color: hintTextColor, fontSize: UiUtils.textFieldFontSize),
-            ),
-            margin: EdgeInsets.only(bottom: _textFieldBottomPadding),
-            padding: EdgeInsetsDirectional.only(start: 20.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
+            Spacer(),
+            InkWell(
+              onTap: () {
+                openTimePicker();
+              },
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              child: Container(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  UiUtils.getTranslatedLabel(context, dueTimeKey),
+                  style: TextStyle(
+                      color: hintTextColor,
+                      fontSize: UiUtils.textFieldFontSize),
+                ),
+                padding: EdgeInsetsDirectional.only(start: 20.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.5),
+                  ),
+                ),
+                width: boxConstraints.maxWidth * (0.475),
+                height: 50,
               ),
             ),
-            width: boxConstraints.maxWidth * (0.475),
-            height: 50,
-          ),
-        ],
-      );
-    });
+          ],
+        );
+      }),
+    );
   }
 
   Widget _buildLateSubmissionToggleContainer() {

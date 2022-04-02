@@ -75,3 +75,17 @@ const String dueTimeKey = "dueTime";
 
 const String videosKey = "videos";
 const String filesKey = "files";
+
+const String uploadFileKey = "uploadFile";
+const String uploadVideoKey = "uploadVideo";
+
+const String videoTitleKey = "videoTitle";
+const String videoDescriptionKey = "videoDescription";
+const String videoThumbnailImageKey = "videoThumbnailImage";
+const String selectChapterKey = "selectChapter";
+const String videoYoutubeLinkKey = "videoYoutubeLink";
+const String uploadVideosKey = "uploadVideos";
+const String addVideoKey = "addVideo";
+
+const String uploadFilesKey = "uploadFiles";
+const String addFileKey = "addFile";

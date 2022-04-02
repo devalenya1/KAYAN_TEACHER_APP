@@ -62,7 +62,21 @@
     "assignmentName" : "Assignment Name",
     "dueTime" : "Due Time",
     "videos" : "Videos",
-    "files" : "Files"
+    "files" : "Files",
+    "uploadFile" : "Upload File",
+    "uploadVideo" : "Upload Video",
+    "videoTitle" : "Video Title",
+    "videoDescription" : "Video Description",
+    "videoThumbnailImage" : "Thumbnail Image",
+    "selectChapter" : "Select Chapter",
+    "videoYoutubeLink" : "Youtube Link",
+    "uploadVideos" : "Upload Videos",
+    "addVideo" : "Add Video",
+
+    "uploadFiles" : "Upload Files",
+    "addFile" : "Add File"
+   
+
    
 
 }

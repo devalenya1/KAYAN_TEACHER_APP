@@ -12,10 +12,7 @@ class BottomSheetTopBarMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          top: UiUtils.bottomSheetHorizontalContentPadding,
-          left: UiUtils.bottomSheetHorizontalContentPadding,
-          right: UiUtils.bottomSheetHorizontalContentPadding),
+      padding: EdgeInsets.all(UiUtils.bottomSheetHorizontalContentPadding),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

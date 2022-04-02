@@ -11,6 +11,11 @@ class UiUtils {
   static double screenSubTitleFontSize = 14.0;
   static double textFieldFontSize = 15.0;
 
+  //
+
+  static double bottomSheetButtonHeight = 45.0;
+  static double bottomSheetButtonWidthPercentage = 0.625;
+
   static double extraScreenContentTopPaddingForScrolling = 0.0275;
   static double appBarSmallerHeightPercentage = 0.175;
 

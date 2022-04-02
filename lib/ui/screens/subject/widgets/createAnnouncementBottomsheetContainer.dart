@@ -63,10 +63,9 @@ class _CreateAnnouncementBottomsheetContainerState
                     height: MediaQuery.of(context).size.height * (0.03),
                   ),
                   CustomRoundedButton(
-                      height: 50,
-                      radius: 10,
+                      height: UiUtils.bottomSheetButtonHeight,
+                      widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
                       maxLines: 1,
-                      widthPercentage: 0.7,
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       buttonTitle: UiUtils.getTranslatedLabel(
                           context, createAnnouncementKey),

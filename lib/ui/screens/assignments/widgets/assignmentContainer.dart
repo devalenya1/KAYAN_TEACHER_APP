@@ -1,4 +1,6 @@
 import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentDetailsBottomsheetContainer.dart';
+import 'package:eschool_teacher/ui/widgets/dismissibleBackgroundContainer.dart';
+import 'package:eschool_teacher/ui/widgets/dismissibleSecondaryBackgroundContainer.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
@@ -34,43 +36,8 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
             }
             return Future.value(false);
           },
-          background: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 20,
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.edit,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Edit",
-                  style: TextStyle(
-                      color: Theme.of(context).scaffoldBackgroundColor),
-                ),
-                Spacer(),
-                Icon(
-                  Icons.delete,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  "Delete",
-                  style: TextStyle(
-                      color: Theme.of(context).scaffoldBackgroundColor),
-                ),
-              ],
-            ),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Theme.of(context).colorScheme.primary),
-          ),
+          secondaryBackground: DismissibleSecondaryBackgroundContainer(),
+          background: DismissibleBackgroundContainer(),
           key: Key("1"),
           child: Container(
             clipBehavior: Clip.none,

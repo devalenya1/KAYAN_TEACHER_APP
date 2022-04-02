@@ -1,3 +1,6 @@
+import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/ui/screens/studyMaterials/widgets/filesContainer.dart';
+import 'package:eschool_teacher/ui/screens/studyMaterials/widgets/videosContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
@@ -20,10 +23,6 @@ class _StudyMaterialsScreenState extends State<StudyMaterialsScreen> {
 
   late String _selectedClass = _classes.first;
 
-  List<String> _divisions = ["Division"];
-
-  late String _selectedDivision = _divisions.first;
-
   List<String> _subjects = ["Subject"];
 
   late String _selectedSubject = _subjects.first;
@@ -41,24 +40,30 @@ class _StudyMaterialsScreenState extends State<StudyMaterialsScreen> {
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomDropDownMenu(
-                    width: boxConstraints.maxWidth * (0.45),
-                    menu: _classes,
-                    currentSelectedItem: _selectedClass),
-                CustomDropDownMenu(
-                    width: boxConstraints.maxWidth * (0.45),
-                    menu: _divisions,
-                    currentSelectedItem: _selectedDivision),
-              ],
-            ),
             CustomDropDownMenu(
+                onChanged: (value) {
+                  setState(() {
+                    _selectedClass = value ?? _selectedClass;
+                  });
+                },
+                width: boxConstraints.maxWidth,
+                menu: _classes,
+                currentSelectedItem: _selectedClass),
+            CustomDropDownMenu(
+                onChanged: (value) {
+                  setState(() {
+                    _selectedSubject = value ?? _selectedSubject;
+                  });
+                },
                 width: boxConstraints.maxWidth,
                 menu: _subjects,
                 currentSelectedItem: _selectedSubject),
             CustomDropDownMenu(
+                onChanged: (value) {
+                  setState(() {
+                    _selectedChapters = value ?? _selectedChapters;
+                  });
+                },
                 width: boxConstraints.maxWidth,
                 menu: _chapters,
                 currentSelectedItem: _selectedChapters),
@@ -134,7 +139,11 @@ class _StudyMaterialsScreenState extends State<StudyMaterialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {}),
+      floatingActionButton: FloatingActionAddButton(onTap: () {
+        Navigator.of(context).pushNamed(_selectedTabTitle == videosKey
+            ? Routes.uploadVideos
+            : Routes.uploadFiles);
+      }),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -146,7 +155,13 @@ class _StudyMaterialsScreenState extends State<StudyMaterialsScreen> {
             child: Column(
               children: [
                 //
-                _buildAssignmentFilters()
+                _buildAssignmentFilters(),
+                SizedBox(
+                  height: 20,
+                ),
+                _selectedTabTitle == videosKey
+                    ? VideosContainer()
+                    : FilesContainer(),
               ],
             ),
           ),
