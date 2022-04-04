@@ -1,27 +1,13 @@
 import 'package:eschool_teacher/app/routes.dart';
-import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
-import 'package:eschool_teacher/utils/labelKeys.dart';
-import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
-class ClassScreen extends StatefulWidget {
-  ClassScreen({Key? key}) : super(key: key);
+class SubjectsContainer extends StatelessWidget {
+  final double topPadding;
+  const SubjectsContainer({Key? key, required this.topPadding})
+      : super(key: key);
 
-  @override
-  State<ClassScreen> createState() => _ClassScreenState();
-}
-
-class _ClassScreenState extends State<ClassScreen> {
-  Widget _buildAppbar() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: CustomAppBar(
-          subTitle: "Subjects",
-          title: "${UiUtils.getTranslatedLabel(context, classKey)} 10 - A"),
-    );
-  }
-
-  Widget _buildSubjectContainer({required String subjectName}) {
+  Widget _buildSubjectContainer(
+      {required String subjectName, required BuildContext context}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 20),
       child: InkWell(
@@ -75,32 +61,18 @@ class _ClassScreenState extends State<ClassScreen> {
     );
   }
 
-  Widget _buildSubjects() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(
-            top: UiUtils.getScrollViewTopPadding(
-                context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
-        child: Column(
-          children: [
-            _buildSubjectContainer(subjectName: "Maths"),
-            _buildSubjectContainer(subjectName: "Socia Science & Technology"),
-            _buildSubjectContainer(subjectName: "English"),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(
+        top: topPadding,
+      ),
+      child: Column(
         children: [
-          _buildSubjects(),
-          _buildAppbar(),
+          _buildSubjectContainer(subjectName: "Maths", context: context),
+          _buildSubjectContainer(
+              subjectName: "Socia Science & Technology", context: context),
+          _buildSubjectContainer(subjectName: "English", context: context),
         ],
       ),
     );

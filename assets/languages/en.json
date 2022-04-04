@@ -75,7 +75,16 @@
 
     "uploadFiles" : "Upload Files",
     "addFile" : "Add File",
-    "fileName" : "File Name"
+    "fileName" : "File Name",
+    "students" : "Students",
+    "subjects" : "Subjects",
+    "searchStudent" : "Search Student",
+    "takeAttendance" : "Take Attendance",
+    "present" : "Present",
+    "absent" : "Absent",
+    "attendanceSummary" : "Attendance Summary",
+    "totalPresent" : "Total Present",
+    "totalAbsent" : "Total Absent"
    
 
    

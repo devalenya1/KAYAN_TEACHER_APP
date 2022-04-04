@@ -1,7 +1,7 @@
 import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
-import 'package:eschool_teacher/ui/screens/classScreen.dart';
+import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/loginScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
@@ -9,6 +9,7 @@ import 'package:eschool_teacher/ui/screens/studyMaterials/studyMaterialsScreen.d
 import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/uploadFiles/uploadFilesScreen.dart';
 import 'package:eschool_teacher/ui/screens/uploadVideos/uploadVideosScreen.dart';
+import 'package:eschool_teacher/ui/screens/takeAttendance/takeAttendanceScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,8 @@ class Routes {
 
   static const String uploadFiles = "/uploadFiles";
 
+  static const String takeAttendance = "/takeAttendance";
+
   static String currentRoute = splash;
 
   static Route<dynamic> onGenerateRouted(RouteSettings routeSettings) {
@@ -50,7 +53,7 @@ class Routes {
         }
       case classScreen:
         {
-          return CupertinoPageRoute(builder: (_) => ClassScreen());
+          return ClassScreen.route(routeSettings);
         }
       case subject:
         {
@@ -80,6 +83,10 @@ class Routes {
       case uploadFiles:
         {
           return CupertinoPageRoute(builder: (_) => UploadFilesScreen());
+        }
+      case takeAttendance:
+        {
+          return CupertinoPageRoute(builder: (_) => TakeAttendanceScreen());
         }
       default:
         {

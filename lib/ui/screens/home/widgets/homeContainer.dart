@@ -119,10 +119,13 @@ class _HomeContainerState extends State<HomeContainer> {
   }
 
   Widget _buildClassContainer(
-      {required BoxConstraints boxConstraints, required int index}) {
+      {required BoxConstraints boxConstraints,
+      required int index,
+      required bool isClassTeacher}) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(Routes.classScreen);
+        Navigator.of(context)
+            .pushNamed(Routes.classScreen, arguments: isClassTeacher);
       },
       borderRadius: BorderRadius.circular(10),
       child: Container(
@@ -203,10 +206,22 @@ class _HomeContainerState extends State<HomeContainer> {
             runSpacing: 40,
             direction: Axis.horizontal,
             children: [
-              _buildClassContainer(boxConstraints: boxConstraints, index: 0),
-              _buildClassContainer(boxConstraints: boxConstraints, index: 1),
-              _buildClassContainer(boxConstraints: boxConstraints, index: 2),
-              _buildClassContainer(boxConstraints: boxConstraints, index: 3),
+              _buildClassContainer(
+                  boxConstraints: boxConstraints,
+                  index: 0,
+                  isClassTeacher: false),
+              _buildClassContainer(
+                  boxConstraints: boxConstraints,
+                  index: 1,
+                  isClassTeacher: false),
+              _buildClassContainer(
+                  boxConstraints: boxConstraints,
+                  index: 2,
+                  isClassTeacher: false),
+              _buildClassContainer(
+                  boxConstraints: boxConstraints,
+                  index: 3,
+                  isClassTeacher: false),
             ],
           );
         }),
@@ -229,7 +244,8 @@ class _HomeContainerState extends State<HomeContainer> {
           height: 30.0,
         ),
         LayoutBuilder(builder: (context, boxConstraints) {
-          return _buildClassContainer(boxConstraints: boxConstraints, index: 0);
+          return _buildClassContainer(
+              boxConstraints: boxConstraints, index: 0, isClassTeacher: true);
         }),
       ],
     );

@@ -91,3 +91,11 @@ const String uploadFilesKey = "uploadFiles";
 const String addFileKey = "addFile";
 
 const String fileNameKey = "fileName";
+const String studentsKey = "students";
+const String subjectsKey = "subjects";
+
+const String searchStudentKey = "searchStudent";
+const String takeAttendanceKey = "takeAttendance";
+const String presentKey = "present";
+const String absentKey = "absent";
+const String attendanceSummaryKey = "attendanceSummary";

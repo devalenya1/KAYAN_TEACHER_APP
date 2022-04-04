@@ -7,8 +7,13 @@ class CustomAppBar extends StatelessWidget {
   final String title;
   final Function? onPressBackButton;
   final String? subTitle;
+  final Widget? trailingWidget;
   CustomAppBar(
-      {Key? key, this.onPressBackButton, required this.title, this.subTitle})
+      {Key? key,
+      this.onPressBackButton,
+      required this.title,
+      this.subTitle,
+      this.trailingWidget})
       : super(key: key);
 
   @override
@@ -19,7 +24,7 @@ class CustomAppBar extends StatelessWidget {
         return Stack(
           children: [
             Align(
-              alignment: Alignment.centerLeft,
+              alignment: AlignmentDirectional.centerStart,
               child: Padding(
                   child: SvgButton(
                       onTap: () {
@@ -30,8 +35,16 @@ class CustomAppBar extends StatelessWidget {
                         }
                       },
                       svgIconUrl: UiUtils.getImagePath("back_icon.svg")),
-                  padding: EdgeInsets.only(
-                    left: UiUtils.screenContentHorizontalPadding,
+                  padding: EdgeInsetsDirectional.only(
+                    start: UiUtils.screenContentHorizontalPadding,
+                  )),
+            ),
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: Padding(
+                  child: trailingWidget,
+                  padding: EdgeInsetsDirectional.only(
+                    end: UiUtils.screenContentHorizontalPadding,
                   )),
             ),
             Align(
