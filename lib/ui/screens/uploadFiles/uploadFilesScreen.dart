@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/data/studyMaterials/models/studyFile.dart';
+import 'package:eschool_teacher/ui/screens/uploadFiles/widgets/addFileBottomsheet.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
@@ -16,7 +17,7 @@ class UploadFilesScreen extends StatefulWidget {
 class _UploadFilesScreenState extends State<UploadFilesScreen> {
   late List<StudyFile> _addedFiles = [];
 
-  void addFile(StudyFile studyFile) {
+  void _addFile(StudyFile studyFile) {
     setState(() {
       _addedFiles.add(studyFile);
     });
@@ -72,41 +73,21 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
     );
   }
 
-  Widget _buildAddedVideoContainer(int fileIndex, StudyFile file) {
+  Widget _buildAddedFileContainer(int fileIndex, StudyFile file) {
     return Container(
       margin: EdgeInsets.only(bottom: 25),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.75)),
-                  height: 60,
-                  width: boxConstraints.maxWidth * (0.25),
-                ),
-                SizedBox(
-                  width: boxConstraints.maxWidth * (0.05),
-                ),
-                Flexible(
-                  child: Text(file.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14),
-                      textAlign: TextAlign.left),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
+            Text(file.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14),
+                textAlign: TextAlign.left),
+
             Row(
               children: [
                 Container(
@@ -174,14 +155,13 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
                     width: boxConstraints.maxWidth * (0.3),
                     title: UiUtils.getTranslatedLabel(context, editKey),
                     onTap: () {
-                      // UiUtils.showBottomSheet(
-                      //     child: AddVideoBottomSheet(
-                      //       video: video,
-                      //       videoIndex: videoIndex,
-                      //       editVideoDetails: true,
-                      //       onTapAddVideo: _editVideo,
-                      //     ),
-                      //     context: context);
+                      UiUtils.showBottomSheet(
+                          child: AddFileBottomsheet(
+                              editFileDetails: true,
+                              fileIndex: fileIndex,
+                              studyFile: _addedFiles[fileIndex],
+                              onTapAddFile: _editFile),
+                          context: context);
                     },
                     backgroundColor: Theme.of(context).colorScheme.onPrimary),
                 _buildAddedVideoActionButton(
@@ -209,7 +189,7 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
     final List<Widget> children = [];
 
     for (var i = 0; i < _addedFiles.length; i++) {
-      children.add(_buildAddedVideoContainer(i, _addedFiles[i]));
+      children.add(_buildAddedFileContainer(i, _addedFiles[i]));
     }
 
     return children;
@@ -223,12 +203,12 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
             height: MediaQuery.of(context).size.height,
             child: TextButton(
               onPressed: () {
-                // UiUtils.showBottomSheet(
-                //     child: AddVideoBottomSheet(
-                //       editVideoDetails: false,
-                //       onTapAddVideo: addVideo,
-                //     ),
-                //     context: context);
+                UiUtils.showBottomSheet(
+                    child: AddFileBottomsheet(
+                      editFileDetails: false,
+                      onTapAddFile: _addFile,
+                    ),
+                    context: context);
               },
               child: Text(
                 UiUtils.getTranslatedLabel(context, addFileKey),
@@ -267,7 +247,14 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {}),
+      floatingActionButton: FloatingActionAddButton(onTap: () {
+        UiUtils.showBottomSheet(
+            child: AddFileBottomsheet(
+              editFileDetails: false,
+              onTapAddFile: _addFile,
+            ),
+            context: context);
+      }),
       body: Stack(
         children: [
           _buildUploadFilesContainer(),

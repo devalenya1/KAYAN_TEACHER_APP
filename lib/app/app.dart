@@ -13,8 +13,9 @@ import 'package:google_fonts/google_fonts.dart';
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-  ));
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.light));
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 

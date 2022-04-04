@@ -89,3 +89,5 @@ const String addVideoKey = "addVideo";
 
 const String uploadFilesKey = "uploadFiles";
 const String addFileKey = "addFile";
+
+const String fileNameKey = "fileName";

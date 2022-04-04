@@ -36,7 +36,7 @@ class CustomDropDownMenu extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius ?? 5),
           border: Border.all(
               color:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.3))),
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5))),
       width: width,
       height: (height ?? 40),
       child: DropdownButton<String>(
