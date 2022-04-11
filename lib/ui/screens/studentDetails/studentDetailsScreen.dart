@@ -1,4 +1,7 @@
+import 'package:eschool_teacher/ui/screens/studentDetails/widgets/resultsContainer.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/widgets/studentDetailsContainer.dart';
+import 'package:eschool_teacher/ui/widgets/appBarSubTitleContainer.dart';
+import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/ui/widgets/svgButton.dart';
@@ -41,38 +44,10 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                       left: UiUtils.screenContentHorizontalPadding),
                 ),
               ),
-
-              //TODO: Add width check for title
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  width: boxConstraints.maxWidth * (0.6),
-                  child: Text(
-                    "Student name",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        fontSize: UiUtils.screenTitleFontSize),
-                  ),
-                ),
-              ),
-
-              Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: boxConstraints.maxHeight * (0.08) +
-                          UiUtils.screenTitleFontSize),
-                  child: Text(
-                    "Roll No - 1",
-                    style: TextStyle(
-                        fontSize: UiUtils.screenSubTitleFontSize,
-                        color: Theme.of(context).scaffoldBackgroundColor),
-                  ),
-                ),
-              ),
+              AppBarTitleContainer(
+                  boxConstraints: boxConstraints, title: "Subject name"),
+              AppBarSubTitleContainer(
+                  boxConstraints: boxConstraints, subTitle: "Roll No - 1"),
               AnimatedAlign(
                 curve: UiUtils.tabBackgroundContainerAnimationCurve,
                 duration: UiUtils.tabBackgroundContainerAnimationDuration,
@@ -116,7 +91,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
           //
           _selectedTabTitle == detailsKey
               ? StudentDetailsContainer()
-              : SizedBox(),
+              : ResultsContainer(),
           _buildAppBar(),
         ],
       ),

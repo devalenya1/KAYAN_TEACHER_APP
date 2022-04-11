@@ -103,3 +103,12 @@ const String attendanceSummaryKey = "attendanceSummary";
 const String detailsKey = "details";
 const String resultsKey = "results";
 const String grNumberKey = "grNumber";
+
+const String subKey = "sub";
+const String marksKey = "marks";
+const String totalKey = "total";
+const String gradeKey = "grade";
+const String dateKey = "date";
+const String obtainedMarksKey = "obtainedMarks";
+const String percentageKey = "percentage";
+const String resultKey = "result";

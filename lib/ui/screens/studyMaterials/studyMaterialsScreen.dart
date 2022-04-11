@@ -1,6 +1,7 @@
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/ui/screens/studyMaterials/widgets/filesContainer.dart';
 import 'package:eschool_teacher/ui/screens/studyMaterials/widgets/videosContainer.dart';
+import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
@@ -92,15 +93,10 @@ class _StudyMaterialsScreenState extends State<StudyMaterialsScreen> {
                       left: UiUtils.screenContentHorizontalPadding),
                 ),
               ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  UiUtils.getTranslatedLabel(context, studyMaterialsKey),
-                  style: TextStyle(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      fontSize: UiUtils.screenTitleFontSize),
-                ),
-              ),
+              AppBarTitleContainer(
+                  boxConstraints: boxConstraints,
+                  title:
+                      UiUtils.getTranslatedLabel(context, studyMaterialsKey)),
               AnimatedAlign(
                 curve: UiUtils.tabBackgroundContainerAnimationCurve,
                 duration: UiUtils.tabBackgroundContainerAnimationDuration,

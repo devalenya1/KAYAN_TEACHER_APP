@@ -1,6 +1,7 @@
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/ui/screens/class/widgets/studentsContainer.dart';
 import 'package:eschool_teacher/ui/screens/class/widgets/subjectsContainer.dart';
+import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
@@ -49,15 +50,10 @@ class _ClassScreenState extends State<ClassScreen> {
                             left: UiUtils.screenContentHorizontalPadding),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "${UiUtils.getTranslatedLabel(context, classKey)} 10 - A",
-                        style: TextStyle(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            fontSize: UiUtils.screenTitleFontSize),
-                      ),
-                    ),
+                    AppBarTitleContainer(
+                        boxConstraints: boxConstraints,
+                        title:
+                            "${UiUtils.getTranslatedLabel(context, classKey)} 10 - A"),
                     AnimatedAlign(
                       curve: UiUtils.tabBackgroundContainerAnimationCurve,
                       duration: UiUtils.tabBackgroundContainerAnimationDuration,

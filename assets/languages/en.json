@@ -87,8 +87,15 @@
     "totalAbsent" : "Total Absent",
     "details" : "Details",
     "results" : "Results",
-    "grNumber" : "GR Number"
-   
+    "grNumber" : "GR Number",
+    "sub" : "Sub",
+    "marks" :"Marks",
+    "total": "Total",
+    "grade":"Grade",
+    "date": "Date",
+    "obtainedMarks": "Obtained Marks",
+    "percentage" : "Percentage",
+    "result" : "Result"
 
    
 

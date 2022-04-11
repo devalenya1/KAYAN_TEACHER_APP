@@ -2,6 +2,8 @@ import 'package:eschool_teacher/ui/screens/subject/widgets/announcementContainer
 import 'package:eschool_teacher/ui/screens/subject/widgets/chaptersContainer.dart';
 import 'package:eschool_teacher/ui/screens/subject/widgets/createAnnouncementBottomsheetContainer.dart';
 import 'package:eschool_teacher/ui/screens/subject/widgets/createChapterBottomsheetContainer.dart';
+import 'package:eschool_teacher/ui/widgets/appBarSubTitleContainer.dart';
+import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
@@ -48,29 +50,12 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       left: UiUtils.screenContentHorizontalPadding),
                 ),
               ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  "Science",
-                  style: TextStyle(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      fontSize: UiUtils.screenTitleFontSize),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: boxConstraints.maxHeight * (0.08) +
-                          UiUtils.screenTitleFontSize),
-                  child: Text(
-                    "${UiUtils.getTranslatedLabel(context, classKey)} 10 - A",
-                    style: TextStyle(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        fontSize: UiUtils.screenSubTitleFontSize),
-                  ),
-                ),
-              ),
+              AppBarTitleContainer(
+                  boxConstraints: boxConstraints, title: "Science"),
+              AppBarSubTitleContainer(
+                  boxConstraints: boxConstraints,
+                  subTitle:
+                      "${UiUtils.getTranslatedLabel(context, classKey)} 10 - A"),
               AnimatedAlign(
                 curve: UiUtils.tabBackgroundContainerAnimationCurve,
                 duration: UiUtils.tabBackgroundContainerAnimationDuration,
