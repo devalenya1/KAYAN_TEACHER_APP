@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/data/studyMaterials/models/video.dart';
+import 'package:eschool_teacher/data/models/video.dart';
 import 'package:eschool_teacher/ui/screens/uploadVideos/widgets/addVideoBottomsheet.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';

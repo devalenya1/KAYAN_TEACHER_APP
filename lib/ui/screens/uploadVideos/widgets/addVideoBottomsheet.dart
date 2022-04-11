@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/data/studyMaterials/models/video.dart';
+import 'package:eschool_teacher/data/models/video.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTopBarMenu.dart';

@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/data/studyMaterials/models/studyFile.dart';
+import 'package:eschool_teacher/data/models/studyFile.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTopBarMenu.dart';

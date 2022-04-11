@@ -1,6 +1,6 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
 import 'package:eschool_teacher/app/routes.dart';
-import 'package:eschool_teacher/cubits/localization/appLocalizationCubit.dart';
+import 'package:eschool_teacher/cubits/appLocalizationCubit.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/utils/constants.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -15,11 +15,9 @@ Future<void> initializeApp() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.light));
+      statusBarBrightness: Brightness.dark));
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  //await Hive.initFlutter();
 
   runApp(MyApp());
 }

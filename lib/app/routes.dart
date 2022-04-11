@@ -4,7 +4,9 @@ import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/loginScreen.dart';
+import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
+import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.dart';
 import 'package:eschool_teacher/ui/screens/studyMaterials/studyMaterialsScreen.dart';
 import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/uploadFiles/uploadFilesScreen.dart';
@@ -33,6 +35,10 @@ class Routes {
   static const String uploadFiles = "/uploadFiles";
 
   static const String takeAttendance = "/takeAttendance";
+
+  static const String searchStudent = "/searchStudent";
+
+  static const String studentDetails = "/studentDetails";
 
   static String currentRoute = splash;
 
@@ -87,6 +93,14 @@ class Routes {
       case takeAttendance:
         {
           return CupertinoPageRoute(builder: (_) => TakeAttendanceScreen());
+        }
+      case searchStudent:
+        {
+          return SearchStudentScreen.route(routeSettings);
+        }
+      case studentDetails:
+        {
+          return StudentDetailsScreen.route(routeSettings);
         }
       default:
         {

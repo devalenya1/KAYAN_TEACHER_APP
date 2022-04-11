@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -10,7 +11,7 @@ class StudentsContainer extends StatelessWidget {
   Widget _buildSerchBar(BuildContext context) {
     return InkWell(
       onTap: () {
-        print("Search student");
+        Navigator.of(context).pushNamed(Routes.searchStudent);
       },
       borderRadius: BorderRadius.circular(15),
       child: Container(
@@ -44,76 +45,72 @@ class StudentsContainer extends StatelessWidget {
   }
 
   Widget _buildStudentContainer(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      clipBehavior: Clip.none,
-      decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.05),
-                offset: Offset(2.5, 2.5),
-                blurRadius: 10,
-                spreadRadius: 0)
-          ],
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(10)),
-      width: MediaQuery.of(context).size.width * (0.85),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7.5),
-                  color: Theme.of(context).colorScheme.error),
-              height: 50,
-              width: boxConstraints.maxWidth * (0.2),
-            ),
-            SizedBox(
-              width: boxConstraints.maxWidth * (0.05),
-            ),
-            SizedBox(
-              width: boxConstraints.maxWidth * (0.65),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Student name",
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.0),
-                  ),
-                  Text("Roll No - 18",
-                      style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withOpacity(0.75),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10.0),
-                      textAlign: TextAlign.left)
-                ],
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                //print("Open menu");
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.transparent)),
-                child: Icon(
-                  Icons.more_vert,
-                  color: Theme.of(context).colorScheme.secondary,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () {
+          Navigator.of(context).pushNamed(Routes.studentDetails);
+        },
+        child: Container(
+          clipBehavior: Clip.none,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.05),
+                    offset: Offset(2.5, 2.5),
+                    blurRadius: 10,
+                    spreadRadius: 0)
+              ],
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.circular(10)),
+          width: MediaQuery.of(context).size.width * (0.85),
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
+          child: LayoutBuilder(builder: (context, boxConstraints) {
+            return Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(7.5),
+                      color: Theme.of(context).colorScheme.error),
+                  height: 50,
+                  width: boxConstraints.maxWidth * (0.2),
                 ),
-                width: boxConstraints.maxWidth * (0.1),
-              ),
-            )
-          ],
-        );
-      }),
+                SizedBox(
+                  width: boxConstraints.maxWidth * (0.05),
+                ),
+                SizedBox(
+                  width: boxConstraints.maxWidth * (0.65),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Student name",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14.0),
+                      ),
+                      Text("Roll No - 18",
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.75),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 10.0),
+                          textAlign: TextAlign.left)
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
     );
   }
 

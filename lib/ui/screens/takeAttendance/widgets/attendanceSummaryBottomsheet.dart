@@ -1,3 +1,6 @@
+import 'package:eschool_teacher/ui/widgets/bottomSheetTopBarMenu.dart';
+import 'package:eschool_teacher/utils/labelKeys.dart';
+import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
 class AttendanceSummaryBottomsheet extends StatefulWidget {
@@ -19,6 +22,10 @@ class _AttendanceSummaryBottomsheetState
             mainAxisSize: MainAxisSize.min,
             children: [
               //
+              BottomSheetTopBarMenu(
+                  onTapCloseButton: () {},
+                  title:
+                      UiUtils.getTranslatedLabel(context, attendanceSummaryKey))
             ],
           ),
         ),

@@ -84,7 +84,10 @@
     "absent" : "Absent",
     "attendanceSummary" : "Attendance Summary",
     "totalPresent" : "Total Present",
-    "totalAbsent" : "Total Absent"
+    "totalAbsent" : "Total Absent",
+    "details" : "Details",
+    "results" : "Results",
+    "grNumber" : "GR Number"
    
 
    

@@ -10,7 +10,6 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/parser.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ClassScreen extends StatefulWidget {
@@ -29,7 +28,7 @@ class ClassScreen extends StatefulWidget {
 }
 
 class _ClassScreenState extends State<ClassScreen> {
-  late String _selectedTabTitle = subjectsKey;
+  late String _selectedTabTitle = studentsKey;
   Widget _buildAppbar() {
     return widget.isClassTeacher
         ? Align(
@@ -62,7 +61,7 @@ class _ClassScreenState extends State<ClassScreen> {
                     AnimatedAlign(
                       curve: UiUtils.tabBackgroundContainerAnimationCurve,
                       duration: UiUtils.tabBackgroundContainerAnimationDuration,
-                      alignment: _selectedTabTitle == subjectsKey
+                      alignment: _selectedTabTitle == studentsKey
                           ? AlignmentDirectional.centerStart
                           : AlignmentDirectional.centerEnd,
                       child: TabBackgroundContainer(
@@ -71,6 +70,16 @@ class _ClassScreenState extends State<ClassScreen> {
                     CustomTabBarContainer(
                         boxConstraints: boxConstraints,
                         alignment: AlignmentDirectional.centerStart,
+                        isSelected: _selectedTabTitle == studentsKey,
+                        onTap: () {
+                          setState(() {
+                            _selectedTabTitle = studentsKey;
+                          });
+                        },
+                        titleKey: studentsKey),
+                    CustomTabBarContainer(
+                        boxConstraints: boxConstraints,
+                        alignment: AlignmentDirectional.centerEnd,
                         isSelected: _selectedTabTitle == subjectsKey,
                         onTap: () {
                           setState(() {
@@ -78,16 +87,6 @@ class _ClassScreenState extends State<ClassScreen> {
                           });
                         },
                         titleKey: subjectsKey),
-                    CustomTabBarContainer(
-                        boxConstraints: boxConstraints,
-                        alignment: AlignmentDirectional.centerEnd,
-                        isSelected: _selectedTabTitle == studentsKey,
-                        onTap: () {
-                          setState(() {
-                            _selectedTabTitle = studentsKey;
-                          });
-                        },
-                        titleKey: studentsKey)
                   ],
                 );
               }),

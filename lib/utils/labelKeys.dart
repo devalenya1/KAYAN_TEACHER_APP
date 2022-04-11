@@ -99,3 +99,7 @@ const String takeAttendanceKey = "takeAttendance";
 const String presentKey = "present";
 const String absentKey = "absent";
 const String attendanceSummaryKey = "attendanceSummary";
+
+const String detailsKey = "details";
+const String resultsKey = "results";
+const String grNumberKey = "grNumber";
