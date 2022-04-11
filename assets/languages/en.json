@@ -93,9 +93,12 @@
     "total": "Total",
     "grade":"Grade",
     "date": "Date",
-    "obtainedMarks": "Obtained Marks",
+    "obtained": "Obtained",
     "percentage" : "Percentage",
-    "result" : "Result"
+    "result" : "Result",
+    "addResult" : "Add Result",
+    "obtainedMarks" : "Obtained Marks",
+    "submitResult" : "Submit Result"
 
    
 

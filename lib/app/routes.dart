@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
+import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
@@ -42,6 +43,8 @@ class Routes {
   static const String studentDetails = "/studentDetails";
 
   static const String result = "/result";
+
+  static const String addResult = "/addResult";
 
   static String currentRoute = splash;
 
@@ -108,6 +111,11 @@ class Routes {
       case result:
         {
           return CupertinoPageRoute(builder: (context) => const ResultScreen());
+        }
+      case addResult:
+        {
+          return CupertinoPageRoute(
+              builder: (context) => const AddResultScreen());
         }
       default:
         {

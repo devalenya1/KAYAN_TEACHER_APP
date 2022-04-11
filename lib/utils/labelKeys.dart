@@ -109,6 +109,10 @@ const String marksKey = "marks";
 const String totalKey = "total";
 const String gradeKey = "grade";
 const String dateKey = "date";
+const String obtainedKey = "obtained";
+
 const String obtainedMarksKey = "obtainedMarks";
 const String percentageKey = "percentage";
 const String resultKey = "result";
+const String addResultKey = "addResult";
+const String submitResultKey = "submitResult";
