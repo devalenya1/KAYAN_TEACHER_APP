@@ -5,6 +5,7 @@ import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/loginScreen.dart';
+import 'package:eschool_teacher/ui/screens/monthWiseAttendance/monthWiseAttendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/resultScreen.dart';
 import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
@@ -45,6 +46,8 @@ class Routes {
   static const String result = "/result";
 
   static const String addResult = "/addResult";
+
+  static const String monthWiseAttendance = "/monthWiseAttendance";
 
   static String currentRoute = splash;
 
@@ -116,6 +119,10 @@ class Routes {
         {
           return CupertinoPageRoute(
               builder: (context) => const AddResultScreen());
+        }
+      case monthWiseAttendance:
+        {
+          return MonthWiseAttendanceScreen.route(routeSettings);
         }
       default:
         {

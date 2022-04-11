@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/utils/labelKeys.dart';
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
@@ -233,7 +233,10 @@ class StudentDetailsContainer extends StatelessWidget {
           ),
           Center(
             child: TextButton(
-                onPressed: () {}, child: Text("View month-wise attendance")),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.monthWiseAttendance);
+                },
+                child: Text("View month-wise attendance")),
           )
         ],
       );

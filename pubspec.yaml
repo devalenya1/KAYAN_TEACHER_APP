@@ -45,6 +45,7 @@ dependencies:
   showcaseview: ^1.1.5
   hive:
   hive_flutter:
+  table_calendar: ^3.0.4
 
 dev_dependencies:
   change_app_package_name: ^1.0.0

@@ -13,13 +13,13 @@ class ResultScreen extends StatelessWidget {
 
   Widget _buildAppBar(BuildContext context) {
     return ScreenTopBackgroundContainer(
-      heightPercentage: UiUtils.appBarBiggerHeightPercentage,
+      heightPercentage: UiUtils.appBarMediumtHeightPercentage,
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Stack(
           clipBehavior: Clip.none,
           children: [
             Align(
-              alignment: Alignment.topLeft,
+              alignment: AlignmentDirectional.topStart,
               child: Padding(
                 padding: EdgeInsets.only(
                     left: UiUtils.screenContentHorizontalPadding),
@@ -34,6 +34,7 @@ class ResultScreen extends StatelessWidget {
                 boxConstraints: boxConstraints, title: "Student name"),
             AppBarSubTitleContainer(
                 boxConstraints: boxConstraints,
+                topPaddingPercentage: 0.1,
                 subTitle: UiUtils.getTranslatedLabel(context, resultKey)),
             Positioned(
               bottom: -30,
@@ -64,7 +65,7 @@ class ResultScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                height: 70,
+                height: 65,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
@@ -361,7 +362,7 @@ class ResultScreen extends StatelessWidget {
                   top: UiUtils.getScrollViewTopPadding(
                       context: context,
                       appBarHeightPercentage:
-                          UiUtils.appBarBiggerHeightPercentage)),
+                          UiUtils.appBarMediumtHeightPercentage)),
               child: Column(
                 children: [
                   SizedBox(

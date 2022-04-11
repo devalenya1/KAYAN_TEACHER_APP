@@ -116,3 +116,6 @@ const String percentageKey = "percentage";
 const String resultKey = "result";
 const String addResultKey = "addResult";
 const String submitResultKey = "submitResult";
+const String totalPresentKey = "totalPresent";
+const String totalAbsentKey = "totalAbsent";
+const String attendanceKey = "attendance";
