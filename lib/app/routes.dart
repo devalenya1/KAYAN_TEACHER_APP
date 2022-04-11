@@ -1,5 +1,7 @@
 import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
+import 'package:eschool_teacher/ui/screens/announcement/announcementsScreen.dart';
+
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
@@ -26,6 +28,8 @@ class Routes {
   static const String subject = "/subject";
 
   static const String assignments = "/assignments";
+
+  static const String announcements = "/announcements";
 
   static const String studyMaterials = "/studyMaterials";
 
@@ -123,6 +127,11 @@ class Routes {
       case monthWiseAttendance:
         {
           return MonthWiseAttendanceScreen.route(routeSettings);
+        }
+      case announcements:
+        {
+          return CupertinoPageRoute(
+              builder: (context) => const AnnouncementsScreen());
         }
       default:
         {

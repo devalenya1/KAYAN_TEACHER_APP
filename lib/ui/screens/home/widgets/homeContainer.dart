@@ -343,7 +343,7 @@ class _HomeContainerState extends State<HomeContainer> {
             title: UiUtils.getTranslatedLabel(context, studyMaterialsKey)),
 
         _buildMenuContainer(
-            route: "",
+            route: Routes.announcements,
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, announcementsKey)),
         _buildMenuContainer(
