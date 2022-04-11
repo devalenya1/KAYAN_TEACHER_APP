@@ -65,7 +65,7 @@ class ResultScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                height: 65,
+                height: 70,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
