@@ -119,3 +119,14 @@ const String submitResultKey = "submitResult";
 const String totalPresentKey = "totalPresent";
 const String totalAbsentKey = "totalAbsent";
 const String attendanceKey = "attendance";
+
+const String forgotPasswordKey = "forgotPassword";
+const String termsAndConditionAgreementKey = "termAndConditionAgreement";
+const String privacyPolicyKey = "privacyPolicy";
+const String termsAndConditionKey = "termsAndCondition";
+
+const String pleaseEnterEmailKey = "pleaseEnterEmail";
+const String pleaseEnterPasswordKey = "pleaseEnterPassword";
+const String passwordUpdateLinkSentKey = "passwordUpdateLinkSent";
+
+const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";

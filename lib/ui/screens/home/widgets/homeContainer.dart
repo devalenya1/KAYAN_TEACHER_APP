@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/authCubit.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomeContainer extends StatefulWidget {
@@ -34,6 +37,11 @@ class _HomeContainerState extends State<HomeContainer> {
                 padding: EdgeInsets.only(right: 20.0, bottom: 20.0),
                 child: Container(
                   decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(context
+                              .read<AuthCubit>()
+                              .getTeacherDetails()
+                              .image)),
                       border: Border.all(
                           color: Theme.of(context)
                               .scaffoldBackgroundColor
@@ -95,7 +103,10 @@ class _HomeContainerState extends State<HomeContainer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Divy M. Jani",
+                              context
+                                  .read<AuthCubit>()
+                                  .getTeacherDetails()
+                                  .getFullName(),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:eschool_teacher/utils/appLanguages.dart';
-import 'package:eschool_teacher/utils/constants.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';

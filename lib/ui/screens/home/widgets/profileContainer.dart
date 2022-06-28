@@ -106,6 +106,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
         padding: EdgeInsets.only(
             bottom: UiUtils.getScrollViewBottomPadding(context)),
         child: Column(

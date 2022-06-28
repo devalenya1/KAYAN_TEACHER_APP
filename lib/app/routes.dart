@@ -6,7 +6,7 @@ import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
-import 'package:eschool_teacher/ui/screens/loginScreen.dart';
+import 'package:eschool_teacher/ui/screens/login/loginScreen.dart';
 import 'package:eschool_teacher/ui/screens/monthWiseAttendance/monthWiseAttendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/resultScreen.dart';
 import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
@@ -64,7 +64,7 @@ class Routes {
         }
       case login:
         {
-          return CupertinoPageRoute(builder: (_) => LoginScreen());
+          return LoginScreen.route(routeSettings);
         }
       case home:
         {

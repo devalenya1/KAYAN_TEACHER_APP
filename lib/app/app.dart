@@ -1,6 +1,8 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/appLocalizationCubit.dart';
+import 'package:eschool_teacher/cubits/authCubit.dart';
+import 'package:eschool_teacher/data/repositories/authRepository.dart';
 import 'package:eschool_teacher/data/repositories/settingsRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/utils/appLanguages.dart';
@@ -30,6 +32,7 @@ Future<void> initializeApp() async {
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
+  await Hive.initFlutter();
   await Hive.openBox(authBoxKey);
   await Hive.openBox(settingsBoxKey);
   runApp(MyApp());
@@ -57,6 +60,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider<AppLocalizationCubit>(
             create: (_) => AppLocalizationCubit(SettingsRepository())),
+        BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
       ],
       child: Builder(builder: (context) {
         final currentLanguage =

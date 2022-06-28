@@ -1,5 +1,7 @@
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/authCubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key}) : super(key: key);
@@ -17,7 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigateToNextScreen() async {
     await Future.delayed(Duration(seconds: 2));
-    Navigator.of(context).pushReplacementNamed(Routes.login);
+    if (context.read<AuthCubit>().state is Unauthenticated) {
+      Navigator.of(context).pushReplacementNamed(Routes.login);
+    } else {
+      Navigator.of(context).pushReplacementNamed(Routes.home);
+    }
   }
 
   @override

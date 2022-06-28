@@ -99,8 +99,16 @@
     "addResult" : "Add Result",
     "obtainedMarks" : "Obtained Marks",
     "submitResult" : "Submit Result",
-    "attendance" : "Attendance"
+    "attendance" : "Attendance",
+    "forgotPassword": "Forgot password",
 
-   
+    "termAndConditionAgreement" : "By logging in, you agree to our",
 
+    "termsAndCondition" : "Terms & Condition",
+    "privacyPolicy" : "Privacy Policy",
+    "pleaseEnterEmail" : "Please enter email",
+    "passwordUpdateLinkSent" : "Password update link sent to",
+    "canNotSendResetPasswordRequest" : "Can not request reset password. Try again later :(",
+    "featureDisableInDemoVersion" : "This feature is disable in demo version",
+    "pleaseEnterPassword" : "Please enter password"
 }

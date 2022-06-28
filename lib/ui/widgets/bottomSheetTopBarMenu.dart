@@ -31,7 +31,7 @@ class BottomSheetTopBarMenu extends StatelessWidget {
             ],
           ),
           Divider(
-            height: 20.0,
+            height: 20,
             color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
           ),
         ],

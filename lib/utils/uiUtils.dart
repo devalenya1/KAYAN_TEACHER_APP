@@ -1,5 +1,9 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
+import 'package:eschool_teacher/ui/widgets/errorMessageOverlayContainer.dart';
+import 'package:eschool_teacher/utils/constants.dart';
+import 'package:eschool_teacher/utils/errorMessageKeysAndCodes.dart';
+import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
 
 class UiUtils {
@@ -41,11 +45,11 @@ class UiUtils {
         UiUtils.bottomNavigationBottomMargin * (1.5);
   }
 
-  static void showBottomSheet(
+  static Future<dynamic> showBottomSheet(
       {required Widget child,
       required BuildContext context,
-      bool? enableDrag}) {
-    showModalBottomSheet(
+      bool? enableDrag}) async {
+    final result = await showModalBottomSheet(
         enableDrag: enableDrag ?? false,
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
@@ -54,6 +58,31 @@ class UiUtils {
                 topRight: Radius.circular(bottomSheetTopRadius))),
         context: context,
         builder: (_) => child);
+
+    return result;
+  }
+
+  static Future<void> showErrorMessageContainer(
+      {required BuildContext context,
+      required String errorMessage,
+      required Color backgroundColor}) async {
+    OverlayState? overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => ErrorMessageOverlayContainer(
+        backgroundColor: backgroundColor,
+        errorMessage: errorMessage,
+      ),
+    );
+
+    overlayState?.insert(overlayEntry);
+    await Future.delayed(errorMessageDisplayDuration);
+    overlayEntry.remove();
+  }
+
+  static String getErrorMessageFromErrorCode(
+      BuildContext context, String errorCode) {
+    return UiUtils.getTranslatedLabel(
+        context, ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode));
   }
 
   //to give top scroll padding to screen content
@@ -126,5 +155,18 @@ class UiUtils {
         : (index % myClassesColors.length);
 
     return myClassesColors[colorIndex];
+  }
+
+  static void showFeatureDisableInDemoVersion(BuildContext context) {
+    showErrorMessageContainer(
+        context: context,
+        errorMessage:
+            UiUtils.getTranslatedLabel(context, featureDisableInDemoVersionKey),
+        backgroundColor: Theme.of(context).colorScheme.error);
+  }
+
+  static bool isDemoVersionEnable() {
+    //If isDemoVersion is not declarer then it return always false
+    return true;
   }
 }
