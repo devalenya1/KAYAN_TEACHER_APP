@@ -1,4 +1,4 @@
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 
 const Color primaryColor = Color(0xff22577A);
 const Color secondaryColor = Color(0xff212121);
@@ -23,3 +23,8 @@ const Color assignmentViewButtonColor = Color(0xff65a3fe);
 const Color assignmentDownloadButtonColor = Color(0xfffdb46c);
 
 const Color hintTextColor = Color(0xff7c7c7c);
+
+//shimmer loading colors
+final Color shimmerBaseColor = Colors.grey.shade300;
+final Color shimmerhighlightColor = Colors.grey.shade100;
+final Color shimmerContentColor = Colors.white.withOpacity(0.85);

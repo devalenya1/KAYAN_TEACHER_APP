@@ -29,7 +29,15 @@ const String teacherKey = "teacher";
 const String personalDetailsKey = "personalDetails";
 const String nameKey = "name";
 const String dateOfBirthKey = "dateOfBirth";
+
+const String genderKey = "gender";
+const String qualificationKey = "qualification";
+
 const String addressKey = "address";
+
+const String currentAddressKey = "currentAddress";
+
+const String permantantAddressKey = "permantantAddress";
 const String phoneNumberKey = "phoneNumber";
 const String logoutKey = "logout";
 const String appVersionKey = "appVersion";
@@ -130,3 +138,6 @@ const String pleaseEnterPasswordKey = "pleaseEnterPassword";
 const String passwordUpdateLinkSentKey = "passwordUpdateLinkSent";
 
 const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";
+
+const String emailProfileKey = "email";
+const String retryKey = "retry";

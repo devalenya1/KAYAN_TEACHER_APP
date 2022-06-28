@@ -30,6 +30,10 @@ class UiUtils {
 
   static double bottomSheetHorizontalContentPadding = 20;
 
+  static double shimmerLoadingContainerDefaultHeight = 7;
+
+  static int defaultShimmerLoadingContentCount = 4;
+
   static double appBarBiggerHeightPercentage = 0.25;
   static double appBarContentTopPadding = 25.0;
   static double bottomSheetTopRadius = 20.0;

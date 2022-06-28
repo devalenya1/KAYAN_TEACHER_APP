@@ -28,12 +28,10 @@ class Api {
   //Student app apis
   //
   static String login = "${databaseUrl}teacher/login";
-
   static String forgotPassword = "${databaseUrl}forgot-password";
-
   static String logout = "${databaseUrl}logout";
-
   static String changePassword = "${databaseUrl}change-password";
+  static String getClasses = "${databaseUrl}teacher/classes";
 
   //Api methods
 

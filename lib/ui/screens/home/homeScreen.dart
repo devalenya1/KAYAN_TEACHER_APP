@@ -4,6 +4,7 @@ import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/scheduleContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +12,10 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+
+  static Route<dynamic> route(RouteSettings routeSettings) {
+    return CupertinoPageRoute(builder: (_) => HomeScreen());
+  }
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {

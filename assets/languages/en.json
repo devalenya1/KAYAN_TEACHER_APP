@@ -110,5 +110,15 @@
     "passwordUpdateLinkSent" : "Password update link sent to",
     "canNotSendResetPasswordRequest" : "Can not request reset password. Try again later :(",
     "featureDisableInDemoVersion" : "This feature is disable in demo version",
-    "pleaseEnterPassword" : "Please enter password"
+    "pleaseEnterPassword" : "Please enter password",
+    "gender" : "Gender",
+    "qualification" : "Qualification",
+    "currentAddress" : "Current Address",
+    "permantantAddress" : "Permantant Address",
+    "retry" : "Retry",
+    "defaultErrorMessage" : "Something went wrong. Please try again later!",
+    "noInternet" : "No internet",
+    "invalidLogInCredentials" : "Invalid LogIn Credentials",
+    "invalidUserDetails" : "Inavlid user details",
+    "invalidPassword" : "Invalid password"
 }

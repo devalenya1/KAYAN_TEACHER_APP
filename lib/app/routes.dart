@@ -68,7 +68,7 @@ class Routes {
         }
       case home:
         {
-          return CupertinoPageRoute(builder: (_) => HomeScreen());
+          return HomeScreen.route(routeSettings);
         }
       case classScreen:
         {

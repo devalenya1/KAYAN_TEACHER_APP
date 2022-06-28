@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eschool_teacher/cubits/authCubit.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileContainer extends StatefulWidget {
@@ -12,6 +15,7 @@ class ProfileContainer extends StatefulWidget {
 }
 
 class _ProfileContainerState extends State<ProfileContainer> {
+  /*
   Widget _buildLogoutButton() {
     return Container(
       child: Center(
@@ -45,6 +49,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
           color: Theme.of(context).colorScheme.secondary),
     );
   }
+  */
 
   Widget _buildProfileDetailsTile(
       {required String label, required String value, required String iconUrl}) {
@@ -104,6 +109,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final teacher = context.read<AuthCubit>().getTeacherDetails();
     return Scaffold(
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
@@ -136,10 +142,14 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         padding: EdgeInsets.all(10.0),
                         child: Container(
                           decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: CachedNetworkImageProvider(
+                                    teacher.image,
+                                  )),
                               color: Theme.of(context).colorScheme.onBackground,
                               shape: BoxShape.circle),
                         ),
-                        //TODO : Add student profile picture
                         width: MediaQuery.of(context).size.width * (0.3),
                         height: MediaQuery.of(context).size.width * (0.3),
                         decoration: BoxDecoration(
@@ -152,7 +162,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
               width: MediaQuery.of(context).size.width,
             ),
             Text(
-              "Teacher Name",
+              teacher.getFullName(),
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).colorScheme.secondary,
@@ -160,15 +170,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             SizedBox(
               height: 5.0,
-            ),
-            Text(
-              UiUtils.getTranslatedLabel(context, teacherKey),
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  fontSize: 12.0),
-            ),
-            SizedBox(
-              height: 10.0,
             ),
             Padding(
               padding: EdgeInsets.symmetric(
@@ -198,29 +199,51 @@ class _ProfileContainerState extends State<ProfileContainer> {
                           fontWeight: FontWeight.w500),
                     ),
                   ),
+                  //TODO: Add email key
                   _buildProfileDetailsTile(
                       label: UiUtils.getTranslatedLabel(context, nameKey),
-                      value: "Teacher name",
+                      value: emailProfileKey,
                       iconUrl: UiUtils.getImagePath("user_pro_icon.svg")),
                   _buildProfileDetailsTile(
                       label:
                           UiUtils.getTranslatedLabel(context, phoneNumberKey),
-                      value: "0987654321",
+                      value: teacher.mobile,
                       iconUrl: UiUtils.getImagePath("phone-call.svg")),
                   _buildProfileDetailsTile(
                       label:
                           UiUtils.getTranslatedLabel(context, dateOfBirthKey),
-                      value: "09-01-1999",
+                      value: teacher.dob,
+                      iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg")),
+
+                  //TODO: add gender icon
+                  _buildProfileDetailsTile(
+                      label: UiUtils.getTranslatedLabel(context, genderKey),
+                      value: teacher.gender,
+                      iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg")),
+
+                  //TODO: add qualification icon
+                  _buildProfileDetailsTile(
+                      label:
+                          UiUtils.getTranslatedLabel(context, qualificationKey),
+                      value: teacher.qualification,
                       iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg")),
                   _buildProfileDetailsTile(
-                      label: UiUtils.getTranslatedLabel(context, addressKey),
-                      value: "Haveli pe",
+                      label: UiUtils.getTranslatedLabel(
+                          context, currentAddressKey),
+                      value: teacher.currentAddress,
+                      iconUrl:
+                          UiUtils.getImagePath("user_pro_address_icon.svg")),
+                  _buildProfileDetailsTile(
+                      label: UiUtils.getTranslatedLabel(
+                          context, permantantAddressKey),
+                      value: teacher.permanentAddress,
                       iconUrl:
                           UiUtils.getImagePath("user_pro_address_icon.svg")),
                   SizedBox(
                     height: 7.5,
                   ),
-                  _buildLogoutButton(),
+                  //_buildLogoutButton(),
+                  /*
                   SizedBox(
                     height: 5.0,
                   ),
@@ -231,6 +254,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                           fontWeight: FontWeight.w500,
                           fontSize: 11.0),
                       textAlign: TextAlign.left)
+                      */
                 ],
               ),
             ),

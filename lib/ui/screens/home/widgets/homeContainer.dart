@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/authCubit.dart';
+import 'package:eschool_teacher/cubits/myClassesCubit.dart';
+import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
+import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
+import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +20,36 @@ class HomeContainer extends StatefulWidget {
 }
 
 class _HomeContainerState extends State<HomeContainer> {
+  @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      context.read<MyClassesCubit>().fetchMyClasses();
+    });
+    super.initState();
+  }
+
   TextStyle _titleFontStyle() {
     return TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontSize: 17.0,
         fontWeight: FontWeight.w600);
+  }
+
+  Widget _buildMyClassesLabel() {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            UiUtils.getTranslatedLabel(context, myClassesKey),
+            style: _titleFontStyle(),
+          ),
+        ),
+        SizedBox(
+          height: 20.0,
+        ),
+      ],
+    );
   }
 
   Widget _buildTopProfileContainer(BuildContext context) {
@@ -129,6 +158,15 @@ class _HomeContainerState extends State<HomeContainer> {
     );
   }
 
+  Widget _buildClassShimmerLoading(BoxConstraints boxConstraints) {
+    return ShimmerLoadingContainer(
+        child: CustomShimmerContainer(
+      height: 80,
+      borderRadius: 10,
+      width: boxConstraints.maxWidth * (0.45),
+    ));
+  }
+
   Widget _buildClassContainer(
       {required BoxConstraints boxConstraints,
       required int index,
@@ -201,16 +239,7 @@ class _HomeContainerState extends State<HomeContainer> {
   Widget _buildMyClasses() {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            UiUtils.getTranslatedLabel(context, myClassesKey),
-            style: _titleFontStyle(),
-          ),
-        ),
-        SizedBox(
-          height: 30.0,
-        ),
+        _buildMyClassesLabel(),
         LayoutBuilder(builder: (context, boxConstraints) {
           return Wrap(
             spacing: boxConstraints.maxWidth * (0.1),
@@ -240,9 +269,8 @@ class _HomeContainerState extends State<HomeContainer> {
     );
   }
 
-  Widget _buildClassTeacher() {
+  Widget _buildClassTeacherLabel() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Align(
           alignment: Alignment.centerLeft,
@@ -252,8 +280,17 @@ class _HomeContainerState extends State<HomeContainer> {
           ),
         ),
         SizedBox(
-          height: 30.0,
+          height: 20.0,
         ),
+      ],
+    );
+  }
+
+  Widget _buildClassTeacher() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildClassTeacherLabel(),
         LayoutBuilder(builder: (context, boxConstraints) {
           return _buildClassContainer(
               boxConstraints: boxConstraints, index: 0, isClassTeacher: true);
@@ -329,7 +366,7 @@ class _HomeContainerState extends State<HomeContainer> {
     );
   }
 
-  Widget _buildInformationAndMenu() {
+  Widget _buildInformationAndMenuLabel() {
     return Column(
       children: [
         Align(
@@ -340,8 +377,50 @@ class _HomeContainerState extends State<HomeContainer> {
           ),
         ),
         SizedBox(
-          height: 30.0,
+          height: 20.0,
         ),
+      ],
+    );
+  }
+
+  Widget _buildInformationShimmerLoadingContainer() {
+    return Container(
+      margin: EdgeInsets.only(
+        bottom: 15,
+      ),
+      height: 80,
+      child: LayoutBuilder(builder: (context, boxConstraints) {
+        return Row(
+          children: [
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              height: 60,
+              width: boxConstraints.maxWidth * (0.225),
+            )),
+            SizedBox(
+              width: boxConstraints.maxWidth * (0.05),
+            ),
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              width: boxConstraints.maxWidth * (0.475),
+            )),
+            Spacer(),
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              borderRadius: boxConstraints.maxWidth * (0.035),
+              height: boxConstraints.maxWidth * (0.07),
+              width: boxConstraints.maxWidth * (0.07),
+            )),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _buildInformationAndMenu() {
+    return Column(
+      children: [
+        _buildInformationAndMenuLabel(),
         //TODO : add maxWidth and overflow checker
         _buildMenuContainer(
             route: Routes.assignments,
@@ -380,18 +459,70 @@ class _HomeContainerState extends State<HomeContainer> {
                     context: context,
                     appBarHeightPercentage:
                         UiUtils.appBarBiggerHeightPercentage)),
-            child: Column(
-              children: [
-                _buildMyClasses(),
-                SizedBox(
-                  height: 50.0,
-                ),
-                _buildClassTeacher(),
-                SizedBox(
-                  height: 30.0,
-                ),
-                _buildInformationAndMenu()
-              ],
+            child: BlocBuilder<MyClassesCubit, MyClassesState>(
+              builder: (context, state) {
+                if (state is MyClassesFetchSuccess) {
+                  return Column(
+                    children: [
+                      _buildMyClasses(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildClassTeacher(),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildInformationAndMenu()
+                    ],
+                  );
+                }
+                if (state is MyClassesFetchFailure) {
+                  return Center(
+                    child: ErrorContainer(
+                      errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
+                          context, state.errorMessage),
+                      onTapRetry: () {
+                        context.read<MyClassesCubit>().fetchMyClasses();
+                      },
+                    ),
+                  );
+                }
+
+                return LayoutBuilder(builder: (context, boxConstraints) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildMyClassesLabel(),
+                      Wrap(
+                        spacing: boxConstraints.maxWidth * (0.1),
+                        runSpacing: 40,
+                        direction: Axis.horizontal,
+                        children: List.generate(
+                                UiUtils.defaultShimmerLoadingContentCount,
+                                (index) => index)
+                            .map((index) =>
+                                _buildClassShimmerLoading(boxConstraints))
+                            .toList(),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildClassTeacherLabel(),
+                      _buildClassShimmerLoading(boxConstraints),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      _buildInformationAndMenuLabel(),
+                      ...List.generate(
+                              UiUtils.defaultShimmerLoadingContentCount,
+                              (index) => index)
+                          .map(
+                              (e) => _buildInformationShimmerLoadingContainer())
+                          .toList(),
+                    ],
+                  );
+                });
+              },
             ),
           ),
         ),

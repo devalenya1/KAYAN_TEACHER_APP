@@ -11,6 +11,7 @@ import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+//TODO: remove results tab
 class StudentDetailsScreen extends StatefulWidget {
   StudentDetailsScreen({Key? key}) : super(key: key);
 
