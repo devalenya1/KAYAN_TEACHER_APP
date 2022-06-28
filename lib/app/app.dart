@@ -1,24 +1,37 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/appLocalizationCubit.dart';
+import 'package:eschool_teacher/data/repositories/settingsRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
-import 'package:eschool_teacher/utils/constants.dart';
+import 'package:eschool_teacher/utils/appLanguages.dart';
+import 'package:eschool_teacher/utils/hiveBoxKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  //Register the licence of font
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
       statusBarBrightness: Brightness.dark));
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
+  await Firebase.initializeApp();
+  await Hive.openBox(authBoxKey);
+  await Hive.openBox(settingsBoxKey);
   runApp(MyApp());
 }
 
@@ -43,7 +56,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AppLocalizationCubit>(
-            create: (_) => AppLocalizationCubit()),
+            create: (_) => AppLocalizationCubit(SettingsRepository())),
       ],
       child: Builder(builder: (context) {
         final currentLanguage =
@@ -73,8 +86,8 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: supporatedLocales.map((languageCode) {
-            return UiUtils.getLocaleFromLanguageCode(languageCode);
+          supportedLocales: appLanguages.map((language) {
+            return UiUtils.getLocaleFromLanguageCode(language.languageCode);
           }).toList(),
           debugShowCheckedModeBanner: false,
           initialRoute: Routes.splash,

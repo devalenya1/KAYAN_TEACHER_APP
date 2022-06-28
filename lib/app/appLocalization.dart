@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:eschool_teacher/utils/appLanguages.dart';
 import 'package:eschool_teacher/utils/constants.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,9 +53,10 @@ class _AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
   @override
   bool isSupported(Locale locale) {
     //
-    return supporatedLocales
+    return appLanguages
         .map(
-          (languageCode) => UiUtils.getLocaleFromLanguageCode(languageCode),
+          (language) =>
+              UiUtils.getLocaleFromLanguageCode(language.languageCode),
         )
         .toList()
         .contains(locale);
