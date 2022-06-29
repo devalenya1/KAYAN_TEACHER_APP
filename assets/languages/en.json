@@ -27,8 +27,8 @@
     "class" : "Class",
     "chapters" : "Lessons",
     "announcement" : "Announcement",
-    "chapterName" : "Lesson Name",
-    "chapterDescription" : "Lesson Description",
+    "chapterName" : "Lesson name",
+    "chapterDescription" : "Lesson description",
     "createChapter" : "Create Lesson",
     "createAnnouncement" : "Create Announcement",
     "announcementDescription" : "Announcement Description",
@@ -125,6 +125,12 @@
     "topics" : "Topics",
     "addLesson" : "Add lesson",
     "lessons" : "Lessons",
-    "selectSubject" : "Select subject"
+    "selectSubject" : "Select subject",
+    "youtubeLink" : "Youtube link",
+    "fileUpload" : "File upload",
+    "videoUpload" : "Video upload",
+    "selectThumbnail" : "Select thumbnail",
+    "selectVideo" : "Select video",
+    "addStudyMaterial" : "Add study material"
 
 }

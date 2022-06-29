@@ -1,5 +1,5 @@
 import 'package:eschool_teacher/data/models/studyFile.dart';
-import 'package:eschool_teacher/ui/widgets/addFileBottomsheet.dart';
+import 'package:eschool_teacher/ui/screens/addLessonScreen.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
@@ -155,13 +155,13 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
                     width: boxConstraints.maxWidth * (0.3),
                     title: UiUtils.getTranslatedLabel(context, editKey),
                     onTap: () {
-                      UiUtils.showBottomSheet(
-                          child: AddFileBottomsheet(
-                              editFileDetails: true,
-                              fileIndex: fileIndex,
-                              studyFile: _addedFiles[fileIndex],
-                              onTapAddFile: _editFile),
-                          context: context);
+                      // UiUtils.showBottomSheet(
+                      //     child: AddFileBottomsheet(
+                      //         editFileDetails: true,
+                      //         fileIndex: fileIndex,
+                      //         studyFile: _addedFiles[fileIndex],
+                      //         onTapAddFile: _editFile),
+                      //     context: context);
                     },
                     backgroundColor: Theme.of(context).colorScheme.onPrimary),
                 _buildAddedVideoActionButton(
@@ -202,16 +202,9 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: TextButton(
-              onPressed: () {
-                UiUtils.showBottomSheet(
-                    child: AddFileBottomsheet(
-                      editFileDetails: false,
-                      onTapAddFile: _addFile,
-                    ),
-                    context: context);
-              },
+              onPressed: () {},
               child: Text(
-                UiUtils.getTranslatedLabel(context, addFileKey),
+                UiUtils.getTranslatedLabel(context, "addFileKey"),
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w600,
@@ -247,14 +240,7 @@ class _UploadFilesScreenState extends State<UploadFilesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {
-        UiUtils.showBottomSheet(
-            child: AddFileBottomsheet(
-              editFileDetails: false,
-              onTapAddFile: _addFile,
-            ),
-            context: context);
-      }),
+      floatingActionButton: FloatingActionAddButton(onTap: () {}),
       body: Stack(
         children: [
           _buildUploadFilesContainer(),

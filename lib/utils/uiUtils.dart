@@ -182,4 +182,18 @@ class UiUtils {
     //If isDemoVersion is not declarer then it return always false
     return true;
   }
+
+  static int getStudyMaterialId(
+      String studyMaterialLabel, BuildContext context) {
+    if (studyMaterialLabel == getTranslatedLabel(context, fileUploadKey)) {
+      return 1;
+    }
+    if (studyMaterialLabel == getTranslatedLabel(context, youtubeLinkKey)) {
+      return 2;
+    }
+    if (studyMaterialLabel == getTranslatedLabel(context, videoUploadKey)) {
+      return 3;
+    }
+    return 0;
+  }
 }

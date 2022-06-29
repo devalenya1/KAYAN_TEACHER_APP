@@ -101,8 +101,10 @@ const String uploadVideosKey = "uploadVideos";
 const String addVideoKey = "addVideo";
 
 const String uploadFilesKey = "uploadFiles";
-const String addFileKey = "addFile";
+const String addStudyMaterialKey = "addStudyMaterial";
 const String selectFileKey = "selectFile";
+
+const String selectThumbnailKey = "selectThumbnail";
 
 const String fileNameKey = "fileName";
 const String studentsKey = "students";
@@ -148,3 +150,9 @@ const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";
 const String emailProfileKey = "email";
 const String retryKey = "retry";
 const String selectSubjectKey = "selectSubject";
+
+const String youtubeLinkKey = "youtubeLink";
+const String fileUploadKey = "fileUpload";
+const String videoUploadKey = "videoUpload";
+
+const String selectVideoKey = "selectVideo";

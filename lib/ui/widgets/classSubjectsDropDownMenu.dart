@@ -23,9 +23,6 @@ class ClassSubjectsDropDownMenu extends StatelessWidget {
       listener: (context, state) {
         if (state is SubjectsOfClassSectionFetchSuccess) {
           changeSelectedItem(state.subjects.first.name);
-        } else if (state is SubjectsOfClassSectionFetchInProgress) {
-          changeSelectedItem(
-              UiUtils.getTranslatedLabel(context, selectSubjectKey));
         }
       },
       builder: (context, state) {
@@ -37,7 +34,7 @@ class ClassSubjectsDropDownMenu extends StatelessWidget {
             },
             menu: state is SubjectsOfClassSectionFetchSuccess
                 ? state.subjects.map((e) => e.name).toList()
-                : [UiUtils.getTranslatedLabel(context, selectSubjectKey)],
+                : [currentSelectedItem],
             currentSelectedItem: currentSelectedItem);
       },
     );
