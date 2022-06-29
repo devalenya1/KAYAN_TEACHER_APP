@@ -22,7 +22,12 @@ const String classTeacherKey = "classTeacher";
 const String informationKey = "information";
 const String assignmentsKey = "assignments";
 
+const String lessonsKey = "lessons";
+const String addLessonKey = "addLesson";
+
 const String studyMaterialsKey = "studyMaterials";
+
+const String topicsKey = "topics";
 
 const String announcementsKey = "announcements";
 const String teacherKey = "teacher";
@@ -97,6 +102,7 @@ const String addVideoKey = "addVideo";
 
 const String uploadFilesKey = "uploadFiles";
 const String addFileKey = "addFile";
+const String selectFileKey = "selectFile";
 
 const String fileNameKey = "fileName";
 const String studentsKey = "students";
@@ -141,3 +147,4 @@ const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";
 
 const String emailProfileKey = "email";
 const String retryKey = "retry";
+const String selectSubjectKey = "selectSubject";

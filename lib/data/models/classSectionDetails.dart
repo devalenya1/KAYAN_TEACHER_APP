@@ -3,21 +3,25 @@ import 'package:eschool_teacher/data/models/sectionDetails.dart';
 
 class ClassSectionDetails {
   final int classTeacherId;
-  final int classSectionId;
+  final int id;
   final ClassDetails classDetails;
   final SectionDetails sectionDetails;
 
   ClassSectionDetails(
       {required this.classTeacherId,
-      required this.classSectionId,
+      required this.id,
       required this.classDetails,
       required this.sectionDetails});
+
+  String getClassSectionName() {
+    return "${this.classDetails.name} - ${this.sectionDetails.name}";
+  }
 
   static ClassSectionDetails fromJson(Map<String, dynamic> json) {
     return ClassSectionDetails(
       sectionDetails: SectionDetails.fromJson(json['section']),
       classDetails: ClassDetails.fromJson(json['class']),
-      classSectionId: json['id'],
+      id: json['id'],
       classTeacherId: json['class_teacher_id'],
     );
   }

@@ -38,4 +38,42 @@ class MyClassesCubit extends Cubit<MyClassesState> {
       emit(MyClassesFetchFailure(e.toString()));
     }
   }
+
+  ClassSectionDetails primaryClass() {
+    if (state is MyClassesFetchSuccess) {
+      return (state as MyClassesFetchSuccess).primaryClass;
+    }
+    return ClassSectionDetails.fromJson({});
+  }
+
+  List<ClassSectionDetails> classes() {
+    if (state is MyClassesFetchSuccess) {
+      return (state as MyClassesFetchSuccess).classes;
+    }
+    return [];
+  }
+
+  List<ClassSectionDetails> getAllClasses() {
+    final allClass = List<ClassSectionDetails>.from(classes());
+    allClass.add(primaryClass());
+    return allClass;
+  }
+
+  List<String> getClassSectionName() {
+    //TODO: add medium at the end
+    return getAllClasses()
+        .map((classSection) => classSection.getClassSectionName())
+        .toList();
+  }
+
+  ClassSectionDetails getClassSectionDetails(
+      {required String classSectionName}) {
+    final classAndSection = classSectionName.split("-");
+
+    return getAllClasses()
+        .where((element) =>
+            element.classDetails.name == classAndSection.first.trim() &&
+            element.sectionDetails.name == classAndSection.last.trim())
+        .first;
+  }
 }

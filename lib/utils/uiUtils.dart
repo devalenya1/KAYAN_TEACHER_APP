@@ -15,6 +15,8 @@ class UiUtils {
   static double screenSubTitleFontSize = 14.0;
   static double textFieldFontSize = 15.0;
 
+  static double screenContentHorizontalPaddingPercentage = 0.075;
+
   //
 
   static double bottomSheetButtonHeight = 45.0;
@@ -29,6 +31,8 @@ class UiUtils {
   static double bottomNavigationBottomMargin = 25;
 
   static double bottomSheetHorizontalContentPadding = 20;
+
+  static double subjectFirstLetterFontSize = 20;
 
   static double shimmerLoadingContainerDefaultHeight = 7;
 
@@ -107,6 +111,11 @@ class UiUtils {
 
   static ColorScheme getColorScheme(BuildContext context) {
     return Theme.of(context).colorScheme;
+  }
+
+  static Color getColorFromHexValue(String hexValue) {
+    int color = int.parse(hexValue.replaceAll("#", "0xff").toString());
+    return Color(color);
   }
 
   static Locale getLocaleFromLanguageCode(String languageCode) {

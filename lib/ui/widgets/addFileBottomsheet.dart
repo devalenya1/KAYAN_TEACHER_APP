@@ -87,45 +87,13 @@ class _AddFileBottomsheetState extends State<AddFileBottomsheet> {
                             menu: _classAndDivisions,
                             currentSelectedItem: _selectedClassDivison);
                       }),
-                      LayoutBuilder(builder: (context, boxConstraints) {
-                        return CustomDropDownMenu(
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedSubject = value ?? _selectedSubject;
-                              });
-                            },
-                            textStyle: TextStyle(
-                                color: hintTextColor,
-                                fontSize: UiUtils.textFieldFontSize),
-                            borderRadius: 10,
-                            height: 50,
-                            width: boxConstraints.maxWidth,
-                            menu: _subjects,
-                            currentSelectedItem: _selectedSubject);
-                      }),
-                      LayoutBuilder(builder: (context, boxConstraints) {
-                        return CustomDropDownMenu(
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedChapter = value ?? _selectedChapter;
-                              });
-                            },
-                            textStyle: TextStyle(
-                                color: hintTextColor,
-                                fontSize: UiUtils.textFieldFontSize),
-                            borderRadius: 10,
-                            height: 50,
-                            width: boxConstraints.maxWidth,
-                            menu: _chapters,
-                            currentSelectedItem: _selectedChapter);
-                      }),
                       SizedBox(
-                        height: 25,
+                        height: 15,
                       ),
                       BottomsheetAddFilesDottedBorderContainer(
                           onTap: () {},
-                          title:
-                              UiUtils.getTranslatedLabel(context, addFileKey)),
+                          title: UiUtils.getTranslatedLabel(
+                              context, selectFileKey)),
                       SizedBox(
                         height: 25,
                       ),

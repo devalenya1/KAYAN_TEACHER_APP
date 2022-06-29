@@ -1,7 +1,8 @@
+import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/data/models/classSectionDetails.dart';
+import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/ui/screens/subject/widgets/announcementContainer.dart';
 import 'package:eschool_teacher/ui/screens/subject/widgets/chaptersContainer.dart';
-import 'package:eschool_teacher/ui/screens/subject/widgets/createAnnouncementBottomsheetContainer.dart';
-import 'package:eschool_teacher/ui/screens/subject/widgets/createChapterBottomsheetContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarSubTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
@@ -11,24 +12,35 @@ import 'package:eschool_teacher/ui/widgets/svgButton.dart';
 import 'package:eschool_teacher/ui/widgets/tabBarBackgroundContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SubjectScreen extends StatefulWidget {
-  SubjectScreen({Key? key}) : super(key: key);
+  final Subject subject;
+  final ClassSectionDetails classSectionDetails;
+  SubjectScreen(
+      {Key? key, required this.subject, required this.classSectionDetails})
+      : super(key: key);
 
   @override
   State<SubjectScreen> createState() => _SubjectScreenState();
+
+  static Route<dynamic> route(RouteSettings routeSettings) {
+    final arguments = routeSettings.arguments as Map<String, dynamic>;
+    return CupertinoPageRoute(
+        builder: (_) => SubjectScreen(
+              classSectionDetails: arguments['classSectionDetails'],
+              subject: arguments['subject'],
+            ));
+  }
 }
 
 class _SubjectScreenState extends State<SubjectScreen> {
   late String _selectedTabTitle = chaptersKey;
 
   void _onTapFloatingActionAddButton() {
-    UiUtils.showBottomSheet(
-        child: _selectedTabTitle == chaptersKey
-            ? CreateChapterBottomsheetContainer()
-            : CreateAnnouncementBottomsheetContainer(),
-        context: context);
+    Navigator.of(context)
+        .pushNamed(_selectedTabTitle == chaptersKey ? Routes.addLesson : "");
   }
 
   Widget _buildAppBar() {
@@ -51,11 +63,11 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 ),
               ),
               AppBarTitleContainer(
-                  boxConstraints: boxConstraints, title: "Science"),
+                  boxConstraints: boxConstraints, title: widget.subject.name),
               AppBarSubTitleContainer(
                   boxConstraints: boxConstraints,
                   subTitle:
-                      "${UiUtils.getTranslatedLabel(context, classKey)} 10 - A"),
+                      "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSectionDetails.getClassSectionName()}"),
               AnimatedAlign(
                 curve: UiUtils.tabBackgroundContainerAnimationCurve,
                 duration: UiUtils.tabBackgroundContainerAnimationDuration,

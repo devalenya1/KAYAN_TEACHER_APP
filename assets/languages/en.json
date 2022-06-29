@@ -25,11 +25,11 @@
     "appVersion" : "App Version",
     "address" : "Address",
     "class" : "Class",
-    "chapters" : "Chapters",
+    "chapters" : "Lessons",
     "announcement" : "Announcement",
-    "chapterName" : "Chapter Name",
-    "chapterDescription" : "Chapter Description",
-    "createChapter" : "Create Chapter",
+    "chapterName" : "Lesson Name",
+    "chapterDescription" : "Lesson Description",
+    "createChapter" : "Create Lesson",
     "createAnnouncement" : "Create Announcement",
     "announcementDescription" : "Announcement Description",
     "addAttatchments" : "Add Attatchments",
@@ -120,5 +120,11 @@
     "noInternet" : "No internet",
     "invalidLogInCredentials" : "Invalid LogIn Credentials",
     "invalidUserDetails" : "Inavlid user details",
-    "invalidPassword" : "Invalid password"
+    "invalidPassword" : "Invalid password",
+    "selectFile" : "Select File",
+    "topics" : "Topics",
+    "addLesson" : "Add lesson",
+    "lessons" : "Lessons",
+    "selectSubject" : "Select subject"
+
 }

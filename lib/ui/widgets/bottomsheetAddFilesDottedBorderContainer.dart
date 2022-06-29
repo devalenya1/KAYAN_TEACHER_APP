@@ -60,7 +60,7 @@ class BottomsheetAddFilesDottedBorderContainer extends StatelessWidget {
             )
           ],
         ),
-        height: MediaQuery.of(context).size.height * (0.085),
+        height: MediaQuery.of(context).size.height * (0.075),
       ),
     );
   }

@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/authCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
+import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/internetListenerWidget.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -169,74 +171,85 @@ class _HomeContainerState extends State<HomeContainer> {
 
   Widget _buildClassContainer(
       {required BoxConstraints boxConstraints,
+      required ClassSectionDetails classSectionDetails,
       required int index,
       required bool isClassTeacher}) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context)
-            .pushNamed(Routes.classScreen, arguments: isClassTeacher);
-      },
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        height: 80,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                "10 - A",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            Routes.classScreen,
+            arguments: {
+              "isClassTeacher": isClassTeacher,
+              "classSection": classSectionDetails
+            },
+          );
+        },
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          height: 80,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              //TODO: add medium also
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "${classSectionDetails.classDetails.name} - ${classSectionDetails.sectionDetails.name}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
-            ),
-            Positioned(
-                bottom: -15,
-                left: (boxConstraints.maxWidth * 0.225) - 15, //0.45
-                child: Container(
-                  alignment: Alignment.center,
-                  width: 30,
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 18,
-                  ),
-                  height: 30,
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondary
-                                .withOpacity(0.2),
-                            offset: Offset(0, 4),
-                            blurRadius: 20)
-                      ],
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).scaffoldBackgroundColor),
-                ))
-          ],
+              Positioned(
+                  bottom: -15,
+                  left: (boxConstraints.maxWidth * 0.225) - 15, //0.45
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 30,
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 18,
+                    ),
+                    height: 30,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.2),
+                              offset: Offset(0, 4),
+                              blurRadius: 20)
+                        ],
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).scaffoldBackgroundColor),
+                  ))
+            ],
+          ),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              //Diplaying different(4) class color
+              color: UiUtils.getClassColor(index),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 10,
+                    color: UiUtils.getClassColor(index).withOpacity(0.2),
+                    offset: Offset(0, 2.5))
+              ]),
+          width: boxConstraints.maxWidth * 0.45,
         ),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            //Diplaying different(4) class color
-            color: UiUtils.getClassColor(index),
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 10,
-                  color: UiUtils.getClassColor(index).withOpacity(0.2),
-                  offset: Offset(0, 2.5))
-            ]),
-        width: boxConstraints.maxWidth * 0.45,
       ),
     );
   }
 
   Widget _buildMyClasses() {
+    final classes = context.read<MyClassesCubit>().classes();
     return Column(
       children: [
         _buildMyClassesLabel(),
@@ -245,24 +258,14 @@ class _HomeContainerState extends State<HomeContainer> {
             spacing: boxConstraints.maxWidth * (0.1),
             runSpacing: 40,
             direction: Axis.horizontal,
-            children: [
-              _buildClassContainer(
-                  boxConstraints: boxConstraints,
-                  index: 0,
-                  isClassTeacher: false),
-              _buildClassContainer(
-                  boxConstraints: boxConstraints,
-                  index: 1,
-                  isClassTeacher: false),
-              _buildClassContainer(
-                  boxConstraints: boxConstraints,
-                  index: 2,
-                  isClassTeacher: false),
-              _buildClassContainer(
-                  boxConstraints: boxConstraints,
-                  index: 3,
-                  isClassTeacher: false),
-            ],
+            children: List.generate(classes.length, (index) => index)
+                .map((index) => _buildClassContainer(
+                      boxConstraints: boxConstraints,
+                      classSectionDetails: classes[index],
+                      index: index,
+                      isClassTeacher: false,
+                    ))
+                .toList(),
           );
         }),
       ],
@@ -293,7 +296,11 @@ class _HomeContainerState extends State<HomeContainer> {
         _buildClassTeacherLabel(),
         LayoutBuilder(builder: (context, boxConstraints) {
           return _buildClassContainer(
-              boxConstraints: boxConstraints, index: 0, isClassTeacher: true);
+              classSectionDetails:
+                  context.read<MyClassesCubit>().primaryClass(),
+              boxConstraints: boxConstraints,
+              index: 0,
+              isClassTeacher: true);
         }),
       ],
     );
@@ -428,109 +435,117 @@ class _HomeContainerState extends State<HomeContainer> {
             title: UiUtils.getTranslatedLabel(context, assignmentsKey)),
 
         _buildMenuContainer(
-            route: Routes.studyMaterials,
-            iconPath: UiUtils.getImagePath("study_material_icon.svg"),
-            title: UiUtils.getTranslatedLabel(context, studyMaterialsKey)),
-
-        _buildMenuContainer(
             route: Routes.announcements,
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, announcementsKey)),
+
         _buildMenuContainer(
-            route: "",
+            route: Routes.lessons,
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, chaptersKey)),
+
+        _buildMenuContainer(
+            route: Routes.topics,
+            iconPath: UiUtils.getImagePath("study_material_icon.svg"),
+            title: UiUtils.getTranslatedLabel(context, topicsKey)),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * (0.075),
-                right: MediaQuery.of(context).size.width * (0.075),
-                bottom: UiUtils.getScrollViewBottomPadding(context),
-                top: UiUtils.getScrollViewTopPadding(
-                    context: context,
-                    appBarHeightPercentage:
-                        UiUtils.appBarBiggerHeightPercentage)),
-            child: BlocBuilder<MyClassesCubit, MyClassesState>(
-              builder: (context, state) {
-                if (state is MyClassesFetchSuccess) {
-                  return Column(
-                    children: [
-                      _buildMyClasses(),
-                      SizedBox(
-                        height: 20.0,
+    return InternetListenerWidget(
+      onInternetConnectionBack: () {
+        if (context.read<MyClassesCubit>().state is MyClassesFetchFailure) {
+          context.read<MyClassesCubit>().fetchMyClasses();
+        }
+      },
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * (0.075),
+                  right: MediaQuery.of(context).size.width * (0.075),
+                  bottom: UiUtils.getScrollViewBottomPadding(context),
+                  top: UiUtils.getScrollViewTopPadding(
+                      context: context,
+                      appBarHeightPercentage:
+                          UiUtils.appBarBiggerHeightPercentage)),
+              child: BlocBuilder<MyClassesCubit, MyClassesState>(
+                builder: (context, state) {
+                  if (state is MyClassesFetchSuccess) {
+                    return Column(
+                      children: [
+                        _buildMyClasses(),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        _buildClassTeacher(),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        _buildInformationAndMenu()
+                      ],
+                    );
+                  }
+                  if (state is MyClassesFetchFailure) {
+                    return Center(
+                      child: ErrorContainer(
+                        errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
+                            context, state.errorMessage),
+                        onTapRetry: () {
+                          context.read<MyClassesCubit>().fetchMyClasses();
+                        },
                       ),
-                      _buildClassTeacher(),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildInformationAndMenu()
-                    ],
-                  );
-                }
-                if (state is MyClassesFetchFailure) {
-                  return Center(
-                    child: ErrorContainer(
-                      errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                          context, state.errorMessage),
-                      onTapRetry: () {
-                        context.read<MyClassesCubit>().fetchMyClasses();
-                      },
-                    ),
-                  );
-                }
+                    );
+                  }
 
-                return LayoutBuilder(builder: (context, boxConstraints) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildMyClassesLabel(),
-                      Wrap(
-                        spacing: boxConstraints.maxWidth * (0.1),
-                        runSpacing: 40,
-                        direction: Axis.horizontal,
-                        children: List.generate(
+                  return LayoutBuilder(builder: (context, boxConstraints) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildMyClassesLabel(),
+                        Wrap(
+                          spacing: boxConstraints.maxWidth * (0.1),
+                          runSpacing: 40,
+                          direction: Axis.horizontal,
+                          children: List.generate(
+                                  UiUtils.defaultShimmerLoadingContentCount,
+                                  (index) => index)
+                              .map((index) =>
+                                  _buildClassShimmerLoading(boxConstraints))
+                              .toList(),
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        _buildClassTeacherLabel(),
+                        _buildClassShimmerLoading(boxConstraints),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        _buildInformationAndMenuLabel(),
+                        ...List.generate(
                                 UiUtils.defaultShimmerLoadingContentCount,
                                 (index) => index)
-                            .map((index) =>
-                                _buildClassShimmerLoading(boxConstraints))
+                            .map((e) =>
+                                _buildInformationShimmerLoadingContainer())
                             .toList(),
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildClassTeacherLabel(),
-                      _buildClassShimmerLoading(boxConstraints),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      _buildInformationAndMenuLabel(),
-                      ...List.generate(
-                              UiUtils.defaultShimmerLoadingContentCount,
-                              (index) => index)
-                          .map(
-                              (e) => _buildInformationShimmerLoadingContainer())
-                          .toList(),
-                    ],
-                  );
-                });
-              },
+                      ],
+                    );
+                  });
+                },
+              ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: _buildTopProfileContainer(context),
-        ),
-      ],
+          Align(
+            alignment: Alignment.topCenter,
+            child: _buildTopProfileContainer(context),
+          ),
+        ],
+      ),
     );
   }
 }

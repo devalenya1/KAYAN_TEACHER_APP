@@ -51,6 +51,8 @@ dependencies:
   awesome_notifications: 0.7.0-beta.2 
   cached_network_image: ^3.2.1
   shimmer: ^2.0.0
+  connectivity_plus:
+  internet_connection_checker:
 
 dev_dependencies:
   change_app_package_name: ^1.0.0

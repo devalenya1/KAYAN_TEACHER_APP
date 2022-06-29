@@ -2,6 +2,7 @@ import 'package:eschool_teacher/app/appLocalization.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/appLocalizationCubit.dart';
 import 'package:eschool_teacher/cubits/authCubit.dart';
+import 'package:eschool_teacher/cubits/internetConnectivityCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/data/repositories/authRepository.dart';
 import 'package:eschool_teacher/data/repositories/settingsRepository.dart';
@@ -65,6 +66,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
         BlocProvider<MyClassesCubit>(
             create: (_) => MyClassesCubit(TeacherRepository())),
+        BlocProvider<InternetConnectivityCubit>(
+            create: (_) => InternetConnectivityCubit()),
       ],
       child: Builder(builder: (context) {
         final currentLanguage =

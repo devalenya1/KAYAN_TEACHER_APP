@@ -1,19 +1,34 @@
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
+import 'package:eschool_teacher/data/models/classSectionDetails.dart';
+import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/ui/screens/class/widgets/subjectImageContainer.dart';
+import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
+import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/internetListenerWidget.dart';
+import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
+import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubjectsContainer extends StatelessWidget {
   final double topPadding;
-  const SubjectsContainer({Key? key, required this.topPadding})
+  final ClassSectionDetails classSectionDetails;
+  const SubjectsContainer(
+      {Key? key, required this.topPadding, required this.classSectionDetails})
       : super(key: key);
 
   Widget _buildSubjectContainer(
-      {required String subjectName, required BuildContext context}) {
+      {required Subject subject, required BuildContext context}) {
     return Padding(
       padding: EdgeInsets.only(bottom: 20),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          Navigator.of(context).pushNamed(Routes.subject);
+          Navigator.of(context).pushNamed(Routes.subject, arguments: {
+            "subject": subject,
+            "classSectionDetails": classSectionDetails
+          });
         },
         child: Container(
           clipBehavior: Clip.none,
@@ -36,18 +51,17 @@ class SubjectsContainer extends StatelessWidget {
           child: LayoutBuilder(builder: (context, boxConstraints) {
             return Row(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(7.5),
-                      color: Theme.of(context).colorScheme.error),
-                  height: 60,
-                  width: boxConstraints.maxWidth * (0.2),
-                ),
+                SubjectImageContainer(
+                    showShadow: false,
+                    height: 60,
+                    radius: 7.5,
+                    subject: subject,
+                    width: boxConstraints.maxWidth * (0.2)),
                 SizedBox(
                   width: boxConstraints.maxWidth * (0.05),
                 ),
                 Text(
-                  subjectName,
+                  subject.name,
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w600,
@@ -61,19 +75,79 @@ class SubjectsContainer extends StatelessWidget {
     );
   }
 
+  Widget _buildSubjectShimmerLoading(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      width: MediaQuery.of(context).size.width * (0.85),
+      child: LayoutBuilder(builder: (context, boxConstraints) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              margin: EdgeInsetsDirectional.only(start: 10),
+              height: 60,
+              width: boxConstraints.maxWidth * (0.2),
+            )),
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              margin: EdgeInsetsDirectional.only(start: 20),
+              width: boxConstraints.maxWidth * (0.3),
+            )),
+          ],
+        );
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(
-        top: topPadding,
-      ),
-      child: Column(
-        children: [
-          _buildSubjectContainer(subjectName: "Maths", context: context),
-          _buildSubjectContainer(
-              subjectName: "Socia Science & Technology", context: context),
-          _buildSubjectContainer(subjectName: "English", context: context),
-        ],
+    return InternetListenerWidget(
+      onInternetConnectionBack: () {
+        if (context.read<SubjectsOfClassSectionCubit>().state
+            is SubjectsOfClassSectionFetchFailure) {
+          context
+              .read<SubjectsOfClassSectionCubit>()
+              .fetchSubjects(classSectionDetails.id);
+        }
+      },
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          top: topPadding,
+        ),
+        child: BlocBuilder<SubjectsOfClassSectionCubit,
+            SubjectsOfClassSectionState>(
+          builder: (context, state) {
+            if (state is SubjectsOfClassSectionFetchSuccess) {
+              return Column(
+                children: state.subjects
+                    .map((subject) => _buildSubjectContainer(
+                        subject: subject, context: context))
+                    .toList(),
+              );
+            }
+            if (state is SubjectsOfClassSectionFetchFailure) {
+              return Center(
+                child: ErrorContainer(
+                  errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
+                      context, state.errorMessage),
+                  onTapRetry: () {
+                    context
+                        .read<SubjectsOfClassSectionCubit>()
+                        .fetchSubjects(classSectionDetails.id);
+                  },
+                ),
+              );
+            }
+
+            return Column(
+              children: List.generate(UiUtils.defaultShimmerLoadingContentCount,
+                      (index) => index)
+                  .map((e) => _buildSubjectShimmerLoading(context))
+                  .toList(),
+            );
+          },
+        ),
       ),
     );
   }

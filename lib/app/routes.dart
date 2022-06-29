@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
+import 'package:eschool_teacher/ui/screens/addLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
 import 'package:eschool_teacher/ui/screens/announcement/announcementsScreen.dart';
 
@@ -6,6 +7,7 @@ import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
+import 'package:eschool_teacher/ui/screens/lessonsScreen.dart';
 import 'package:eschool_teacher/ui/screens/login/loginScreen.dart';
 import 'package:eschool_teacher/ui/screens/monthWiseAttendance/monthWiseAttendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/resultScreen.dart';
@@ -33,6 +35,8 @@ class Routes {
 
   static const String studyMaterials = "/studyMaterials";
 
+  static const String topics = "/topics";
+
   static const String assignment = "/assignment";
 
   static const String addAssignment = "/addAssignment";
@@ -50,6 +54,10 @@ class Routes {
   static const String result = "/result";
 
   static const String addResult = "/addResult";
+
+  static const String lessons = "/lessons";
+
+  static const String addLesson = "/addLesson";
 
   static const String monthWiseAttendance = "/monthWiseAttendance";
 
@@ -76,7 +84,7 @@ class Routes {
         }
       case subject:
         {
-          return CupertinoPageRoute(builder: (_) => SubjectScreen());
+          return SubjectScreen.route(routeSettings);
         }
       case assignments:
         {
@@ -132,6 +140,14 @@ class Routes {
         {
           return CupertinoPageRoute(
               builder: (context) => const AnnouncementsScreen());
+        }
+      case lessons:
+        {
+          return LessonsScreen.route(routeSettings);
+        }
+      case addLesson:
+        {
+          return AddLessonScreen.route(routeSettings);
         }
       default:
         {
