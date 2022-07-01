@@ -1,5 +1,6 @@
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
+import 'package:eschool_teacher/ui/widgets/defaultDropDownLabelContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -26,16 +27,16 @@ class ClassSubjectsDropDownMenu extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return CustomDropDownMenu(
-            width: width,
-            onChanged: (result) {
-              changeSelectedItem(result!);
-              //TODO: Fetch chapters if based on condition
-            },
-            menu: state is SubjectsOfClassSectionFetchSuccess
-                ? state.subjects.map((e) => e.name).toList()
-                : [currentSelectedItem],
-            currentSelectedItem: currentSelectedItem);
+        return state is SubjectsOfClassSectionFetchSuccess
+            ? CustomDropDownMenu(
+                width: width,
+                onChanged: (result) {
+                  changeSelectedItem(result!);
+                },
+                menu: state.subjects.map((e) => e.name).toList(),
+                currentSelectedItem: currentSelectedItem)
+            : DefaultDropDownLabelContainer(
+                titleLabelKey: selectSubjectKey, height: 40, width: width);
       },
     );
   }

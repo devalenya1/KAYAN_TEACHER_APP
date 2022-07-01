@@ -1,26 +1,20 @@
-import 'dart:io';
-
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
-import 'package:eschool_teacher/data/models/studyFile.dart';
+import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/addStudyMaterialBottomSheet.dart';
+import 'package:eschool_teacher/ui/widgets/addedFileContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
-import 'package:eschool_teacher/ui/widgets/bottomSheetTopBarMenu.dart';
-import 'package:eschool_teacher/ui/widgets/bottomsheetAddFilesDottedBorderContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
-import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AddLessonScreen extends StatefulWidget {
   AddLessonScreen({Key? key}) : super(key: key);
@@ -45,6 +39,13 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
   late String currentSelectedSubject =
       UiUtils.getTranslatedLabel(context, selectSubjectKey);
 
+  TextEditingController _lessonNameTextEditingController =
+      TextEditingController();
+  TextEditingController _lessonDescriptionTextEditingController =
+      TextEditingController();
+
+  List<PickedStudyMaterial> _addedStudyMaterials = [];
+
   @override
   void initState() {
     context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
@@ -54,10 +55,11 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
     super.initState();
   }
 
-  TextEditingController _lessonNameTextEditingController =
-      TextEditingController();
-  TextEditingController _lessonDescriptionTextEditingController =
-      TextEditingController();
+  void _addStudyMaterial(PickedStudyMaterial pickedStudyMaterial) {
+    setState(() {
+      _addedStudyMaterials.add(pickedStudyMaterial);
+    });
+  }
 
   Widget _buildAppbar() {
     return Align(
@@ -70,6 +72,7 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
   Widget _buildAddLessonForm() {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
+          bottom: 25,
           right: UiUtils.screenContentHorizontalPaddingPercentage *
               MediaQuery.of(context).size.width,
           left: UiUtils.screenContentHorizontalPaddingPercentage *
@@ -86,8 +89,7 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
                 changeSelectedItem: (result) {
                   setState(() {
                     currentSelectedClassSection = result;
-                    currentSelectedSubject =
-                        UiUtils.getTranslatedLabel(context, selectSubjectKey);
+                    _addedStudyMaterials = [];
                   });
                 }),
 
@@ -96,6 +98,7 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
                 changeSelectedItem: (result) {
                   setState(() {
                     currentSelectedSubject = result;
+                    _addedStudyMaterials = [];
                   });
                 },
                 currentSelectedItem: currentSelectedSubject,
@@ -132,7 +135,8 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
                     onTap: () {
                       UiUtils.showBottomSheet(
                           child: AddStudyMaterialBottomsheet(
-                              editFileDetails: false, onTapAddFile: () {}),
+                              editFileDetails: false,
+                              onTapSubmit: _addStudyMaterial),
                           context: context);
                     },
                     child: CircleAvatar(
@@ -150,6 +154,19 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
             SizedBox(
               height: 20,
             ),
+            ...List.generate(_addedStudyMaterials.length, (index) => index)
+                .map((index) => AddedFileContainer(
+                    onDelete: (index) {
+                      _addedStudyMaterials.removeAt(index);
+                      setState(() {});
+                    },
+                    onEdit: (index, file) {
+                      _addedStudyMaterials[index] = file;
+                      setState(() {});
+                    },
+                    file: _addedStudyMaterials[index],
+                    fileIndex: index))
+                .toList(),
 
             Padding(
               padding: EdgeInsets.symmetric(

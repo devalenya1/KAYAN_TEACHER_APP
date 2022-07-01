@@ -131,6 +131,17 @@
     "videoUpload" : "Video upload",
     "selectThumbnail" : "Select thumbnail",
     "selectVideo" : "Select video",
-    "addStudyMaterial" : "Add study material"
+    "addStudyMaterial" : "Add study material",
+    "studyMaterialName" : "Study material name",
+    "filePath" : "File path",
+    "thumbnailImage" : "Thumbnail image",
+    "pleaseEnterStudyMaterialName" :"Please enter study material name",
+    "pleaseSelectFile" : "Please select file",
+    "pleaseSelectThumbnailImage" : "Please select thumbnail image",
+    "pleaseEnterYoutubeLink" : "Please enter youtube link",
+    "pleaseSelectVideo" : "Please select video",
+    "permissionToPickFile" : "Please give permission to pick file"
+    
+
 
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTopBarMenu.dart';
@@ -14,15 +15,15 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddStudyMaterialBottomsheet extends StatefulWidget {
-  final Function onTapAddFile;
+  final Function(PickedStudyMaterial) onTapSubmit;
   final bool editFileDetails;
-  final int? fileIndex;
-  AddStudyMaterialBottomsheet({
-    Key? key,
-    this.fileIndex,
-    required this.editFileDetails,
-    required this.onTapAddFile,
-  }) : super(key: key);
+  final PickedStudyMaterial? pickedStudyMaterial;
+  AddStudyMaterialBottomsheet(
+      {Key? key,
+      required this.editFileDetails,
+      required this.onTapSubmit,
+      this.pickedStudyMaterial})
+      : super(key: key);
 
   @override
   State<AddStudyMaterialBottomsheet> createState() =>
@@ -31,7 +32,7 @@ class AddStudyMaterialBottomsheet extends StatefulWidget {
 
 class _AddStudyMaterialBottomsheetState
     extends State<AddStudyMaterialBottomsheet> {
-  late String currentSelectedItem =
+  late String currentSelectedStudyMaterialType =
       UiUtils.getTranslatedLabel(context, fileUploadKey);
 
   late TextEditingController _fileNameEditingController =
@@ -39,6 +40,40 @@ class _AddStudyMaterialBottomsheetState
 
   late TextEditingController _youtubeLinkEditingController =
       TextEditingController();
+
+  File? addedFile; //if studymaterial type is fileUpload
+  File? addedVideoThumbnailFile; //if studymaterial type is not fileUpload
+  File? addedVideoFile; //if studymaterial type is videoUpload
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      if (widget.editFileDetails) {
+        _fileNameEditingController.text = widget.pickedStudyMaterial!.fileName;
+        if (widget.pickedStudyMaterial!.pickedStudyMaterialTypeId == 1) {
+          currentSelectedStudyMaterialType =
+              UiUtils.getTranslatedLabel(context, fileUploadKey);
+          addedFile = widget.pickedStudyMaterial!.studyMaterialFile;
+        } else if (widget.pickedStudyMaterial!.pickedStudyMaterialTypeId == 2) {
+          currentSelectedStudyMaterialType =
+              UiUtils.getTranslatedLabel(context, youtubeLinkKey);
+          addedVideoThumbnailFile =
+              widget.pickedStudyMaterial!.videoThumbnailFile;
+          _youtubeLinkEditingController.text =
+              widget.pickedStudyMaterial!.youTubeLink!;
+          ;
+        } else {
+          currentSelectedStudyMaterialType =
+              UiUtils.getTranslatedLabel(context, videoUploadKey);
+          addedVideoThumbnailFile =
+              widget.pickedStudyMaterial!.videoThumbnailFile;
+          addedVideoFile = widget.pickedStudyMaterial!.studyMaterialFile;
+        }
+      }
+      setState(() {});
+    });
+  }
 
   @override
   void dispose() {
@@ -55,9 +90,52 @@ class _AddStudyMaterialBottomsheetState
     return permissionGiven;
   }
 
-  File? addedFile;
-  File? addedVideoThumbnailFile;
-  File? addedVideoFile;
+  void showErrorMessage(String messageKey) {
+    UiUtils.showErrorMessageContainer(
+        context: context,
+        errorMessage: UiUtils.getTranslatedLabel(context, messageKey),
+        backgroundColor: Theme.of(context).colorScheme.error);
+  }
+
+  void addStudyMaterial() {
+    final pickedStudyMaterialId =
+        UiUtils.getStudyMaterialId(currentSelectedStudyMaterialType, context);
+
+    if (_fileNameEditingController.text.trim().isEmpty) {
+      showErrorMessage(pleaseEnterStudyMaterialNameKey);
+      return;
+    }
+
+    if (pickedStudyMaterialId == 1 && addedFile == null) {
+      showErrorMessage(pleaseSelectFileKey);
+      return;
+    }
+
+    if (pickedStudyMaterialId != 1 && addedVideoThumbnailFile == null) {
+      showErrorMessage(pleaseSelectThumbnailImageKey);
+      return;
+    }
+
+    if (pickedStudyMaterialId == 2 &&
+        _youtubeLinkEditingController.text.trim().isEmpty) {
+      showErrorMessage(pleaseEnterYoutubeLinkKey);
+      return;
+    }
+
+    if (pickedStudyMaterialId == 3 && addedVideoFile == null) {
+      showErrorMessage(pleaseSelectVideoKey);
+      return;
+    }
+
+    widget.onTapSubmit(PickedStudyMaterial(
+        fileName: _fileNameEditingController.text.trim(),
+        pickedStudyMaterialTypeId: pickedStudyMaterialId,
+        studyMaterialFile:
+            pickedStudyMaterialId == 1 ? addedFile : addedVideoFile,
+        videoThumbnailFile: addedVideoThumbnailFile,
+        youTubeLink: _youtubeLinkEditingController.text.trim()));
+    Navigator.of(context).pop();
+  }
 
   Widget _buildAddedFileContainer(File file, Function onTap) {
     return LayoutBuilder(builder: (context, boxConstraints) {
@@ -100,22 +178,26 @@ class _AddStudyMaterialBottomsheetState
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                //
                 BottomSheetTopBarMenu(
                     onTapCloseButton: () {
                       Navigator.of(context).pop();
                     },
                     title: UiUtils.getTranslatedLabel(
                         context, addStudyMaterialKey)),
+
+                //
                 Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: UiUtils.bottomSheetHorizontalContentPadding),
                   child: Column(
                     children: [
                       LayoutBuilder(builder: (context, boxConstraints) {
+                        //Study material type dropdown list
                         return CustomDropDownMenu(
                             onChanged: (value) {
                               setState(() {
-                                currentSelectedItem = value!;
+                                currentSelectedStudyMaterialType = value!;
                                 addedFile = null;
                                 addedVideoFile = null;
                                 addedVideoThumbnailFile = null;
@@ -135,16 +217,28 @@ class _AddStudyMaterialBottomsheetState
                               UiUtils.getTranslatedLabel(
                                   context, videoUploadKey)
                             ],
-                            currentSelectedItem: currentSelectedItem);
+                            currentSelectedItem:
+                                currentSelectedStudyMaterialType);
                       }),
+                      //
+                      //File name
+                      //
                       BottomSheetTextFieldContainer(
                           margin: EdgeInsets.only(bottom: 25),
-                          hintText:
-                              UiUtils.getTranslatedLabel(context, fileNameKey),
+                          hintText: UiUtils.getTranslatedLabel(
+                              context, studyMaterialNameKey),
                           maxLines: 1,
                           textEditingController: _fileNameEditingController),
 
-                      //if selected file is not null
+                      //
+                      //Select file picker. If study material type is fileUpload then it will pick file
+                      //else it will pick video thumbnail image
+                      //
+
+                      //
+                      //if file or images has been picked then show the pickedFile name and remove button
+                      //else show file picker option
+                      //
                       addedFile != null
                           ? _buildAddedFileContainer(addedFile!, () {
                               addedFile = null;
@@ -161,7 +255,7 @@ class _AddStudyMaterialBottomsheetState
                                     if (await _isPermissionGiven()) {
                                       final pickedFile =
                                           await FilePicker.platform.pickFiles(
-                                              type: currentSelectedItem ==
+                                              type: currentSelectedStudyMaterialType ==
                                                       UiUtils
                                                           .getTranslatedLabel(
                                                               context,
@@ -172,7 +266,7 @@ class _AddStudyMaterialBottomsheetState
                                       //
                                       if (pickedFile != null) {
                                         //if current selected study material type is file
-                                        if (currentSelectedItem ==
+                                        if (currentSelectedStudyMaterialType ==
                                             UiUtils.getTranslatedLabel(
                                                 context, fileUploadKey)) {
                                           addedFile =
@@ -185,10 +279,10 @@ class _AddStudyMaterialBottomsheetState
                                         setState(() {});
                                       }
                                     } else {
-                                      print("Please give permission");
+                                      showErrorMessage(permissionToPickFileKey);
                                     }
                                   },
-                                  title: currentSelectedItem ==
+                                  title: currentSelectedStudyMaterialType ==
                                           UiUtils.getTranslatedLabel(
                                               context, fileUploadKey)
                                       ? UiUtils.getTranslatedLabel(
@@ -200,7 +294,7 @@ class _AddStudyMaterialBottomsheetState
                         height: 25,
                       ),
 
-                      currentSelectedItem ==
+                      currentSelectedStudyMaterialType ==
                               UiUtils.getTranslatedLabel(
                                   context, youtubeLinkKey)
                           ? BottomSheetTextFieldContainer(
@@ -210,7 +304,7 @@ class _AddStudyMaterialBottomsheetState
                               maxLines: 1,
                               textEditingController:
                                   _youtubeLinkEditingController)
-                          : currentSelectedItem ==
+                          : currentSelectedStudyMaterialType ==
                                   UiUtils.getTranslatedLabel(
                                       context, videoUploadKey)
                               ? addedVideoFile != null
@@ -232,10 +326,11 @@ class _AddStudyMaterialBottomsheetState
                                             setState(() {});
                                           }
                                         } else {
-                                          print("Please give permission");
+                                          showErrorMessage(
+                                              permissionToPickFileKey);
                                         }
                                       },
-                                      title: currentSelectedItem ==
+                                      title: currentSelectedStudyMaterialType ==
                                               UiUtils.getTranslatedLabel(
                                                   context, fileUploadKey)
                                           ? UiUtils.getTranslatedLabel(
@@ -249,7 +344,9 @@ class _AddStudyMaterialBottomsheetState
                       ),
 
                       CustomRoundedButton(
-                          onTap: () {},
+                          onTap: () {
+                            addStudyMaterial();
+                          },
                           height: UiUtils.bottomSheetButtonHeight,
                           widthPercentage:
                               UiUtils.bottomSheetButtonWidthPercentage,

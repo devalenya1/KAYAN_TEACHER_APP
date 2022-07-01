@@ -1,3 +1,8 @@
+import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
+import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
+import 'package:eschool_teacher/utils/labelKeys.dart';
+import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +18,22 @@ class LessonsScreen extends StatefulWidget {
 }
 
 class _LessonsScreenState extends State<LessonsScreen> {
+  Widget _buildAppbar() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child:
+          CustomAppBar(title: UiUtils.getTranslatedLabel(context, lessonsKey)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SizedBox());
+    return Scaffold(
+        floatingActionButton: FloatingActionAddButton(onTap: () {
+          Navigator.of(context).pushNamed(Routes.addLesson);
+        }),
+        body: Stack(
+          children: [_buildAppbar()],
+        ));
   }
 }

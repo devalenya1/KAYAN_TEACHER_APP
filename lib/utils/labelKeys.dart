@@ -156,3 +156,13 @@ const String fileUploadKey = "fileUpload";
 const String videoUploadKey = "videoUpload";
 
 const String selectVideoKey = "selectVideo";
+const String studyMaterialNameKey = "studyMaterialName";
+const String filePathKey = "filePath";
+const String thumbnailImageKey = "thumbnailImage";
+
+const String pleaseEnterStudyMaterialNameKey = "pleaseEnterStudyMaterialName";
+const String pleaseSelectFileKey = "pleaseSelectFile";
+const String pleaseSelectThumbnailImageKey = "pleaseSelectThumbnailImage";
+const String pleaseEnterYoutubeLinkKey = "pleaseEnterYoutubeLink";
+const String pleaseSelectVideoKey = "pleaseSelectVideo";
+const String permissionToPickFileKey = "permissionToPickFile";

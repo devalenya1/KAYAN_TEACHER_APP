@@ -33,6 +33,7 @@ class Api {
   static String changePassword = "${databaseUrl}change-password";
   static String getClasses = "${databaseUrl}teacher/classes";
   static String getSubjectByClassSection = "${databaseUrl}teacher/subjects";
+  static String createLesson = "${databaseUrl}teacher/create-lesson";
 
   //Api methods
 

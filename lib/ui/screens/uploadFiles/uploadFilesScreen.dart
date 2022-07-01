@@ -1,5 +1,4 @@
 import 'package:eschool_teacher/data/models/studyFile.dart';
-import 'package:eschool_teacher/ui/screens/addLessonScreen.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
