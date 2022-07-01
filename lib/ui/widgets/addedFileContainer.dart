@@ -81,7 +81,7 @@ class AddedFileContainer extends StatelessWidget {
                           style: titleTextStyle,
                           textAlign: TextAlign.left),
                       Text(
-                        file.studyMaterialFile?.path ?? "",
+                        file.studyMaterialFile?.name ?? "",
                         style: subTitleTextStyle,
                       ),
                     ],
@@ -117,7 +117,7 @@ class AddedFileContainer extends StatelessWidget {
                           style: titleTextStyle,
                           textAlign: TextAlign.left),
                       Text(
-                        file.videoThumbnailFile?.path ?? "",
+                        file.videoThumbnailFile?.name ?? "",
                         style: subTitleTextStyle,
                       ),
                     ],

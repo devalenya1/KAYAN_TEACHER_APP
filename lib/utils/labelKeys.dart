@@ -149,7 +149,7 @@ const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";
 
 const String emailProfileKey = "email";
 const String retryKey = "retry";
-const String selectSubjectKey = "selectSubject";
+const String fetchingSubjectsKey = "fetchingSubjects";
 
 const String youtubeLinkKey = "youtubeLink";
 const String fileUploadKey = "fileUpload";
@@ -166,3 +166,8 @@ const String pleaseSelectThumbnailImageKey = "pleaseSelectThumbnailImage";
 const String pleaseEnterYoutubeLinkKey = "pleaseEnterYoutubeLink";
 const String pleaseSelectVideoKey = "pleaseSelectVideo";
 const String permissionToPickFileKey = "permissionToPickFile";
+
+const String pleaseEnterLessonNameKey = "pleaseEnterLessonName";
+const String pleaseEnterLessonDescriptionKey = "pleaseEnterLessonDescription";
+const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
+const String lessonAddedKey = "lessonAdded";

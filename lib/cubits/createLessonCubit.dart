@@ -29,14 +29,20 @@ class CreateLessonCubit extends Cubit<CreateLessonState> {
       required List<PickedStudyMaterial> files}) async {
     emit(CreateLessonInProgress());
     try {
+      List<Map<String, dynamic>> filesJosn = [];
+      for (var file in files) {
+        filesJosn.add(await file.toJson());
+      }
+
       await _lessonRepository.createLesson(
           lessonName: lessonName,
           classSectionId: classSectionId,
           subjectId: subjectId,
           lessonDescription: lessonDescription,
-          files: files.map((file) => file.toJson()).toList());
+          files: filesJosn);
       emit(CreateLessonSuccess());
     } catch (e) {
+      print(e.toString());
       emit(CreateLessonFailure(e.toString()));
     }
   }

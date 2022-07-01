@@ -36,7 +36,7 @@ class ClassSubjectsDropDownMenu extends StatelessWidget {
                 menu: state.subjects.map((e) => e.name).toList(),
                 currentSelectedItem: currentSelectedItem)
             : DefaultDropDownLabelContainer(
-                titleLabelKey: selectSubjectKey, height: 40, width: width);
+                titleLabelKey: fetchingSubjectsKey, height: 40, width: width);
       },
     );
   }

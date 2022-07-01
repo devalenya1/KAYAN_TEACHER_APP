@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
@@ -41,9 +39,10 @@ class _AddStudyMaterialBottomsheetState
   late TextEditingController _youtubeLinkEditingController =
       TextEditingController();
 
-  File? addedFile; //if studymaterial type is fileUpload
-  File? addedVideoThumbnailFile; //if studymaterial type is not fileUpload
-  File? addedVideoFile; //if studymaterial type is videoUpload
+  PlatformFile? addedFile; //if studymaterial type is fileUpload
+  PlatformFile?
+      addedVideoThumbnailFile; //if studymaterial type is not fileUpload
+  PlatformFile? addedVideoFile; //if studymaterial type is videoUpload
 
   @override
   void initState() {
@@ -137,7 +136,7 @@ class _AddStudyMaterialBottomsheetState
     Navigator.of(context).pop();
   }
 
-  Widget _buildAddedFileContainer(File file, Function onTap) {
+  Widget _buildAddedFileContainer(PlatformFile file, Function onTap) {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return DottedBorder(
         borderType: BorderType.RRect,
@@ -151,7 +150,7 @@ class _AddStudyMaterialBottomsheetState
               SizedBox(
                 width: boxConstraints.maxWidth * (0.75),
                 child: Text(
-                  file.path,
+                  file.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -269,11 +268,10 @@ class _AddStudyMaterialBottomsheetState
                                         if (currentSelectedStudyMaterialType ==
                                             UiUtils.getTranslatedLabel(
                                                 context, fileUploadKey)) {
-                                          addedFile =
-                                              File(pickedFile.files.first.name);
+                                          addedFile = pickedFile.files.first;
                                         } else {
                                           addedVideoThumbnailFile =
-                                              File(pickedFile.files.first.name);
+                                              pickedFile.files.first;
                                         }
 
                                         setState(() {});
@@ -321,8 +319,8 @@ class _AddStudyMaterialBottomsheetState
                                               .pickFiles(type: FileType.video);
 
                                           if (pickedFile != null) {
-                                            addedVideoFile = File(
-                                                pickedFile.files.first.name);
+                                            addedVideoFile =
+                                                pickedFile.files.first;
                                             setState(() {});
                                           }
                                         } else {

@@ -125,7 +125,7 @@
     "topics" : "Topics",
     "addLesson" : "Add lesson",
     "lessons" : "Lessons",
-    "selectSubject" : "Select subject",
+    "fetchingSubjects" : "Fetching subjects",
     "youtubeLink" : "Youtube link",
     "fileUpload" : "File upload",
     "videoUpload" : "Video upload",
@@ -140,8 +140,13 @@
     "pleaseSelectThumbnailImage" : "Please select thumbnail image",
     "pleaseEnterYoutubeLink" : "Please enter youtube link",
     "pleaseSelectVideo" : "Please select video",
-    "permissionToPickFile" : "Please give permission to pick file"
+    "permissionToPickFile" : "Please give permission to pick file",
+    "pleaseEnterLessonName" : "Please enter lesson name",
+    "pleaseEnterLessonDescription" : "Please enter lesson description",
+    "pleaseSelectSubject" : "Please select subject",
+    "lessonAdded" : "Lesson added successfully"
     
+
 
 
 }

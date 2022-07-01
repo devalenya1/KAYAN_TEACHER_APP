@@ -1,12 +1,13 @@
-import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 
 class PickedStudyMaterial {
   final String fileName;
   final int
       pickedStudyMaterialTypeId; // 1 = file_upload , 2 = youtube_link , 3 = video_upload
   final String? youTubeLink;
-  final File? videoThumbnailFile;
-  final File? studyMaterialFile;
+  final PlatformFile? videoThumbnailFile;
+  final PlatformFile? studyMaterialFile;
 
   PickedStudyMaterial(
       {required this.fileName,
@@ -15,16 +16,17 @@ class PickedStudyMaterial {
       this.videoThumbnailFile,
       this.youTubeLink});
 
-  Map<String, dynamic> toJson() {
+  Future<Map<String, dynamic>> toJson() async {
     Map<String, dynamic> json = {};
     json['type'] = pickedStudyMaterialTypeId;
     json['name'] = fileName;
 
     if (pickedStudyMaterialTypeId != 2) {
-      json['file'] = studyMaterialFile;
+      json['file'] = await MultipartFile.fromFile(studyMaterialFile!.path!);
     }
     if (pickedStudyMaterialTypeId != 1) {
-      json['thumbnail'] = videoThumbnailFile;
+      json['thumbnail'] =
+          await MultipartFile.fromFile(videoThumbnailFile!.path!);
     }
     if (pickedStudyMaterialTypeId == 2) {
       json['link'] = youTubeLink;

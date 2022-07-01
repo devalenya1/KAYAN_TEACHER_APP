@@ -33,8 +33,8 @@ class Api {
   static String changePassword = "${databaseUrl}change-password";
   static String getClasses = "${databaseUrl}teacher/classes";
   static String getSubjectByClassSection = "${databaseUrl}teacher/subjects";
-  static String createLesson = "${databaseUrl}teacher/create-lesson";
-
+  static String createLesson = "${databaseUrl}teacher/create-lesson"; //
+  static String getLessons = "${databaseUrl}teacher/get-lesson";
   //Api methods
 
   static Future<Map<String, dynamic>> post({
@@ -65,7 +65,7 @@ class Api {
       }
       return Map.from(response.data);
     } on DioError catch (e) {
-      print(e.toString());
+      print(e.error);
       throw ApiException(e.error is SocketException
           ? ErrorMessageKeysAndCode.noInternetCode
           : ErrorMessageKeysAndCode.defaultErrorMessageCode);

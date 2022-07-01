@@ -1,6 +1,8 @@
+import 'package:eschool_teacher/cubits/createLessonCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
+import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/addStudyMaterialBottomSheet.dart';
@@ -8,6 +10,7 @@ import 'package:eschool_teacher/ui/widgets/addedFileContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
+import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -21,9 +24,16 @@ class AddLessonScreen extends StatefulWidget {
 
   static Route<dynamic> route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => BlocProvider(
-              create: (context) =>
-                  SubjectsOfClassSectionCubit(TeacherRepository()),
+        builder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                      SubjectsOfClassSectionCubit(TeacherRepository()),
+                ),
+                BlocProvider(
+                  create: (context) => CreateLessonCubit(LessonRepository()),
+                ),
+              ],
               child: AddLessonScreen(),
             ));
   }
@@ -37,7 +47,7 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
       context.read<MyClassesCubit>().getClassSectionName().first;
 
   late String currentSelectedSubject =
-      UiUtils.getTranslatedLabel(context, selectSubjectKey);
+      UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
 
   TextEditingController _lessonNameTextEditingController =
       TextEditingController();
@@ -59,6 +69,47 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
     setState(() {
       _addedStudyMaterials.add(pickedStudyMaterial);
     });
+  }
+
+  void showErrorMessage(String errorMessageKey) {
+    UiUtils.showErrorMessageContainer(
+        context: context,
+        errorMessage: errorMessageKey,
+        backgroundColor: Theme.of(context).colorScheme.error);
+  }
+
+  void createLesson() {
+    //
+    if (_lessonNameTextEditingController.text.trim().isEmpty) {
+      showErrorMessage(pleaseEnterLessonNameKey);
+      return;
+    }
+
+    if (_lessonNameTextEditingController.text.trim().isEmpty) {
+      showErrorMessage(pleaseEnterLessonDescriptionKey);
+      return;
+    }
+
+    final selectedSubjectId = context
+        .read<SubjectsOfClassSectionCubit>()
+        .getSubjectIdByName(currentSelectedSubject);
+
+    //
+    if (selectedSubjectId == -1) {
+      showErrorMessage(pleasefetchingSubjectsKey);
+      return;
+    }
+
+    context.read<CreateLessonCubit>().createLesson(
+        classSectionId: context
+            .read<MyClassesCubit>()
+            .getClassSectionDetails(
+                classSectionName: currentSelectedClassSection)
+            .id,
+        files: _addedStudyMaterials,
+        subjectId: selectedSubjectId,
+        lessonDescription: _lessonDescriptionTextEditingController.text.trim(),
+        lessonName: _lessonNameTextEditingController.text.trim());
   }
 
   Widget _buildAppbar() {
@@ -133,6 +184,7 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
                   offset: Offset(0, 2),
                   child: GestureDetector(
                     onTap: () {
+                      FocusScope.of(context).unfocus();
                       UiUtils.showBottomSheet(
                           child: AddStudyMaterialBottomsheet(
                               editFileDetails: false,
@@ -168,15 +220,52 @@ class _AddLessonScreenState extends State<AddLessonScreen> {
                     fileIndex: index))
                 .toList(),
 
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: boxConstraints.maxWidth * (0.25)),
-              child: CustomRoundedButton(
-                  height: 40,
-                  widthPercentage: boxConstraints.maxWidth * (0.35),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  buttonTitle: UiUtils.getTranslatedLabel(context, submitKey),
-                  showBorder: false),
+            BlocConsumer<CreateLessonCubit, CreateLessonState>(
+              listener: (context, state) {
+                if (state is CreateLessonSuccess) {
+                  _lessonDescriptionTextEditingController.text = "";
+                  _lessonNameTextEditingController.text = "";
+                  _addedStudyMaterials = [];
+                  setState(() {});
+                  UiUtils.showErrorMessageContainer(
+                      context: context,
+                      errorMessage:
+                          UiUtils.getTranslatedLabel(context, lessonAddedKey),
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary);
+                } else if (state is CreateLessonFailure) {
+                  UiUtils.showErrorMessageContainer(
+                      context: context,
+                      errorMessage: UiUtils.getErrorMessageFromErrorCode(
+                          context, state.errorMessage),
+                      backgroundColor: Theme.of(context).colorScheme.error);
+                }
+              },
+              builder: (context, state) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: boxConstraints.maxWidth * (0.25)),
+                  child: CustomRoundedButton(
+                      onTap: () {
+                        //
+                        if (state is CreateLessonInProgress) {
+                          return;
+                        }
+                        createLesson();
+                      },
+                      child: state is CreateLessonInProgress
+                          ? CustomCircularProgressIndicator(
+                              strokeWidth: 2,
+                              widthAndHeight: 20,
+                            )
+                          : null,
+                      height: 45,
+                      widthPercentage: boxConstraints.maxWidth * (0.45),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      buttonTitle:
+                          UiUtils.getTranslatedLabel(context, addLessonKey),
+                      showBorder: false),
+                );
+              },
             ),
           ],
         );
