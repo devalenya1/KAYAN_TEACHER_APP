@@ -88,7 +88,7 @@ class Routes {
         }
       case assignments:
         {
-          return CupertinoPageRoute(builder: (_) => AssignmentsScreen());
+          return AssignmentsScreen.route(routeSettings);
         }
       case assignment:
         {
@@ -96,7 +96,7 @@ class Routes {
         }
       case addAssignment:
         {
-          return CupertinoPageRoute(builder: (_) => AddAssignmentScreen());
+          return AddAssignmentScreen.Routes(routeSettings);
         }
 
       case studyMaterials:

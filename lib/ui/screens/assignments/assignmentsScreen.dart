@@ -1,28 +1,77 @@
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/assignmentCubit.dart';
+import 'package:eschool_teacher/cubits/myClassesCubit.dart';
+import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
+import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
+import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
+import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentContainer.dart';
+import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
-import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
+import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
+import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
+import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AssignmentsScreen extends StatefulWidget {
   AssignmentsScreen({Key? key}) : super(key: key);
+
+  static Route<dynamic> route(RouteSettings routeSettings) {
+    return CupertinoPageRoute(
+        builder: (_) => MultiBlocProvider(providers: [
+              BlocProvider<SubjectsOfClassSectionCubit>(
+                create: (context) => SubjectsOfClassSectionCubit(
+                  TeacherRepository(),
+                ),
+              ),
+              BlocProvider<AssignmentCubit>(
+                  create: (context) => AssignmentCubit(
+                        AssignmentRepository(),
+                      )),
+            ], child: AssignmentsScreen()));
+  }
 
   @override
   State<AssignmentsScreen> createState() => _AssignmentsScreenState();
 }
 
 class _AssignmentsScreenState extends State<AssignmentsScreen> {
-  List<String> _classes = ["Class"];
+  late ScrollController _scrollController = ScrollController()
+    ..addListener(_subjectAnnouncementScrollListener);
 
-  late String _selectedClass = _classes.first;
+  void _subjectAnnouncementScrollListener() {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      if (context.read<AssignmentCubit>().hasMore()) {
+        context.read<AssignmentCubit>().fetchMoreAssignment(
+              classSectionId: context
+                  .read<MyClassesCubit>()
+                  .getClassSectionDetails(classSectionName: selectClassId)
+                  .id
+                  .toString(),
+              subjectId: context
+                  .read<SubjectsOfClassSectionCubit>()
+                  .getSubjectIdByName(selectSubjectId)
+                  .toString(),
+            );
+      }
+    }
+  }
 
-  List<String> _subjects = ["Subject"];
+  late String currentSelectedClassSection =
+      context.read<MyClassesCubit>().getClassSectionName().first;
 
-  late String _selectedSubject = _subjects.first;
+  late String currentSelectedSubject =
+      UiUtils.getTranslatedLabel(context, selectSubjectKey);
 
+  late var selectClassId = "";
+  late var selectSubjectId = "";
   Widget _buildAppbar() {
     return Align(
       alignment: Alignment.topCenter,
@@ -35,31 +84,68 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return Column(
         children: [
-          CustomDropDownMenu(
-              onChanged: (value) {
-                setState(() {
-                  _selectedClass = value ?? _selectedClass;
-                });
-              },
+          MyClassesDropDownMenu(
+              currentSelectedItem: currentSelectedClassSection,
               width: boxConstraints.maxWidth,
-              menu: _classes,
-              currentSelectedItem: _selectedClass),
-          CustomDropDownMenu(
-              onChanged: (value) {
+              changeSelectedItem: (result) {
                 setState(() {
-                  _selectedSubject = value ?? _selectedSubject;
+                  currentSelectedClassSection = result;
+                  print(currentSelectedClassSection);
                 });
-              },
-              width: boxConstraints.maxWidth,
-              menu: _subjects,
-              currentSelectedItem: _selectedSubject),
+              }),
+          ClassSubjectsDropDownMenu(
+            changeSelectedItem: (result) {
+              setState(() {
+                currentSelectedSubject = result;
+                print(currentSelectedSubject);
+              });
+            },
+            currentSelectedItem: currentSelectedSubject,
+            width: boxConstraints.maxWidth,
+            SelectedClassId: currentSelectedClassSection,
+          )
         ],
       );
     });
   }
 
+  Widget _buildInformationShimmerLoadingContainer() {
+    return Container(
+      margin: EdgeInsets.only(
+        bottom: 15,
+      ),
+      height: 80,
+      child: LayoutBuilder(builder: (context, boxConstraints) {
+        return Row(
+          children: [
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              height: 60,
+              width: boxConstraints.maxWidth * (0.225),
+            )),
+            SizedBox(
+              width: boxConstraints.maxWidth * (0.05),
+            ),
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              width: boxConstraints.maxWidth * (0.475),
+            )),
+            Spacer(),
+            ShimmerLoadingContainer(
+                child: CustomShimmerContainer(
+              borderRadius: boxConstraints.maxWidth * (0.035),
+              height: boxConstraints.maxWidth * (0.07),
+              width: boxConstraints.maxWidth * (0.07),
+            )),
+          ],
+        );
+      }),
+    );
+  }
+
   Widget _buildAssignmentList() {
     return SingleChildScrollView(
+      controller: _scrollController,
       padding: EdgeInsets.only(
           left: MediaQuery.of(context).size.width * (0.075),
           right: MediaQuery.of(context).size.width * (0.075),
@@ -72,8 +158,39 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           SizedBox(
             height: 10,
           ),
-          //TODO : add assignment with given filters
-          AssignmentContainer()
+          BlocBuilder<AssignmentCubit, AssignmentState>(
+            builder: (context, state) {
+              if (state is AssignmentFetchSuccess) {
+                if ((state).assignment.isEmpty) {
+                  return Center(
+                    child: Text("Assignment No Found"),
+                  );
+                }
+
+                return SingleChildScrollView(
+                  child: Column(
+                    children: List.generate(
+                      state.assignment.length,
+                      (index) => AssignmentContainer(
+                        assignment: state.assignment[index],
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              if (state is AssignmentFetchInProgress) {
+                return Column(
+                    children: List.generate(5, (index) {
+                  return _buildInformationShimmerLoadingContainer();
+                }));
+              }
+              if (state is AssignmentFetchFailure) {
+                return ErrorContainer(errorMessageCode: state.errorMessage);
+              }
+              return Container();
+            },
+          ),
         ],
       ),
     );

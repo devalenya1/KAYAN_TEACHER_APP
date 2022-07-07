@@ -56,6 +56,7 @@ class MyClassesCubit extends Cubit<MyClassesState> {
   List<ClassSectionDetails> getAllClasses() {
     final allClass = List<ClassSectionDetails>.from(classes());
     allClass.add(primaryClass());
+
     return allClass;
   }
 

@@ -1,15 +1,24 @@
+import 'package:eschool_teacher/cubits/assignmentCubit.dart';
+import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
+import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
+import 'package:eschool_teacher/data/repositories/downloadstudymaterialRepository.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/data/models/assignment.dart';
 import 'package:eschool_teacher/ui/widgets/customCupertinoSwitch.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_teacher/ui/widgets/downloadFileButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 class AssignmentDetailsBottomsheetContainer extends StatefulWidget {
-  const AssignmentDetailsBottomsheetContainer({Key? key}) : super(key: key);
+  final Assignment assignment;
+  const AssignmentDetailsBottomsheetContainer({
+    Key? key,
+    required this.assignment,
+  }) : super(key: key);
 
   @override
   State<AssignmentDetailsBottomsheetContainer> createState() =>
@@ -60,7 +69,7 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            "Maths",
+            widget.assignment.subject.name,
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -69,6 +78,10 @@ class _AssignmentDetailsBottomsheetContainerState
   }
 
   Widget _buildAssignmentAssignedDateContainer() {
+    //yyyyy.MMMMM.dd GGG hh:mm aaa
+    final DateTime now = DateTime.parse(widget.assignment.createdAt);
+    final DateFormat formatter = DateFormat('dd MMM yyyyy, hh:mm aaa');
+    final String formatted = formatter.format(now);
     return _buildAssignmentDetailBackgroundContainer(
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +95,7 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            "Due, 16 Feb, 2020, 1:30 PM",
+            "Due, ${(formatted)}",
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -91,6 +104,9 @@ class _AssignmentDetailsBottomsheetContainerState
   }
 
   Widget _buildAssignmentDueDateContainer() {
+    final DateTime now = DateTime.parse(widget.assignment.dueDate);
+    final DateFormat formatter = DateFormat('dd MMM yyyyy, hh:mm aaa');
+    final String formatted = formatter.format(now);
     return _buildAssignmentDetailBackgroundContainer(
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +120,7 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            "Due, 16 Feb, 2020, 1:30 PM",
+            "Due, $formatted",
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -126,7 +142,9 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            "25",
+            widget.assignment.points == null && widget.assignment.points == null
+                ? "0"
+                : widget.assignment.points.toString(),
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -170,49 +188,37 @@ class _AssignmentDetailsBottomsheetContainerState
             SizedBox(
               height: 5.0,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: boxConstraints.maxWidth * (0.7),
-                  child: Text(
-                    "Test paper.pdf",
-                    style: _getAssignmentDetailsLabelValueTextStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+            ...List.generate(
+              widget.assignment.studyMaterial.length,
+              (index) => Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: boxConstraints.maxWidth * (0.7),
+                      child: Text(
+                        widget.assignment.studyMaterial[index].fileName
+                            .toString(),
+                        style: _getAssignmentDetailsLabelValueTextStyle(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Spacer(),
+                    BlocProvider<DownloadFileCubit>(
+                      create: (context) =>
+                          DownloadFileCubit(SubjectRepository()),
+                      child: DownloadFileButton(
+                          studyMaterial:
+                              widget.assignment.studyMaterial[index]),
+                    ),
+                  ],
                 ),
-                Spacer(),
-                DownloadFileButton(),
-              ],
+              ),
             ),
             SizedBox(
               height: 15.0,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: boxConstraints.maxWidth * (0.7),
-                  child: Text(
-                    "Test paper.pdf",
-                    style: _getAssignmentDetailsLabelValueTextStyle(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Spacer(),
-                Container(
-                  width: 30,
-                  height: 30,
-                  padding: EdgeInsets.all(8.0),
-                  child: SvgPicture.asset(
-                      UiUtils.getImagePath("download_icon.svg")),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      shape: BoxShape.circle),
-                ),
-              ],
             ),
           ],
         );
@@ -220,32 +226,36 @@ class _AssignmentDetailsBottomsheetContainerState
     );
   }
 
-  Widget _buildLateSubmissionToggleContainer() {
-    return _buildAssignmentDetailBackgroundContainer(
-        LayoutBuilder(builder: (context, boxConstraints) {
-      return Row(
-        children: [
-          Flexible(
-            child: SizedBox(
-              width: boxConstraints.maxWidth * (0.8),
-              child: Text(
-                UiUtils.getTranslatedLabel(context, lateSubmissionKey),
-                style: _getAssignmentDetailsLabelValueTextStyle(),
-              ),
-            ),
-          ),
-          Spacer(),
-          SizedBox(
-            width: 30,
-            child: CustomCupertinoSwitch(onChanged: (_) {}, value: true),
-          )
-        ],
-      );
-    }));
-  }
+  // Widget _buildLateSubmissionToggleContainer() {
+  //   bool isLateSubmission =
+  //       widget.assignment.extraDaysForResubmission == null ? false : true;
+  //   return _buildAssignmentDetailBackgroundContainer(
+  //       LayoutBuilder(builder: (context, boxConstraints) {
+  //     return Row(
+  //       children: [
+  //         Flexible(
+  //           child: SizedBox(
+  //             width: boxConstraints.maxWidth * (0.8),
+  //             child: Text(
+  //               UiUtils.getTranslatedLabel(context, lateSubmissionKey),
+  //               style: _getAssignmentDetailsLabelValueTextStyle(),
+  //             ),
+  //           ),
+  //         ),
+  //         Spacer(),
+  //         SizedBox(
+  //           width: 30,
+  //           child: CustomCupertinoSwitch(
+  //               onChanged: (_) {}, value: isLateSubmission),
+  //         )
+  //       ],
+  //     );
+  //   }));
+  // }
 
   //Add
   Widget _buildReSubmissionOfRejectedASsignmentToggleContainer() {
+    bool isResubmission = widget.assignment.resubmission == 0 ? false : true;
     return _buildAssignmentDetailBackgroundContainer(
         LayoutBuilder(builder: (context, boxConstraints) {
       return Row(
@@ -268,7 +278,8 @@ class _AssignmentDetailsBottomsheetContainerState
             width: boxConstraints.maxWidth * (0.1),
             child: SizedBox(
               width: 30,
-              child: CustomCupertinoSwitch(onChanged: (_) {}, value: false),
+              child: CustomCupertinoSwitch(
+                  onChanged: (_) {}, value: isResubmission),
             ),
           )
         ],
@@ -291,7 +302,9 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            "5",
+            widget.assignment.extraDaysForResubmission == 0
+                ? "-"
+                : widget.assignment.extraDaysForResubmission.toString(),
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -317,15 +330,30 @@ class _AssignmentDetailsBottomsheetContainerState
           SizedBox(
             width: MediaQuery.of(context).size.width * (0.05),
           ),
-          CustomRoundedButton(
-              maxLines: 1,
-              height: 35,
-              radius: 10,
-              textSize: 13,
-              widthPercentage: 0.35,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              buttonTitle: UiUtils.getTranslatedLabel(context, deleteKey),
-              showBorder: false),
+          BlocConsumer<DeleteAssignmentCubit, DeleteAssignmentState>(
+            listener: (context, state) {
+              if (state is DeleteAssignmentFetchSuccess) {
+                Navigator.of(context).pop();
+              }
+            },
+            builder: (context, state) {
+              return CustomRoundedButton(
+                maxLines: 1,
+                height: 35,
+                radius: 10,
+                textSize: 13,
+                widthPercentage: 0.35,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                buttonTitle: UiUtils.getTranslatedLabel(context, deleteKey),
+                showBorder: false,
+                onTap: () {
+                  context
+                      .read<DeleteAssignmentCubit>()
+                      .deleteAssignment(assignmentId: widget.assignment.id);
+                },
+              );
+            },
+          ),
         ],
       ),
     );
@@ -403,9 +431,11 @@ class _AssignmentDetailsBottomsheetContainerState
               _buildAssignmentAssignedDateContainer(),
               _buildAssignmentDueDateContainer(),
               _buildAssignmentInstructionsContainer(),
-              _buildAssignmentReferenceMaterialsContainer(),
+              if (widget.assignment.studyMaterial.isNotEmpty ||
+                  widget.assignment.studyMaterial != [])
+                _buildAssignmentReferenceMaterialsContainer(),
               _buildAssignmentPointsContainer(),
-              _buildLateSubmissionToggleContainer(),
+              // _buildLateSubmissionToggleContainer(),
               _buildReSubmissionOfRejectedASsignmentToggleContainer(),
               _buildExtraDayForRejectedAssignmentContainer(),
               _buildDeleteAndEditButtonContainer(),

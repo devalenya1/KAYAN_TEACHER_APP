@@ -1,11 +1,21 @@
+import 'package:eschool_teacher/cubits/assignmentCubit.dart';
+import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
+import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:eschool_teacher/data/models/assignment.dart';
 import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentDetailsBottomsheetContainer.dart';
 import 'package:eschool_teacher/ui/widgets/dismissibleBackgroundContainer.dart';
 import 'package:eschool_teacher/ui/widgets/dismissibleSecondaryBackgroundContainer.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
-import 'package:flutter/material.dart';
 
 class AssignmentContainer extends StatefulWidget {
-  AssignmentContainer({Key? key}) : super(key: key);
+  final Assignment assignment;
+  AssignmentContainer({
+    Key? key,
+    required this.assignment,
+  }) : super(key: key);
 
   @override
   State<AssignmentContainer> createState() => _AssignmentContainerState();
@@ -15,7 +25,11 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
   void showAssignmentBottomSheet() {
     UiUtils.showBottomSheet(
         enableDrag: true,
-        child: AssignmentDetailsBottomsheetContainer(),
+        child: BlocProvider<DeleteAssignmentCubit>(
+          create: (context) => DeleteAssignmentCubit(AssignmentRepository()),
+          child: AssignmentDetailsBottomsheetContainer(
+              assignment: widget.assignment),
+        ),
         context: context);
   }
 
@@ -61,7 +75,7 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Assignment name",
+                    widget.assignment.name.toString(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -72,7 +86,7 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  Text("Due, 16 Feb, 2020, 1:30 PM",
+                  Text(widget.assignment.dueDate,
                       style: TextStyle(
                           color: Theme.of(context)
                               .colorScheme

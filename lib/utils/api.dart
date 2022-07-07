@@ -33,6 +33,10 @@ class Api {
   static String changePassword = "${databaseUrl}change-password";
   static String getClasses = "${databaseUrl}teacher/classes";
   static String getSubjectByClassSection = "${databaseUrl}teacher/subjects";
+  static String getassignment = "${databaseUrl}teacher/get-assignment";
+  static String uploadassignment = "${baseUrl}teacher/update-assignment";
+  static String deleteassignment = "${databaseUrl}teacher/delete-assignment";
+  static String createassignment = "${databaseUrl}teacher/create-assignment";
 
   //Api methods
 
@@ -98,8 +102,10 @@ class Api {
           ? ErrorMessageKeysAndCode.noInternetCode
           : ErrorMessageKeysAndCode.defaultErrorMessageCode);
     } on ApiException catch (e) {
+      print(e.toString());
       throw ApiException(e.errorMessage);
     } catch (e) {
+      print(e.toString());
       throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
     }
   }

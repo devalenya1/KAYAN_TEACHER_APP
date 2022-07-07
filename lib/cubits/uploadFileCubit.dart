@@ -44,4 +44,31 @@ class UploadFileCubit extends Cubit<UploadFileState> {
       emit(UploadFileFailure(e.toString()));
     }
   }
+
+  //   void uploadassignment({
+  //   required int assignmentId,
+  //   required int classSelectionId,
+  //   required int subjectId,
+  //   required String name,
+  //   required String dateTime,
+  //   String? instruction,
+  //   int? points,
+  //   bool? resubmission,
+  //   int? extraDayForResubmission,
+  //   List<dynamic>? files,
+  // }) {
+  //   try {
+  //     emit(AssignmentFetchInProgress());
+  //     _assignmentRepository.uploadassignment(
+  //         assignmentId: assignmentId,
+  //         classSelectionId: classSelectionId,
+  //         subjectId: subjectId,
+  //         name: name,
+  //         dateTime: dateTime);
+  //     emit(AssignmentFetchSuccess(assignment: []));
+  //   } catch (e) {
+  //     print(e.toString());
+  //     emit(AssignmentFetchFailure(e.toString()));
+  //   }
+  // }
 }
