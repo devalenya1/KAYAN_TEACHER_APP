@@ -43,4 +43,16 @@ class LessonRepository {
       throw ApiException(e.toString());
     }
   }
+
+  Future<void> deleteLesson({required int lessonId}) async {
+    try {
+      await Api.post(
+        body: {"lesson_id": lessonId},
+        url: Api.deleteLesson,
+        useAuthToken: true,
+      );
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
 }

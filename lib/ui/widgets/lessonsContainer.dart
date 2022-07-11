@@ -1,7 +1,7 @@
+import 'package:eschool_teacher/cubits/lessonDeleteCubit.dart';
 import 'package:eschool_teacher/cubits/lessonsCubit.dart';
-import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/lesson.dart';
-import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LessonsContainer extends StatelessWidget {
   final int classSectionId;
   final int subjectId;
+
   const LessonsContainer(
       {Key? key, required this.classSectionId, required this.subjectId})
       : super(key: key);
@@ -65,59 +66,129 @@ class LessonsContainer extends StatelessWidget {
 
   Widget _buildLessonDetailsContainer(
       {required Lesson lesson, required BuildContext context}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.0),
-        onTap: () {
-          //Navigator.of(context).pushNamed(Routes.chapterDetails);
-        },
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(UiUtils.getTranslatedLabel(context, chapterNameKey),
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.0),
-                  textAlign: TextAlign.left),
-              SizedBox(
-                height: 2.5,
+    return BlocProvider<LessonDeleteCubit>(
+      create: (context) => LessonDeleteCubit(LessonRepository()),
+      child: Builder(builder: (context) {
+        return BlocConsumer<LessonDeleteCubit, LessonDeleteState>(
+          listener: ((context, state) {
+            if (state is LessonDeleteSuccess) {
+              context.read<LessonsCubit>().deleteLesson(lesson.id);
+            } else if (state is LessonDeleteFailure) {
+              UiUtils.showErrorMessageContainer(
+                  context: context,
+                  errorMessage:
+                      "${UiUtils.getTranslatedLabel(context, unableToDeleteLessonKey)} ${lesson.name}",
+                  backgroundColor: Theme.of(context).colorScheme.error);
+            }
+          }),
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(10.0),
+                onTap: () {
+                  if (state is LessonDeleteInProgress) {
+                    return;
+                  }
+                  //TODO: Go to chapter details screen
+                  //Navigator.of(context).pushNamed(Routes.chapterDetails);
+                },
+                child: Opacity(
+                  opacity: state is LessonDeleteInProgress ? 0.5 : 1.0,
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                                UiUtils.getTranslatedLabel(
+                                    context, chapterNameKey),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.0),
+                                textAlign: TextAlign.left),
+                            Spacer(),
+                            GestureDetector(
+                              onTap: () {
+                                if (state is LessonDeleteInProgress) {
+                                  return;
+                                }
+                              },
+                              child: Icon(
+                                Icons.edit,
+                                size: 20,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (state is LessonDeleteInProgress) {
+                                  return;
+                                }
+                                context
+                                    .read<LessonDeleteCubit>()
+                                    .deleteLesson(lesson.id);
+                              },
+                              child: Icon(
+                                Icons.delete,
+                                size: 20,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 2.5,
+                        ),
+                        Text(lesson.name,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.0),
+                            textAlign: TextAlign.left),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                            UiUtils.getTranslatedLabel(
+                                context, chapterDescriptionKey),
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.0),
+                            textAlign: TextAlign.left),
+                        SizedBox(
+                          height: 2.5,
+                        ),
+                        Text(lesson.description,
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14.0),
+                            textAlign: TextAlign.left),
+                      ],
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.background,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    width: MediaQuery.of(context).size.width * (0.85),
+                  ),
+                ),
               ),
-              Text(lesson.name,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0),
-                  textAlign: TextAlign.left),
-              SizedBox(
-                height: 15,
-              ),
-              Text(UiUtils.getTranslatedLabel(context, chapterDescriptionKey),
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onBackground,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12.0),
-                  textAlign: TextAlign.left),
-              SizedBox(
-                height: 2.5,
-              ),
-              Text(lesson.description,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0),
-                  textAlign: TextAlign.left),
-            ],
-          ),
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.circular(10.0)),
-          width: MediaQuery.of(context).size.width * (0.85),
-        ),
-      ),
+            );
+          },
+        );
+      }),
     );
   }
 

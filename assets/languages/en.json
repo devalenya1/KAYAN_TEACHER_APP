@@ -144,7 +144,8 @@
     "pleaseEnterLessonName" : "Please enter lesson name",
     "pleaseEnterLessonDescription" : "Please enter lesson description",
     "pleaseSelectSubject" : "Please select subject",
-    "lessonAdded" : "Lesson added successfully"
+    "lessonAdded" : "Lesson added successfully",
+    "unableToDeleteLesson" :"Unable to delete lesson"
     
 
 

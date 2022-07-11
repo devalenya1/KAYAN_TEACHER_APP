@@ -171,3 +171,4 @@ const String pleaseEnterLessonNameKey = "pleaseEnterLessonName";
 const String pleaseEnterLessonDescriptionKey = "pleaseEnterLessonDescription";
 const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
 const String lessonAddedKey = "lessonAdded";
+const String unableToDeleteLessonKey = "unableToDeleteLesson";

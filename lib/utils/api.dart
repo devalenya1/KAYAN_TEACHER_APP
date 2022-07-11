@@ -25,7 +25,7 @@ class Api {
   }
 
   //
-  //Student app apis
+  //Teacher app apis
   //
   static String login = "${databaseUrl}teacher/login";
   static String forgotPassword = "${databaseUrl}forgot-password";
@@ -33,8 +33,9 @@ class Api {
   static String changePassword = "${databaseUrl}change-password";
   static String getClasses = "${databaseUrl}teacher/classes";
   static String getSubjectByClassSection = "${databaseUrl}teacher/subjects";
-  static String createLesson = "${databaseUrl}teacher/create-lesson"; //
+  static String createLesson = "${databaseUrl}teacher/create-lesson";
   static String getLessons = "${databaseUrl}teacher/get-lesson";
+  static String deleteLesson = "${databaseUrl}teacher/delete-lesson";
   //Api methods
 
   static Future<Map<String, dynamic>> post({
