@@ -1,5 +1,5 @@
 import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
-import 'package:eschool_teacher/ui/screens/addLessonScreen.dart';
+import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
 import 'package:eschool_teacher/ui/screens/announcement/announcementsScreen.dart';
 
@@ -57,7 +57,7 @@ class Routes {
 
   static const String lessons = "/lessons";
 
-  static const String addLesson = "/addLesson";
+  static const String addOrEditLesson = "/addOrEditLesson";
 
   static const String monthWiseAttendance = "/monthWiseAttendance";
 
@@ -145,9 +145,9 @@ class Routes {
         {
           return LessonsScreen.route(routeSettings);
         }
-      case addLesson:
+      case addOrEditLesson:
         {
-          return AddLessonScreen.route(routeSettings);
+          return AddOrEditLessonScreen.route(routeSettings);
         }
       default:
         {

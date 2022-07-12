@@ -2,7 +2,7 @@ import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
 class DefaultDropDownLabelContainer extends StatelessWidget {
-  final double height;
+  final double? height;
   final double width;
   final double? radius;
   final String titleLabelKey;
@@ -10,7 +10,7 @@ class DefaultDropDownLabelContainer extends StatelessWidget {
   const DefaultDropDownLabelContainer(
       {Key? key,
       required this.titleLabelKey,
-      required this.height,
+      this.height,
       required this.width,
       this.radius,
       this.margin})
@@ -37,7 +37,7 @@ class DefaultDropDownLabelContainer extends StatelessWidget {
               color:
                   Theme.of(context).colorScheme.onBackground.withOpacity(0.5))),
       width: width,
-      height: 40,
+      height: height ?? 40,
     );
   }
 }

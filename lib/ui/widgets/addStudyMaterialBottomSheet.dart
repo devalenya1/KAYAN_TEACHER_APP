@@ -183,7 +183,10 @@ class _AddStudyMaterialBottomsheetState
                       Navigator.of(context).pop();
                     },
                     title: UiUtils.getTranslatedLabel(
-                        context, addStudyMaterialKey)),
+                        context,
+                        widget.editFileDetails
+                            ? editStudyMaterialKey
+                            : addStudyMaterialKey)),
 
                 //
                 Padding(

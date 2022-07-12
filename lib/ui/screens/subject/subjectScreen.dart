@@ -55,8 +55,10 @@ class _SubjectScreenState extends State<SubjectScreen> {
   }
 
   void _onTapFloatingActionAddButton() {
-    Navigator.of(context)
-        .pushNamed(_selectedTabTitle == chaptersKey ? Routes.addLesson : "");
+    Navigator.of(context).pushNamed(
+        _selectedTabTitle == chaptersKey ? Routes.addOrEditLesson : "",
+        arguments:
+            _selectedTabTitle == chaptersKey ? {"editLesson": false} : {});
   }
 
   Widget _buildAppBar() {
@@ -140,7 +142,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                   _selectedTabTitle == chaptersKey
                       ? LessonsContainer(
                           classSectionId: widget.classSectionDetails.id,
-                          subjectId: widget.subject.id,
+                          subject: widget.subject,
                         )
                       : AnnouncementContainer()
                 ],

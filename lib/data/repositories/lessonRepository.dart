@@ -19,8 +19,11 @@ class LessonRepository {
       if (files.isNotEmpty) {
         body['file'] = files;
       }
+      print(body);
 
-      await Api.post(body: body, url: Api.createLesson, useAuthToken: true);
+      final result =
+          await Api.post(body: body, url: Api.createLesson, useAuthToken: true);
+      print(result['data']);
     } catch (e) {
       throw ApiException(e.toString());
     }
@@ -51,6 +54,32 @@ class LessonRepository {
         url: Api.deleteLesson,
         useAuthToken: true,
       );
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
+  Future<void> updateLesson(
+      {required String lessonName,
+      required int lessonId,
+      required int classSectionId,
+      required int subjectId,
+      required String lessonDescription,
+      required List<Map<String, dynamic>> files}) async {
+    try {
+      Map<String, dynamic> body = {
+        "class_section_id": classSectionId,
+        "subject_id": subjectId,
+        "name": lessonName,
+        "description": lessonDescription,
+        "lesson_id": lessonId
+      };
+      final result = await Api.post(
+        body: body,
+        url: Api.updateLesson,
+        useAuthToken: true,
+      );
+      print(result);
     } catch (e) {
       throw ApiException(e.toString());
     }

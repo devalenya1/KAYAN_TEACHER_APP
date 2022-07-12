@@ -172,3 +172,6 @@ const String pleaseEnterLessonDescriptionKey = "pleaseEnterLessonDescription";
 const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
 const String lessonAddedKey = "lessonAdded";
 const String unableToDeleteLessonKey = "unableToDeleteLesson";
+const String editLessonKey = "editLesson";
+const String editStudyMaterialKey = "editStudyMaterial";
+const String unableToOpenFileKey = "unableToOpenFile";

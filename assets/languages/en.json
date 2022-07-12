@@ -133,7 +133,7 @@
     "selectVideo" : "Select video",
     "addStudyMaterial" : "Add study material",
     "studyMaterialName" : "Study material name",
-    "filePath" : "File path",
+    "filePath" : "File",
     "thumbnailImage" : "Thumbnail image",
     "pleaseEnterStudyMaterialName" :"Please enter study material name",
     "pleaseSelectFile" : "Please select file",
@@ -145,9 +145,9 @@
     "pleaseEnterLessonDescription" : "Please enter lesson description",
     "pleaseSelectSubject" : "Please select subject",
     "lessonAdded" : "Lesson added successfully",
-    "unableToDeleteLesson" :"Unable to delete lesson"
-    
-
-
-
+    "unableToDeleteLesson" :"Unable to delete lesson",
+    "editLesson" : "Edit lesson",
+    "editStudyMaterial" : "Edit study material",
+    "unableToOpenFile" : "Unable to open file"
+   
 }

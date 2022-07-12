@@ -1,8 +1,12 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/lessonDeleteCubit.dart';
 import 'package:eschool_teacher/cubits/lessonsCubit.dart';
 import 'package:eschool_teacher/data/models/lesson.dart';
+import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
+import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
+import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -12,10 +16,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LessonsContainer extends StatelessWidget {
   final int classSectionId;
-  final int subjectId;
+  final Subject subject;
 
   const LessonsContainer(
-      {Key? key, required this.classSectionId, required this.subjectId})
+      {Key? key, required this.classSectionId, required this.subject})
       : super(key: key);
 
   Widget _buildLessonDetailsShimmerContainer(BuildContext context) {
@@ -90,6 +94,7 @@ class LessonsContainer extends StatelessWidget {
                   if (state is LessonDeleteInProgress) {
                     return;
                   }
+
                   //TODO: Go to chapter details screen
                   //Navigator.of(context).pushNamed(Routes.chapterDetails);
                 },
@@ -112,36 +117,35 @@ class LessonsContainer extends StatelessWidget {
                                     fontSize: 12.0),
                                 textAlign: TextAlign.left),
                             Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                if (state is LessonDeleteInProgress) {
-                                  return;
+                            EditButton(onTap: () {
+                              if (state is LessonDeleteInProgress) {
+                                return;
+                              }
+                              Navigator.of(context).pushNamed<bool?>(
+                                  Routes.addOrEditLesson,
+                                  arguments: {
+                                    "editLesson": true,
+                                    "lesson": lesson,
+                                    "subject": subject
+                                  }).then((value) {
+                                if (value != null && value) {
+                                  context.read<LessonsCubit>().fetchLessons(
+                                      classSectionId: classSectionId,
+                                      subjectId: subject.id);
                                 }
-                              },
-                              child: Icon(
-                                Icons.edit,
-                                size: 20,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
-                            ),
+                              });
+                            }),
                             SizedBox(
                               width: 10,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                if (state is LessonDeleteInProgress) {
-                                  return;
-                                }
-                                context
-                                    .read<LessonDeleteCubit>()
-                                    .deleteLesson(lesson.id);
-                              },
-                              child: Icon(
-                                Icons.delete,
-                                size: 20,
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                            ),
+                            DeleteButton(onTap: () {
+                              if (state is LessonDeleteInProgress) {
+                                return;
+                              }
+                              context
+                                  .read<LessonDeleteCubit>()
+                                  .deleteLesson(lesson.id);
+                            })
                           ],
                         ),
                         SizedBox(
@@ -210,7 +214,7 @@ class LessonsContainer extends StatelessWidget {
               errorMessageCode: state.errorMessage,
               onTapRetry: () {
                 context.read<LessonsCubit>().fetchLessons(
-                    classSectionId: classSectionId, subjectId: subjectId);
+                    classSectionId: classSectionId, subjectId: subject.id);
               },
             ),
           );

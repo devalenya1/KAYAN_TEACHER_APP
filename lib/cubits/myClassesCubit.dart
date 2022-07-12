@@ -76,4 +76,10 @@ class MyClassesCubit extends Cubit<MyClassesState> {
             element.sectionDetails.name == classAndSection.last.trim())
         .first;
   }
+
+  ClassSectionDetails getClassSectionDetailsById(int classSectionId) {
+    return getAllClasses()
+        .where((element) => element.id == classSectionId)
+        .first;
+  }
 }
