@@ -150,6 +150,7 @@ const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";
 const String emailProfileKey = "email";
 const String retryKey = "retry";
 const String fetchingSubjectsKey = "fetchingSubjects";
+const String fetchingLessonsKey = "fetchingLessons";
 
 const String youtubeLinkKey = "youtubeLink";
 const String fileUploadKey = "fileUpload";

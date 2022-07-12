@@ -36,6 +36,10 @@ class LessonsCubit extends Cubit<LessonsState> {
     }
   }
 
+  void updateState(LessonsState updatedState) {
+    emit(updatedState);
+  }
+
   void deleteLesson(int lessonId) {
     if (state is LessonsFetchSuccess) {
       List<Lesson> lessons = (state as LessonsFetchSuccess).lessons;

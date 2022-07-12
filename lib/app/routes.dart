@@ -1,5 +1,6 @@
 import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
+import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
 import 'package:eschool_teacher/ui/screens/announcement/announcementsScreen.dart';
 
@@ -16,6 +17,7 @@ import 'package:eschool_teacher/ui/screens/splashScreen.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.dart';
 import 'package:eschool_teacher/ui/screens/studyMaterials/studyMaterialsScreen.dart';
 import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
+import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
 import 'package:eschool_teacher/ui/screens/uploadVideos/uploadVideosScreen.dart';
 import 'package:eschool_teacher/ui/screens/takeAttendance/takeAttendanceScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +57,8 @@ class Routes {
   static const String lessons = "/lessons";
 
   static const String addOrEditLesson = "/addOrEditLesson";
+
+  static const String addOrEditTopic = "/addOrEditTopic";
 
   static const String monthWiseAttendance = "/monthWiseAttendance";
 
@@ -139,9 +143,17 @@ class Routes {
         {
           return LessonsScreen.route(routeSettings);
         }
+      case topics:
+        {
+          return TopicsScreen.route(routeSettings);
+        }
       case addOrEditLesson:
         {
           return AddOrEditLessonScreen.route(routeSettings);
+        }
+      case addOrEditTopic:
+        {
+          return AddOrEditTopicScreen.route(routeSettings);
         }
       default:
         {

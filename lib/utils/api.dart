@@ -37,6 +37,9 @@ class Api {
   static String getLessons = "${databaseUrl}teacher/get-lesson";
   static String deleteLesson = "${databaseUrl}teacher/delete-lesson";
   static String updateLesson = "${databaseUrl}teacher/update-lesson";
+
+  static String getTopics = "${databaseUrl}teacher/get-topic";
+
   //Api methods
 
   static Future<Map<String, dynamic>> post({

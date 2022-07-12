@@ -19,11 +19,8 @@ class LessonRepository {
       if (files.isNotEmpty) {
         body['file'] = files;
       }
-      print(body);
 
-      final result =
-          await Api.post(body: body, url: Api.createLesson, useAuthToken: true);
-      print(result['data']);
+      await Api.post(body: body, url: Api.createLesson, useAuthToken: true);
     } catch (e) {
       throw ApiException(e.toString());
     }
@@ -74,12 +71,11 @@ class LessonRepository {
         "description": lessonDescription,
         "lesson_id": lessonId
       };
-      final result = await Api.post(
+      await Api.post(
         body: body,
         url: Api.updateLesson,
         useAuthToken: true,
       );
-      print(result);
     } catch (e) {
       throw ApiException(e.toString());
     }

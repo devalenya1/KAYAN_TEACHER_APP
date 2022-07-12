@@ -148,6 +148,7 @@
     "unableToDeleteLesson" :"Unable to delete lesson",
     "editLesson" : "Edit lesson",
     "editStudyMaterial" : "Edit study material",
-    "unableToOpenFile" : "Unable to open file"
+    "unableToOpenFile" : "Unable to open file",
+    "fetchingLessons" : "Fetching lessons"
    
 }
