@@ -4,6 +4,7 @@ import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/models/lesson.dart';
 import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
+import 'package:eschool_teacher/data/models/studyMaterial.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
@@ -82,6 +83,9 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
 
   List<PickedStudyMaterial> _addedStudyMaterials = [];
 
+  late List<StudyMaterial> studyMaterials =
+      widget.editLesson ? widget.lesson!.studyMaterials : [];
+
   @override
   void initState() {
     if (!widget.editLesson) {
@@ -92,6 +96,16 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
     }
 
     super.initState();
+  }
+
+  void deleteStudyMaterial(int studyMaterialId) {
+    studyMaterials.removeWhere((element) => element.id == studyMaterialId);
+    setState(() {});
+  }
+
+  void updateStudyMaterials(StudyMaterial studyMaterial) {
+    //TODO: update the study material
+    setState(() {});
   }
 
   void _addStudyMaterial(PickedStudyMaterial pickedStudyMaterial) {
@@ -230,8 +244,9 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
             //
             widget.editLesson
                 ? Column(
-                    children: widget.lesson!.studyMaterials
+                    children: studyMaterials
                         .map((studyMaterial) => StudyMaterialContainer(
+                            onDeleteStudyMaterial: deleteStudyMaterial,
                             showEditAndDeleteButton: true,
                             studyMaterial: studyMaterial))
                         .toList(),

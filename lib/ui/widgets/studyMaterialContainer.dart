@@ -1,186 +1,200 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eschool_teacher/cubits/deleteStudyMaterialCubit.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
+import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
+import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
+import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/ui/widgets/editStudyMaterialBottomSheet.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StudyMaterialContainer extends StatelessWidget {
   final bool showEditAndDeleteButton;
   final StudyMaterial studyMaterial;
+  final Function(int)? onDeleteStudyMaterial;
+  final Function(StudyMaterial)? onEditStudyMaterial;
 
   const StudyMaterialContainer(
       {Key? key,
+      this.onDeleteStudyMaterial,
+      this.onEditStudyMaterial,
       required this.studyMaterial,
       required this.showEditAndDeleteButton})
       : super(key: key);
-
-  //
-  Widget _buildAddedVideoActionButton(
-      {required String title,
-      required double rightMargin,
-      required double width,
-      required Function onTap,
-      required Color backgroundColor,
-      required BuildContext context}) {
-    return InkWell(
-      onTap: () {
-        onTap();
-      },
-      borderRadius: BorderRadius.circular(5.0),
-      child: Container(
-        margin: EdgeInsets.only(right: rightMargin),
-        alignment: Alignment.center,
-        width: width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0), color: backgroundColor),
-        padding: EdgeInsets.symmetric(vertical: 5.0),
-        child: Text(
-          UiUtils.getTranslatedLabel(context, title),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontSize: 13.5, color: Theme.of(context).scaffoldBackgroundColor),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     final titleTextStyle = TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontWeight: FontWeight.w500,
+        height: 1.25,
         fontSize: 13.5);
 
     final subTitleTextStyle =
         TextStyle(color: assignmentViewButtonColor, fontSize: 13);
 
-    return Container(
-      margin: EdgeInsets.only(bottom: 25),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Show youtubelink or added file path
-            Text(studyMaterial.fileName,
-                overflow: TextOverflow.ellipsis,
-                style: titleTextStyle,
-                textAlign: TextAlign.left),
-
-            studyMaterial.studyMaterialType != StudyMaterialType.youtubeVideo
-                ? Column(
+    return BlocProvider(
+      create: (context) => DeleteStudyMaterialCubit(LessonRepository()),
+      child: Builder(builder: (context) {
+        return BlocConsumer<DeleteStudyMaterialCubit, DeleteStudyMaterialState>(
+          listener: (context, state) {
+            //
+            if (state is DeleteStudyMaterialSuccess) {
+              onDeleteStudyMaterial?.call(studyMaterial.id);
+            } else if (state is DeleteStudyMaterialFailure) {
+              UiUtils.showErrorMessageContainer(
+                  context: context,
+                  errorMessage: "Unable to delete file",
+                  backgroundColor: Theme.of(context).colorScheme.error);
+            }
+          },
+          builder: (context, state) {
+            return Opacity(
+              opacity: state is DeleteStudyMaterialInProgress ? 0.5 : 1.0,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 25),
+                child: LayoutBuilder(builder: (context, boxConstraints) {
+                  return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Divider(),
-                      Text(UiUtils.getTranslatedLabel(context, filePathKey),
-                          overflow: TextOverflow.ellipsis,
-                          style: titleTextStyle,
-                          textAlign: TextAlign.left),
-                      GestureDetector(
-                        onTap: () {
-                          UiUtils.openFileInBrowser(
-                              studyMaterial.fileUrl, context);
-                        },
-                        child: Text(
-                          "${studyMaterial.fileName}.${studyMaterial.fileExtension}",
-                          style: subTitleTextStyle,
-                        ),
-                      ),
-                    ],
-                  )
-                : SizedBox(),
+                      //Show youtubelink or added file path
+                      showEditAndDeleteButton
+                          ? Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: boxConstraints.maxWidth * (0.75),
+                                  child: Text(
+                                    studyMaterial.fileName,
+                                    style: titleTextStyle,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Spacer(),
+                                EditButton(onTap: () {
+                                  if (state is DeleteStudyMaterialInProgress) {
+                                    return;
+                                  }
+                                  //TODO: pass on edit study material
+                                  UiUtils.showBottomSheet(
+                                      child: EditStudyMaterialBottomSheet(
+                                          studyMaterial: studyMaterial),
+                                      context: context);
+                                }),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                DeleteButton(onTap: () {
+                                  if (state is DeleteStudyMaterialInProgress) {
+                                    return;
+                                  }
+                                  context
+                                      .read<DeleteStudyMaterialCubit>()
+                                      .deleteStudyMaterial(
+                                          fileId: studyMaterial.id);
+                                })
+                              ],
+                            )
+                          : Text(
+                              studyMaterial.fileName,
+                              style: titleTextStyle,
+                              textAlign: TextAlign.left,
+                            ),
 
-            studyMaterial.studyMaterialType == StudyMaterialType.youtubeVideo
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Divider(),
-                      Text(UiUtils.getTranslatedLabel(context, youtubeLinkKey),
-                          overflow: TextOverflow.ellipsis,
-                          style: titleTextStyle,
-                          textAlign: TextAlign.left),
-                      GestureDetector(
-                        onTap: () {
-                          UiUtils.openFileInBrowser(
-                              studyMaterial.fileUrl, context);
-                        },
-                        child: Text(
-                          studyMaterial.fileUrl,
-                          style: subTitleTextStyle,
-                        ),
-                      ),
-                    ],
-                  )
-                : SizedBox(),
+                      studyMaterial.studyMaterialType !=
+                              StudyMaterialType.youtubeVideo
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Divider(),
+                                Text(
+                                    UiUtils.getTranslatedLabel(
+                                        context, filePathKey),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: titleTextStyle,
+                                    textAlign: TextAlign.left),
+                                GestureDetector(
+                                  onTap: () {
+                                    UiUtils.openFileInBrowser(
+                                        studyMaterial.fileUrl, context);
+                                  },
+                                  child: Text(
+                                    "${studyMaterial.fileName}.${studyMaterial.fileExtension}",
+                                    style: subTitleTextStyle,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
 
-            studyMaterial.studyMaterialType != StudyMaterialType.file
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Divider(),
-                      Text(
-                          UiUtils.getTranslatedLabel(
-                              context, thumbnailImageKey),
-                          overflow: TextOverflow.ellipsis,
-                          style: titleTextStyle,
-                          textAlign: TextAlign.left),
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                    studyMaterial.fileThumbnail)),
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ],
-                  )
-                : SizedBox(),
+                      studyMaterial.studyMaterialType ==
+                              StudyMaterialType.youtubeVideo
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Divider(),
+                                Text(
+                                    UiUtils.getTranslatedLabel(
+                                        context, youtubeLinkKey),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: titleTextStyle,
+                                    textAlign: TextAlign.left),
+                                GestureDetector(
+                                  onTap: () {
+                                    UiUtils.openFileInBrowser(
+                                        studyMaterial.fileUrl, context);
+                                  },
+                                  child: Text(
+                                    studyMaterial.fileUrl,
+                                    style: subTitleTextStyle,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
 
-            SizedBox(
-              height: 20,
-            ),
-            showEditAndDeleteButton
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      _buildAddedVideoActionButton(
-                          context: context,
-                          rightMargin: 15,
-                          width: boxConstraints.maxWidth * (0.3),
-                          title: UiUtils.getTranslatedLabel(context, editKey),
-                          onTap: () {
-                            UiUtils.showBottomSheet(
-                                child: EditStudyMaterialBottomSheet(
-                                    studyMaterial: studyMaterial),
-                                context: context);
-                          },
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onPrimary),
-                      _buildAddedVideoActionButton(
-                          context: context,
-                          rightMargin: 0,
-                          width: boxConstraints.maxWidth * (0.3),
-                          title: UiUtils.getTranslatedLabel(context, deleteKey),
-                          onTap: () {
-                            //
-                          },
-                          backgroundColor: Theme.of(context).colorScheme.error),
+                      studyMaterial.studyMaterialType != StudyMaterialType.file
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Divider(),
+                                Text(
+                                    UiUtils.getTranslatedLabel(
+                                        context, thumbnailImageKey),
+                                    overflow: TextOverflow.ellipsis,
+                                    style: titleTextStyle,
+                                    textAlign: TextAlign.left),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      image: DecorationImage(
+                                          image: CachedNetworkImageProvider(
+                                              studyMaterial.fileThumbnail)),
+                                      borderRadius: BorderRadius.circular(10)),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
                     ],
-                  )
-                : SizedBox()
-          ],
+                  );
+                }),
+                width: MediaQuery.of(context).size.width * (0.85),
+                padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(15)),
+              ),
+            );
+          },
         );
       }),
-      width: MediaQuery.of(context).size.width * (0.85),
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(15)),
     );
   }
 }

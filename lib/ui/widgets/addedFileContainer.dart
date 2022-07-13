@@ -1,5 +1,7 @@
 import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
 import 'package:eschool_teacher/ui/widgets/addStudyMaterialBottomSheet.dart';
+import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
+import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -16,37 +18,6 @@ class AddedFileContainer extends StatelessWidget {
       required this.onDelete,
       required this.onEdit})
       : super(key: key);
-
-  //
-  Widget _buildAddedVideoActionButton(
-      {required String title,
-      required double rightMargin,
-      required double width,
-      required Function onTap,
-      required Color backgroundColor,
-      required BuildContext context}) {
-    return InkWell(
-      onTap: () {
-        onTap();
-      },
-      borderRadius: BorderRadius.circular(5.0),
-      child: Container(
-        margin: EdgeInsets.only(right: rightMargin),
-        alignment: Alignment.center,
-        width: width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0), color: backgroundColor),
-        padding: EdgeInsets.symmetric(vertical: 5.0),
-        child: Text(
-          UiUtils.getTranslatedLabel(context, title),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              fontSize: 13.5, color: Theme.of(context).scaffoldBackgroundColor),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +37,36 @@ class AddedFileContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Show youtubelink or added file path
-            Text(file.fileName,
-                overflow: TextOverflow.ellipsis,
-                style: titleTextStyle,
-                textAlign: TextAlign.left),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: boxConstraints.maxWidth * (0.75),
+                  child: Text(
+                    file.fileName,
+                    style: titleTextStyle,
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Spacer(),
+                EditButton(onTap: () {
+                  UiUtils.showBottomSheet(
+                      child: AddStudyMaterialBottomsheet(
+                          editFileDetails: true,
+                          pickedStudyMaterial: file,
+                          onTapSubmit: (updatedFile) {
+                            onEdit(fileIndex, updatedFile);
+                          }),
+                      context: context);
+                }),
+                SizedBox(
+                  width: 10,
+                ),
+                DeleteButton(onTap: () {
+                  onDelete(fileIndex);
+                })
+              ],
+            ),
 
             file.pickedStudyMaterialTypeId != 2
                 ? Column(
@@ -123,39 +120,6 @@ class AddedFileContainer extends StatelessWidget {
                     ],
                   )
                 : SizedBox(),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _buildAddedVideoActionButton(
-                    context: context,
-                    rightMargin: 15,
-                    width: boxConstraints.maxWidth * (0.3),
-                    title: UiUtils.getTranslatedLabel(context, editKey),
-                    onTap: () {
-                      UiUtils.showBottomSheet(
-                          child: AddStudyMaterialBottomsheet(
-                              editFileDetails: true,
-                              pickedStudyMaterial: file,
-                              onTapSubmit: (updatedFile) {
-                                onEdit(fileIndex, updatedFile);
-                              }),
-                          context: context);
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary),
-                _buildAddedVideoActionButton(
-                    context: context,
-                    rightMargin: 0,
-                    width: boxConstraints.maxWidth * (0.3),
-                    title: UiUtils.getTranslatedLabel(context, deleteKey),
-                    onTap: () {
-                      onDelete(fileIndex);
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.error),
-              ],
-            )
           ],
         );
       }),
