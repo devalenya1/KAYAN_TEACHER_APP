@@ -153,6 +153,10 @@
     "attachments" : "Attachment(s)",
     "unableToDeleteTopic" : "Unable to delete topic",
     "topicName" : "Topic name",
-    "topicDescription" : "Topic Description"
+    "topicDescription" : "Topic Description",
+    "noLessons" : "No lessons",
+    "addTopic" : "Add topic",
+    "editTopic" : "Edit topic"
+
    
 }

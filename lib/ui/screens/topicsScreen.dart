@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/lessonsCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
@@ -18,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+//TODO: Check no lessons and also change the fetch topic initial
 class TopicsScreen extends StatefulWidget {
   TopicsScreen({
     Key? key,
@@ -100,7 +102,8 @@ class _TopicsScreenState extends State<TopicsScreen> {
             return state is LessonsFetchSuccess
                 ? state.lessons.isEmpty
                     ? DefaultDropDownLabelContainer(
-                        titleLabelKey: "No lessons",
+                        titleLabelKey:
+                            UiUtils.getTranslatedLabel(context, noLessonsKey),
                         width: boxConstraints.maxWidth)
                     : CustomDropDownMenu(
                         width: boxConstraints.maxWidth,
@@ -141,7 +144,10 @@ class _TopicsScreenState extends State<TopicsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {}),
+      floatingActionButton: FloatingActionAddButton(onTap: () {
+        Navigator.of(context)
+            .pushNamed(Routes.addOrEditTopic, arguments: {"editTopic": false});
+      }),
       body: Stack(
         children: [
           Align(

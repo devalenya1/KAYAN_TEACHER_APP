@@ -182,3 +182,6 @@ const String editLessonKey = "editLesson";
 const String editStudyMaterialKey = "editStudyMaterial";
 const String unableToOpenFileKey = "unableToOpenFile";
 const String attachmentsKey = "attachments";
+const String noLessonsKey = "noLessons";
+const String addTopicKey = "addTopic";
+const String editTopicKey = "editTopic";
