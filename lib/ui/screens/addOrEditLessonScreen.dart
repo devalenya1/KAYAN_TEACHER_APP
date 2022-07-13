@@ -232,6 +232,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                 ? Column(
                     children: widget.lesson!.studyMaterials
                         .map((studyMaterial) => StudyMaterialContainer(
+                            showEditAndDeleteButton: true,
                             studyMaterial: studyMaterial))
                         .toList(),
                   )

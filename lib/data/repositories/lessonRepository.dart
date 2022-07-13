@@ -71,11 +71,26 @@ class LessonRepository {
         "description": lessonDescription,
         "lesson_id": lessonId
       };
+
+      if (files.isNotEmpty) {
+        body['file'] = files;
+      }
+
       await Api.post(
         body: body,
         url: Api.updateLesson,
         useAuthToken: true,
       );
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
+  Future<void> deleteStudyMaterial({required int fileId}) async {
+    try {
+      await Api.post(body: {
+        "file_id": fileId,
+      }, url: Api.deleteStudyMaterial, useAuthToken: true);
     } catch (e) {
       throw ApiException(e.toString());
     }

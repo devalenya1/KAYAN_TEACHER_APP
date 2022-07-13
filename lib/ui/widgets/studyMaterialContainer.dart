@@ -7,9 +7,13 @@ import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
 class StudyMaterialContainer extends StatelessWidget {
+  final bool showEditAndDeleteButton;
   final StudyMaterial studyMaterial;
 
-  const StudyMaterialContainer({Key? key, required this.studyMaterial})
+  const StudyMaterialContainer(
+      {Key? key,
+      required this.studyMaterial,
+      required this.showEditAndDeleteButton})
       : super(key: key);
 
   //
@@ -140,32 +144,35 @@ class StudyMaterialContainer extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                _buildAddedVideoActionButton(
-                    context: context,
-                    rightMargin: 15,
-                    width: boxConstraints.maxWidth * (0.3),
-                    title: UiUtils.getTranslatedLabel(context, editKey),
-                    onTap: () {
-                      UiUtils.showBottomSheet(
-                          child: EditStudyMaterialBottomSheet(
-                              studyMaterial: studyMaterial),
-                          context: context);
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary),
-                _buildAddedVideoActionButton(
-                    context: context,
-                    rightMargin: 0,
-                    width: boxConstraints.maxWidth * (0.3),
-                    title: UiUtils.getTranslatedLabel(context, deleteKey),
-                    onTap: () {
-                      //
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.error),
-              ],
-            )
+            showEditAndDeleteButton
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _buildAddedVideoActionButton(
+                          context: context,
+                          rightMargin: 15,
+                          width: boxConstraints.maxWidth * (0.3),
+                          title: UiUtils.getTranslatedLabel(context, editKey),
+                          onTap: () {
+                            UiUtils.showBottomSheet(
+                                child: EditStudyMaterialBottomSheet(
+                                    studyMaterial: studyMaterial),
+                                context: context);
+                          },
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onPrimary),
+                      _buildAddedVideoActionButton(
+                          context: context,
+                          rightMargin: 0,
+                          width: boxConstraints.maxWidth * (0.3),
+                          title: UiUtils.getTranslatedLabel(context, deleteKey),
+                          onTap: () {
+                            //
+                          },
+                          backgroundColor: Theme.of(context).colorScheme.error),
+                    ],
+                  )
+                : SizedBox()
           ],
         );
       }),

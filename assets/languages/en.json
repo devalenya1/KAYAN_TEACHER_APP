@@ -149,6 +149,7 @@
     "editLesson" : "Edit lesson",
     "editStudyMaterial" : "Edit study material",
     "unableToOpenFile" : "Unable to open file",
-    "fetchingLessons" : "Fetching lessons"
+    "fetchingLessons" : "Fetching lessons",
+    "attachments" : "Attachment(s)"
    
 }
