@@ -24,13 +24,23 @@ class AssignmentContainer extends StatefulWidget {
 class _AssignmentContainerState extends State<AssignmentContainer> {
   void showAssignmentBottomSheet() {
     UiUtils.showBottomSheet(
-        enableDrag: true,
-        child: BlocProvider<DeleteAssignmentCubit>(
-          create: (context) => DeleteAssignmentCubit(AssignmentRepository()),
-          child: AssignmentDetailsBottomsheetContainer(
-              assignment: widget.assignment),
-        ),
-        context: context);
+            enableDrag: true,
+            child: BlocProvider<DeleteAssignmentCubit>(
+              create: (context) =>
+                  DeleteAssignmentCubit(AssignmentRepository()),
+              child: AssignmentDetailsBottomsheetContainer(
+                  assignment: widget.assignment),
+            ),
+            context: context)
+        .then((value) {
+      if (value != null) {
+        context
+            .read<AssignmentCubit>()
+            .deleteAssignment(assignmentId: value["assignmentId"]);
+      } else {
+        print("value is null");
+      }
+    });
   }
 
   @override

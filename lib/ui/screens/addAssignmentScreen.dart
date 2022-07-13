@@ -116,6 +116,43 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     }
   }
 
+  Widget _buildUploadedFileContainer(int fileIndex) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10.0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Theme.of(context).colorScheme.background),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10.0),
+      child: LayoutBuilder(builder: (context, boxConstraints) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: boxConstraints.maxWidth * (0.75),
+              child: Text(uploadedFiles[fileIndex].name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                  )),
+            ),
+            Spacer(),
+            IconButton(
+                onPressed: () {
+                  if (context.read<CreateAssignmentCubit>().state
+                      is createAssignmentInProcess) {
+                    return;
+                  }
+                  uploadedFiles.removeAt(fileIndex);
+                  setState(() {});
+                },
+                icon: Icon(Icons.close)),
+          ],
+        );
+      }),
+    );
+  }
+
   void openDatePicker() async {
     dueDate = await showDatePicker(
         builder: (context, child) {
@@ -326,28 +363,27 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           //
           _buildAssignmentClassDropdownButtons(),
           BottomSheetTextFieldContainer(
-              margin:
-                  EdgeInsetsDirectional.only(bottom: _textFieldBottomPadding),
-              hintText: UiUtils.getTranslatedLabel(context, assignmentNameKey),
-              maxLines: 1,
-              textEditingController: _assignmentNameTextEditingController),
+            margin: EdgeInsetsDirectional.only(bottom: _textFieldBottomPadding),
+            hintText: UiUtils.getTranslatedLabel(context, assignmentNameKey),
+            maxLines: 1,
+            textEditingController: _assignmentNameTextEditingController,
+          ),
 
           BottomSheetTextFieldContainer(
-              margin:
-                  EdgeInsetsDirectional.only(bottom: _textFieldBottomPadding),
-              hintText: UiUtils.getTranslatedLabel(context, instructionsKey),
-              maxLines: 3,
-              textEditingController:
-                  _assignmentInstructionTextEditingController),
+            margin: EdgeInsetsDirectional.only(bottom: _textFieldBottomPadding),
+            hintText: UiUtils.getTranslatedLabel(context, instructionsKey),
+            maxLines: 3,
+            textEditingController: _assignmentInstructionTextEditingController,
+          ),
 
           _buildAddDueDateAndTimeContainer(),
 
           BottomSheetTextFieldContainer(
-              margin:
-                  EdgeInsetsDirectional.only(bottom: _textFieldBottomPadding),
-              hintText: UiUtils.getTranslatedLabel(context, pointsKey),
-              maxLines: 1,
-              textEditingController: _assignmentPointsTextEditingController),
+            margin: EdgeInsetsDirectional.only(bottom: _textFieldBottomPadding),
+            hintText: UiUtils.getTranslatedLabel(context, pointsKey),
+            maxLines: 1,
+            textEditingController: _assignmentPointsTextEditingController,
+          ),
 
           //_buildLateSubmissionToggleContainer(),
 
@@ -374,6 +410,9 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                 title:
                     UiUtils.getTranslatedLabel(context, referenceMaterialsKey)),
           ),
+          ...List.generate(uploadedFiles.length, (index) => index)
+              .map((fileIndex) => _buildUploadedFileContainer(fileIndex))
+              .toList(),
 
           BlocListener<CreateAssignmentCubit, createAssignmentState>(
             listener: (context, state) {
@@ -390,23 +429,31 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                     UiUtils.getTranslatedLabel(context, createAssignmentKey),
                 showBorder: false,
                 onTap: () {
-                  print(
-                    "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
-                  );
-                  context.read<CreateAssignmentCubit>().createAssignment(
-                        classsId: classSectionId,
-                        subjectId: subjectSectionId,
-                        name: _assignmentNameTextEditingController.text,
-                        datetime:
-                            "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
-                        extraDayForResubmission:
-                            _extraResubmissionDaysTextEditingController.text,
-                        instruction:
-                            _assignmentInstructionTextEditingController.text,
-                        points: _assignmentPointsTextEditingController.text,
-                        resubmission: _allowedLateSubmission ? 1 : 0,
-                        file: uploadedFiles.map((e) => e.path!).toList(),
-                      );
+                  print(_assignmentPointsTextEditingController.text);
+                  if (_assignmentPointsTextEditingController.text != "0" ||
+                      _assignmentPointsTextEditingController.text
+                          .toString()
+                          .isNotEmpty) {
+                    context.read<CreateAssignmentCubit>().createAssignment(
+                          classsId: classSectionId,
+                          subjectId: subjectSectionId,
+                          name: _assignmentNameTextEditingController.text,
+                          datetime:
+                              "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
+                          extraDayForResubmission:
+                              _extraResubmissionDaysTextEditingController.text,
+                          instruction:
+                              _assignmentInstructionTextEditingController.text,
+                          points: _assignmentPointsTextEditingController.text,
+                          resubmission: _allowedLateSubmission ? 1 : 0,
+                          file: uploadedFiles.map((e) => e.path!).toList(),
+                        );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          ("Please enter a value greater than or equal to 1.")),
+                    ));
+                  }
                 }),
           ),
           SizedBox(

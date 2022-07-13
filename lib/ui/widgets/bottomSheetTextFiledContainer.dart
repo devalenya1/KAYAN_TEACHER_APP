@@ -9,6 +9,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final double? height;
   final int? maxLines;
+
   final EdgeInsetsGeometry? margin;
 
   const BottomSheetTextFieldContainer(

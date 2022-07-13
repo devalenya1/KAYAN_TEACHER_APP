@@ -333,7 +333,7 @@ class _AssignmentDetailsBottomsheetContainerState
           BlocConsumer<DeleteAssignmentCubit, DeleteAssignmentState>(
             listener: (context, state) {
               if (state is DeleteAssignmentFetchSuccess) {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop({"assignmentId": widget.assignment.id});
               }
             },
             builder: (context, state) {
@@ -431,7 +431,7 @@ class _AssignmentDetailsBottomsheetContainerState
               _buildAssignmentAssignedDateContainer(),
               _buildAssignmentDueDateContainer(),
               _buildAssignmentInstructionsContainer(),
-              if (widget.assignment.studyMaterial.isNotEmpty ||
+              if (widget.assignment.studyMaterial.isNotEmpty &&
                   widget.assignment.studyMaterial != [])
                 _buildAssignmentReferenceMaterialsContainer(),
               _buildAssignmentPointsContainer(),

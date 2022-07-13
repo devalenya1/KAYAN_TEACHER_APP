@@ -95,10 +95,11 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               }),
           ClassSubjectsDropDownMenu(
             changeSelectedItem: (result) {
-              setState(() {
-                currentSelectedSubject = result;
-                print(currentSelectedSubject);
-              });
+              if (currentSelectedSubject != subjectNameKey)
+                setState(() {
+                  currentSelectedSubject = result;
+                  print(currentSelectedSubject);
+                });
             },
             currentSelectedItem: currentSelectedSubject,
             width: boxConstraints.maxWidth,
@@ -160,7 +161,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           ),
           BlocBuilder<AssignmentCubit, AssignmentState>(
             builder: (context, state) {
-              if (state is AssignmentFetchSuccess) {
+              if (state is AssignmentsFetchSuccess) {
                 if ((state).assignment.isEmpty) {
                   return Center(
                     child: Text("Assignment No Found"),

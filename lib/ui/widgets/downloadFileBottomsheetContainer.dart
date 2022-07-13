@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
+import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
@@ -81,33 +82,23 @@ class _DownloadFileBottomsheetContainerState
                 if (state is DownloadFileSuccess) {
                   Navigator.of(context).pop();
                 }
+                if (state is DownloadFileFailure) {
+                  Navigator.of(context).pop();
+                }
               },
               builder: (context, state) {
                 if (state is DownloadFileInProgress) {
-                  return Stack(
-                    children: [
-                      CustomRoundedButton(
-                        height: UiUtils.bottomSheetButtonHeight,
-                        widthPercentage:
-                            UiUtils.bottomSheetButtonWidthPercentage,
-                        titleColor: Theme.of(context).scaffoldBackgroundColor,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        buttonTitle:
-                            UiUtils.getTranslatedLabel(context, downloadKey),
-                        showBorder: false,
-                        onTap: () {
-                          context.read<DownloadFileCubit>().downloadFile(
-                              studyMaterial: widget.studyMaterial!,
-                              storeInExternalStorage: true);
-                        },
-                      ),
-                      Container(
-                        width: state.uploadedPercentage,
-                        color: Colors.grey,
-                      )
-                    ],
+                  return CustomRoundedButton(
+                    height: UiUtils.bottomSheetButtonHeight,
+                    widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
+                    titleColor: Theme.of(context).scaffoldBackgroundColor,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    buttonTitle:
+                        UiUtils.getTranslatedLabel(context, downloadKey),
+                    showBorder: false,
                   );
                 }
+
                 return CustomRoundedButton(
                   height: UiUtils.bottomSheetButtonHeight,
                   widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
