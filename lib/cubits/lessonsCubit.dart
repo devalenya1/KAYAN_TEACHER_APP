@@ -47,4 +47,14 @@ class LessonsCubit extends Cubit<LessonsState> {
       emit(LessonsFetchSuccess(lessons));
     }
   }
+
+  Lesson getLessonByName(String name) {
+    return (state is LessonsFetchSuccess)
+        ? (state as LessonsFetchSuccess)
+            .lessons
+            .where((element) => element.name == name)
+            .toList()
+            .first
+        : Lesson.fromJson({});
+  }
 }

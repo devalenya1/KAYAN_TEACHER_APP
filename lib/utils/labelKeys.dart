@@ -52,6 +52,9 @@ const String announcementKey = "announcement";
 
 const String chapterNameKey = "chapterName";
 const String chapterDescriptionKey = "chapterDescription";
+
+const String topicNameKey = "topicName";
+const String topicDescriptionKey = "topicDescription";
 const String createChapterKey = "createChapter";
 const String createAnnouncementKey = "createAnnouncement";
 
@@ -173,6 +176,8 @@ const String pleaseEnterLessonDescriptionKey = "pleaseEnterLessonDescription";
 const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
 const String lessonAddedKey = "lessonAdded";
 const String unableToDeleteLessonKey = "unableToDeleteLesson";
+const String unableToDeleteTopicKey = "unableToDeleteTopic";
+
 const String editLessonKey = "editLesson";
 const String editStudyMaterialKey = "editStudyMaterial";
 const String unableToOpenFileKey = "unableToOpenFile";

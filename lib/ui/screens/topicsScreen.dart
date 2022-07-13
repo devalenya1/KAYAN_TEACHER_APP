@@ -1,13 +1,17 @@
 import 'package:eschool_teacher/cubits/lessonsCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
+import 'package:eschool_teacher/cubits/topicsCubit.dart';
 import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
+import 'package:eschool_teacher/data/repositories/topicRepository.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
+import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/defaultDropDownLabelContainer.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
+import 'package:eschool_teacher/ui/widgets/topicsContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TopicsScreen extends StatefulWidget {
-  TopicsScreen({Key? key}) : super(key: key);
+  TopicsScreen({
+    Key? key,
+  }) : super(key: key);
 
   static Route<dynamic> route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
@@ -26,6 +32,9 @@ class TopicsScreen extends StatefulWidget {
               BlocProvider(
                 create: (context) =>
                     SubjectsOfClassSectionCubit(TeacherRepository()),
+              ),
+              BlocProvider(
+                create: (context) => TopicsCubit(TopicRepository()),
               ),
             ], child: TopicsScreen()));
   }
@@ -62,6 +71,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
               width: boxConstraints.maxWidth,
               changeSelectedItem: (value) {
                 currentSelectedClassSection = value;
+                context.read<LessonsCubit>().updateState(LessonsInitial());
                 setState(() {});
               }),
           ClassSubjectsDropDownMenu(
@@ -88,22 +98,39 @@ class _TopicsScreenState extends State<TopicsScreen> {
 
           BlocConsumer<LessonsCubit, LessonsState>(builder: (context, state) {
             return state is LessonsFetchSuccess
-                ? CustomDropDownMenu(
-                    width: boxConstraints.maxWidth,
-                    onChanged: (value) {
-                      currentSelectedLesson = value!;
-                      setState(() {});
-                    },
-                    menu: state.lessons.map((e) => e.name).toList(),
-                    currentSelectedItem: currentSelectedLesson)
+                ? state.lessons.isEmpty
+                    ? DefaultDropDownLabelContainer(
+                        titleLabelKey: "No lessons",
+                        width: boxConstraints.maxWidth)
+                    : CustomDropDownMenu(
+                        width: boxConstraints.maxWidth,
+                        onChanged: (value) {
+                          currentSelectedLesson = value!;
+
+                          setState(() {});
+                          context.read<TopicsCubit>().fetchTopics(
+                              lessonId: context
+                                  .read<LessonsCubit>()
+                                  .getLessonByName(currentSelectedLesson)
+                                  .id);
+                        },
+                        menu: state.lessons.map((e) => e.name).toList(),
+                        currentSelectedItem: currentSelectedLesson)
                 : DefaultDropDownLabelContainer(
                     titleLabelKey: fetchingLessonsKey,
                     width: boxConstraints.maxWidth);
           }, listener: (context, state) {
             if (state is LessonsFetchSuccess) {
-              setState(() {
-                currentSelectedLesson = state.lessons.first.name;
-              });
+              if (state.lessons.isNotEmpty) {
+                setState(() {
+                  currentSelectedLesson = state.lessons.first.name;
+                });
+                context.read<TopicsCubit>().fetchTopics(
+                    lessonId: context
+                        .read<LessonsCubit>()
+                        .getLessonByName(currentSelectedLesson)
+                        .id);
+              }
             }
           }),
         ],
@@ -114,6 +141,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionAddButton(onTap: () {}),
       body: Stack(
         children: [
           Align(
@@ -132,6 +160,21 @@ class _TopicsScreenState extends State<TopicsScreen> {
                 children: [
                   //
                   _buildClassSubjectAndLessonDropDowns(),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * (0.0125),
+                  ),
+
+                  TopicsContainer(
+                      classSectionDetails: context
+                          .read<MyClassesCubit>()
+                          .getClassSectionDetails(
+                              classSectionName: currentSelectedClassSection),
+                      subject: context
+                          .read<SubjectsOfClassSectionCubit>()
+                          .getSubjectDetailsByName(currentSelectedSubject),
+                      lesson: context.read<LessonsCubit>().getLessonByName(
+                            currentSelectedLesson,
+                          )),
                 ],
               ),
             ),
