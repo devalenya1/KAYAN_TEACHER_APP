@@ -47,6 +47,7 @@ class StudyMaterialContainer extends StatelessWidget {
             } else if (state is DeleteStudyMaterialFailure) {
               UiUtils.showErrorMessageContainer(
                   context: context,
+                  //
                   errorMessage: "Unable to delete file",
                   backgroundColor: Theme.of(context).colorScheme.error);
             }

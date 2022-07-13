@@ -86,6 +86,11 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
   late List<StudyMaterial> studyMaterials =
       widget.editLesson ? widget.lesson!.studyMaterials : [];
 
+  //This will determine if need to refresh the previous page
+  //lessons data. If teacher remove the the any study material
+  //so we need to fetch the list again
+  late bool refreshLessonsInPreviousPage = false;
+
   @override
   void initState() {
     if (!widget.editLesson) {
@@ -100,6 +105,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
 
   void deleteStudyMaterial(int studyMaterialId) {
     studyMaterials.removeWhere((element) => element.id == studyMaterialId);
+    refreshLessonsInPreviousPage = true;
     setState(() {});
   }
 
@@ -179,6 +185,9 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
+          onPressBackButton: () {
+            Navigator.of(context).pop(refreshLessonsInPreviousPage);
+          },
           title: UiUtils.getTranslatedLabel(
               context, widget.editLesson ? editLessonKey : addLessonKey)),
     );
@@ -388,7 +397,8 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
         if (context.read<EditLessonCubit>().state is EditLessonInProgress) {
           return Future.value(false);
         }
-        return Future.value(true);
+        Navigator.of(context).pop(refreshLessonsInPreviousPage);
+        return Future.value(false);
       },
       child: Scaffold(
           body: Stack(
