@@ -157,7 +157,11 @@
     "noLessons" : "No lessons",
     "addTopic" : "Add topic",
     "editTopic" : "Edit topic",
-    "oldFilesWillBeReplacedWithLatestOne" : "Old file will be replaced with latest one"
+    "oldFilesWillBeReplacedWithLatestOne" : "Old file will be replaced with latest one",
+    "pleaseEnterTopicName" : "Please enter topic name",
+    "pleaseEnterTopicDescription" : "Please enter topic description",
+    "pleaseSelectLesson": "Please select lesson",
+    "topicAddedSuccessfully" : "Topic added successfully"
 
    
 }

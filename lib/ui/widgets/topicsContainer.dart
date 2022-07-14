@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/deleteTopicCubit.dart';
 import 'package:eschool_teacher/cubits/topicsCubit.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
@@ -116,7 +117,20 @@ class TopicsContainer extends StatelessWidget {
                             if (state is DeleteTopicInProgress) {
                               return;
                             }
-                            //TODO: fetch topics
+                            Navigator.of(context).pushNamed<bool?>(
+                                Routes.addOrEditTopic,
+                                arguments: {
+                                  "editTopic": true,
+                                  "subject": subject,
+                                  "lesson": lesson,
+                                  "topic": topic
+                                }).then((value) {
+                              if (value != null && value) {
+                                context
+                                    .read<TopicsCubit>()
+                                    .fetchTopics(lessonId: lesson.id);
+                              }
+                            });
                           }),
                           SizedBox(
                             width: 10,

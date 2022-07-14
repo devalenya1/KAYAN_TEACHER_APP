@@ -27,4 +27,58 @@ class TopicRepository {
       throw ApiException(e.toString());
     }
   }
+
+  Future<void> createTopic(
+      {required String topicName,
+      required int classSectionId,
+      required int subjectId,
+      required String topicDescription,
+      required int lessonId,
+      required List<Map<String, dynamic>> files}) async {
+    try {
+      Map<String, dynamic> body = {
+        "class_section_id": classSectionId,
+        "subject_id": subjectId,
+        "name": topicName,
+        "description": topicDescription,
+        "lesson_id": lessonId
+      };
+
+      if (files.isNotEmpty) {
+        body['file'] = files;
+      }
+
+      await Api.post(url: Api.createTopic, useAuthToken: true, body: body);
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
+  Future<void> editTopic(
+      {required String topicName,
+      required int classSectionId,
+      required int subjectId,
+      required String topicDescription,
+      required int lessonId,
+      required int topicId,
+      required List<Map<String, dynamic>> files}) async {
+    try {
+      Map<String, dynamic> body = {
+        "class_section_id": classSectionId,
+        "subject_id": subjectId,
+        "name": topicName,
+        "topic_id": topicId,
+        "description": topicDescription,
+        "lesson_id": lessonId
+      };
+
+      if (files.isNotEmpty) {
+        body['file'] = files;
+      }
+
+      await Api.post(url: Api.updateTopic, useAuthToken: true, body: body);
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
 }

@@ -132,12 +132,14 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
 
   void editLesson() {
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonNameKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonNameKey));
       return;
     }
 
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonDescriptionKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonDescriptionKey));
       return;
     }
 
@@ -153,12 +155,14 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
   void createLesson() {
     //
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonNameKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonNameKey));
       return;
     }
 
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonDescriptionKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonDescriptionKey));
       return;
     }
 
@@ -168,7 +172,8 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
 
     //
     if (selectedSubjectId == -1) {
-      showErrorMessage(pleasefetchingSubjectsKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleasefetchingSubjectsKey));
       return;
     }
 

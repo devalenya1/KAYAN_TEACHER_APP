@@ -74,6 +74,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
               changeSelectedItem: (value) {
                 currentSelectedClassSection = value;
                 context.read<LessonsCubit>().updateState(LessonsInitial());
+                context.read<TopicsCubit>().updateState(TopicsInitial());
                 setState(() {});
               }),
           ClassSubjectsDropDownMenu(
@@ -92,6 +93,8 @@ class _TopicsScreenState extends State<TopicsScreen> {
                               classSectionName: currentSelectedClassSection)
                           .id,
                       subjectId: subjectId);
+
+                  context.read<TopicsCubit>().updateState(TopicsInitial());
                 }
               },
               currentSelectedItem: currentSelectedSubject,
@@ -170,17 +173,26 @@ class _TopicsScreenState extends State<TopicsScreen> {
                     height: MediaQuery.of(context).size.height * (0.0125),
                   ),
 
-                  TopicsContainer(
-                      classSectionDetails: context
-                          .read<MyClassesCubit>()
-                          .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection),
-                      subject: context
-                          .read<SubjectsOfClassSectionCubit>()
-                          .getSubjectDetailsByName(currentSelectedSubject),
-                      lesson: context.read<LessonsCubit>().getLessonByName(
-                            currentSelectedLesson,
-                          )),
+                  BlocBuilder<LessonsCubit, LessonsState>(
+                    builder: (context, state) {
+                      if (state is LessonsFetchSuccess &&
+                          state.lessons.isEmpty) {
+                        return SizedBox();
+                      }
+                      return TopicsContainer(
+                          classSectionDetails: context
+                              .read<MyClassesCubit>()
+                              .getClassSectionDetails(
+                                  classSectionName:
+                                      currentSelectedClassSection),
+                          subject: context
+                              .read<SubjectsOfClassSectionCubit>()
+                              .getSubjectDetailsByName(currentSelectedSubject),
+                          lesson: context.read<LessonsCubit>().getLessonByName(
+                                currentSelectedLesson,
+                              ));
+                    },
+                  ),
                 ],
               ),
             ),

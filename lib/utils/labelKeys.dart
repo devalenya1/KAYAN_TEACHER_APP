@@ -174,6 +174,8 @@ const String permissionToPickFileKey = "permissionToPickFile";
 const String pleaseEnterLessonNameKey = "pleaseEnterLessonName";
 const String pleaseEnterLessonDescriptionKey = "pleaseEnterLessonDescription";
 const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
+const String pleaseSelectLessonKey = "pleaseSelectLesson";
+
 const String lessonAddedKey = "lessonAdded";
 const String unableToDeleteLessonKey = "unableToDeleteLesson";
 const String unableToDeleteTopicKey = "unableToDeleteTopic";
@@ -187,3 +189,6 @@ const String addTopicKey = "addTopic";
 const String editTopicKey = "editTopic";
 const String oldFilesWillBeReplacedWithLatestOneKey =
     "oldFilesWillBeReplacedWithLatestOne";
+const String pleaseEnterTopicNameKey = "pleaseEnterTopicName";
+const String pleaseEnterTopicDescriptionKey = "pleaseEnterTopicDescription";
+const String topicAddedSuccessfullyKey = "topicAddedSuccessfully";
