@@ -1,6 +1,7 @@
 import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
 import 'package:eschool_teacher/data/repositories/downloadstudymaterialRepository.dart';
+import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -316,14 +317,16 @@ class _AssignmentDetailsBottomsheetContainerState
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomRoundedButton(
-              maxLines: 1,
-              height: 35,
-              radius: 10,
-              textSize: 13,
-              widthPercentage: 0.35,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              buttonTitle: UiUtils.getTranslatedLabel(context, editKey),
-              showBorder: false),
+            maxLines: 1,
+            height: 35,
+            radius: 10,
+            textSize: 13,
+            widthPercentage: 0.35,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            buttonTitle: UiUtils.getTranslatedLabel(context, editKey),
+            showBorder: false,
+            onTap: () {},
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * (0.05),
           ),
@@ -335,6 +338,27 @@ class _AssignmentDetailsBottomsheetContainerState
               }
             },
             builder: (context, state) {
+              if (state is DeleteAssignmentFetchInProgress) {
+                return CustomRoundedButton(
+                  maxLines: 1,
+                  height: 35,
+                  radius: 10,
+                  textSize: 13,
+                  widthPercentage: 0.35,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  buttonTitle: UiUtils.getTranslatedLabel(context, deleteKey),
+                  showBorder: false,
+                  child: CustomCircularProgressIndicator(
+                    strokeWidth: 2,
+                    widthAndHeight: 20,
+                  ),
+                  onTap: () {
+                    context
+                        .read<DeleteAssignmentCubit>()
+                        .deleteAssignment(assignmentId: widget.assignment.id);
+                  },
+                );
+              }
               return CustomRoundedButton(
                 maxLines: 1,
                 height: 35,

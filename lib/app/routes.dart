@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
+import 'package:eschool_teacher/ui/screens/add&editAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
