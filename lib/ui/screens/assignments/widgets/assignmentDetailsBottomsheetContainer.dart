@@ -1,4 +1,3 @@
-import 'package:eschool_teacher/cubits/assignmentCubit.dart';
 import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
 import 'package:eschool_teacher/data/repositories/downloadstudymaterialRepository.dart';
@@ -142,9 +141,7 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            widget.assignment.points == null && widget.assignment.points == null
-                ? "0"
-                : widget.assignment.points.toString(),
+            widget.assignment.points.toString(),
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -333,7 +330,8 @@ class _AssignmentDetailsBottomsheetContainerState
           BlocConsumer<DeleteAssignmentCubit, DeleteAssignmentState>(
             listener: (context, state) {
               if (state is DeleteAssignmentFetchSuccess) {
-                Navigator.of(context).pop({"assignmentId": widget.assignment.id});
+                Navigator.of(context)
+                    .pop({"assignmentId": widget.assignment.id});
               }
             },
             builder: (context, state) {

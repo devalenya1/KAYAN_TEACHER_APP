@@ -1,5 +1,4 @@
 import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
-import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eschool_teacher/data/models/studyMaterial.dart';

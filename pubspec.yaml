@@ -68,8 +68,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.1
-  file_picker: ^3.0.4
-  permission_handler: ^10.0.0
   device_info_plus: ^4.0.0
   external_path: ^1.0.1
 

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';
-import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/utils/api.dart';
 
 class AssignmentRepository {

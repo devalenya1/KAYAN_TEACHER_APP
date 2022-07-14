@@ -9,7 +9,6 @@ import 'package:eschool_teacher/ui/widgets/bottomsheetAddFilesDottedBorderContai
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customCupertinoSwitch.dart';
-import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -49,19 +48,12 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
 
   late String currentSelectedSubject =
       UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
-  List<String> _classes = ["Class"];
 
   DateTime? dueDate;
 
   TimeOfDay? dueTime;
   int classSectionId = 0;
   int subjectSectionId = 0;
-
-  late String _selectedClass = _classes.first;
-
-  List<String> _subjects = ["Subject"];
-
-  late String _selectedSubject = _subjects.first;
 
   late TextEditingController _assignmentNameTextEditingController =
       TextEditingController();

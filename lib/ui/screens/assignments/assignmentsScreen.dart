@@ -4,7 +4,6 @@ import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
-import 'package:eschool_teacher/ui/screens/addAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
