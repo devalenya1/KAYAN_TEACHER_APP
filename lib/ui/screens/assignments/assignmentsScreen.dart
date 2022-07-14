@@ -50,25 +50,31 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
         _scrollController.position.maxScrollExtent) {
       if (context.read<AssignmentCubit>().hasMore()) {
         context.read<AssignmentCubit>().fetchMoreAssignment(
-              classSectionId: context
-                  .read<MyClassesCubit>()
-                  .getClassSectionDetails(classSectionName: selectClassId)
-                  .id
-                  .toString(),
-              subjectId: context
-                  .read<SubjectsOfClassSectionCubit>()
-                  .getSubjectIdByName(selectSubjectId)
-                  .toString(),
-            );
+            classSectionId: context
+                .read<MyClassesCubit>()
+                .getClassSectionDetails(classSectionName: selectClassId)
+                .id,
+            subjectId: context
+                .read<SubjectsOfClassSectionCubit>()
+                .getSubjectIdByName(selectSubjectId));
       }
     }
+  }
+
+  @override
+  void initState() {
+    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
+        .read<MyClassesCubit>()
+        .getClassSectionDetails(classSectionName: currentSelectedClassSection)
+        .id);
+    super.initState();
   }
 
   late String currentSelectedClassSection =
       context.read<MyClassesCubit>().getClassSectionName().first;
 
   late String currentSelectedSubject =
-      UiUtils.getTranslatedLabel(context, selectSubjectKey);
+      UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
 
   late var selectClassId = "";
   late var selectSubjectId = "";
@@ -90,21 +96,28 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               changeSelectedItem: (result) {
                 setState(() {
                   currentSelectedClassSection = result;
-                  print(currentSelectedClassSection);
                 });
               }),
           ClassSubjectsDropDownMenu(
-            changeSelectedItem: (result) {
-              if (currentSelectedSubject != subjectNameKey)
+              changeSelectedItem: (result) {
                 setState(() {
                   currentSelectedSubject = result;
-                  print(currentSelectedSubject);
                 });
-            },
-            currentSelectedItem: currentSelectedSubject,
-            width: boxConstraints.maxWidth,
-            SelectedClassId: currentSelectedClassSection,
-          )
+                final subjectId = context
+                    .read<SubjectsOfClassSectionCubit>()
+                    .getSubjectIdByName(currentSelectedSubject);
+                if (subjectId != -1) {
+                  context.read<AssignmentCubit>().fetchassignment(
+                      classSectionId: context
+                          .read<MyClassesCubit>()
+                          .getClassSectionDetails(
+                              classSectionName: currentSelectedClassSection)
+                          .id,
+                      subjectId: subjectId);
+                }
+              },
+              currentSelectedItem: currentSelectedSubject,
+              width: boxConstraints.maxWidth),
         ],
       );
     });
@@ -162,12 +175,6 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           BlocBuilder<AssignmentCubit, AssignmentState>(
             builder: (context, state) {
               if (state is AssignmentsFetchSuccess) {
-                if ((state).assignment.isEmpty) {
-                  return Center(
-                    child: Text("Assignment No Found"),
-                  );
-                }
-
                 return SingleChildScrollView(
                   child: Column(
                     children: List.generate(

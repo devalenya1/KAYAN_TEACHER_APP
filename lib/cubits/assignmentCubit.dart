@@ -51,8 +51,8 @@ class AssignmentCubit extends Cubit<AssignmentState> {
   AssignmentCubit(this._assignmentRepository) : super(AssignmentInitial());
 
   void fetchassignment({
-    required String classSectionId,
-    required String subjectId,
+    required int classSectionId,
+    required int subjectId,
     int? page,
   }) async {
     try {
@@ -89,8 +89,8 @@ class AssignmentCubit extends Cubit<AssignmentState> {
   }
 
   void fetchMoreAssignment({
-    required String classSectionId,
-    required String subjectId,
+    required int classSectionId,
+    required int subjectId,
   }) async {
     try {
       emit((state as AssignmentsFetchSuccess)
@@ -125,7 +125,6 @@ class AssignmentCubit extends Cubit<AssignmentState> {
   void deleteAssignment({
     required int assignmentId,
   }) async {
-    emit(state )
     if (state is AssignmentsFetchSuccess) {
       List<Assignment> listOfAssignments =
           (state as AssignmentsFetchSuccess).assignment;

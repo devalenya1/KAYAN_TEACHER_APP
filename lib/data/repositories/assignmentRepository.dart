@@ -11,9 +11,7 @@ class AssignmentRepository {
 
   //fetch assignments
   Future<Map<String, dynamic>> fetchassignment(
-      {required String classSectionId,
-      required String subjectId,
-      int? page}) async {
+      {required int classSectionId, required int subjectId, int? page}) async {
     try {
       final result = await Api.get(
           url: Api.getassignment,

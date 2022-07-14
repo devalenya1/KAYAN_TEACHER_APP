@@ -48,7 +48,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
       context.read<MyClassesCubit>().getClassSectionName().first;
 
   late String currentSelectedSubject =
-      UiUtils.getTranslatedLabel(context, selectSubjectKey);
+      UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
   List<String> _classes = ["Class"];
 
   DateTime? dueDate;
