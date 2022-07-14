@@ -110,7 +110,10 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
   }
 
   void updateStudyMaterials(StudyMaterial studyMaterial) {
-    //TODO: update the study material
+    final studyMaterialIndex =
+        studyMaterials.indexWhere((element) => element.id == studyMaterial.id);
+    studyMaterials[studyMaterialIndex] = studyMaterial;
+    refreshLessonsInPreviousPage = true;
     setState(() {});
   }
 
@@ -129,12 +132,14 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
 
   void editLesson() {
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonNameKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonNameKey));
       return;
     }
 
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonDescriptionKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonDescriptionKey));
       return;
     }
 
@@ -150,12 +155,14 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
   void createLesson() {
     //
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonNameKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonNameKey));
       return;
     }
 
     if (_lessonNameTextEditingController.text.trim().isEmpty) {
-      showErrorMessage(pleaseEnterLessonDescriptionKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterLessonDescriptionKey));
       return;
     }
 
@@ -165,7 +172,8 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
 
     //
     if (selectedSubjectId == -1) {
-      showErrorMessage(pleasefetchingSubjectsKey);
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleasefetchingSubjectsKey));
       return;
     }
 
@@ -256,6 +264,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                     children: studyMaterials
                         .map((studyMaterial) => StudyMaterialContainer(
                             onDeleteStudyMaterial: deleteStudyMaterial,
+                            onEditStudyMaterial: updateStudyMaterials,
                             showEditAndDeleteButton: true,
                             studyMaterial: studyMaterial))
                         .toList(),

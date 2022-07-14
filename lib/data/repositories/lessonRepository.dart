@@ -85,14 +85,4 @@ class LessonRepository {
       throw ApiException(e.toString());
     }
   }
-
-  Future<void> deleteStudyMaterial({required int fileId}) async {
-    try {
-      await Api.post(body: {
-        "file_id": fileId,
-      }, url: Api.deleteStudyMaterial, useAuthToken: true);
-    } catch (e) {
-      throw ApiException(e.toString());
-    }
-  }
 }

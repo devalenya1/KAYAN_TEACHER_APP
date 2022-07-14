@@ -18,7 +18,6 @@ import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.d
 import 'package:eschool_teacher/ui/screens/studyMaterials/studyMaterialsScreen.dart';
 import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
-import 'package:eschool_teacher/ui/screens/uploadVideos/uploadVideosScreen.dart';
 import 'package:eschool_teacher/ui/screens/takeAttendance/takeAttendanceScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +40,6 @@ class Routes {
   static const String assignment = "/assignment";
 
   static const String addAssignment = "/addAssignment";
-
-  static const String uploadVideos = "/uploadVideos";
 
   static const String takeAttendance = "/takeAttendance";
 
@@ -103,10 +100,6 @@ class Routes {
       case studyMaterials:
         {
           return CupertinoPageRoute(builder: (_) => StudyMaterialsScreen());
-        }
-      case uploadVideos:
-        {
-          return CupertinoPageRoute(builder: (_) => UploadVideosScreen());
         }
 
       case takeAttendance:

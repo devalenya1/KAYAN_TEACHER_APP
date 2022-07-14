@@ -49,12 +49,13 @@ class LessonsCubit extends Cubit<LessonsState> {
   }
 
   Lesson getLessonByName(String name) {
-    return (state is LessonsFetchSuccess)
-        ? (state as LessonsFetchSuccess)
-            .lessons
-            .where((element) => element.name == name)
-            .toList()
-            .first
-        : Lesson.fromJson({});
+    if (state is LessonsFetchSuccess) {
+      final lessons = (state as LessonsFetchSuccess)
+          .lessons
+          .where((element) => element.name == name)
+          .toList();
+      return lessons.isNotEmpty ? lessons.first : Lesson.fromJson({});
+    }
+    return Lesson.fromJson({});
   }
 }

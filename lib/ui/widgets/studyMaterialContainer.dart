@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eschool_teacher/cubits/deleteStudyMaterialCubit.dart';
+import 'package:eschool_teacher/cubits/updateStudyMaterialCubit.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
-import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
+import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
@@ -37,7 +38,7 @@ class StudyMaterialContainer extends StatelessWidget {
         TextStyle(color: assignmentViewButtonColor, fontSize: 13);
 
     return BlocProvider(
-      create: (context) => DeleteStudyMaterialCubit(LessonRepository()),
+      create: (context) => DeleteStudyMaterialCubit(StudyMaterialRepository()),
       child: Builder(builder: (context) {
         return BlocConsumer<DeleteStudyMaterialCubit, DeleteStudyMaterialState>(
           listener: (context, state) {
@@ -79,11 +80,21 @@ class StudyMaterialContainer extends StatelessWidget {
                                   if (state is DeleteStudyMaterialInProgress) {
                                     return;
                                   }
-                                  //TODO: pass on edit study material
                                   UiUtils.showBottomSheet(
-                                      child: EditStudyMaterialBottomSheet(
-                                          studyMaterial: studyMaterial),
-                                      context: context);
+                                          child: BlocProvider(
+                                            create: (context) =>
+                                                UpdateStudyMaterialCubit(
+                                                    StudyMaterialRepository()),
+                                            child: EditStudyMaterialBottomSheet(
+                                                studyMaterial: studyMaterial),
+                                          ),
+                                          context: context)
+                                      .then((value) {
+                                    if (value != null) {
+                                      onEditStudyMaterial
+                                          ?.call(value as StudyMaterial);
+                                    }
+                                  });
                                 }),
                                 SizedBox(
                                   width: 10,

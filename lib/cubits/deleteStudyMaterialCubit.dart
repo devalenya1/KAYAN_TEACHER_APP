@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
+import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class DeleteStudyMaterialState {}
@@ -16,15 +16,15 @@ class DeleteStudyMaterialFailure extends DeleteStudyMaterialState {
 }
 
 class DeleteStudyMaterialCubit extends Cubit<DeleteStudyMaterialState> {
-  final LessonRepository _lessonRepository;
+  final StudyMaterialRepository _studyMaterialRepository;
 
-  DeleteStudyMaterialCubit(this._lessonRepository)
+  DeleteStudyMaterialCubit(this._studyMaterialRepository)
       : super(DeleteStudyMaterialInitial());
 
   void deleteStudyMaterial({required int fileId}) async {
     emit(DeleteStudyMaterialInProgress());
     try {
-      await _lessonRepository.deleteStudyMaterial(fileId: fileId);
+      await _studyMaterialRepository.deleteStudyMaterial(fileId: fileId);
       emit(DeleteStudyMaterialSuccess());
     } catch (e) {
       emit(DeleteStudyMaterialFailure(e.toString()));

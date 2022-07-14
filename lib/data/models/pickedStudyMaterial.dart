@@ -22,11 +22,15 @@ class PickedStudyMaterial {
     json['name'] = fileName;
 
     if (pickedStudyMaterialTypeId != 2) {
-      json['file'] = await MultipartFile.fromFile(studyMaterialFile!.path!);
+      if (studyMaterialFile != null) {
+        json['file'] = await MultipartFile.fromFile(studyMaterialFile!.path!);
+      }
     }
     if (pickedStudyMaterialTypeId != 1) {
-      json['thumbnail'] =
-          await MultipartFile.fromFile(videoThumbnailFile!.path!);
+      if (videoThumbnailFile != null) {
+        json['thumbnail'] =
+            await MultipartFile.fromFile(videoThumbnailFile!.path!);
+      }
     }
     if (pickedStudyMaterialTypeId == 2) {
       json['link'] = youTubeLink;

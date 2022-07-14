@@ -25,10 +25,13 @@ class TopicsCubit extends Cubit<TopicsState> {
 
   TopicsCubit(this._topicRepository) : super(TopicsInitial());
 
+  void updateState(TopicsState updatedState) {
+    emit(updatedState);
+  }
+
   void fetchTopics({required int lessonId}) async {
     emit(TopicsFetchInProgress());
     try {
-      print(lessonId);
       emit(TopicsFetchSuccess(
           await _topicRepository.fetchTopics(lessonId: lessonId)));
     } catch (e) {
