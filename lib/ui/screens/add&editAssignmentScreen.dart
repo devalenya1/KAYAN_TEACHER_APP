@@ -72,6 +72,15 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   late bool _allowedLateSubmission = true;
   late bool _allowedReSubmissionOfRejectedAssignment = true;
 
+  @override
+  void initState() {
+    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
+        .read<MyClassesCubit>()
+        .getClassSectionDetails(classSectionName: currentSelectedClassSection)
+        .id);
+    super.initState();
+  }
+
   void changeAllowdLateSubmission() {
     setState(() {
       _allowedLateSubmission = !_allowedLateSubmission;
