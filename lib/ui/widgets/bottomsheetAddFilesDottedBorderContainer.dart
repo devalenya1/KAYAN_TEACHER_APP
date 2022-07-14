@@ -10,24 +10,21 @@ class BottomsheetAddFilesDottedBorderContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DottedBorder(
-      borderType: BorderType.RRect,
-      dashPattern: [10, 10],
-      radius: Radius.circular(10.0),
-      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
-      child: Container(
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              borderRadius: BorderRadius.circular(15),
-              onTap: () {
-                //
-                onTap();
-                print("Upload file");
-              },
-              child: Container(
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        dashPattern: [10, 10],
+        radius: Radius.circular(10.0),
+        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
+        child: Container(
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
                 child: Icon(
                   Icons.add,
                   size: 20,
@@ -48,19 +45,19 @@ class BottomsheetAddFilesDottedBorderContainer extends StatelessWidget {
                 width: 30,
                 height: 30,
               ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * (0.05),
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.secondary,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * (0.05),
               ),
-            )
-          ],
+              Text(
+                title,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              )
+            ],
+          ),
+          height: MediaQuery.of(context).size.height * (0.075),
         ),
-        height: MediaQuery.of(context).size.height * (0.075),
       ),
     );
   }

@@ -47,4 +47,21 @@ class SubjectsOfClassSectionCubit extends Cubit<SubjectsOfClassSectionState> {
     }
     return -1;
   }
+
+  Subject getSubjectDetailsByName(String name) {
+    if (state is SubjectsOfClassSectionFetchSuccess) {
+      return (state as SubjectsOfClassSectionFetchSuccess)
+          .subjects
+          .where((element) => element.name == name)
+          .first;
+    }
+    return Subject.fromJson({});
+  }
+
+  Subject getSubjectDetailsById(int subjectId) {
+    return (state as SubjectsOfClassSectionFetchSuccess)
+        .subjects
+        .where((element) => element.id == subjectId)
+        .first;
+  }
 }

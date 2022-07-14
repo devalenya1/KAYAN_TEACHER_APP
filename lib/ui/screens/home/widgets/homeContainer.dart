@@ -439,6 +439,7 @@ class _HomeContainerState extends State<HomeContainer> {
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, announcementsKey)),
 
+        //TODO: add lessons and topics icon
         _buildMenuContainer(
             route: Routes.lessons,
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),

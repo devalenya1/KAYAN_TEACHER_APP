@@ -25,7 +25,7 @@ class Api {
   }
 
   //
-  //Student app apis
+  //Teacher app apis
   //
   static String login = "${databaseUrl}teacher/login";
   static String forgotPassword = "${databaseUrl}forgot-password";
@@ -33,10 +33,18 @@ class Api {
   static String changePassword = "${databaseUrl}change-password";
   static String getClasses = "${databaseUrl}teacher/classes";
   static String getSubjectByClassSection = "${databaseUrl}teacher/subjects";
+
   static String getassignment = "${databaseUrl}teacher/get-assignment";
   static String uploadassignment = "${baseUrl}teacher/update-assignment";
   static String deleteassignment = "${databaseUrl}teacher/delete-assignment";
   static String createassignment = "${databaseUrl}teacher/create-assignment";
+  static String createLesson = "${databaseUrl}teacher/create-lesson";
+  static String getLessons = "${databaseUrl}teacher/get-lesson";
+  static String deleteLesson = "${databaseUrl}teacher/delete-lesson";
+  static String updateLesson = "${databaseUrl}teacher/update-lesson";
+
+  static String getTopics = "${databaseUrl}teacher/get-topic";
+  static String deleteStudyMaterial = "${databaseUrl}teacher/delete-file";
 
   //Api methods
 
@@ -68,7 +76,7 @@ class Api {
       }
       return Map.from(response.data);
     } on DioError catch (e) {
-      print(e.toString());
+      print(e.error);
       throw ApiException(e.error is SocketException
           ? ErrorMessageKeysAndCode.noInternetCode
           : ErrorMessageKeysAndCode.defaultErrorMessageCode);

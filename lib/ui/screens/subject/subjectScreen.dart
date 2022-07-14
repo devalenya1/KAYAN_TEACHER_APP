@@ -1,12 +1,14 @@
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/lessonsCubit.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/ui/screens/subject/widgets/announcementContainer.dart';
-import 'package:eschool_teacher/ui/screens/subject/widgets/chaptersContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarSubTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
+import 'package:eschool_teacher/ui/widgets/lessonsContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/ui/widgets/svgButton.dart';
 import 'package:eschool_teacher/ui/widgets/tabBarBackgroundContainer.dart';
@@ -14,6 +16,7 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubjectScreen extends StatefulWidget {
   final Subject subject;
@@ -28,9 +31,12 @@ class SubjectScreen extends StatefulWidget {
   static Route<dynamic> route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
-        builder: (_) => SubjectScreen(
-              classSectionDetails: arguments['classSectionDetails'],
-              subject: arguments['subject'],
+        builder: (_) => BlocProvider(
+              create: (context) => LessonsCubit(LessonRepository()),
+              child: SubjectScreen(
+                classSectionDetails: arguments['classSectionDetails'],
+                subject: arguments['subject'],
+              ),
             ));
   }
 }
@@ -38,9 +44,21 @@ class SubjectScreen extends StatefulWidget {
 class _SubjectScreenState extends State<SubjectScreen> {
   late String _selectedTabTitle = chaptersKey;
 
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      context.read<LessonsCubit>().fetchLessons(
+          classSectionId: widget.classSectionDetails.id,
+          subjectId: widget.subject.id);
+    });
+  }
+
   void _onTapFloatingActionAddButton() {
-    Navigator.of(context)
-        .pushNamed(_selectedTabTitle == chaptersKey ? Routes.addLesson : "");
+    Navigator.of(context).pushNamed(
+        _selectedTabTitle == chaptersKey ? Routes.addOrEditLesson : "",
+        arguments:
+            _selectedTabTitle == chaptersKey ? {"editLesson": false} : {});
   }
 
   Widget _buildAppBar() {
@@ -122,7 +140,10 @@ class _SubjectScreenState extends State<SubjectScreen> {
               child: Column(
                 children: [
                   _selectedTabTitle == chaptersKey
-                      ? ChaptersContainer()
+                      ? LessonsContainer(
+                          classSectionId: widget.classSectionDetails.id,
+                          subject: widget.subject,
+                        )
                       : AnnouncementContainer()
                 ],
               ),

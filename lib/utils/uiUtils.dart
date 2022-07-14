@@ -1,10 +1,12 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
+import 'package:eschool_teacher/data/models/studyMaterial.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/errorMessageOverlayContainer.dart';
 import 'package:eschool_teacher/utils/constants.dart';
 import 'package:eschool_teacher/utils/errorMessageKeysAndCodes.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UiUtils {
   //This extra padding will add to MediaQuery.of(context).padding.top in orderto give same top padding in every screen
@@ -181,5 +183,55 @@ class UiUtils {
   static bool isDemoVersionEnable() {
     //If isDemoVersion is not declarer then it return always false
     return true;
+  }
+
+  static int getStudyMaterialId(
+      String studyMaterialLabel, BuildContext context) {
+    if (studyMaterialLabel == getTranslatedLabel(context, fileUploadKey)) {
+      return 1;
+    }
+    if (studyMaterialLabel == getTranslatedLabel(context, youtubeLinkKey)) {
+      return 2;
+    }
+    if (studyMaterialLabel == getTranslatedLabel(context, videoUploadKey)) {
+      return 3;
+    }
+    return 0;
+  }
+
+  static String getStudyMaterialTypeLabelByEnum(
+      StudyMaterialType studyMaterialType, BuildContext context) {
+    if (studyMaterialType == StudyMaterialType.file) {
+      return UiUtils.getTranslatedLabel(context, fileUploadKey);
+    }
+    if (studyMaterialType == StudyMaterialType.youtubeVideo) {
+      return UiUtils.getTranslatedLabel(context, youtubeLinkKey);
+    }
+    if (studyMaterialType == StudyMaterialType.uploadedVideoUrl) {
+      return UiUtils.getTranslatedLabel(context, videoUploadKey);
+    }
+
+    return "Other";
+  }
+
+  static void openFileInBrowser(String fileUrl, BuildContext context) async {
+    try {
+      final canLaunch = await canLaunchUrl(Uri.parse(fileUrl));
+      if (canLaunch) {
+        launchUrl(Uri.parse(fileUrl), mode: LaunchMode.externalApplication);
+      } else {
+        UiUtils.showErrorMessageContainer(
+            context: context,
+            errorMessage:
+                UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
+            backgroundColor: Theme.of(context).colorScheme.error);
+      }
+    } catch (e) {
+      UiUtils.showErrorMessageContainer(
+          context: context,
+          errorMessage:
+              UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
+          backgroundColor: Theme.of(context).colorScheme.error);
+    }
   }
 }

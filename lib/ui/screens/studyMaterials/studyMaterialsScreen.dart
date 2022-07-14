@@ -1,4 +1,3 @@
-import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/ui/screens/studyMaterials/widgets/filesContainer.dart';
 import 'package:eschool_teacher/ui/screens/studyMaterials/widgets/videosContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
@@ -135,11 +134,7 @@ class _StudyMaterialsScreenState extends State<StudyMaterialsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {
-        Navigator.of(context).pushNamed(_selectedTabTitle == videosKey
-            ? Routes.uploadVideos
-            : Routes.uploadFiles);
-      }),
+      floatingActionButton: FloatingActionAddButton(onTap: () {}),
       body: Stack(
         children: [
           SingleChildScrollView(

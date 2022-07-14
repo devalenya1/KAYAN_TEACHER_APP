@@ -101,8 +101,10 @@ const String uploadVideosKey = "uploadVideos";
 const String addVideoKey = "addVideo";
 
 const String uploadFilesKey = "uploadFiles";
-const String addFileKey = "addFile";
+const String addStudyMaterialKey = "addStudyMaterial";
 const String selectFileKey = "selectFile";
+
+const String selectThumbnailKey = "selectThumbnail";
 
 const String fileNameKey = "fileName";
 const String studentsKey = "students";
@@ -147,4 +149,31 @@ const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";
 
 const String emailProfileKey = "email";
 const String retryKey = "retry";
-const String selectSubjectKey = "selectSubject";
+const String fetchingSubjectsKey = "fetchingSubjects";
+const String fetchingLessonsKey = "fetchingLessons";
+
+const String youtubeLinkKey = "youtubeLink";
+const String fileUploadKey = "fileUpload";
+const String videoUploadKey = "videoUpload";
+
+const String selectVideoKey = "selectVideo";
+const String studyMaterialNameKey = "studyMaterialName";
+const String filePathKey = "filePath";
+const String thumbnailImageKey = "thumbnailImage";
+
+const String pleaseEnterStudyMaterialNameKey = "pleaseEnterStudyMaterialName";
+const String pleaseSelectFileKey = "pleaseSelectFile";
+const String pleaseSelectThumbnailImageKey = "pleaseSelectThumbnailImage";
+const String pleaseEnterYoutubeLinkKey = "pleaseEnterYoutubeLink";
+const String pleaseSelectVideoKey = "pleaseSelectVideo";
+const String permissionToPickFileKey = "permissionToPickFile";
+
+const String pleaseEnterLessonNameKey = "pleaseEnterLessonName";
+const String pleaseEnterLessonDescriptionKey = "pleaseEnterLessonDescription";
+const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
+const String lessonAddedKey = "lessonAdded";
+const String unableToDeleteLessonKey = "unableToDeleteLesson";
+const String editLessonKey = "editLesson";
+const String editStudyMaterialKey = "editStudyMaterial";
+const String unableToOpenFileKey = "unableToOpenFile";
+const String attachmentsKey = "attachments";
