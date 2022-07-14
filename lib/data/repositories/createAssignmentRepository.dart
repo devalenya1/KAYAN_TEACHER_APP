@@ -8,7 +8,7 @@ class CreateAssignmentRepository {
     required String name,
     String? instruction,
     required String datetime,
-    String? points,
+    required int points,
     required int resubmission,
     String? extraDayForResubmission,
     List<String>? filePaths,
@@ -32,7 +32,7 @@ class CreateAssignmentRepository {
       if (instruction!.isEmpty) {
         body.remove("instructions");
       }
-      if (points!.isEmpty) {
+      if (points == 0) {
         body.remove("points");
       }
 

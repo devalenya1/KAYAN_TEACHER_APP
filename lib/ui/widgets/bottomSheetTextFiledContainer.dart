@@ -9,6 +9,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final double? height;
   final int? maxLines;
+  final TextInputType? keyboardType;
 
   final EdgeInsetsGeometry? margin;
 
@@ -18,6 +19,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       required this.maxLines,
       required this.textEditingController,
       this.height,
+      this.keyboardType,
       this.margin,
       this.contentAlignment,
       this.contentPadding})
@@ -30,6 +32,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       alignment: contentAlignment ?? Alignment.center,
       padding: contentPadding ?? EdgeInsetsDirectional.only(start: 20.0),
       child: TextField(
+        keyboardType: keyboardType,
         controller: textEditingController,
         style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,

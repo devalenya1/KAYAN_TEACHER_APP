@@ -383,6 +383,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
             margin: EdgeInsetsDirectional.only(bottom: _textFieldBottomPadding),
             hintText: UiUtils.getTranslatedLabel(context, pointsKey),
             maxLines: 1,
+            keyboardType: TextInputType.number,
             textEditingController: _assignmentPointsTextEditingController,
           ),
 
@@ -430,31 +431,21 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                     UiUtils.getTranslatedLabel(context, createAssignmentKey),
                 showBorder: false,
                 onTap: () {
-                  print(_assignmentPointsTextEditingController.text);
-                  if (_assignmentPointsTextEditingController.text != "0" ||
-                      _assignmentPointsTextEditingController.text
-                          .toString()
-                          .isNotEmpty) {
-                    context.read<CreateAssignmentCubit>().createAssignment(
-                          classsId: classSectionId,
-                          subjectId: subjectSectionId,
-                          name: _assignmentNameTextEditingController.text,
-                          datetime:
-                              "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
-                          extraDayForResubmission:
-                              _extraResubmissionDaysTextEditingController.text,
-                          instruction:
-                              _assignmentInstructionTextEditingController.text,
-                          points: _assignmentPointsTextEditingController.text,
-                          resubmission: _allowedLateSubmission ? 1 : 0,
-                          file: uploadedFiles.map((e) => e.path!).toList(),
-                        );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(
-                          ("Please enter a value greater than or equal to 1.")),
-                    ));
-                  }
+                  context.read<CreateAssignmentCubit>().createAssignment(
+                        classsId: classSectionId,
+                        subjectId: subjectSectionId,
+                        name: _assignmentNameTextEditingController.text,
+                        datetime:
+                            "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
+                        extraDayForResubmission:
+                            _extraResubmissionDaysTextEditingController.text,
+                        instruction:
+                            _assignmentInstructionTextEditingController.text,
+                        points:
+                            _assignmentPointsTextEditingController.text.trim(),
+                        resubmission: _allowedLateSubmission ? 1 : 0,
+                        file: uploadedFiles.map((e) => e.path!).toList(),
+                      );
                 }),
           ),
           SizedBox(
