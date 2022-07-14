@@ -127,14 +127,15 @@ class _LessonsScreenState extends State<LessonsScreen> {
                     height: MediaQuery.of(context).size.height * (0.0125),
                   ),
                   LessonsContainer(
-                      classSectionId: context
-                          .read<MyClassesCubit>()
-                          .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection)
-                          .id,
-                      subject: context
-                          .read<SubjectsOfClassSectionCubit>()
-                          .getSubjectDetailsByName(currentSelectedSubject))
+                    classSectionId: context
+                        .read<MyClassesCubit>()
+                        .getClassSectionDetails(
+                            classSectionName: currentSelectedClassSection)
+                        .id,
+                    subject: context
+                        .read<SubjectsOfClassSectionCubit>()
+                        .getSubjectDetailsByName(currentSelectedSubject),
+                  )
                 ],
               ),
             ),
