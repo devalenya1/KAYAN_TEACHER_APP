@@ -46,6 +46,7 @@ class Api {
   static String getTopics = "${databaseUrl}teacher/get-topic";
   static String deleteStudyMaterial = "${databaseUrl}teacher/delete-file";
   static String deleteTopic = "${databaseUrl}teacher/delete-topic";
+  static String updateStudyMaterial = "${databaseUrl}teacher/update-file";
 
   //Api methods
 

@@ -73,6 +73,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                 setState(() {
                   currentSelectedClassSection = result;
                 });
+                context.read<LessonsCubit>().updateState(LessonsInitial());
               }),
 
           //

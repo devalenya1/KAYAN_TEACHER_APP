@@ -199,6 +199,20 @@ class UiUtils {
     return 0;
   }
 
+  static int getStudyMaterialIdByEnum(
+      StudyMaterialType studyMaterialType, BuildContext context) {
+    if (studyMaterialType == StudyMaterialType.file) {
+      return 1;
+    }
+    if (studyMaterialType == StudyMaterialType.youtubeVideo) {
+      return 2;
+    }
+    if (studyMaterialType == StudyMaterialType.uploadedVideoUrl) {
+      return 3;
+    }
+    return 0;
+  }
+
   static String getStudyMaterialTypeLabelByEnum(
       StudyMaterialType studyMaterialType, BuildContext context) {
     if (studyMaterialType == StudyMaterialType.file) {

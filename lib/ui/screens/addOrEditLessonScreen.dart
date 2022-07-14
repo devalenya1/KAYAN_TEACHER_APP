@@ -110,7 +110,10 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
   }
 
   void updateStudyMaterials(StudyMaterial studyMaterial) {
-    //TODO: update the study material
+    final studyMaterialIndex =
+        studyMaterials.indexWhere((element) => element.id == studyMaterial.id);
+    studyMaterials[studyMaterialIndex] = studyMaterial;
+    refreshLessonsInPreviousPage = true;
     setState(() {});
   }
 
@@ -256,6 +259,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                     children: studyMaterials
                         .map((studyMaterial) => StudyMaterialContainer(
                             onDeleteStudyMaterial: deleteStudyMaterial,
+                            onEditStudyMaterial: updateStudyMaterials,
                             showEditAndDeleteButton: true,
                             studyMaterial: studyMaterial))
                         .toList(),

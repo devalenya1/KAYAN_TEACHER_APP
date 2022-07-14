@@ -185,3 +185,5 @@ const String attachmentsKey = "attachments";
 const String noLessonsKey = "noLessons";
 const String addTopicKey = "addTopic";
 const String editTopicKey = "editTopic";
+const String oldFilesWillBeReplacedWithLatestOneKey =
+    "oldFilesWillBeReplacedWithLatestOne";
