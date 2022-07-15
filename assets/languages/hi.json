@@ -166,7 +166,6 @@
     "aboutUs": "About Us",
     "faqs" : "FAQs",
     "rateUs" : "Rate Us",
-    "contactUs" : "Contact us",
     "share" : "Share",
     "changePassword" : "Change password",
     "currentPassword" : "Current password",
@@ -178,7 +177,9 @@
     "appLanguage" : "Application language",
     "sureToLogout" : "Are you sure to logout?",
     "yes" : "Yes",
-    "no" : "No"
+    "no" : "No",
+
+    "contactUs" : "Contact us"
 
 
 

@@ -201,8 +201,8 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   ),
                   //TODO: Add email key
                   _buildProfileDetailsTile(
-                      label: UiUtils.getTranslatedLabel(context, nameKey),
-                      value: emailProfileKey,
+                      label: UiUtils.getTranslatedLabel(context, emailKey),
+                      value: teacher.email,
                       iconUrl: UiUtils.getImagePath("user_pro_icon.svg")),
                   _buildProfileDetailsTile(
                       label:

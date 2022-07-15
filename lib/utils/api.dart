@@ -50,6 +50,7 @@ class Api {
   static String createTopic = "${databaseUrl}teacher/create-topic";
 
   static String updateTopic = "${databaseUrl}teacher/update-topic";
+  static String settings = "${databaseUrl}settings";
 
   //Api methods
 

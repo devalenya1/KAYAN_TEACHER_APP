@@ -12,6 +12,8 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
   final TextInputType? keyboardType;
 
   final EdgeInsetsGeometry? margin;
+  final bool? hideText;
+  final Widget? suffix;
 
   const BottomSheetTextFieldContainer(
       {Key? key,
@@ -19,6 +21,8 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       required this.maxLines,
       required this.textEditingController,
       this.height,
+      this.suffix,
+      this.hideText,
       this.keyboardType,
       this.margin,
       this.contentAlignment,
@@ -32,6 +36,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       alignment: contentAlignment ?? Alignment.center,
       padding: contentPadding ?? EdgeInsetsDirectional.only(start: 20.0),
       child: TextField(
+        obscureText: hideText ?? false,
         keyboardType: keyboardType,
         controller: textEditingController,
         style: TextStyle(
@@ -39,6 +44,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
             fontSize: UiUtils.textFieldFontSize),
         maxLines: maxLines,
         decoration: InputDecoration(
+          suffixIcon: suffix,
           hintText: hintText,
           hintStyle: TextStyle(
               color: hintTextColor, fontSize: UiUtils.textFieldFontSize),

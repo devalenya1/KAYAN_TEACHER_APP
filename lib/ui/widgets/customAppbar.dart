@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/ui/widgets/customBackButton.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/ui/widgets/svgButton.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -8,9 +9,11 @@ class CustomAppBar extends StatelessWidget {
   final Function? onPressBackButton;
   final String? subTitle;
   final Widget? trailingWidget;
+  final bool? showBackButton;
   CustomAppBar(
       {Key? key,
       this.onPressBackButton,
+      this.showBackButton,
       required this.title,
       this.subTitle,
       this.trailingWidget})
@@ -23,22 +26,11 @@ class CustomAppBar extends StatelessWidget {
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Stack(
           children: [
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                  child: SvgButton(
-                      onTap: () {
-                        if (onPressBackButton != null) {
-                          onPressBackButton!.call();
-                        } else {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      svgIconUrl: UiUtils.getImagePath("back_icon.svg")),
-                  padding: EdgeInsetsDirectional.only(
-                    start: UiUtils.screenContentHorizontalPadding,
-                  )),
-            ),
+            (showBackButton ?? true)
+                ? CustomBackButton(
+                    alignmentDirectional: AlignmentDirectional.centerStart,
+                  )
+                : SizedBox(),
             Align(
               alignment: AlignmentDirectional.centerEnd,
               child: Padding(

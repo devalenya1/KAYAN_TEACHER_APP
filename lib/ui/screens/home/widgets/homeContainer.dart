@@ -41,7 +41,7 @@ class _HomeContainerState extends State<HomeContainer> {
     return Column(
       children: [
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: AlignmentDirectional.centerStart,
           child: Text(
             UiUtils.getTranslatedLabel(context, myClassesKey),
             style: _titleFontStyle(),
@@ -61,9 +61,9 @@ class _HomeContainerState extends State<HomeContainer> {
         return Stack(
           children: [
             //Bordered circles
-            Positioned(
+            PositionedDirectional(
               top: MediaQuery.of(context).size.width * (-0.15),
-              left: MediaQuery.of(context).size.width * (-0.225),
+              start: MediaQuery.of(context).size.width * (-0.225),
               child: Container(
                 padding: EdgeInsets.only(right: 20.0, bottom: 20.0),
                 child: Container(
@@ -91,9 +91,9 @@ class _HomeContainerState extends State<HomeContainer> {
             ),
 
             //bottom fill circle
-            Positioned(
+            PositionedDirectional(
               bottom: MediaQuery.of(context).size.width * (-0.15),
-              right: MediaQuery.of(context).size.width * (-0.15),
+              end: MediaQuery.of(context).size.width * (-0.15),
               child: Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context)
@@ -108,8 +108,8 @@ class _HomeContainerState extends State<HomeContainer> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                margin: EdgeInsets.only(
-                    left: boxConstraints.maxWidth * (0.075),
+                margin: EdgeInsetsDirectional.only(
+                    start: boxConstraints.maxWidth * (0.075),
                     bottom: boxConstraints.maxHeight * (0.2)),
                 child: Row(
                   children: [
@@ -276,7 +276,7 @@ class _HomeContainerState extends State<HomeContainer> {
     return Column(
       children: [
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: AlignmentDirectional.centerStart,
           child: Text(
             UiUtils.getTranslatedLabel(context, classTeacherKey),
             style: _titleFontStyle(),
@@ -377,7 +377,7 @@ class _HomeContainerState extends State<HomeContainer> {
     return Column(
       children: [
         Align(
-          alignment: Alignment.centerLeft,
+          alignment: AlignmentDirectional.centerStart,
           child: Text(
             UiUtils.getTranslatedLabel(context, informationKey),
             style: _titleFontStyle(),

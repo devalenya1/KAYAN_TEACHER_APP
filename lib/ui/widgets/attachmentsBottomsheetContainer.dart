@@ -60,7 +60,7 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
             ),
             child: Text(
               UiUtils.getTranslatedLabel(context, attachmentsKey),
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.start,
               style: TextStyle(
                   fontSize: 16,
                   color: Theme.of(context).colorScheme.secondary,

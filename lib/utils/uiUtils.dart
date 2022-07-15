@@ -182,7 +182,7 @@ class UiUtils {
 
   static bool isDemoVersionEnable() {
     //If isDemoVersion is not declarer then it return always false
-    return true;
+    return false;
   }
 
   static int getStudyMaterialId(
@@ -211,6 +211,12 @@ class UiUtils {
       return 3;
     }
     return 0;
+  }
+
+  static String getBackButtonPath(BuildContext context) {
+    return Directionality.of(context).name == TextDirection.rtl.name
+        ? getImagePath("rtl_back_icon.svg")
+        : getImagePath("back_icon.svg");
   }
 
   static String getStudyMaterialTypeLabelByEnum(

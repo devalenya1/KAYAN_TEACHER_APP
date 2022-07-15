@@ -7,6 +7,7 @@ import 'package:eschool_teacher/ui/screens/login/widgets/forgotPasswordRequestBo
 import 'package:eschool_teacher/ui/screens/login/widgets/termsAndConditionAndPrivacyPolicyContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
+import 'package:eschool_teacher/ui/widgets/passwordHideShowButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -226,22 +227,13 @@ class _LoginScreenState extends State<LoginScreen>
                     obscureText: _hidePassword,
                     //
                     decoration: InputDecoration(
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: GestureDetector(
+                        suffixIcon: PasswordHideShowButton(
+                            hidePassword: _hidePassword,
                             onTap: () {
                               setState(() {
                                 _hidePassword = !_hidePassword;
                               });
-                            },
-                            child: SvgPicture.asset(
-                              UiUtils.getImagePath(_hidePassword
-                                  ? "hide_password.svg"
-                                  : "show_password.svg"),
-                              color: UiUtils.getColorScheme(context).secondary,
-                            ),
-                          ),
-                        ),
+                            }),
                         hintStyle: TextStyle(
                             color: UiUtils.getColorScheme(context).secondary),
                         hintText:

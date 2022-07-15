@@ -2,6 +2,7 @@ import 'package:eschool_teacher/ui/screens/home/widgets/bottomNavigationItemCont
 import 'package:eschool_teacher/ui/screens/home/widgets/homeContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/scheduleContainer.dart';
+import 'package:eschool_teacher/ui/screens/home/widgets/settingsContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -148,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               HomeContainer(),
               ScheduleContainer(),
               ProfileContainer(),
-              SizedBox(),
+              SettingsContainer(),
             ],
           ),
           Align(

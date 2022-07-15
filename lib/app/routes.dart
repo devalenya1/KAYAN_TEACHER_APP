@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/ui/screens/aboutUsScreen.dart';
 import 'package:eschool_teacher/ui/screens/add&editAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
@@ -7,16 +8,19 @@ import 'package:eschool_teacher/ui/screens/announcement/announcementsScreen.dart
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
+import 'package:eschool_teacher/ui/screens/contactUsScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/lessonsScreen.dart';
 import 'package:eschool_teacher/ui/screens/login/loginScreen.dart';
 import 'package:eschool_teacher/ui/screens/monthWiseAttendance/monthWiseAttendanceScreen.dart';
+import 'package:eschool_teacher/ui/screens/privacyPolicyScreen.dart';
 import 'package:eschool_teacher/ui/screens/resultScreen.dart';
 import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.dart';
 import 'package:eschool_teacher/ui/screens/studyMaterials/studyMaterialsScreen.dart';
 import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
+import 'package:eschool_teacher/ui/screens/termsAndConditionScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
 import 'package:eschool_teacher/ui/screens/takeAttendance/takeAttendanceScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,6 +62,13 @@ class Routes {
   static const String addOrEditTopic = "/addOrEditTopic";
 
   static const String monthWiseAttendance = "/monthWiseAttendance";
+
+  static const String termsAndCondition = "/termsAndCondition";
+
+  static const String aboutUs = "/aboutUs";
+  static const String privacyPolicy = "/privacyPolicy";
+
+  static const String contactUs = "/contactUs";
 
   static String currentRoute = splash;
 
@@ -147,6 +158,23 @@ class Routes {
       case addOrEditTopic:
         {
           return AddOrEditTopicScreen.route(routeSettings);
+        }
+      case aboutUs:
+        {
+          return AboutUsScreen.route(routeSettings);
+        }
+      case privacyPolicy:
+        {
+          return PrivacyPolicyScreen.route(routeSettings);
+        }
+
+      case contactUs:
+        {
+          return ContactUsScreen.route(routeSettings);
+        }
+      case termsAndCondition:
+        {
+          return TermsAndConditionScreen.route(routeSettings);
         }
       default:
         {

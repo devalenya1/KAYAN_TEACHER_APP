@@ -192,3 +192,30 @@ const String oldFilesWillBeReplacedWithLatestOneKey =
 const String pleaseEnterTopicNameKey = "pleaseEnterTopicName";
 const String pleaseEnterTopicDescriptionKey = "pleaseEnterTopicDescription";
 const String topicAddedSuccessfullyKey = "topicAddedSuccessfully";
+
+const String notificationsKey = "notifications";
+const String moreKey = "more";
+const String aboutUsKey = "aboutUs";
+
+const String changePasswordKey = "changePassword";
+
+const String contactUsKey = "contactUs";
+const String faqsKey = "faqs";
+const String rateUsKey = "rateUs";
+const String shareKey = "share";
+
+const String passwordChangedSuccessfullyKey = "passwordChangedSuccessfully";
+const String passwordResetRequestKey = "passwordResetRequest";
+
+const String currentPasswordKey = "currentPassword";
+const String newPasswordKey = "newPassword";
+const String confirmNewPasswordKey = "confirmNewPassword";
+
+const String pleaseEnterAllFieldKey = "pleaseEnterAllField";
+
+const String newPasswordAndConfirmSameKey = "newPasswordAndConfirmSame";
+
+const String appLanguageKey = "appLanguage";
+const String sureToLogoutKey = "sureToLogout";
+const String yesKey = "yes";
+const String noKey = "no";

@@ -1,11 +1,13 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/appConfigurationCubit.dart';
 import 'package:eschool_teacher/cubits/appLocalizationCubit.dart';
 import 'package:eschool_teacher/cubits/authCubit.dart';
 import 'package:eschool_teacher/cubits/internetConnectivityCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/data/repositories/authRepository.dart';
 import 'package:eschool_teacher/data/repositories/settingsRepository.dart';
+import 'package:eschool_teacher/data/repositories/systemInfoRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/utils/appLanguages.dart';
@@ -61,6 +63,8 @@ class MyApp extends StatelessWidget {
         AssetImage(UiUtils.getImagePath("lower_pattern.png")), context);
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AppConfigurationCubit>(
+            create: (_) => AppConfigurationCubit(SystemRepository())),
         BlocProvider<AppLocalizationCubit>(
             create: (_) => AppLocalizationCubit(SettingsRepository())),
         BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
