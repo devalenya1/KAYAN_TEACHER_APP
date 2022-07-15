@@ -180,6 +180,7 @@ const String lessonAddedKey = "lessonAdded";
 const String unableToDeleteLessonKey = "unableToDeleteLesson";
 const String unableToDeleteTopicKey = "unableToDeleteTopic";
 
+const String sucessfullyassignmentkey = "Suceessfully Create Assignment";
 const String editLessonKey = "editLesson";
 const String editStudyMaterialKey = "editStudyMaterial";
 const String unableToOpenFileKey = "unableToOpenFile";
