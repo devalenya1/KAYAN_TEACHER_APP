@@ -1,11 +1,16 @@
 import 'package:eschool_teacher/app/appLocalization.dart';
+import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
+import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
+import 'package:eschool_teacher/ui/widgets/downloadFileBottomsheetContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorMessageOverlayContainer.dart';
 import 'package:eschool_teacher/utils/constants.dart';
 import 'package:eschool_teacher/utils/errorMessageKeysAndCodes.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:open_file/open_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UiUtils {
@@ -253,5 +258,44 @@ class UiUtils {
               UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
           backgroundColor: Theme.of(context).colorScheme.error);
     }
+  }
+
+  static void openDownloadBottomsheet(
+      {required BuildContext context,
+      required bool storeInExternalStorage,
+      required StudyMaterial studyMaterial}) {
+    showBottomSheet(
+            child: BlocProvider<DownloadFileCubit>(
+              create: (context) => DownloadFileCubit(StudyMaterialRepository()),
+              child: DownloadFileBottomsheetContainer(
+                storeInExternalStorage: storeInExternalStorage,
+                studyMaterial: studyMaterial,
+              ),
+            ),
+            context: context)
+        .then((result) {
+      if (result != null) {
+        if (result['error']) {
+          showErrorMessageContainer(
+              context: context,
+              errorMessage: getErrorMessageFromErrorCode(
+                  context, result['message'].toString()),
+              backgroundColor: Theme.of(context).colorScheme.error);
+        } else {
+          try {
+            OpenFile.open(result['filePath'].toString());
+          } catch (e) {
+            showErrorMessageContainer(
+                context: context,
+                errorMessage: getTranslatedLabel(
+                    context,
+                    storeInExternalStorage
+                        ? fileDownloadedSuccessfullyKey
+                        : unableToOpenKey),
+                backgroundColor: Theme.of(context).colorScheme.error);
+          }
+        }
+      }
+    });
   }
 }

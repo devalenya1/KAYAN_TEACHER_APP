@@ -1,6 +1,6 @@
 import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
-import 'package:eschool_teacher/data/repositories/downloadstudymaterialRepository.dart';
+import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -206,7 +206,7 @@ class _AssignmentDetailsBottomsheetContainerState
                     Spacer(),
                     BlocProvider<DownloadFileCubit>(
                       create: (context) =>
-                          DownloadFileCubit(SubjectRepository()),
+                          DownloadFileCubit(StudyMaterialRepository()),
                       child: DownloadFileButton(
                           studyMaterial:
                               widget.assignment.studyMaterial[index]),

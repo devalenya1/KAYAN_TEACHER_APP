@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
 import 'package:eschool_teacher/utils/api.dart';
 
@@ -24,6 +25,22 @@ class StudyMaterialRepository {
           body: body, url: Api.updateStudyMaterial, useAuthToken: true);
 
       return StudyMaterial.fromJson(Map.from(result['data']));
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
+  Future<void> downloadStudyMaterialFile(
+      {required String url,
+      required String savePath,
+      required CancelToken cancelToken,
+      required Function updateDownloadedPercentage}) async {
+    try {
+      await Api.download(
+          cancelToken: cancelToken,
+          url: url,
+          savePath: savePath,
+          updateDownloadedPercentage: updateDownloadedPercentage);
     } catch (e) {
       throw ApiException(e.toString());
     }
