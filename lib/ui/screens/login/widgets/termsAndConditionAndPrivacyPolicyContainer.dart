@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -12,30 +13,6 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          //
-          // InkWell(
-          //   onTap: () {
-          //     onTapCheckButton();
-          //   },
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //         color: Theme.of(context).colorScheme.primary,
-          //         border: Border.all(color: Colors.transparent)),
-          //     alignment: Alignment.center,
-          //     child: termsAndConditionAccepted
-          //         ? Icon(
-          //             Icons.check,
-          //             size: 15,
-          //             color: Theme.of(context).scaffoldBackgroundColor,
-          //           )
-          //         : SizedBox(),
-          //     width: 20,
-          //     height: 20,
-          //   ),
-          // ),
-          // SizedBox(
-          //   width: 8,
-          // ),
           Text(
             UiUtils.getTranslatedLabel(context, termsAndConditionAgreementKey),
             style: TextStyle(
@@ -53,7 +30,7 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
         children: [
           InkWell(
               onTap: () {
-                //Navigator.of(context).pushNamed(Routes.termsAndCondition);
+                Navigator.of(context).pushNamed(Routes.termsAndCondition);
               },
               child: Text(
                 UiUtils.getTranslatedLabel(context, termsAndConditionKey),
@@ -75,7 +52,7 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
           ),
           InkWell(
               onTap: () {
-                //Navigator.of(context).pushNamed(Routes.privacyPolicy);
+                Navigator.of(context).pushNamed(Routes.privacyPolicy);
               },
               child: Text(
                 UiUtils.getTranslatedLabel(context, privacyPolicyKey),
