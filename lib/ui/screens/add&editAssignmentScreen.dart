@@ -8,8 +8,10 @@ import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomsheetAddFilesDottedBorderContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
+import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/customCupertinoSwitch.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
+import 'package:eschool_teacher/ui/widgets/errorMessageOverlayContainer.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -416,37 +418,60 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
               .map((fileIndex) => _buildUploadedFileContainer(fileIndex))
               .toList(),
 
-          BlocListener<CreateAssignmentCubit, createAssignmentState>(
+          BlocConsumer<CreateAssignmentCubit, createAssignmentState>(
             listener: (context, state) {
               if (state is createAssignmentSuccess) {
+                UiUtils.showErrorMessageContainer(
+                    context: context,
+                    errorMessage: UiUtils.getTranslatedLabel(
+                        context, "sucessfullyassignmentkey"),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary);
                 Navigator.of(context).pop();
               }
             },
-            child: CustomRoundedButton(
-                height: 45,
-                radius: 10,
-                widthPercentage: 0.65,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                buttonTitle:
-                    UiUtils.getTranslatedLabel(context, createAssignmentKey),
-                showBorder: false,
-                onTap: () {
-                  context.read<CreateAssignmentCubit>().createAssignment(
-                        classsId: classSectionId,
-                        subjectId: subjectSectionId,
-                        name: _assignmentNameTextEditingController.text,
-                        datetime:
-                            "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
-                        extraDayForResubmission:
-                            _extraResubmissionDaysTextEditingController.text,
-                        instruction:
-                            _assignmentInstructionTextEditingController.text,
-                        points:
-                            _assignmentPointsTextEditingController.text.trim(),
-                        resubmission: _allowedLateSubmission ? 1 : 0,
-                        file: uploadedFiles.map((e) => e.path!).toList(),
-                      );
-                }),
+            builder: (context, state) {
+              if (state is createAssignmentInProcess) {
+                return CustomRoundedButton(
+                  maxLines: 1,
+                  height: 35,
+                  radius: 10,
+                  textSize: 13,
+                  widthPercentage: 0.35,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  buttonTitle: UiUtils.getTranslatedLabel(context, deleteKey),
+                  showBorder: false,
+                  child: CustomCircularProgressIndicator(
+                    strokeWidth: 2,
+                    widthAndHeight: 20,
+                  ),
+                );
+              }
+              return CustomRoundedButton(
+                  height: 45,
+                  radius: 10,
+                  widthPercentage: 0.65,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  buttonTitle:
+                      UiUtils.getTranslatedLabel(context, createAssignmentKey),
+                  showBorder: false,
+                  onTap: () {
+                    context.read<CreateAssignmentCubit>().createAssignment(
+                          classsId: classSectionId,
+                          subjectId: subjectSectionId,
+                          name: _assignmentNameTextEditingController.text,
+                          datetime:
+                              "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
+                          extraDayForResubmission:
+                              _extraResubmissionDaysTextEditingController.text,
+                          instruction:
+                              _assignmentInstructionTextEditingController.text,
+                          points: _assignmentPointsTextEditingController.text
+                              .trim(),
+                          resubmission: _allowedLateSubmission ? 1 : 0,
+                          file: uploadedFiles.map((e) => e.path!).toList(),
+                        );
+                  });
+            },
           ),
           SizedBox(
             height: _textFieldBottomPadding,

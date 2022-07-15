@@ -300,9 +300,7 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            widget.assignment.extraDaysForResubmission == 0
-                ? "-"
-                : widget.assignment.extraDaysForResubmission.toString(),
+            widget.assignment.extraDaysForResubmission.toString(),
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -352,11 +350,6 @@ class _AssignmentDetailsBottomsheetContainerState
                     strokeWidth: 2,
                     widthAndHeight: 20,
                   ),
-                  onTap: () {
-                    context
-                        .read<DeleteAssignmentCubit>()
-                        .deleteAssignment(assignmentId: widget.assignment.id);
-                  },
                 );
               }
               return CustomRoundedButton(
@@ -456,7 +449,8 @@ class _AssignmentDetailsBottomsheetContainerState
               if (widget.assignment.studyMaterial.isNotEmpty &&
                   widget.assignment.studyMaterial != [])
                 _buildAssignmentReferenceMaterialsContainer(),
-              _buildAssignmentPointsContainer(),
+              if (widget.assignment.points != 0)
+                _buildAssignmentPointsContainer(),
               // _buildLateSubmissionToggleContainer(),
               _buildReSubmissionOfRejectedASsignmentToggleContainer(),
               _buildExtraDayForRejectedAssignmentContainer(),
