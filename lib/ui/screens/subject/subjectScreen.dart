@@ -1,12 +1,15 @@
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/announcementsCubit.dart';
 import 'package:eschool_teacher/cubits/lessonsCubit.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/data/repositories/announcementRepository.dart';
 import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
-import 'package:eschool_teacher/ui/screens/subject/widgets/announcementContainer.dart';
+import 'package:eschool_teacher/ui/widgets/announcementsContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarSubTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
+import 'package:eschool_teacher/ui/widgets/customRefreshIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
 import 'package:eschool_teacher/ui/widgets/lessonsContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
@@ -31,8 +34,16 @@ class SubjectScreen extends StatefulWidget {
   static Route<dynamic> route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
-        builder: (_) => BlocProvider(
-              create: (context) => LessonsCubit(LessonRepository()),
+        builder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => LessonsCubit(LessonRepository()),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                      AnnouncementsCubit(AnnouncementRepository()),
+                ),
+              ],
               child: SubjectScreen(
                 classSectionDetails: arguments['classSectionDetails'],
                 subject: arguments['subject'],
@@ -44,6 +55,9 @@ class SubjectScreen extends StatefulWidget {
 class _SubjectScreenState extends State<SubjectScreen> {
   late String _selectedTabTitle = chaptersKey;
 
+  late ScrollController _scrollController = ScrollController()
+    ..addListener(_announcementsScrollListener);
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +65,29 @@ class _SubjectScreenState extends State<SubjectScreen> {
       context.read<LessonsCubit>().fetchLessons(
           classSectionId: widget.classSectionDetails.id,
           subjectId: widget.subject.id);
+      context.read<AnnouncementsCubit>().fetchAnnouncements(
+          classSectionId: widget.classSectionDetails.id,
+          subjectId: widget.subject.id);
     });
+  }
+
+  void _announcementsScrollListener() {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      if (context.read<AnnouncementsCubit>().hasMore()) {
+        context.read<AnnouncementsCubit>().fetchMoreAnnouncements(
+              subjectId: widget.subject.id,
+              classSectionId: widget.classSectionDetails.classTeacherId,
+            );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_announcementsScrollListener);
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _onTapFloatingActionAddButton() {
@@ -130,21 +166,37 @@ class _SubjectScreenState extends State<SubjectScreen> {
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(
-                  bottom: UiUtils.getScrollViewBottomPadding(context),
-                  top: UiUtils.getScrollViewTopPadding(
-                      context: context,
-                      appBarHeightPercentage:
-                          UiUtils.appBarBiggerHeightPercentage)),
-              child: Column(
+            child: CustomRefreshIndicator(
+              onRefreshCallback: () {
+                if (_selectedTabTitle == chaptersKey) {
+                  context.read<LessonsCubit>().fetchLessons(
+                      classSectionId: widget.classSectionDetails.id,
+                      subjectId: widget.subject.id);
+                } else {
+                  context.read<AnnouncementsCubit>().fetchAnnouncements(
+                      classSectionId: widget.classSectionDetails.id,
+                      subjectId: widget.subject.id);
+                }
+              },
+              displacment: UiUtils.getScrollViewTopPadding(
+                  context: context,
+                  appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage),
+              child: ListView(
+                padding: EdgeInsets.only(
+                    bottom: UiUtils.getScrollViewBottomPadding(context),
+                    top: UiUtils.getScrollViewTopPadding(
+                        context: context,
+                        appBarHeightPercentage:
+                            UiUtils.appBarBiggerHeightPercentage)),
                 children: [
                   _selectedTabTitle == chaptersKey
                       ? LessonsContainer(
                           classSectionId: widget.classSectionDetails.id,
                           subject: widget.subject,
                         )
-                      : AnnouncementContainer()
+                      : AnnouncementsContainer(
+                          classSectionDetails: widget.classSectionDetails,
+                          subject: widget.subject)
                 ],
               ),
             ),

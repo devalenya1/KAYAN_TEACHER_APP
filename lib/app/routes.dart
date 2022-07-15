@@ -3,7 +3,7 @@ import 'package:eschool_teacher/ui/screens/add&editAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
-import 'package:eschool_teacher/ui/screens/announcement/announcementsScreen.dart';
+import 'package:eschool_teacher/ui/screens/announcementsScreen.dart';
 
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';

@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
 import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:eschool_teacher/utils/errorMessageKeysAndCodes.dart';
-
 import 'package:external_path/external_path.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -70,6 +69,7 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
       required bool storeInExternalStorage}) async {
     emit(DownloadFileInProgress(0.0));
     try {
+      print(studyMaterial.fileUrl);
       //if wants to download the file then
       if (storeInExternalStorage) {
         //if user has given permission to download and view file
