@@ -18,7 +18,6 @@ import 'package:eschool_teacher/ui/screens/resultScreen.dart';
 import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.dart';
-import 'package:eschool_teacher/ui/screens/studyMaterials/studyMaterialsScreen.dart';
 import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/termsAndConditionScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
@@ -36,8 +35,6 @@ class Routes {
   static const String assignments = "/assignments";
 
   static const String announcements = "/announcements";
-
-  static const String studyMaterials = "/studyMaterials";
 
   static const String topics = "/topics";
 
@@ -106,11 +103,6 @@ class Routes {
       case addAssignment:
         {
           return AddAssignmentScreen.Routes(routeSettings);
-        }
-
-      case studyMaterials:
-        {
-          return CupertinoPageRoute(builder: (_) => StudyMaterialsScreen());
         }
 
       case takeAttendance:

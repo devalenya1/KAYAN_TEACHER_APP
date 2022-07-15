@@ -1,4 +1,3 @@
-import 'package:eschool_teacher/ui/widgets/downloadFileButton.dart';
 import 'package:flutter/material.dart';
 
 class AnnouncementContainer extends StatefulWidget {
@@ -83,7 +82,7 @@ class _AnnouncementContainerState extends State<AnnouncementContainer> {
                   ),
                 ),
                 Spacer(),
-                DownloadFileButton(),
+                //DownloadFileButton(),
               ],
             ),
           ],

@@ -219,3 +219,11 @@ const String appLanguageKey = "appLanguage";
 const String sureToLogoutKey = "sureToLogout";
 const String yesKey = "yes";
 const String noKey = "no";
+
+const String permissionsNotGivenKey = "permissionsNotGiven";
+const String fileDownloadedSuccessfullyKey = "fileDownloadedSuccessfully";
+
+const String unableToOpenKey = "unableToOpen";
+const String fileDownloadingKey = "downloadingFile";
+const String failedToDownloadKey = "failedToDownload";
+const String cancelKey = "cancel";

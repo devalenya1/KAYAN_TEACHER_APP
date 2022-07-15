@@ -178,7 +178,14 @@
     "appLanguage" : "Application language",
     "sureToLogout" : "Are you sure to logout?",
     "yes" : "Yes",
-    "no" : "No"
+    "no" : "No",
+    
+    "permissionsNotGiven" : "Please give permission to manage files in external storage" ,
+    "fileDownloadedSuccessfully" : "File downloaded successfully",
+    "unableToOpen" : "Unable to open file",
+    "cancel" : "Cancel",
+    "downloadingFile" :"Downloading File",
+    "failedToDownload" : "Failed to download. Try again later"
 
 
 

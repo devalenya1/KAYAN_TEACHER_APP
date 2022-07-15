@@ -59,6 +59,8 @@ dependencies:
   device_info_plus: ^4.0.0
   external_path: ^1.0.1
   flutter_html: ^3.0.0-alpha.5
+  timeago: ^3.2.2
+  open_file:
 
 dev_dependencies:
   change_app_package_name: ^1.0.0

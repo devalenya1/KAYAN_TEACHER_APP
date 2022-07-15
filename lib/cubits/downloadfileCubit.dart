@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
-import 'package:eschool_teacher/data/repositories/downloadstudymaterialRepository.dart';
+import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:eschool_teacher/utils/errorMessageKeysAndCodes.dart';
 
 import 'package:external_path/external_path.dart';
@@ -35,8 +34,9 @@ class DownloadFileFailure extends DownloadFileState {
 }
 
 class DownloadFileCubit extends Cubit<DownloadFileState> {
-  final SubjectRepository _subjectRepository;
-  DownloadFileCubit(this._subjectRepository) : super(DownloadFileInitial());
+  final StudyMaterialRepository _studyMaterialRepository;
+  DownloadFileCubit(this._studyMaterialRepository)
+      : super(DownloadFileInitial());
 
   final CancelToken _cancelToken = CancelToken();
 
@@ -45,28 +45,6 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
   }
 
   Future<bool> _hasGivenManageDownloadFilePermissions() async {
-    if (Platform.isAndroid) {
-      Permission storagePermission = await Permission.storage;
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      final sdkVersion = await androidInfo.version.sdkInt;
-
-      if (sdkVersion! >= 30) {
-        //if sdk version is >= 30 then check for manage external storage
-        Permission manageExternalStoragePermission =
-            await Permission.manageExternalStorage;
-        bool permissionsGiven = (await storagePermission.status).isGranted &&
-            (await manageExternalStoragePermission.status).isGranted;
-
-        if (permissionsGiven) {
-          return true;
-        }
-
-        permissionsGiven = (await Permission.storage.request()).isGranted &&
-            (await Permission.manageExternalStorage.request()).isGranted;
-        return permissionsGiven;
-      }
-    }
-
     //If platfomr is ios or android with < 30 sdk version
     Permission storagePermission = await Permission.storage;
     bool permissionsGiven = (await storagePermission.status).isGranted;
@@ -101,14 +79,11 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
           final tempFileSavePath =
               "${tempDir.path}/${studyMaterial.fileName}.${studyMaterial.fileExtension}";
 
-          await _subjectRepository.downloadStudyMaterialFile(
-            cancelToken: _cancelToken,
-            savePath: tempFileSavePath,
-            updateDownloadedPercentage: _downloadedFilePercentage,
-            url:
-                //"https://www.sample-videos.com/zip/50mb.zip"
-                studyMaterial.fileUrl,
-          );
+          await _studyMaterialRepository.downloadStudyMaterialFile(
+              cancelToken: _cancelToken,
+              savePath: tempFileSavePath,
+              updateDownloadedPercentage: _downloadedFilePercentage,
+              url: studyMaterial.fileUrl);
 
           //download file
           String downloadFilePath = Platform.isAndroid
@@ -128,13 +103,25 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
           emit(DownloadFileFailure(
               ErrorMessageKeysAndCode.permissionNotGivenCode));
         }
+      } else {
+        //download file for just to see
+        final Directory tempDir = await getTemporaryDirectory();
+        final savePath =
+            "${tempDir.path}/${studyMaterial.fileName}.${studyMaterial.fileExtension}";
+
+        await _studyMaterialRepository.downloadStudyMaterialFile(
+            cancelToken: _cancelToken,
+            savePath: savePath,
+            updateDownloadedPercentage: _downloadedFilePercentage,
+            url: studyMaterial.fileUrl);
+
+        emit(DownloadFileSuccess(savePath));
       }
     } catch (e) {
       if (_cancelToken.isCancelled) {
         emit(DownloadFileProcessCanceled());
       } else {
         emit(DownloadFileFailure(e.toString()));
-        print(e.toString());
       }
     }
   }

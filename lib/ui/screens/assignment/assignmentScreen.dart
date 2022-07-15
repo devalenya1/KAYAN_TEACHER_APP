@@ -2,7 +2,6 @@ import 'package:eschool_teacher/ui/screens/assignment/widgets/acceptAssignmentBo
 import 'package:eschool_teacher/ui/screens/assignment/widgets/rejectAssignmentBottomsheetContainer.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
-import 'package:eschool_teacher/ui/widgets/downloadFileBottomsheetContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -36,16 +35,16 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   void openDownloadAssignmentBottomsheet() {
-    UiUtils.showBottomSheet(
-        child: DownloadFileBottomsheetContainer(), context: context);
+    // UiUtils.showBottomSheet(
+    //     child: DownloadFileBottomsheetContainer(), context: context);
   }
 
   void openViewAssignmentBottomsheet() {
     //TODO: implement view facility
     //if assignemnt is downloaded then direct view the file using open package
     //else download the assignment first and then open file
-    UiUtils.showBottomSheet(
-        child: DownloadFileBottomsheetContainer(), context: context);
+    // UiUtils.showBottomSheet(
+    //     child: DownloadFileBottomsheetContainer(), context: context);
   }
 
   Widget _buildAppbar() {
