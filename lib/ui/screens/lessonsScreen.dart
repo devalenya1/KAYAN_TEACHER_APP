@@ -7,6 +7,7 @@ import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
+import 'package:eschool_teacher/ui/widgets/customRefreshIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/lessonsContainer.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -54,6 +55,21 @@ class _LessonsScreenState extends State<LessonsScreen> {
     super.initState();
   }
 
+  void fetchLessons() {
+    final subjectId = context
+        .read<SubjectsOfClassSectionCubit>()
+        .getSubjectIdByName(currentSelectedSubject);
+    if (subjectId != -1) {
+      context.read<LessonsCubit>().fetchLessons(
+          classSectionId: context
+              .read<MyClassesCubit>()
+              .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection)
+              .id,
+          subjectId: subjectId);
+    }
+  }
+
   Widget _buildAppbar() {
     return Align(
       alignment: Alignment.topCenter,
@@ -82,18 +98,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                 setState(() {
                   currentSelectedSubject = result;
                 });
-                final subjectId = context
-                    .read<SubjectsOfClassSectionCubit>()
-                    .getSubjectIdByName(currentSelectedSubject);
-                if (subjectId != -1) {
-                  context.read<LessonsCubit>().fetchLessons(
-                      classSectionId: context
-                          .read<MyClassesCubit>()
-                          .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection)
-                          .id,
-                      subjectId: subjectId);
-                }
+                fetchLessons();
               },
               currentSelectedItem: currentSelectedSubject,
               width: boxConstraints.maxWidth),
@@ -111,17 +116,24 @@ class _LessonsScreenState extends State<LessonsScreen> {
         }),
         body: Stack(
           children: [
-            SingleChildScrollView(
-              padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  right: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  top: UiUtils.getScrollViewTopPadding(
-                      context: context,
-                      appBarHeightPercentage:
-                          UiUtils.appBarSmallerHeightPercentage)),
-              child: Column(
+            CustomRefreshIndicator(
+              displacment: UiUtils.getScrollViewTopPadding(
+                  context: context,
+                  appBarHeightPercentage:
+                      UiUtils.appBarSmallerHeightPercentage),
+              onRefreshCallback: () {
+                fetchLessons();
+              },
+              child: ListView(
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width *
+                        UiUtils.screenContentHorizontalPaddingPercentage,
+                    right: MediaQuery.of(context).size.width *
+                        UiUtils.screenContentHorizontalPaddingPercentage,
+                    top: UiUtils.getScrollViewTopPadding(
+                        context: context,
+                        appBarHeightPercentage:
+                            UiUtils.appBarSmallerHeightPercentage)),
                 children: [
                   _buildClassAndSubjectDropDowns(),
                   SizedBox(

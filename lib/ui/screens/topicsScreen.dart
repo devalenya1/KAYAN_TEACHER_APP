@@ -10,6 +10,7 @@ import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
+import 'package:eschool_teacher/ui/widgets/customRefreshIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/defaultDropDownLabelContainer.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/topicsContainer.dart';
@@ -19,7 +20,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-//TODO: Check no lessons and also change the fetch topic initial
 class TopicsScreen extends StatefulWidget {
   TopicsScreen({
     Key? key,
@@ -155,17 +155,28 @@ class _TopicsScreenState extends State<TopicsScreen> {
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  right: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  top: UiUtils.getScrollViewTopPadding(
-                      context: context,
-                      appBarHeightPercentage:
-                          UiUtils.appBarSmallerHeightPercentage)),
-              child: Column(
+            child: CustomRefreshIndicator(
+              onRefreshCallback: () {
+                context.read<TopicsCubit>().fetchTopics(
+                    lessonId: context
+                        .read<LessonsCubit>()
+                        .getLessonByName(currentSelectedLesson)
+                        .id);
+              },
+              displacment: UiUtils.getScrollViewTopPadding(
+                  context: context,
+                  appBarHeightPercentage:
+                      UiUtils.appBarSmallerHeightPercentage),
+              child: ListView(
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width *
+                        UiUtils.screenContentHorizontalPaddingPercentage,
+                    right: MediaQuery.of(context).size.width *
+                        UiUtils.screenContentHorizontalPaddingPercentage,
+                    top: UiUtils.getScrollViewTopPadding(
+                        context: context,
+                        appBarHeightPercentage:
+                            UiUtils.appBarSmallerHeightPercentage)),
                 children: [
                   //
                   _buildClassSubjectAndLessonDropDowns(),

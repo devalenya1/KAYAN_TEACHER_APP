@@ -3,6 +3,8 @@ import 'package:eschool_teacher/data/models/announcement.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
+import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
+import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/ui/widgets/studyMaterialWithDownloadButtonContainer.dart';
@@ -95,16 +97,27 @@ class AnnouncementsContainer extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              announcement.title,
-              style: TextStyle(
-                height: 1.2,
-                color: Theme.of(context).colorScheme.secondary,
-                fontSize: 15.0,
-              ),
-            ),
-            SizedBox(
-              height: announcement.description.isEmpty ? 0 : 5,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: boxConstraints.maxWidth * (0.75),
+                  child: Text(
+                    announcement.title,
+                    style: TextStyle(
+                      height: 1.1,
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ),
+                Spacer(),
+                EditButton(onTap: () {}),
+                SizedBox(
+                  width: 10,
+                ),
+                DeleteButton(onTap: () {})
+              ],
             ),
             announcement.description.isEmpty
                 ? SizedBox()

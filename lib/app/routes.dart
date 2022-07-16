@@ -132,8 +132,7 @@ class Routes {
         }
       case announcements:
         {
-          return CupertinoPageRoute(
-              builder: (context) => const AnnouncementsScreen());
+          return AnnouncementsScreen.route(routeSettings);
         }
       case lessons:
         {
