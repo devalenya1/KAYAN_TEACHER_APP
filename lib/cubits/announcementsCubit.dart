@@ -70,6 +70,10 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
     }
   }
 
+  void updateState(AnnouncementsState updateState) {
+    emit(updateState);
+  }
+
   bool hasMore() {
     if (state is AnnouncementsFetchSuccess) {
       return (state as AnnouncementsFetchSuccess).currentPage <

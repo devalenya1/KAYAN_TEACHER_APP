@@ -1,6 +1,6 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
+import 'package:eschool_teacher/ui/widgets/addedFileContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTopBarMenu.dart';
 import 'package:eschool_teacher/ui/widgets/bottomsheetAddFilesDottedBorderContainer.dart';
@@ -136,38 +136,6 @@ class _AddStudyMaterialBottomsheetState
     Navigator.of(context).pop();
   }
 
-  Widget _buildAddedFileContainer(PlatformFile file, Function onTap) {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return DottedBorder(
-        borderType: BorderType.RRect,
-        dashPattern: [10, 10],
-        radius: Radius.circular(10.0),
-        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
-        child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 10),
-          child: Row(
-            children: [
-              SizedBox(
-                width: boxConstraints.maxWidth * (0.75),
-                child: Text(
-                  file.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Spacer(),
-              IconButton(
-                  onPressed: () {
-                    onTap();
-                  },
-                  icon: Icon(Icons.close)),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -242,16 +210,19 @@ class _AddStudyMaterialBottomsheetState
                       //else show file picker option
                       //
                       addedFile != null
-                          ? _buildAddedFileContainer(addedFile!, () {
-                              addedFile = null;
-                              setState(() {});
-                            })
+                          ? AddedFileContainer(
+                              platformFile: addedFile!,
+                              onDelete: () {
+                                addedFile = null;
+                                setState(() {});
+                              })
                           : addedVideoThumbnailFile != null
-                              ? _buildAddedFileContainer(
-                                  addedVideoThumbnailFile!, () {
-                                  addedVideoThumbnailFile = null;
-                                  setState(() {});
-                                })
+                              ? AddedFileContainer(
+                                  platformFile: addedVideoThumbnailFile!,
+                                  onDelete: () {
+                                    addedVideoThumbnailFile = null;
+                                    setState(() {});
+                                  })
                               : BottomsheetAddFilesDottedBorderContainer(
                                   onTap: () async {
                                     if (await _isPermissionGiven()) {
@@ -309,11 +280,12 @@ class _AddStudyMaterialBottomsheetState
                                   UiUtils.getTranslatedLabel(
                                       context, videoUploadKey)
                               ? addedVideoFile != null
-                                  ? _buildAddedFileContainer(addedVideoFile!,
-                                      () {
-                                      addedVideoFile = null;
-                                      setState(() {});
-                                    })
+                                  ? AddedFileContainer(
+                                      platformFile: addedVideoFile!,
+                                      onDelete: () {
+                                        addedVideoFile = null;
+                                        setState(() {});
+                                      })
                                   : BottomsheetAddFilesDottedBorderContainer(
                                       onTap: () async {
                                         if (await _isPermissionGiven()) {

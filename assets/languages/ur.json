@@ -185,7 +185,13 @@
     "unableToOpen" : "Unable to open file",
     "cancel" : "Cancel",
     "downloadingFile" :"Downloading File",
-    "failedToDownload" : "Failed to download. Try again later"
+    "failedToDownload" : "Failed to download. Try again later",
+    "addAnnouncement" : "Add announcement",
+    "editAnnouncement" : "Edit announcement",
+    "pleaseAddAnnouncementTitle" : "Please add announcement title",
+    "announcementTitle" : "Announcement title",
+
+    "announcementAdded" : "Announcement added successfully"
 
 
 

@@ -177,6 +177,8 @@ const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
 const String pleaseSelectLessonKey = "pleaseSelectLesson";
 
 const String lessonAddedKey = "lessonAdded";
+
+const String announcementAddedKey = "announcementAdded";
 const String unableToDeleteLessonKey = "unableToDeleteLesson";
 const String unableToDeleteTopicKey = "unableToDeleteTopic";
 
@@ -228,3 +230,8 @@ const String unableToOpenKey = "unableToOpen";
 const String fileDownloadingKey = "downloadingFile";
 const String failedToDownloadKey = "failedToDownload";
 const String cancelKey = "cancel";
+
+const String addAnnouncementKey = "addAnnouncement";
+const String editAnnouncementKey = "editAnnouncement";
+const String pleaseAddAnnouncementTitleKey = "pleaseAddAnnouncementTitle";
+const String announcementTitleKey = "announcementTitle";

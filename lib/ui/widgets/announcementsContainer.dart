@@ -2,12 +2,12 @@ import 'package:eschool_teacher/cubits/announcementsCubit.dart';
 import 'package:eschool_teacher/data/models/announcement.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
-import 'package:eschool_teacher/ui/widgets/studyMaterialWithDownloadButtonContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -130,12 +130,24 @@ class AnnouncementsContainer extends StatelessWidget {
                       fontSize: 11.5,
                     ),
                   ),
-            ...announcement.files
-                .map((studyMaterial) =>
-                    StudyMaterialWithDownloadButtonContainer(
-                        boxConstraints: boxConstraints,
-                        studyMaterial: studyMaterial))
-                .toList(),
+            announcement.files.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        // UiUtils.showBottomSheet(
+                        //     child: AttachmentBottomsheetContainer(
+                        //         studyMaterials:
+                        //             lesson.studyMaterials),
+                        //     context: context);
+                      },
+                      child: Text(
+                        "${announcement.files.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
+                        style: TextStyle(color: assignmentViewButtonColor),
+                      ),
+                    ),
+                  )
+                : SizedBox(),
             SizedBox(
               height: announcement.files.isNotEmpty ? 0 : 5,
             ),

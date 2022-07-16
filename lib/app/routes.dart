@@ -1,5 +1,6 @@
 import 'package:eschool_teacher/ui/screens/aboutUsScreen.dart';
 import 'package:eschool_teacher/ui/screens/add&editAssignmentScreen.dart';
+import 'package:eschool_teacher/ui/screens/addOrEditAnnouncement/addOrEditAnnouncementScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
@@ -57,6 +58,8 @@ class Routes {
   static const String addOrEditLesson = "/addOrEditLesson";
 
   static const String addOrEditTopic = "/addOrEditTopic";
+
+  static const String addOrEditAnnouncement = "/addOrEditAnnouncement";
 
   static const String monthWiseAttendance = "/monthWiseAttendance";
 
@@ -167,6 +170,11 @@ class Routes {
         {
           return TermsAndConditionScreen.route(routeSettings);
         }
+      case addOrEditAnnouncement:
+        {
+          return AddOrEditAnnouncementScreen.route(routeSettings);
+        }
+
       default:
         {
           return CupertinoPageRoute(builder: (context) => const Scaffold());

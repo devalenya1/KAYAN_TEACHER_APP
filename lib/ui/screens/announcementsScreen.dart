@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/announcementsCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
@@ -6,6 +7,7 @@ import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/widgets/announcementsContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
+import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
 import 'package:eschool_teacher/ui/widgets/customRefreshIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -80,9 +82,11 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                 setState(() {
                   currentSelectedClassSection = result;
                 });
-              }),
 
-          //
+                context
+                    .read<AnnouncementsCubit>()
+                    .updateState(AnnouncementsInitial());
+              }),
           ClassSubjectsDropDownMenu(
               changeSelectedItem: (result) {
                 setState(() {
@@ -100,6 +104,9 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionAddButton(onTap: () {
+        Navigator.of(context).pushNamed<bool?>(Routes.addOrEditAnnouncement);
+      }),
       body: Stack(
         children: [
           Align(

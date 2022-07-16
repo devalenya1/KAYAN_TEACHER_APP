@@ -9,7 +9,7 @@ import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/widgets/addStudyMaterialBottomSheet.dart';
-import 'package:eschool_teacher/ui/widgets/addedFileContainer.dart';
+import 'package:eschool_teacher/ui/widgets/addedStudyMaterialFileContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomsheetAddFilesDottedBorderContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
@@ -286,7 +286,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
             ),
 
             ...List.generate(_addedStudyMaterials.length, (index) => index)
-                .map((index) => AddedFileContainer(
+                .map((index) => AddedStudyMaterialContainer(
                     onDelete: (index) {
                       _addedStudyMaterials.removeAt(index);
                       setState(() {});

@@ -11,7 +11,6 @@ import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/customCupertinoSwitch.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
-import 'package:eschool_teacher/ui/widgets/errorMessageOverlayContainer.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
