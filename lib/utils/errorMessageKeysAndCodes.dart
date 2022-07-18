@@ -13,6 +13,8 @@ class ErrorMessageKeysAndCode {
   static String canNotSendResetPasswordRequestKey =
       "canNotSendResetPasswordRequest";
 
+  static String nameAlreadyTakenKey = "nameAlreadyTaken";
+
   //These are ui side error codes
 
   static const String permissionNotGivenCode = "300";
@@ -42,8 +44,10 @@ class ErrorMessageKeysAndCode {
       return invalidPasswordKey;
     }
     if (errorCode == permissionNotGivenCode) {
-      //TODO: permission not given key
       return "permissionsNotGivenKey";
+    }
+    if (errorCode == "113") {
+      return nameAlreadyTakenKey;
     }
     if (errorCode == noInternetCode) {
       return noInternetKey;

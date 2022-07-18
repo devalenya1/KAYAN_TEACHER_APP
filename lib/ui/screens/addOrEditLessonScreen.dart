@@ -136,7 +136,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
       return;
     }
 
-    if (_lessonNameTextEditingController.text.trim().isEmpty) {
+    if (_lessonDescriptionTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
           UiUtils.getTranslatedLabel(context, pleaseEnterLessonDescriptionKey));
       return;
@@ -159,7 +159,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
       return;
     }
 
-    if (_lessonNameTextEditingController.text.trim().isEmpty) {
+    if (_lessonDescriptionTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
           UiUtils.getTranslatedLabel(context, pleaseEnterLessonDescriptionKey));
       return;

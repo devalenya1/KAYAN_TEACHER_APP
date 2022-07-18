@@ -192,7 +192,8 @@
     "announcementTitle" : "Announcement title",
 
     "announcementAdded" : "Announcement added successfully",
-    "unableToDelete" : "Unable to delete file"
+    "unableToDelete" : "Unable to delete file",
+    "nameAlreadyTaken" : "The name has already been taken"
 }
 
 
