@@ -46,6 +46,28 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
   late String currentSelectedSubject =
       UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
 
+  late ScrollController _scrollController = ScrollController()
+    ..addListener(_announcementsScrollListener);
+
+  void _announcementsScrollListener() {
+    if (_scrollController.offset ==
+        _scrollController.position.maxScrollExtent) {
+      if (context.read<AnnouncementsCubit>().hasMore()) {
+        context.read<AnnouncementsCubit>().fetchMoreAnnouncements(
+              subjectId: context
+                  .read<SubjectsOfClassSectionCubit>()
+                  .getSubjectDetailsByName(currentSelectedSubject)
+                  .id,
+              classSectionId: context
+                  .read<MyClassesCubit>()
+                  .getClassSectionDetails(
+                      classSectionName: currentSelectedClassSection)
+                  .id,
+            );
+      }
+    }
+  }
+
   @override
   void initState() {
     context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
@@ -120,6 +142,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                 fetchAnnouncements();
               },
               child: ListView(
+                controller: _scrollController,
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width *
                         UiUtils.screenContentHorizontalPaddingPercentage,
