@@ -80,7 +80,7 @@ class LessonsContainer extends StatelessWidget {
             if (state is LessonDeleteSuccess) {
               context.read<LessonsCubit>().deleteLesson(lesson.id);
             } else if (state is LessonDeleteFailure) {
-              UiUtils.showErrorMessageContainer(
+              UiUtils.showBottomToastOverlay(
                   context: context,
                   errorMessage:
                       "${UiUtils.getTranslatedLabel(context, unableToDeleteLessonKey)} ${lesson.name}",
@@ -176,6 +176,7 @@ class LessonsContainer extends StatelessWidget {
                                 onTap: () {
                                   UiUtils.showBottomSheet(
                                       child: AttachmentBottomsheetContainer(
+                                          fromAnnouncementsContainer: false,
                                           studyMaterials:
                                               lesson.studyMaterials),
                                       context: context);

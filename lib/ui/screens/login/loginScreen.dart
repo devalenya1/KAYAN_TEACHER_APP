@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen>
 
   void _signInTeacher() {
     if (_emailTextEditingController.text.trim().isEmpty) {
-      UiUtils.showErrorMessageContainer(
+      UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage:
               UiUtils.getTranslatedLabel(context, pleaseEnterEmailKey),
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen>
     }
 
     if (_passwordTextEditingController.text.trim().isEmpty) {
-      UiUtils.showErrorMessageContainer(
+      UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage:
               UiUtils.getTranslatedLabel(context, pleaseEnterPasswordKey),
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen>
               context: context,
             ).then((value) {
               if (value != null && !value['error']) {
-                UiUtils.showErrorMessageContainer(
+                UiUtils.showBottomToastOverlay(
                     context: context,
                     errorMessage: UiUtils.getTranslatedLabel(
                             context, passwordUpdateLinkSentKey) +
@@ -255,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen>
 
                         Navigator.of(context).pushReplacementNamed(Routes.home);
                       } else if (state is SignInFailure) {
-                        UiUtils.showErrorMessageContainer(
+                        UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
                                 context, state.errorMessage),

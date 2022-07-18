@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
+import 'package:eschool_teacher/ui/widgets/announcementAttachmentContainer.dart';
 import 'package:eschool_teacher/ui/widgets/studyMaterialContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -6,7 +7,12 @@ import 'package:flutter/material.dart';
 
 class AttachmentBottomsheetContainer extends StatelessWidget {
   final List<StudyMaterial> studyMaterials;
-  const AttachmentBottomsheetContainer({Key? key, required this.studyMaterials})
+  final bool fromAnnouncementsContainer;
+
+  const AttachmentBottomsheetContainer(
+      {Key? key,
+      required this.studyMaterials,
+      required this.fromAnnouncementsContainer})
       : super(key: key);
 
   @override
@@ -36,9 +42,14 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: studyMaterials
                   .map((studyMaterial) => Center(
-                        child: StudyMaterialContainer(
-                            studyMaterial: studyMaterial,
-                            showEditAndDeleteButton: false),
+                        child: fromAnnouncementsContainer
+                            ? AnnouncementAttachmentContainer(
+                                studyMaterial: studyMaterial,
+                                showDeleteButton: false,
+                              )
+                            : StudyMaterialContainer(
+                                studyMaterial: studyMaterial,
+                                showEditAndDeleteButton: false),
                       ))
                   .toList(),
             ),

@@ -140,7 +140,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
   }
 
   void showErrorMessage(String errorMessageKey) {
-    UiUtils.showErrorMessageContainer(
+    UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: errorMessageKey,
         backgroundColor: Theme.of(context).colorScheme.error);
@@ -377,7 +377,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                       if (state is EditTopicSuccess) {
                         Navigator.of(context).pop(true);
                       } else if (state is EditTopicFailure) {
-                        UiUtils.showErrorMessageContainer(
+                        UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
                                 context, state.errorMessage),
@@ -420,7 +420,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                         _topicDescriptionTextEditingController.text = "";
                         _addedStudyMaterials = [];
                         setState(() {});
-                        UiUtils.showErrorMessageContainer(
+                        UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getTranslatedLabel(
                                 context,
@@ -429,7 +429,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                             backgroundColor:
                                 Theme.of(context).colorScheme.onPrimary);
                       } else if (state is CreateTopicFailure) {
-                        UiUtils.showErrorMessageContainer(
+                        UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
                                 context, state.errorMessage),

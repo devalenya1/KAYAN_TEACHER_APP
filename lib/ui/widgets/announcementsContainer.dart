@@ -3,6 +3,7 @@ import 'package:eschool_teacher/data/models/announcement.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
+import 'package:eschool_teacher/ui/widgets/attachmentsBottomsheetContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
@@ -135,11 +136,12 @@ class AnnouncementsContainer extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 5.0),
                     child: GestureDetector(
                       onTap: () {
-                        // UiUtils.showBottomSheet(
-                        //     child: AttachmentBottomsheetContainer(
-                        //         studyMaterials:
-                        //             lesson.studyMaterials),
-                        //     context: context);
+                        UiUtils.showBottomSheet(
+                            child: AttachmentBottomsheetContainer(
+                              fromAnnouncementsContainer: true,
+                              studyMaterials: announcement.files,
+                            ),
+                            context: context);
                       },
                       child: Text(
                         "${announcement.files.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",

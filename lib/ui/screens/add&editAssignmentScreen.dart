@@ -420,7 +420,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           BlocConsumer<CreateAssignmentCubit, createAssignmentState>(
             listener: (context, state) {
               if (state is createAssignmentSuccess) {
-                UiUtils.showErrorMessageContainer(
+                UiUtils.showBottomToastOverlay(
                     context: context,
                     errorMessage: UiUtils.getTranslatedLabel(
                         context, "sucessfullyassignmentkey"),

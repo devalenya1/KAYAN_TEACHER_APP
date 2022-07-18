@@ -124,7 +124,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
   }
 
   void showErrorMessage(String errorMessageKey) {
-    UiUtils.showErrorMessageContainer(
+    UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: errorMessageKey,
         backgroundColor: Theme.of(context).colorScheme.error);
@@ -305,7 +305,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                       if (state is EditLessonSuccess) {
                         Navigator.of(context).pop(true);
                       } else if (state is EditLessonFailure) {
-                        UiUtils.showErrorMessageContainer(
+                        UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
                                 context, state.errorMessage),
@@ -347,14 +347,14 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                         _lessonNameTextEditingController.text = "";
                         _addedStudyMaterials = [];
                         setState(() {});
-                        UiUtils.showErrorMessageContainer(
+                        UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getTranslatedLabel(
                                 context, lessonAddedKey),
                             backgroundColor:
                                 Theme.of(context).colorScheme.onPrimary);
                       } else if (state is CreateLessonFailure) {
-                        UiUtils.showErrorMessageContainer(
+                        UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
                                 context, state.errorMessage),

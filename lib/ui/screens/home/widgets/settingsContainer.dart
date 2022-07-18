@@ -24,7 +24,7 @@ class SettingsContainer extends StatelessWidget {
     if (await canLaunchUrl(Uri.parse(appUrl))) {
       launchUrl(Uri.parse(appUrl));
     } else {
-      UiUtils.showErrorMessageContainer(
+      UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage: UiUtils.getTranslatedLabel(
               context, ErrorMessageKeysAndCode.defaultErrorMessageKey),
@@ -128,7 +128,7 @@ class SettingsContainer extends StatelessWidget {
                       context: context)
                   .then((value) {
                 if (value != null && !value['error']) {
-                  UiUtils.showErrorMessageContainer(
+                  UiUtils.showBottomToastOverlay(
                       context: context,
                       errorMessage: UiUtils.getTranslatedLabel(
                           context, passwordChangedSuccessfullyKey),

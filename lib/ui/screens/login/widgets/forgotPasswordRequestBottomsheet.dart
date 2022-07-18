@@ -66,7 +66,7 @@ class _ForgotPasswordRequestBottomsheetState
                   ForgotPasswordRequestState>(
                 listener: ((context, state) {
                   if (state is ForgotPasswordRequestFailure) {
-                    UiUtils.showErrorMessageContainer(
+                    UiUtils.showBottomToastOverlay(
                         context: context,
                         errorMessage: UiUtils.getErrorMessageFromErrorCode(
                             context, state.errorMessage),
@@ -86,7 +86,7 @@ class _ForgotPasswordRequestBottomsheetState
                         }
                         FocusScope.of(context).unfocus();
                         if (_emailTextEditingController.text.trim().isEmpty) {
-                          UiUtils.showErrorMessageContainer(
+                          UiUtils.showBottomToastOverlay(
                               context: context,
                               errorMessage: UiUtils.getTranslatedLabel(
                                   context, pleaseEnterEmailKey),

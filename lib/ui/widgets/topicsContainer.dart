@@ -85,7 +85,7 @@ class TopicsContainer extends StatelessWidget {
             if (state is DeleteTopicSuccess) {
               context.read<TopicsCubit>().deleteTopic(topic.id);
             } else if (state is DeleteTopicFailure) {
-              UiUtils.showErrorMessageContainer(
+              UiUtils.showBottomToastOverlay(
                   context: context,
                   errorMessage:
                       "${UiUtils.getTranslatedLabel(context, unableToDeleteTopicKey)} ${topic.name}",
@@ -181,6 +181,7 @@ class TopicsContainer extends StatelessWidget {
                                 onTap: () {
                                   UiUtils.showBottomSheet(
                                       child: AttachmentBottomsheetContainer(
+                                          fromAnnouncementsContainer: false,
                                           studyMaterials: topic.studyMaterials),
                                       context: context);
                                 },

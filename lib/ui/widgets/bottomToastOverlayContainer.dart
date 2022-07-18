@@ -1,20 +1,20 @@
 import 'package:eschool_teacher/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-class ErrorMessageOverlayContainer extends StatefulWidget {
+class BottomToastOverlayContainer extends StatefulWidget {
   final String errorMessage;
   final Color backgroundColor;
-  ErrorMessageOverlayContainer(
+  BottomToastOverlayContainer(
       {Key? key, required this.errorMessage, required this.backgroundColor})
       : super(key: key);
 
   @override
-  _ErrorMessageOverlayContainerState createState() =>
-      _ErrorMessageOverlayContainerState();
+  _BottomToastOverlayContainerState createState() =>
+      _BottomToastOverlayContainerState();
 }
 
-class _ErrorMessageOverlayContainerState
-    extends State<ErrorMessageOverlayContainer>
+class _BottomToastOverlayContainerState
+    extends State<BottomToastOverlayContainer>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController =
       AnimationController(vsync: this, duration: Duration(milliseconds: 500))

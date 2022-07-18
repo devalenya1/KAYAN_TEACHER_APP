@@ -4,7 +4,7 @@ import 'package:eschool_teacher/data/models/studyMaterial.dart';
 import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/downloadFileBottomsheetContainer.dart';
-import 'package:eschool_teacher/ui/widgets/errorMessageOverlayContainer.dart';
+import 'package:eschool_teacher/ui/widgets/bottomToastOverlayContainer.dart';
 import 'package:eschool_teacher/utils/constants.dart';
 import 'package:eschool_teacher/utils/errorMessageKeysAndCodes.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -77,13 +77,13 @@ class UiUtils {
     return result;
   }
 
-  static Future<void> showErrorMessageContainer(
+  static Future<void> showBottomToastOverlay(
       {required BuildContext context,
       required String errorMessage,
       required Color backgroundColor}) async {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
-      builder: (context) => ErrorMessageOverlayContainer(
+      builder: (context) => BottomToastOverlayContainer(
         backgroundColor: backgroundColor,
         errorMessage: errorMessage,
       ),
@@ -178,7 +178,7 @@ class UiUtils {
   }
 
   static void showFeatureDisableInDemoVersion(BuildContext context) {
-    showErrorMessageContainer(
+    showBottomToastOverlay(
         context: context,
         errorMessage:
             UiUtils.getTranslatedLabel(context, featureDisableInDemoVersionKey),
@@ -245,14 +245,14 @@ class UiUtils {
       if (canLaunch) {
         launchUrl(Uri.parse(fileUrl), mode: LaunchMode.externalApplication);
       } else {
-        UiUtils.showErrorMessageContainer(
+        UiUtils.showBottomToastOverlay(
             context: context,
             errorMessage:
                 UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
             backgroundColor: Theme.of(context).colorScheme.error);
       }
     } catch (e) {
-      UiUtils.showErrorMessageContainer(
+      UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage:
               UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
@@ -276,7 +276,7 @@ class UiUtils {
         .then((result) {
       if (result != null) {
         if (result['error']) {
-          showErrorMessageContainer(
+          showBottomToastOverlay(
               context: context,
               errorMessage: getErrorMessageFromErrorCode(
                   context, result['message'].toString()),
@@ -285,7 +285,7 @@ class UiUtils {
           try {
             OpenFile.open(result['filePath'].toString());
           } catch (e) {
-            showErrorMessageContainer(
+            showBottomToastOverlay(
                 context: context,
                 errorMessage: getTranslatedLabel(
                     context,

@@ -117,7 +117,7 @@ class _ChangePasswordBottomsheetState extends State<ChangePasswordBottomsheet> {
                     BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
                       listener: ((context, state) {
                         if (state is ChangePasswordFailure) {
-                          UiUtils.showErrorMessageContainer(
+                          UiUtils.showBottomToastOverlay(
                               context: context,
                               errorMessage:
                                   UiUtils.getErrorMessageFromErrorCode(
@@ -146,7 +146,7 @@ class _ChangePasswordBottomsheetState extends State<ChangePasswordBottomsheet> {
                                   _confirmNewPasswordTextEditingController.text
                                       .trim()
                                       .isEmpty) {
-                                UiUtils.showErrorMessageContainer(
+                                UiUtils.showBottomToastOverlay(
                                     context: context,
                                     errorMessage: UiUtils.getTranslatedLabel(
                                         context, pleaseEnterAllFieldKey),
@@ -160,7 +160,7 @@ class _ChangePasswordBottomsheetState extends State<ChangePasswordBottomsheet> {
                                       .trim() !=
                                   _confirmNewPasswordTextEditingController.text
                                       .trim()) {
-                                UiUtils.showErrorMessageContainer(
+                                UiUtils.showBottomToastOverlay(
                                     context: context,
                                     errorMessage: UiUtils.getTranslatedLabel(
                                         context, newPasswordAndConfirmSameKey),

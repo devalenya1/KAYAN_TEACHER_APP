@@ -110,7 +110,7 @@ class _AddOrEditAnnouncementScreenState
         setState(() {});
       }
     } else {
-      UiUtils.showErrorMessageContainer(
+      UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage:
               UiUtils.getTranslatedLabel(context, permissionToPickFileKey),
@@ -120,7 +120,7 @@ class _AddOrEditAnnouncementScreenState
 
   void createAnnouncement() {
     if (_announcementTitleEditingController.text.trim().isEmpty) {
-      UiUtils.showErrorMessageContainer(
+      UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage: UiUtils.getTranslatedLabel(
               context, pleaseAddAnnouncementTitleKey),
@@ -242,13 +242,13 @@ class _AddOrEditAnnouncementScreenState
                   _announcementDescriptionEditingController.text = "";
                   _addedAttatchments = [];
                   setState(() {});
-                  UiUtils.showErrorMessageContainer(
+                  UiUtils.showBottomToastOverlay(
                       context: context,
                       errorMessage: UiUtils.getTranslatedLabel(
                           context, announcementAddedKey),
                       backgroundColor: Theme.of(context).colorScheme.onPrimary);
                 } else if (state is CreateAnnouncementFailure) {
-                  UiUtils.showErrorMessageContainer(
+                  UiUtils.showBottomToastOverlay(
                       context: context,
                       errorMessage: UiUtils.getErrorMessageFromErrorCode(
                           context, state.errorMessage),

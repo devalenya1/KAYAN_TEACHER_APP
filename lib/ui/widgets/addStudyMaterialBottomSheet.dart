@@ -90,7 +90,7 @@ class _AddStudyMaterialBottomsheetState
   }
 
   void showErrorMessage(String messageKey) {
-    UiUtils.showErrorMessageContainer(
+    UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: UiUtils.getTranslatedLabel(context, messageKey),
         backgroundColor: Theme.of(context).colorScheme.error);

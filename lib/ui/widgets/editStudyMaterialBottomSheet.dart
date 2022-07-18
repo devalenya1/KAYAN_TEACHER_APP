@@ -52,7 +52,7 @@ class _EditStudyMaterialBottomSheetState
   }
 
   void showErrorMessage(String messageKey) {
-    UiUtils.showErrorMessageContainer(
+    UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: UiUtils.getTranslatedLabel(context, messageKey),
         backgroundColor: Theme.of(context).colorScheme.error);
@@ -299,7 +299,7 @@ class _EditStudyMaterialBottomSheetState
                     if (state is UpdateStudyMaterialSuccess) {
                       Navigator.of(context).pop(state.studyMaterial);
                     } else if (state is UpdateStudyMaterialFailure) {
-                      UiUtils.showErrorMessageContainer(
+                      UiUtils.showBottomToastOverlay(
                           context: context,
                           errorMessage: UiUtils.getErrorMessageFromErrorCode(
                               context, state.errorMessage),

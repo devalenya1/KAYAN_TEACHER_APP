@@ -235,3 +235,4 @@ const String addAnnouncementKey = "addAnnouncement";
 const String editAnnouncementKey = "editAnnouncement";
 const String pleaseAddAnnouncementTitleKey = "pleaseAddAnnouncementTitle";
 const String announcementTitleKey = "announcementTitle";
+const String unableToDeleteKey = "unableToDelete";

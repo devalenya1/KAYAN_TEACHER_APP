@@ -46,10 +46,11 @@ class StudyMaterialContainer extends StatelessWidget {
             if (state is DeleteStudyMaterialSuccess) {
               onDeleteStudyMaterial?.call(studyMaterial.id);
             } else if (state is DeleteStudyMaterialFailure) {
-              UiUtils.showErrorMessageContainer(
+              UiUtils.showBottomToastOverlay(
                   context: context,
                   //
-                  errorMessage: "Unable to delete file",
+                  errorMessage:
+                      UiUtils.getTranslatedLabel(context, unableToDeleteKey),
                   backgroundColor: Theme.of(context).colorScheme.error);
             }
           },

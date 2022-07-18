@@ -190,5 +190,6 @@
     "editAnnouncement" : "Edit announcement",
     "pleaseAddAnnouncementTitle" : "Please add announcement title",
     "announcementTitle" : "Announcement title",
-    "announcementAdded" : "Announcement added successfully"
+    "announcementAdded" : "Announcement added successfully",
+    "unableToDelete" : "Unable to delete file"
 }
