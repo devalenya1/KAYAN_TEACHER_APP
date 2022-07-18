@@ -120,7 +120,7 @@ class TopicsContainer extends StatelessWidget {
                             Navigator.of(context).pushNamed<bool?>(
                                 Routes.addOrEditTopic,
                                 arguments: {
-                                  "editTopic": true,
+                                  "classSectionDetails": classSectionDetails,
                                   "subject": subject,
                                   "lesson": lesson,
                                   "topic": topic

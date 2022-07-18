@@ -1,6 +1,7 @@
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/lessonDeleteCubit.dart';
 import 'package:eschool_teacher/cubits/lessonsCubit.dart';
+import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/lesson.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
@@ -17,11 +18,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LessonsContainer extends StatelessWidget {
-  final int classSectionId;
+  final ClassSectionDetails classSectionDetails;
   final Subject subject;
 
   const LessonsContainer(
-      {Key? key, required this.classSectionId, required this.subject})
+      {Key? key, required this.classSectionDetails, required this.subject})
       : super(key: key);
 
   Widget _buildLessonDetailsShimmerContainer(BuildContext context) {
@@ -116,13 +117,13 @@ class LessonsContainer extends StatelessWidget {
                             Navigator.of(context).pushNamed<bool?>(
                                 Routes.addOrEditLesson,
                                 arguments: {
-                                  "editLesson": true,
                                   "lesson": lesson,
-                                  "subject": subject
+                                  "subject": subject,
+                                  "classSectionDetails": classSectionDetails
                                 }).then((value) {
                               if (value != null && value) {
                                 context.read<LessonsCubit>().fetchLessons(
-                                    classSectionId: classSectionId,
+                                    classSectionId: classSectionDetails.id,
                                     subjectId: subject.id);
                               }
                             });
@@ -224,7 +225,8 @@ class LessonsContainer extends StatelessWidget {
               errorMessageCode: state.errorMessage,
               onTapRetry: () {
                 context.read<LessonsCubit>().fetchLessons(
-                    classSectionId: classSectionId, subjectId: subject.id);
+                    classSectionId: classSectionDetails.id,
+                    subjectId: subject.id);
               },
             ),
           );

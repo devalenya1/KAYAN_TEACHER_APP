@@ -3,6 +3,7 @@ import 'package:eschool_teacher/cubits/editTopicCubit.dart';
 import 'package:eschool_teacher/cubits/lessonsCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
+import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/lesson.dart';
 import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
@@ -30,21 +31,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddOrEditTopicScreen extends StatefulWidget {
-  final bool editTopic;
   final Lesson? lesson;
   final Subject? subject;
   final Topic? topic;
+  final ClassSectionDetails? classSectionDetails;
 
   AddOrEditTopicScreen(
       {Key? key,
-      required this.editTopic,
       this.lesson,
       required this.subject,
-      this.topic})
+      this.topic,
+      this.classSectionDetails})
       : super(key: key);
 
   static Route<bool?> route(RouteSettings routeSettings) {
-    final arguments = routeSettings.arguments as Map<String, dynamic>;
+    final arguments = (routeSettings.arguments ?? Map<String, dynamic>.from({}))
+        as Map<String, dynamic>;
+
     return CupertinoPageRoute(
       builder: (_) => MultiBlocProvider(
         providers: [
@@ -63,7 +66,7 @@ class AddOrEditTopicScreen extends StatefulWidget {
           ),
         ],
         child: AddOrEditTopicScreen(
-          editTopic: arguments['editTopic'],
+          classSectionDetails: arguments['classSectionDetails'],
           subject: arguments['subject'],
           lesson: arguments['lesson'],
           topic: arguments['topic'],
@@ -77,30 +80,29 @@ class AddOrEditTopicScreen extends StatefulWidget {
 }
 
 class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
-  late String currentSelectedClassSection = widget.editTopic
-      ? context
-          .read<MyClassesCubit>()
-          .getClassSectionDetailsById(widget.lesson!.classSectionId)
-          .getClassSectionName()
+  late String currentSelectedClassSection = widget.classSectionDetails != null
+      ? widget.classSectionDetails!.getClassSectionName()
       : context.read<MyClassesCubit>().getClassSectionName().first;
 
-  late String currentSelectedSubject =
-      UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
+  late String currentSelectedSubject = widget.subject != null
+      ? widget.subject!.name
+      : UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
 
-  late String currentSelectedLesson =
-      UiUtils.getTranslatedLabel(context, fetchingLessonsKey);
+  late String currentSelectedLesson = widget.lesson != null
+      ? widget.lesson!.name
+      : UiUtils.getTranslatedLabel(context, fetchingLessonsKey);
 
   late TextEditingController _topicNameTextEditingController =
       TextEditingController(
-          text: widget.editTopic ? widget.lesson!.name : null);
+          text: widget.topic != null ? widget.lesson!.name : null);
   late TextEditingController _topicDescriptionTextEditingController =
       TextEditingController(
-          text: widget.editTopic ? widget.lesson!.description : null);
+          text: widget.topic != null ? widget.lesson!.description : null);
 
   List<PickedStudyMaterial> _addedStudyMaterials = [];
 
   late List<StudyMaterial> studyMaterials =
-      widget.editTopic ? widget.topic!.studyMaterials : [];
+      widget.topic != null ? widget.topic!.studyMaterials : [];
 
   //This will determine if need to refresh the previous page
   //topics data. If teacher remove the the any study material
@@ -109,11 +111,9 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
 
   @override
   void initState() {
-    if (!widget.editTopic) {
-      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
-          .read<MyClassesCubit>()
-          .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-          .id);
+    if (widget.classSectionDetails == null) {
+      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
+          context.read<MyClassesCubit>().getAllClasses().first.id);
     }
 
     super.initState();
@@ -219,7 +219,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return Column(
         children: [
-          widget.editTopic
+          widget.classSectionDetails != null
               ? DefaultDropDownLabelContainer(
                   titleLabelKey: currentSelectedClassSection,
                   width: boxConstraints.maxWidth)
@@ -231,7 +231,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                     context.read<LessonsCubit>().updateState(LessonsInitial());
                     setState(() {});
                   }),
-          widget.editTopic
+          widget.subject != null
               ? DefaultDropDownLabelContainer(
                   titleLabelKey: widget.subject!.name,
                   width: boxConstraints.maxWidth)
@@ -257,7 +257,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                   width: boxConstraints.maxWidth),
           //
 
-          widget.editTopic
+          widget.lesson != null
               ? DefaultDropDownLabelContainer(
                   titleLabelKey: widget.lesson!.name,
                   width: boxConstraints.maxWidth)
@@ -302,7 +302,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
             Navigator.of(context).pop(refreshTopicsInPreviousPage);
           },
           title: UiUtils.getTranslatedLabel(
-              context, widget.editTopic ? editTopicKey : addTopicKey)),
+              context, widget.topic != null ? editTopicKey : addTopicKey)),
     );
   }
 
@@ -334,7 +334,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                 maxLines: 3,
                 contentPadding: EdgeInsetsDirectional.only(start: 15),
                 textEditingController: _topicDescriptionTextEditingController),
-            widget.editTopic
+            widget.topic != null
                 ? Column(
                     children: studyMaterials
                         .map((studyMaterial) => StudyMaterialContainer(
@@ -371,7 +371,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                     file: _addedStudyMaterials[index],
                     fileIndex: index))
                 .toList(),
-            widget.editTopic
+            widget.topic != null
                 ? BlocConsumer<EditTopicCubit, EditTopicState>(
                     listener: (context, state) {
                       if (state is EditTopicSuccess) {

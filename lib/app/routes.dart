@@ -1,6 +1,6 @@
 import 'package:eschool_teacher/ui/screens/aboutUsScreen.dart';
 import 'package:eschool_teacher/ui/screens/add&editAssignmentScreen.dart';
-import 'package:eschool_teacher/ui/screens/addOrEditAnnouncement/addOrEditAnnouncementScreen.dart';
+import 'package:eschool_teacher/ui/screens/addOrEditAnnouncementScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
 import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
@@ -19,7 +19,7 @@ import 'package:eschool_teacher/ui/screens/resultScreen.dart';
 import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.dart';
-import 'package:eschool_teacher/ui/screens/subject/subjectScreen.dart';
+import 'package:eschool_teacher/ui/screens/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/termsAndConditionScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
 import 'package:eschool_teacher/ui/screens/takeAttendance/takeAttendanceScreen.dart';

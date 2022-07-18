@@ -148,8 +148,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionAddButton(onTap: () {
-        Navigator.of(context)
-            .pushNamed(Routes.addOrEditTopic, arguments: {"editTopic": false});
+        Navigator.of(context).pushNamed(Routes.addOrEditTopic);
       }),
       body: Stack(
         children: [

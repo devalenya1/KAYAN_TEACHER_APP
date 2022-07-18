@@ -2,6 +2,7 @@ import 'package:eschool_teacher/cubits/createLessonCubit.dart';
 import 'package:eschool_teacher/cubits/editLessonCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
+import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/lesson.dart';
 import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
@@ -26,16 +27,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddOrEditLessonScreen extends StatefulWidget {
-  final bool editLesson;
+  final ClassSectionDetails? classSectionDetails;
+
   final Lesson? lesson;
   final Subject? subject;
 
   AddOrEditLessonScreen(
-      {Key? key, required this.editLesson, this.lesson, this.subject})
+      {Key? key, this.classSectionDetails, this.lesson, this.subject})
       : super(key: key);
 
   static Route<bool?> route(RouteSettings routeSettings) {
-    final arguments = routeSettings.arguments as Map<String, dynamic>;
+    final arguments = (routeSettings.arguments ?? Map<String, dynamic>.from({}))
+        as Map<String, dynamic>;
 
     return CupertinoPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -52,7 +55,7 @@ class AddOrEditLessonScreen extends StatefulWidget {
                 ),
               ],
               child: AddOrEditLessonScreen(
-                editLesson: arguments['editLesson'],
+                classSectionDetails: arguments['classSectionDetails'],
                 lesson: arguments['lesson'],
                 subject: arguments['subject'],
               ),
@@ -64,27 +67,25 @@ class AddOrEditLessonScreen extends StatefulWidget {
 }
 
 class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
-  late String currentSelectedClassSection = widget.editLesson
-      ? context
-          .read<MyClassesCubit>()
-          .getClassSectionDetailsById(widget.lesson!.classSectionId)
-          .getClassSectionName()
+  late String currentSelectedClassSection = widget.classSectionDetails != null
+      ? widget.classSectionDetails!.getClassSectionName()
       : context.read<MyClassesCubit>().getClassSectionName().first;
 
-  late String currentSelectedSubject =
-      UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
+  late String currentSelectedSubject = widget.subject == null
+      ? UiUtils.getTranslatedLabel(context, fetchingSubjectsKey)
+      : widget.subject!.name;
 
   late TextEditingController _lessonNameTextEditingController =
       TextEditingController(
-          text: widget.editLesson ? widget.lesson!.name : null);
+          text: widget.lesson != null ? widget.lesson!.name : null);
   late TextEditingController _lessonDescriptionTextEditingController =
       TextEditingController(
-          text: widget.editLesson ? widget.lesson!.description : null);
+          text: widget.lesson != null ? widget.lesson!.description : null);
 
   List<PickedStudyMaterial> _addedStudyMaterials = [];
 
   late List<StudyMaterial> studyMaterials =
-      widget.editLesson ? widget.lesson!.studyMaterials : [];
+      widget.lesson != null ? widget.lesson!.studyMaterials : [];
 
   //This will determine if need to refresh the previous page
   //lessons data. If teacher remove the the any study material
@@ -93,11 +94,9 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
 
   @override
   void initState() {
-    if (!widget.editLesson) {
-      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
-          .read<MyClassesCubit>()
-          .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-          .id);
+    if (widget.classSectionDetails == null) {
+      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
+          context.read<MyClassesCubit>().getAllClasses().first.id);
     }
 
     super.initState();
@@ -197,7 +196,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
             Navigator.of(context).pop(refreshLessonsInPreviousPage);
           },
           title: UiUtils.getTranslatedLabel(
-              context, widget.editLesson ? editLessonKey : addLessonKey)),
+              context, widget.lesson != null ? editLessonKey : addLessonKey)),
     );
   }
 
@@ -215,7 +214,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Column(
           children: [
-            widget.editLesson
+            widget.classSectionDetails != null
                 ? DefaultDropDownLabelContainer(
                     titleLabelKey: currentSelectedClassSection,
                     width: boxConstraints.maxWidth)
@@ -230,7 +229,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                     }),
 
             //
-            widget.editLesson
+            widget.subject != null
                 ? DefaultDropDownLabelContainer(
                     titleLabelKey: widget.subject!.name,
                     width: boxConstraints.maxWidth)
@@ -259,7 +258,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                 textEditingController: _lessonDescriptionTextEditingController),
 
             //
-            widget.editLesson
+            widget.lesson != null
                 ? Column(
                     children: studyMaterials
                         .map((studyMaterial) => StudyMaterialContainer(
@@ -299,7 +298,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                     fileIndex: index))
                 .toList(),
 
-            widget.editLesson
+            widget.lesson != null
                 ? BlocConsumer<EditLessonCubit, EditLessonState>(
                     listener: (context, state) {
                       if (state is EditLessonSuccess) {

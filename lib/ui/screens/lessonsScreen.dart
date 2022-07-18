@@ -111,8 +111,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionAddButton(onTap: () {
-          Navigator.of(context).pushNamed(Routes.addOrEditLesson,
-              arguments: {"editLesson": false});
+          Navigator.of(context).pushNamed(Routes.addOrEditLesson);
         }),
         body: Stack(
           children: [
@@ -140,11 +139,10 @@ class _LessonsScreenState extends State<LessonsScreen> {
                     height: MediaQuery.of(context).size.height * (0.0125),
                   ),
                   LessonsContainer(
-                    classSectionId: context
+                    classSectionDetails: context
                         .read<MyClassesCubit>()
                         .getClassSectionDetails(
-                            classSectionName: currentSelectedClassSection)
-                        .id,
+                            classSectionName: currentSelectedClassSection),
                     subject: context
                         .read<SubjectsOfClassSectionCubit>()
                         .getSubjectDetailsByName(currentSelectedSubject),
