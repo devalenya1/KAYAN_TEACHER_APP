@@ -193,6 +193,13 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
       alignment: Alignment.topCenter,
       child: CustomAppBar(
           onPressBackButton: () {
+            if (context.read<CreateLessonCubit>().state
+                is CreateLessonInProgress) {
+              return;
+            }
+            if (context.read<EditLessonCubit>().state is EditLessonInProgress) {
+              return;
+            }
             Navigator.of(context).pop(refreshLessonsInPreviousPage);
           },
           title: UiUtils.getTranslatedLabel(

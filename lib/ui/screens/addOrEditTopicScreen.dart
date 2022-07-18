@@ -163,7 +163,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
         topicDescription: _topicDescriptionTextEditingController.text.trim(),
         topicName: _topicNameTextEditingController.text.trim(),
         lessonId: widget.lesson!.id,
-        classSectionId: widget.lesson!.classSectionId,
+        classSectionId: widget.classSectionDetails!.id,
         subjectId: widget.subject!.id,
         topicId: widget.topic!.id,
         files: _addedStudyMaterials);
@@ -299,6 +299,14 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
       alignment: Alignment.topCenter,
       child: CustomAppBar(
           onPressBackButton: () {
+            if (context.read<CreateTopicCubit>().state
+                is CreateTopicInProgress) {
+              return;
+            }
+
+            if (context.read<EditTopicCubit>().state is EditTopicInProgress) {
+              return;
+            }
             Navigator.of(context).pop(refreshTopicsInPreviousPage);
           },
           title: UiUtils.getTranslatedLabel(

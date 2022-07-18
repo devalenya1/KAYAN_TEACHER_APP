@@ -53,6 +53,8 @@ class Api {
   static String createAnnouncement = "${databaseUrl}teacher/send-announcement";
   static String deleteAnnouncement =
       "${databaseUrl}teacher/delete-announcement";
+  static String updateAnnouncement =
+      "${databaseUrl}teacher/update-announcement";
 
   static String settings = "${databaseUrl}settings";
 

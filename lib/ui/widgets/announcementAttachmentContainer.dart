@@ -56,35 +56,39 @@ class AnnouncementAttachmentContainer extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            return Container(
-              child: LayoutBuilder(builder: (context, boxConstraints) {
-                return showDeleteButton
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: boxConstraints.maxWidth * (0.75),
-                            child: _buildFileName(context),
-                          ),
-                          Spacer(),
-                          DeleteButton(onTap: () {
-                            if (state is DeleteStudyMaterialInProgress) {
-                              return;
-                            }
-                            context
-                                .read<DeleteStudyMaterialCubit>()
-                                .deleteStudyMaterial(fileId: studyMaterial.id);
-                          })
-                        ],
-                      )
-                    : _buildFileName(context);
-              }),
-              margin: EdgeInsets.only(bottom: 15),
-              width: MediaQuery.of(context).size.width * (0.85),
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  borderRadius: BorderRadius.circular(15)),
+            return Opacity(
+              opacity: state is DeleteStudyMaterialInProgress ? 0.5 : 1.0,
+              child: Container(
+                child: LayoutBuilder(builder: (context, boxConstraints) {
+                  return showDeleteButton
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: boxConstraints.maxWidth * (0.75),
+                              child: _buildFileName(context),
+                            ),
+                            Spacer(),
+                            DeleteButton(onTap: () {
+                              if (state is DeleteStudyMaterialInProgress) {
+                                return;
+                              }
+                              context
+                                  .read<DeleteStudyMaterialCubit>()
+                                  .deleteStudyMaterial(
+                                      fileId: studyMaterial.id);
+                            })
+                          ],
+                        )
+                      : _buildFileName(context);
+                }),
+                margin: EdgeInsets.only(bottom: 15),
+                width: MediaQuery.of(context).size.width * (0.85),
+                padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(15)),
+              ),
             );
           },
         );

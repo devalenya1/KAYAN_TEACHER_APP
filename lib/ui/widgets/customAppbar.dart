@@ -28,6 +28,7 @@ class CustomAppBar extends StatelessWidget {
           children: [
             (showBackButton ?? true)
                 ? CustomBackButton(
+                    onTap: onPressBackButton,
                     alignmentDirectional: AlignmentDirectional.centerStart,
                   )
                 : SizedBox(),

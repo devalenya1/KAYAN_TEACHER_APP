@@ -1,3 +1,4 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/announcementsCubit.dart';
 import 'package:eschool_teacher/cubits/deleteAnnouncementCubit.dart';
 import 'package:eschool_teacher/data/models/announcement.dart';
@@ -139,6 +140,21 @@ class AnnouncementsContainer extends StatelessWidget {
                             if (state is DeleteAnnouncementInProgress) {
                               return;
                             }
+                            Navigator.of(context).pushNamed<bool?>(
+                                Routes.addOrEditAnnouncement,
+                                arguments: {
+                                  "subject": subject,
+                                  "classSectionDetails": classSectionDetails,
+                                  "announcement": announcement
+                                }).then((value) {
+                              if (value != null && value) {
+                                context
+                                    .read<AnnouncementsCubit>()
+                                    .fetchAnnouncements(
+                                        classSectionId: classSectionDetails.id,
+                                        subjectId: subject.id);
+                              }
+                            });
                           }),
                           SizedBox(
                             width: 10,

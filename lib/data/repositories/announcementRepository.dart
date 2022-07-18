@@ -65,6 +65,40 @@ class AnnouncementRepository {
     }
   }
 
+  Future<void> updateAnnouncement(
+      {required String title,
+      required String description,
+      required List<PlatformFile> attachments,
+      required int classSectionId,
+      required int subjectId,
+      required int announcementId}) async {
+    try {
+      List<MultipartFile> files = [];
+      for (var file in attachments) {
+        files.add(await MultipartFile.fromFile(file.path!));
+      }
+      Map<String, dynamic> body = {
+        "announcement_id": announcementId,
+        "class_section_id": classSectionId,
+        "subject_id": subjectId,
+        "title": title,
+        "description": description,
+        "file": files
+      };
+      if (files.isEmpty) {
+        body.remove('file');
+      }
+      if (description.isEmpty) {
+        body.remove('description');
+      }
+
+      await Api.post(
+          body: body, url: Api.updateAnnouncement, useAuthToken: true);
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
   Future<void> deleteAnnouncement(int announcementId) async {
     try {
       await Api.post(
