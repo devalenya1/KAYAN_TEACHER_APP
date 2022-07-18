@@ -1,7 +1,9 @@
 import 'package:eschool_teacher/cubits/announcementsCubit.dart';
+import 'package:eschool_teacher/cubits/deleteAnnouncementCubit.dart';
 import 'package:eschool_teacher/data/models/announcement.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/data/repositories/announcementRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/attachmentsBottomsheetContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
@@ -92,84 +94,121 @@ class AnnouncementsContainer extends StatelessWidget {
       }
     }
 
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: boxConstraints.maxWidth * (0.75),
-                  child: Text(
-                    announcement.title,
-                    style: TextStyle(
-                      height: 1.1,
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontSize: 15.0,
-                    ),
-                  ),
-                ),
-                Spacer(),
-                EditButton(onTap: () {}),
-                SizedBox(
-                  width: 10,
-                ),
-                DeleteButton(onTap: () {})
-              ],
-            ),
-            announcement.description.isEmpty
-                ? SizedBox()
-                : Text(
-                    announcement.description,
-                    style: TextStyle(
-                      height: 1.2,
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 11.5,
-                    ),
-                  ),
-            announcement.files.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        UiUtils.showBottomSheet(
-                            child: AttachmentBottomsheetContainer(
-                              fromAnnouncementsContainer: true,
-                              studyMaterials: announcement.files,
+    return BlocProvider(
+      create: (context) => DeleteAnnouncementCubit(AnnouncementRepository()),
+      child: Builder(builder: (context) {
+        return BlocConsumer<DeleteAnnouncementCubit, DeleteAnnouncementState>(
+          listener: (context, state) {
+            if (state is DeleteAnnouncementSuccess) {
+              context
+                  .read<AnnouncementsCubit>()
+                  .deleteAnnouncement(announcement.id);
+            } else if (state is DeleteAnnouncementFailure) {
+              UiUtils.showBottomToastOverlay(
+                  context: context,
+                  errorMessage:
+                      UiUtils.getTranslatedLabel(context, unableToDeleteKey),
+                  backgroundColor: Theme.of(context).colorScheme.error);
+            }
+          },
+          builder: (context, state) {
+            return Opacity(
+              opacity: state is DeleteAnnouncementInProgress ? 0.5 : 1.0,
+              child: Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: LayoutBuilder(builder: (context, boxConstraints) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: boxConstraints.maxWidth * (0.75),
+                            child: Text(
+                              announcement.title,
+                              style: TextStyle(
+                                height: 1.1,
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontSize: 15.0,
+                              ),
                             ),
-                            context: context);
-                      },
-                      child: Text(
-                        "${announcement.files.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                        style: TextStyle(color: assignmentViewButtonColor),
+                          ),
+                          Spacer(),
+                          EditButton(onTap: () {
+                            if (state is DeleteAnnouncementInProgress) {
+                              return;
+                            }
+                          }),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          DeleteButton(onTap: () {
+                            if (state is DeleteAnnouncementInProgress) {
+                              return;
+                            }
+                            context
+                                .read<DeleteAnnouncementCubit>()
+                                .deleteAnnouncement(announcement.id);
+                          })
+                        ],
                       ),
-                    ),
-                  )
-                : SizedBox(),
-            SizedBox(
-              height: announcement.files.isNotEmpty ? 0 : 5,
-            ),
-            Text(timeago.format(announcement.createdAt),
-                style: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.75),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 10),
-                textAlign: TextAlign.start)
-          ],
+                      announcement.description.isEmpty
+                          ? SizedBox()
+                          : Text(
+                              announcement.description,
+                              style: TextStyle(
+                                height: 1.2,
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 11.5,
+                              ),
+                            ),
+                      announcement.files.isNotEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  UiUtils.showBottomSheet(
+                                      child: AttachmentBottomsheetContainer(
+                                        fromAnnouncementsContainer: true,
+                                        studyMaterials: announcement.files,
+                                      ),
+                                      context: context);
+                                },
+                                child: Text(
+                                  "${announcement.files.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
+                                  style: TextStyle(
+                                      color: assignmentViewButtonColor),
+                                ),
+                              ),
+                            )
+                          : SizedBox(),
+                      SizedBox(
+                        height: announcement.files.isNotEmpty ? 0 : 5,
+                      ),
+                      Text(timeago.format(announcement.createdAt),
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onBackground
+                                  .withOpacity(0.75),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 10),
+                          textAlign: TextAlign.start)
+                    ],
+                  );
+                }),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(10.0)),
+                width: MediaQuery.of(context).size.width * (0.85),
+              ),
+            );
+          },
         );
       }),
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(10.0)),
-      width: MediaQuery.of(context).size.width * (0.85),
     );
   }
 

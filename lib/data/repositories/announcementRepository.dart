@@ -64,4 +64,15 @@ class AnnouncementRepository {
       throw ApiException(e.toString());
     }
   }
+
+  Future<void> deleteAnnouncement(int announcementId) async {
+    try {
+      await Api.post(
+          body: {"announcement_id": announcementId},
+          url: Api.deleteAnnouncement,
+          useAuthToken: true);
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
 }

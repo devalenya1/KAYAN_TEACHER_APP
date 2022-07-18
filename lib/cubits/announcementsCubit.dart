@@ -51,6 +51,16 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
   AnnouncementsCubit(this._announcementRepository)
       : super(AnnouncementsInitial());
 
+  void deleteAnnouncement(int announcementId) {
+    if (state is AnnouncementsFetchSuccess) {
+      List<Announcement> announcements =
+          (state as AnnouncementsFetchSuccess).announcements;
+      announcements.removeWhere((element) => element.id == announcementId);
+      emit((state as AnnouncementsFetchSuccess)
+          .copyWith(newAnnouncements: announcements));
+    }
+  }
+
   void fetchAnnouncements(
       {required int classSectionId, required int subjectId}) async {
     try {

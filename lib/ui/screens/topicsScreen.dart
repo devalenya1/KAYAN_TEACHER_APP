@@ -112,7 +112,6 @@ class _TopicsScreenState extends State<TopicsScreen> {
                         width: boxConstraints.maxWidth,
                         onChanged: (value) {
                           currentSelectedLesson = value!;
-
                           setState(() {});
                           context.read<TopicsCubit>().fetchTopics(
                               lessonId: context

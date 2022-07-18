@@ -51,6 +51,8 @@ class Api {
   static String updateTopic = "${databaseUrl}teacher/update-topic";
   static String getAnnouncement = "${databaseUrl}teacher/get-announcement";
   static String createAnnouncement = "${databaseUrl}teacher/send-announcement";
+  static String deleteAnnouncement =
+      "${databaseUrl}teacher/delete-announcement";
 
   static String settings = "${databaseUrl}settings";
 
