@@ -165,9 +165,11 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
       return;
     }
 
-    final selectedSubjectId = context
-        .read<SubjectsOfClassSectionCubit>()
-        .getSubjectIdByName(currentSelectedSubject);
+    final selectedSubjectId = widget.subject != null
+        ? widget.subject!.id
+        : context
+            .read<SubjectsOfClassSectionCubit>()
+            .getSubjectIdByName(currentSelectedSubject);
 
     //
     if (selectedSubjectId == -1) {
@@ -177,11 +179,13 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
     }
 
     context.read<CreateLessonCubit>().createLesson(
-        classSectionId: context
-            .read<MyClassesCubit>()
-            .getClassSectionDetails(
-                classSectionName: currentSelectedClassSection)
-            .id,
+        classSectionId: widget.classSectionDetails != null
+            ? widget.classSectionDetails!.id
+            : context
+                .read<MyClassesCubit>()
+                .getClassSectionDetails(
+                    classSectionName: currentSelectedClassSection)
+                .id,
         files: _addedStudyMaterials,
         subjectId: selectedSubjectId,
         lessonDescription: _lessonDescriptionTextEditingController.text.trim(),

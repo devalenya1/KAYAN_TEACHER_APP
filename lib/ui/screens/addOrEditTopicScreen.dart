@@ -182,9 +182,11 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
           UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey));
       return;
     }
-    final selectedSubjectId = context
-        .read<SubjectsOfClassSectionCubit>()
-        .getSubjectIdByName(currentSelectedSubject);
+    final selectedSubjectId = widget.subject != null
+        ? widget.subject!.id
+        : context
+            .read<SubjectsOfClassSectionCubit>()
+            .getSubjectIdByName(currentSelectedSubject);
 
     //
     if (selectedSubjectId == -1) {
@@ -193,8 +195,12 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
       return;
     }
 
-    final lessonId =
-        context.read<LessonsCubit>().getLessonByName(currentSelectedLesson).id;
+    final lessonId = widget.lesson != null
+        ? widget.lesson!.id
+        : context
+            .read<LessonsCubit>()
+            .getLessonByName(currentSelectedLesson)
+            .id;
     if (lessonId == 0) {
       showErrorMessage(
           UiUtils.getTranslatedLabel(context, pleaseSelectLessonKey));
@@ -205,11 +211,13 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
     context.read<CreateTopicCubit>().createTopic(
         topicName: _topicNameTextEditingController.text.trim(),
         lessonId: lessonId,
-        classSectionId: context
-            .read<MyClassesCubit>()
-            .getClassSectionDetails(
-                classSectionName: currentSelectedClassSection)
-            .id,
+        classSectionId: widget.classSectionDetails != null
+            ? widget.classSectionDetails!.id
+            : context
+                .read<MyClassesCubit>()
+                .getClassSectionDetails(
+                    classSectionName: currentSelectedClassSection)
+                .id,
         subjectId: selectedSubjectId,
         topicDescription: _topicDescriptionTextEditingController.text.trim(),
         files: _addedStudyMaterials);

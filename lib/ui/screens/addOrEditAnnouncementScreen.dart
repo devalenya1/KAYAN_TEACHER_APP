@@ -149,14 +149,18 @@ class _AddOrEditAnnouncementScreenState
         title: _announcementTitleEditingController.text.trim(),
         description: _announcementDescriptionEditingController.text.trim(),
         attachments: _addedAttatchments,
-        classSectionId: context
-            .read<MyClassesCubit>()
-            .getClassSectionDetails(
-                classSectionName: currentSelectedClassSection)
-            .id,
-        subjectId: context
-            .read<SubjectsOfClassSectionCubit>()
-            .getSubjectIdByName(currentSelectedSubject));
+        classSectionId: widget.classSectionDetails != null
+            ? widget.classSectionDetails!.id
+            : context
+                .read<MyClassesCubit>()
+                .getClassSectionDetails(
+                    classSectionName: currentSelectedClassSection)
+                .id,
+        subjectId: widget.subject != null
+            ? widget.subject!.id
+            : context
+                .read<SubjectsOfClassSectionCubit>()
+                .getSubjectIdByName(currentSelectedSubject));
   }
 
   void editAnnouncement() {
