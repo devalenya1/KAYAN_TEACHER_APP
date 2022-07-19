@@ -192,7 +192,8 @@
     "announcementTitle" : "Announcement title",
     "announcementAdded" : "Announcement added successfully",
     "unableToDelete" : "Unable to delete file",
-    "nameAlreadyTaken" : "The name has already been taken"
+    "nameAlreadyTaken" : "The name has already been taken",
+    "appUnderMaintenance" : "Sorry for the inconvenience. This app is under maintenance"
 
 
 }

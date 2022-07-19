@@ -32,7 +32,6 @@ class AppConfigurationCubit extends Cubit<AppConfigurationState> {
     emit(AppConfigurationFetchInProgress());
     try {
       final appConfiguration = AppConfiguration.fromJson(
-          //TODO: change the type of app settings
           await _systemRepository.fetchSettings(type: "app_settings") ?? {});
       emit(AppConfigurationFetchSuccess(appConfiguration: appConfiguration));
     } catch (e) {

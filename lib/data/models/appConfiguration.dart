@@ -20,12 +20,12 @@ class AppConfiguration {
   late final String schoolTagline;
 
   AppConfiguration.fromJson(Map<String, dynamic> json) {
-    appLink = json['app_link'] ?? "";
-    iosAppLink = json['ios_app_link'] ?? "";
-    appVersion = json['app_version'] ?? "";
-    iosAppVersion = json['ios_app_version'] ?? "";
-    forceAppUpdate = json['force_app_update'] ?? "0";
-    appMaintenance = json['app_maintenance'] ?? "0";
+    appLink = json['teacher_app_link'] ?? "";
+    iosAppLink = json['teacher_ios_app_link'] ?? "";
+    appVersion = json['teacher_app_version'] ?? "";
+    iosAppVersion = json['teacher_ios_app_version'] ?? "";
+    forceAppUpdate = json['teacher_force_app_update'] ?? "0";
+    appMaintenance = json['teacher_app_maintenance'] ?? "0";
     schoolName = json['school_name'] ?? "";
     schoolTagline = json['school_tagline'] ?? "";
     academicYear = AcademicYear.fromJson(json['session_year'] ?? {});

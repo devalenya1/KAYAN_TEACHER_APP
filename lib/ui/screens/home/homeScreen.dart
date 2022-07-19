@@ -1,3 +1,5 @@
+import 'package:eschool_teacher/cubits/appConfigurationCubit.dart';
+import 'package:eschool_teacher/ui/screens/home/widgets/appUnderMaintenanceContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/bottomNavigationItemContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/homeContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
@@ -7,6 +9,7 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -141,23 +144,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          IndexedStack(
-            index: _currentSelectedBottomNavIndex,
-            children: [
-              HomeContainer(),
-              ScheduleContainer(),
-              ProfileContainer(),
-              SettingsContainer(),
-            ],
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _buildBottomNavigationContainer(),
-          ),
-        ],
-      ),
+      body: context.read<AppConfigurationCubit>().appUnderMaintenance()
+          ? AppUnderMaintenanceContainer()
+          : Stack(
+              children: [
+                IndexedStack(
+                  index: _currentSelectedBottomNavIndex,
+                  children: [
+                    HomeContainer(),
+                    ScheduleContainer(),
+                    ProfileContainer(),
+                    SettingsContainer(),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: _buildBottomNavigationContainer(),
+                ),
+              ],
+            ),
     );
   }
 }
