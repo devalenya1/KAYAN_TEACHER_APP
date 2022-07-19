@@ -1,14 +1,11 @@
-import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
 import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
-import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';
 import 'package:eschool_teacher/ui/widgets/customCupertinoSwitch.dart';
-import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_teacher/ui/widgets/downloadFileButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -302,72 +299,6 @@ class _AssignmentDetailsBottomsheetContainerState
           Text(
             widget.assignment.extraDaysForResubmission.toString(),
             style: _getAssignmentDetailsLabelValueTextStyle(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDeleteAndEditButtonContainer() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomRoundedButton(
-            maxLines: 1,
-            height: 35,
-            radius: 10,
-            textSize: 13,
-            widthPercentage: 0.35,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            buttonTitle: UiUtils.getTranslatedLabel(context, editKey),
-            showBorder: false,
-            onTap: () {},
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * (0.05),
-          ),
-          BlocConsumer<DeleteAssignmentCubit, DeleteAssignmentState>(
-            listener: (context, state) {
-              if (state is DeleteAssignmentFetchSuccess) {
-                Navigator.of(context)
-                    .pop({"assignmentId": widget.assignment.id});
-              }
-            },
-            builder: (context, state) {
-              if (state is DeleteAssignmentFetchInProgress) {
-                return CustomRoundedButton(
-                  maxLines: 1,
-                  height: 35,
-                  radius: 10,
-                  textSize: 13,
-                  widthPercentage: 0.35,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  buttonTitle: UiUtils.getTranslatedLabel(context, deleteKey),
-                  showBorder: false,
-                  child: CustomCircularProgressIndicator(
-                    strokeWidth: 2,
-                    widthAndHeight: 20,
-                  ),
-                );
-              }
-              return CustomRoundedButton(
-                maxLines: 1,
-                height: 35,
-                radius: 10,
-                textSize: 13,
-                widthPercentage: 0.35,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                buttonTitle: UiUtils.getTranslatedLabel(context, deleteKey),
-                showBorder: false,
-                onTap: () {
-                  context
-                      .read<DeleteAssignmentCubit>()
-                      .deleteAssignment(assignmentId: widget.assignment.id);
-                },
-              );
-            },
           ),
         ],
       ),

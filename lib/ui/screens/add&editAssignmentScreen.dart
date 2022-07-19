@@ -4,9 +4,7 @@ import 'package:eschool_teacher/cubits/editassignment.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';
-import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
-import 'package:eschool_teacher/data/repositories/createAssignmentRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
@@ -48,7 +46,7 @@ class AddAssignmentScreen extends StatefulWidget {
             create: (_) => SubjectsOfClassSectionCubit(TeacherRepository()),
           ),
           BlocProvider<CreateAssignmentCubit>(
-            create: (_) => CreateAssignmentCubit(CreateAssignmentRepository()),
+            create: (_) => CreateAssignmentCubit(AssignmentRepository()),
           ),
           BlocProvider<editAssignmentCubit>(
               create: (context) => editAssignmentCubit(AssignmentRepository()))

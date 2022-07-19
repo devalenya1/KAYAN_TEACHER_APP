@@ -1,5 +1,4 @@
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
-import 'package:eschool_teacher/data/repositories/createAssignmentRepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class createAssignmentState {}
@@ -23,7 +22,7 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
   CreateAssignmentCubit(this._assignmentRepository)
       : super(createAssignmentInitial());
 
-  void  createAssignment({
+  void createAssignment({
     required int classsId,
     required int subjectId,
     required String name,
