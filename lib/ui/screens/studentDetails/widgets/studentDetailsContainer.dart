@@ -1,9 +1,14 @@
+import 'package:eschool_teacher/data/models/student.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
+//TODO: address is not showing
+//and fix the width of address key
 class StudentDetailsContainer extends StatefulWidget {
-  const StudentDetailsContainer({Key? key}) : super(key: key);
+  final Student student;
+  const StudentDetailsContainer({Key? key, required this.student})
+      : super(key: key);
 
   @override
   State<StudentDetailsContainer> createState() =>
@@ -52,7 +57,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
         SizedBox(
           width: width * titleWidthPercentage,
           child: Text(
-            title,
+            UiUtils.getTranslatedLabel(context, title),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: _getLabelTextStyle(),
@@ -93,7 +98,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Student name",
+                  widget.student.getFullName(),
                   style: _getLabelValueTextStyle(),
                 ),
                 Row(
@@ -101,23 +106,23 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                     Column(
                       children: [
                         _buildValueWithTitle(
-                            title: "Roll No.",
-                            value: "10",
+                            title: rollNoKey,
+                            value: widget.student.rollNumber.toString(),
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
                                 1.0 - leftSideTitleWidthPercentage),
                         _buildValueWithTitle(
-                            title: "Class",
-                            value: "10",
+                            title: classKey,
+                            value: widget.student.classSectionName,
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
                                 1.0 - leftSideTitleWidthPercentage),
                         _buildValueWithTitle(
                             width: widthOfDetialsContainer,
-                            title: "Dob",
-                            value: "10-10-1999",
+                            title: dobKey,
+                            value: UiUtils.formattedDate(widget.student.dob),
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
                                 1.0 - leftSideTitleWidthPercentage),
@@ -126,22 +131,22 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                     Column(
                       children: [
                         _buildValueWithTitle(
-                            title: "Gender",
-                            value: "Male",
+                            title: genderKey,
+                            value: widget.student.gender,
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: rightSideTitleWidthPercentage,
                             valueWidthPercentage:
                                 1.0 - rightSideTitleWidthPercentage),
                         _buildValueWithTitle(
-                            title: "Blood Grp.",
-                            value: "O+",
+                            title: bloodGrpKey,
+                            value: widget.student.bloodGroup,
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: rightSideTitleWidthPercentage,
                             valueWidthPercentage:
                                 1.0 - rightSideTitleWidthPercentage),
                         _buildValueWithTitle(
-                            title: "GR No.",
-                            value: "1234",
+                            title: grNoKey,
+                            value: widget.student.admissionNo,
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: rightSideTitleWidthPercentage,
                             valueWidthPercentage:
@@ -156,10 +161,14 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                       width: widthOfDetialsContainer *
                           leftSideTitleWidthPercentage,
                       child: Text(
-                        "Address",
+                        UiUtils.getTranslatedLabel(context, addressKey),
                         style: _getLabelTextStyle(),
                       ),
                     ),
+                    Text(
+                      widget.student.currentAddress,
+                      style: _getLabelTextStyle(),
+                    )
                   ],
                 ),
               ],

@@ -1,3 +1,6 @@
+import 'package:eschool_teacher/cubits/studentsByClassSectionCubit.dart';
+import 'package:eschool_teacher/data/models/student.dart';
+import 'package:eschool_teacher/data/repositories/studentRepository.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/widgets/studentDetailsContainer.dart';
 
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
@@ -5,15 +8,24 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StudentDetailsScreen extends StatefulWidget {
-  StudentDetailsScreen({Key? key}) : super(key: key);
+  final Student student;
+  StudentDetailsScreen({Key? key, required this.student}) : super(key: key);
 
   @override
   State<StudentDetailsScreen> createState() => _StudentDetailsScreenState();
 
   static Route<StudentDetailsScreen> route(RouteSettings routeSettings) {
-    return CupertinoPageRoute(builder: (_) => StudentDetailsScreen());
+    return CupertinoPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) =>
+                  StudentsByClassSectionCubit(StudentRepository()),
+              child: StudentDetailsScreen(
+                student: routeSettings.arguments as Student,
+              ),
+            ));
   }
 }
 
@@ -31,7 +43,9 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          StudentDetailsContainer(),
+          StudentDetailsContainer(
+            student: widget.student,
+          ),
           _buildAppBar(),
         ],
       ),

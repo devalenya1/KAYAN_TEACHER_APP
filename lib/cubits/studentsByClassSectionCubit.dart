@@ -77,8 +77,7 @@ class StudentsByClassSectionCubit extends Cubit<StudentsByClassSectionState> {
     return false;
   }
 
-  void fetchMoreAnnouncements(
-      {required int classSectionId, required int subjectId}) async {
+  void fetchMoreStudents({required int classSectionId}) async {
     if (state is StudentsByClassSectionFetchSuccess) {
       if ((state as StudentsByClassSectionFetchSuccess)
           .fetchMoreStudentsInProgress) {

@@ -69,7 +69,6 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
       required bool storeInExternalStorage}) async {
     emit(DownloadFileInProgress(0.0));
     try {
-      print(studyMaterial.fileUrl);
       //if wants to download the file then
       if (storeInExternalStorage) {
         //if user has given permission to download and view file

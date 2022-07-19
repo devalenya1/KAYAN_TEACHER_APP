@@ -12,10 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubjectsContainer extends StatelessWidget {
-  final double topPadding;
   final ClassSectionDetails classSectionDetails;
-  const SubjectsContainer(
-      {Key? key, required this.topPadding, required this.classSectionDetails})
+  const SubjectsContainer({Key? key, required this.classSectionDetails})
       : super(key: key);
 
   Widget _buildSubjectContainer(
@@ -111,43 +109,38 @@ class SubjectsContainer extends StatelessWidget {
               .fetchSubjects(classSectionDetails.id);
         }
       },
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(
-          top: topPadding,
-        ),
-        child: BlocBuilder<SubjectsOfClassSectionCubit,
-            SubjectsOfClassSectionState>(
-          builder: (context, state) {
-            if (state is SubjectsOfClassSectionFetchSuccess) {
-              return Column(
-                children: state.subjects
-                    .map((subject) => _buildSubjectContainer(
-                        subject: subject, context: context))
-                    .toList(),
-              );
-            }
-            if (state is SubjectsOfClassSectionFetchFailure) {
-              return Center(
-                child: ErrorContainer(
-                  errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                      context, state.errorMessage),
-                  onTapRetry: () {
-                    context
-                        .read<SubjectsOfClassSectionCubit>()
-                        .fetchSubjects(classSectionDetails.id);
-                  },
-                ),
-              );
-            }
-
+      child:
+          BlocBuilder<SubjectsOfClassSectionCubit, SubjectsOfClassSectionState>(
+        builder: (context, state) {
+          if (state is SubjectsOfClassSectionFetchSuccess) {
             return Column(
-              children: List.generate(UiUtils.defaultShimmerLoadingContentCount,
-                      (index) => index)
-                  .map((e) => _buildSubjectShimmerLoading(context))
+              children: state.subjects
+                  .map((subject) => _buildSubjectContainer(
+                      subject: subject, context: context))
                   .toList(),
             );
-          },
-        ),
+          }
+          if (state is SubjectsOfClassSectionFetchFailure) {
+            return Center(
+              child: ErrorContainer(
+                errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
+                    context, state.errorMessage),
+                onTapRetry: () {
+                  context
+                      .read<SubjectsOfClassSectionCubit>()
+                      .fetchSubjects(classSectionDetails.id);
+                },
+              ),
+            );
+          }
+
+          return Column(
+            children: List.generate(
+                    UiUtils.defaultShimmerLoadingContentCount, (index) => index)
+                .map((e) => _buildSubjectShimmerLoading(context))
+                .toList(),
+          );
+        },
       ),
     );
   }
