@@ -238,3 +238,6 @@ const String announcementTitleKey = "announcementTitle";
 const String unableToDeleteKey = "unableToDelete";
 
 const String appUnderMaintenanceKey = "appUnderMaintenance";
+const String updateKey = "update";
+
+const String newUpdateAvailableKey = "newUpdateAvailable";

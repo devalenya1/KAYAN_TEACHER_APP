@@ -11,6 +11,7 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UiUtils {
@@ -297,5 +298,51 @@ class UiUtils {
         }
       }
     });
+  }
+
+  static Future<bool> forceUpdate(String updatedVersion) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String currentVersion = "${packageInfo.version}+${packageInfo.buildNumber}";
+    if (updatedVersion.isEmpty) {
+      return false;
+    }
+
+    bool updateBasedOnVersion = _shouldUpdateBasedOnVersion(
+        currentVersion.split("+").first, updatedVersion.split("+").first);
+
+    if (updatedVersion.split("+").length == 1 ||
+        currentVersion.split("+").length == 1) {
+      return updateBasedOnVersion;
+    }
+
+    bool updateBasedOnBuildNumber = _shouldUpdateBasedOnBuildNumber(
+        currentVersion.split("+").last, updatedVersion.split("+").last);
+
+    return (updateBasedOnVersion || updateBasedOnBuildNumber);
+  }
+
+  static bool _shouldUpdateBasedOnVersion(
+      String currentVersion, String updatedVersion) {
+    List<int> currentVersionList =
+        currentVersion.split(".").map((e) => int.parse(e)).toList();
+    List<int> updatedVersionList =
+        updatedVersion.split(".").map((e) => int.parse(e)).toList();
+
+    if (updatedVersionList[0] > currentVersionList[0]) {
+      return true;
+    }
+    if (updatedVersionList[1] > currentVersionList[1]) {
+      return true;
+    }
+    if (updatedVersionList[2] > currentVersionList[2]) {
+      return true;
+    }
+
+    return false;
+  }
+
+  static bool _shouldUpdateBasedOnBuildNumber(
+      String currentBuildNumber, String updatedBuildNumber) {
+    return int.parse(updatedBuildNumber) > int.parse(currentBuildNumber);
   }
 }

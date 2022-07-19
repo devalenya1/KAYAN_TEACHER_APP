@@ -1,6 +1,7 @@
 import 'package:eschool_teacher/cubits/appConfigurationCubit.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/appUnderMaintenanceContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/bottomNavigationItemContainer.dart';
+import 'package:eschool_teacher/ui/screens/home/widgets/forceUpdateDialogContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/homeContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/scheduleContainer.dart';
@@ -161,6 +162,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   alignment: Alignment.bottomCenter,
                   child: _buildBottomNavigationContainer(),
                 ),
+                context.read<AppConfigurationCubit>().forceUpdate()
+                    ? FutureBuilder<bool>(
+                        future: UiUtils.forceUpdate(context
+                            .read<AppConfigurationCubit>()
+                            .getAppVersion()),
+                        builder: (context, snaphsot) {
+                          if (snaphsot.hasData) {
+                            return (snaphsot.data ?? false)
+                                ? ForceUpdateDialogContainer()
+                                : SizedBox();
+                          }
+
+                          return SizedBox();
+                        })
+                    : SizedBox(),
               ],
             ),
     );
