@@ -190,28 +190,28 @@ class LessonsContainer extends StatelessWidget {
                               ),
                             )
                           : SizedBox(),
-
-                      // lesson.studyMaterials.isNotEmpty
-                      // ?
-                      //TODO: If topics count is non-zero then show number of topics
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2.50),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(Routes.topicsByLesson, arguments: {
-                              "classSectionDetails": classSectionDetails,
-                              "subject": subject,
-                              "lesson": lesson
-                            });
-                          },
-                          child: Text(
-                            "${UiUtils.getTranslatedLabel(context, topicsKey)}",
-                            style: TextStyle(color: assignmentViewButtonColor),
-                          ),
-                        ),
-                      )
-                      // : SizedBox(),
+                      lesson.topicsCount != 0
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 2.50),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      Routes.topicsByLesson,
+                                      arguments: {
+                                        "classSectionDetails":
+                                            classSectionDetails,
+                                        "subject": subject,
+                                        "lesson": lesson
+                                      });
+                                },
+                                child: Text(
+                                  "${lesson.topicsCount} ${UiUtils.getTranslatedLabel(context, topicKey)}",
+                                  style: TextStyle(
+                                      color: assignmentViewButtonColor),
+                                ),
+                              ),
+                            )
+                          : SizedBox(),
                     ],
                   ),
                   padding:

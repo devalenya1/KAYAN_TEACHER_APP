@@ -28,6 +28,7 @@ const String addLessonKey = "addLesson";
 const String studyMaterialsKey = "studyMaterials";
 
 const String topicsKey = "topics";
+const String topicKey = "topic";
 
 const String announcementsKey = "announcements";
 const String teacherKey = "teacher";

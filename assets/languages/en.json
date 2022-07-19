@@ -195,7 +195,8 @@
     "nameAlreadyTaken" : "The name has already been taken",
     "appUnderMaintenance" : "Sorry for the inconvenience. This app is under maintenance",
     "update" : "Update",
-    "newUpdateAvailable" : "There is a new update. Please update this application"
+    "newUpdateAvailable" : "There is a new update. Please update this application",
+    "topic" : "Topic(s)"
 
 
 }
