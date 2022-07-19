@@ -1,5 +1,6 @@
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/assignmentCubit.dart';
+import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
@@ -33,6 +34,9 @@ class AssignmentsScreen extends StatefulWidget {
                   create: (context) => AssignmentCubit(
                         AssignmentRepository(),
                       )),
+              BlocProvider(
+                  create: (context) =>
+                      DeleteAssignmentCubit(AssignmentRepository()))
             ], child: AssignmentsScreen()));
   }
 
@@ -208,7 +212,8 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionAddButton(
         onTap: () {
-          Navigator.of(context).pushNamed(Routes.addAssignment);
+          Navigator.of(context).pushNamed(Routes.addAssignment,
+              arguments: {"editAssignment": false});
         },
       ),
       body: Stack(

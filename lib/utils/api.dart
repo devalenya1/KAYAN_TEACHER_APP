@@ -35,7 +35,7 @@ class Api {
   static String getSubjectByClassSection = "${databaseUrl}teacher/subjects";
 
   static String getassignment = "${databaseUrl}teacher/get-assignment";
-  static String uploadassignment = "${baseUrl}teacher/update-assignment";
+  static String uploadassignment = "${databaseUrl}teacher/update-assignment";
   static String deleteassignment = "${databaseUrl}teacher/delete-assignment";
   static String createassignment = "${databaseUrl}teacher/create-assignment";
   static String createLesson = "${databaseUrl}teacher/create-lesson";

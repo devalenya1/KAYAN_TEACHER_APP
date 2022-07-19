@@ -86,6 +86,7 @@ const String acceptKey = "accept";
 const String addRemarkKey = "addRemark";
 const String submitKey = "submit";
 const String submittingKey = "submitting";
+const String editAssignmentKey = "editassignment";
 const String createAssignmentKey = "createAssignment";
 const String assignmentNameKey = "assignmentName";
 const String dueTimeKey = "dueTime";
@@ -183,7 +184,8 @@ const String announcementAddedKey = "announcementAdded";
 const String unableToDeleteLessonKey = "unableToDeleteLesson";
 const String unableToDeleteTopicKey = "unableToDeleteTopic";
 
-const String sucessfullyassignmentkey = "Suceessfully Create Assignment";
+const String sucessfullyassignmentkey = "Suceessfullycreatessignment";
+const String editassignmentkey = "editassignment";
 const String editLessonKey = "editLesson";
 const String editStudyMaterialKey = "editStudyMaterial";
 const String unableToOpenFileKey = "unableToOpenFile";
