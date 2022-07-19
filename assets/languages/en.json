@@ -196,7 +196,16 @@
     "appUnderMaintenance" : "Sorry for the inconvenience. This app is under maintenance",
     "update" : "Update",
     "newUpdateAvailable" : "There is a new update. Please update this application",
-    "topic" : "Topic(s)"
-
+    "topic" : "Topic(s)",
+    "studentDetails" : "Student details",
+    "rollNo": "Roll No.",
+    "dob" : "Dob",
+    "bloodGrp": "Blood Grp.",
+    "grNo": "GR No.",
+    "occupation": "Occupation",
+    "phone" : "Phone",
+    "mother" : "Mother",
+    "father" : "Father",
+    "guardian" : "Guardian"
 
 }

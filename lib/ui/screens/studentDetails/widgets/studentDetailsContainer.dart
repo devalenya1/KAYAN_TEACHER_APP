@@ -1,33 +1,39 @@
-import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
-class StudentDetailsContainer extends StatelessWidget {
+class StudentDetailsContainer extends StatefulWidget {
   const StudentDetailsContainer({Key? key}) : super(key: key);
 
+  @override
+  State<StudentDetailsContainer> createState() =>
+      _StudentDetailsContainerState();
+}
+
+class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
   final double _detailsInBetweenPadding = 8.5;
 
-  TextStyle _getLabelValueTextStyle(BuildContext context) {
+  TextStyle _getLabelValueTextStyle() {
     return TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontSize: 14,
         fontWeight: FontWeight.w600);
   }
 
-  TextStyle _getLabelTextStyle(BuildContext context) {
+  TextStyle _getLabelTextStyle() {
     return TextStyle(
         color: Theme.of(context).colorScheme.onBackground,
         fontSize: 11,
         fontWeight: FontWeight.w400);
   }
 
-  Widget _buildDetailBackgroundContainer(Widget child, BuildContext context) {
+  Widget _buildDetailBackgroundContainer(Widget child) {
     return Center(
       child: Container(
         margin: EdgeInsets.only(bottom: 20.0),
         width: MediaQuery.of(context).size.width,
         child: child,
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+        padding: EdgeInsets.symmetric(horizontal: 12.50, vertical: 15.0),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
             borderRadius: BorderRadius.circular(10.0)),
@@ -35,125 +41,197 @@ class StudentDetailsContainer extends StatelessWidget {
     );
   }
 
-  Widget _buildStudentInformationContainer(BuildContext context) {
+  Widget _buildValueWithTitle(
+      {required String title,
+      required String value,
+      required double titleWidthPercentage,
+      required double width,
+      required valueWidthPercentage}) {
+    return Row(
+      children: [
+        SizedBox(
+          width: width * titleWidthPercentage,
+          child: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: _getLabelTextStyle(),
+          ),
+        ),
+        SizedBox(
+          width: width * valueWidthPercentage,
+          child: Text(
+            ":  $value",
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: _getLabelTextStyle(),
+            textAlign: TextAlign.start,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStudentInformationContainer() {
+    return _buildDetailBackgroundContainer(Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          radius: 25,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Flexible(
+          child: LayoutBuilder(builder: (context, boxConstraints) {
+            final leftSideTitleWidthPercentage = 0.37;
+            final rightSideTitleWidthPercentage = 0.5;
+            final widthOfDetialsContainer = boxConstraints.maxWidth * (0.5);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Student name",
+                  style: _getLabelValueTextStyle(),
+                ),
+                Row(
+                  children: [
+                    Column(
+                      children: [
+                        _buildValueWithTitle(
+                            title: "Roll No.",
+                            value: "10",
+                            width: widthOfDetialsContainer,
+                            titleWidthPercentage: leftSideTitleWidthPercentage,
+                            valueWidthPercentage:
+                                1.0 - leftSideTitleWidthPercentage),
+                        _buildValueWithTitle(
+                            title: "Class",
+                            value: "10",
+                            width: widthOfDetialsContainer,
+                            titleWidthPercentage: leftSideTitleWidthPercentage,
+                            valueWidthPercentage:
+                                1.0 - leftSideTitleWidthPercentage),
+                        _buildValueWithTitle(
+                            width: widthOfDetialsContainer,
+                            title: "Dob",
+                            value: "10-10-1999",
+                            titleWidthPercentage: leftSideTitleWidthPercentage,
+                            valueWidthPercentage:
+                                1.0 - leftSideTitleWidthPercentage),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        _buildValueWithTitle(
+                            title: "Gender",
+                            value: "Male",
+                            width: widthOfDetialsContainer,
+                            titleWidthPercentage: rightSideTitleWidthPercentage,
+                            valueWidthPercentage:
+                                1.0 - rightSideTitleWidthPercentage),
+                        _buildValueWithTitle(
+                            title: "Blood Grp.",
+                            value: "O+",
+                            width: widthOfDetialsContainer,
+                            titleWidthPercentage: rightSideTitleWidthPercentage,
+                            valueWidthPercentage:
+                                1.0 - rightSideTitleWidthPercentage),
+                        _buildValueWithTitle(
+                            title: "GR No.",
+                            value: "1234",
+                            width: widthOfDetialsContainer,
+                            titleWidthPercentage: rightSideTitleWidthPercentage,
+                            valueWidthPercentage:
+                                1.0 - rightSideTitleWidthPercentage),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: widthOfDetialsContainer *
+                          leftSideTitleWidthPercentage,
+                      child: Text(
+                        "Address",
+                        style: _getLabelTextStyle(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
+        ),
+      ],
+    ));
+  }
+
+  Widget _buildGuardianDetailsContainer({required String guardianRole}) {
     return _buildDetailBackgroundContainer(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LayoutBuilder(builder: (context, boxConstraints) {
-              return Row(
-                children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
-                  SizedBox(
-                    width: boxConstraints.maxWidth * (0.05),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Virati Kohli",
-                        style: _getLabelValueTextStyle(context),
-                      ),
-                      Text(
-                        "Class 10 - A",
-                        style: _getLabelTextStyle(context),
-                      ),
-                      Text(
-                        "01-01-1990",
-                        style: _getLabelTextStyle(context),
-                      ),
-                    ],
-                  ),
-                ],
-              );
-            }),
-            SizedBox(
-              height: _detailsInBetweenPadding,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            radius: 25,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Flexible(
+            child: LayoutBuilder(builder: (context, boxConstraints) {
+              final titleWidthPercentage = 0.28;
+              return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Full address",
-                    style: _getLabelTextStyle(context),
+                    "Parent name",
+                    style: _getLabelValueTextStyle(),
                   ),
                   Text(
-                    "GR-1234",
-                    style: _getLabelTextStyle(context),
+                    guardianRole,
+                    style: _getLabelTextStyle(),
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        context);
-  }
-
-  Widget _buildGuardianDetailsContainer(BuildContext context) {
-    return _buildDetailBackgroundContainer(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LayoutBuilder(builder: (context, boxConstraints) {
-              return Row(
-                children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
-                  SizedBox(
-                    width: boxConstraints.maxWidth * (0.05),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Virat Kohli",
-                        style: _getLabelValueTextStyle(context),
-                      ),
-                      Text(
-                        "Father",
-                        style: _getLabelTextStyle(context),
-                      ),
-                      Text(
-                        "+91 1234567890",
-                        style: _getLabelTextStyle(context),
-                      ),
-                    ],
-                  ),
+                  _buildValueWithTitle(
+                      title: UiUtils.getTranslatedLabel(context, occupationKey),
+                      value: "CEO",
+                      titleWidthPercentage: titleWidthPercentage,
+                      width: boxConstraints.maxWidth,
+                      valueWidthPercentage: 1.0 - titleWidthPercentage),
+                  _buildValueWithTitle(
+                      title: UiUtils.getTranslatedLabel(context,
+                          UiUtils.getTranslatedLabel(context, phoneKey)),
+                      value: "1234567890",
+                      titleWidthPercentage: titleWidthPercentage,
+                      width: boxConstraints.maxWidth,
+                      valueWidthPercentage: 1.0 - titleWidthPercentage),
+                  _buildValueWithTitle(
+                      title: UiUtils.getTranslatedLabel(context, emailKey),
+                      value: "1234567890",
+                      titleWidthPercentage: titleWidthPercentage,
+                      width: boxConstraints.maxWidth,
+                      valueWidthPercentage: 1.0 - titleWidthPercentage),
+                  _buildValueWithTitle(
+                      title: UiUtils.getTranslatedLabel(context,
+                          UiUtils.getTranslatedLabel(context, addressKey)),
+                      value: "1234567890",
+                      titleWidthPercentage: titleWidthPercentage,
+                      width: boxConstraints.maxWidth,
+                      valueWidthPercentage: 1.0 - titleWidthPercentage),
                 ],
               );
             }),
-            SizedBox(
-              height: _detailsInBetweenPadding,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Full address",
-                    style: _getLabelTextStyle(context),
-                  ),
-                  Text(
-                    "Cricketer",
-                    style: _getLabelTextStyle(context),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        context);
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget _buildAttendanceSummaryContainer(BuildContext context) {
+  Widget _buildAttendanceSummaryContainer() {
     return _buildDetailBackgroundContainer(
         LayoutBuilder(builder: (context, boxConstraints) {
       return Column(
@@ -165,7 +243,7 @@ class StudentDetailsContainer extends StatelessWidget {
             children: [
               Text(
                 "Today's attendance",
-                style: _getLabelValueTextStyle(context),
+                style: _getLabelValueTextStyle(),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
@@ -203,8 +281,8 @@ class StudentDetailsContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Present", style: _getLabelTextStyle(context)),
-                    Text("80", style: _getLabelValueTextStyle(context)),
+                    Text("Present", style: _getLabelTextStyle()),
+                    Text("80", style: _getLabelValueTextStyle()),
                   ],
                 ),
               ),
@@ -221,26 +299,16 @@ class StudentDetailsContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Absent", style: _getLabelTextStyle(context)),
-                    Text("80", style: _getLabelValueTextStyle(context)),
+                    Text("Absent", style: _getLabelTextStyle()),
+                    Text("80", style: _getLabelValueTextStyle()),
                   ],
                 ),
               ),
             ],
           ),
-          SizedBox(
-            height: _detailsInBetweenPadding,
-          ),
-          Center(
-            child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamed(Routes.monthWiseAttendance);
-                },
-                child: Text("View month-wise attendance")),
-          )
         ],
       );
-    }), context);
+    }));
   }
 
   @override
@@ -251,10 +319,11 @@ class StudentDetailsContainer extends StatelessWidget {
         child: Column(
           children: [
             //
-            _buildStudentInformationContainer(context),
-            _buildGuardianDetailsContainer(context),
-            _buildGuardianDetailsContainer(context),
-            _buildAttendanceSummaryContainer(context),
+            _buildStudentInformationContainer(),
+            _buildGuardianDetailsContainer(
+                guardianRole: UiUtils.getTranslatedLabel(context, fatherKey)),
+            //_buildGuardianDetailsContainer(),
+            _buildAttendanceSummaryContainer(),
           ],
         ),
         padding: EdgeInsets.only(
@@ -262,7 +331,7 @@ class StudentDetailsContainer extends StatelessWidget {
             right: MediaQuery.of(context).size.width * (0.075),
             top: UiUtils.getScrollViewTopPadding(
                 context: context,
-                appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage)),
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
       ),
     );
   }

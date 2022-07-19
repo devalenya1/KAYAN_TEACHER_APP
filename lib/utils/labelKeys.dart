@@ -242,3 +242,14 @@ const String appUnderMaintenanceKey = "appUnderMaintenance";
 const String updateKey = "update";
 
 const String newUpdateAvailableKey = "newUpdateAvailable";
+const String studentDetailsKey = "studentDetails";
+
+const String rollNoKey = "rollNo";
+const String dobKey = "dob";
+const String bloodGrpKey = "bloodGrp";
+const String grNoKey = "grNo";
+const String occupationKey = "occupation";
+const String phoneKey = "phone";
+const String motherKey = "mother";
+const String fatherKey = "father";
+const String guardianKey = "guardian";

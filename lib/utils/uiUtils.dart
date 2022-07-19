@@ -345,4 +345,10 @@ class UiUtils {
       String currentBuildNumber, String updatedBuildNumber) {
     return int.parse(updatedBuildNumber) > int.parse(currentBuildNumber);
   }
+
+  //Date format is DD-MM-YYYY
+  static String formattedDate(String date) {
+    final DateTime dateTime = DateTime.parse(date);
+    return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+  }
 }

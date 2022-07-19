@@ -1,5 +1,4 @@
 import 'package:eschool_teacher/data/models/student.dart';
-import 'package:eschool_teacher/data/repositories/studentRepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class SearchStudentState {}
@@ -20,17 +19,17 @@ class SearchStudentFailure extends SearchStudentState {
 }
 
 class SearchStudentCubit extends Cubit<SearchStudentState> {
-  late StudentRepository studentRepository;
+  //late StudentRepository studentRepository;
 
   SearchStudentCubit() : super(SearchStudentInitial()) {
-    studentRepository = StudentRepository();
+    //studentRepository = StudentRepository();
   }
 
   void searchStudent(String searchQuery) {
     emit(SearchStudentInProgress());
-    studentRepository
-        .searchStudents(searchQuery: searchQuery)
-        .then((value) => emit(SearchStudentSuccess(value)))
-        .catchError((e) => emit(SearchStudentFailure(e.toString())));
+    // studentRepository
+    //     .searchStudents(searchQuery: searchQuery)
+    //     .then((value) => emit(SearchStudentSuccess(value)))
+    //     .catchError((e) => emit(SearchStudentFailure(e.toString())));
   }
 }
