@@ -21,6 +21,7 @@ import 'package:eschool_teacher/ui/screens/splashScreen.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.dart';
 import 'package:eschool_teacher/ui/screens/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/termsAndConditionScreen.dart';
+import 'package:eschool_teacher/ui/screens/topcisByLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
 import 'package:eschool_teacher/ui/screens/takeAttendance/takeAttendanceScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,6 +70,8 @@ class Routes {
   static const String privacyPolicy = "/privacyPolicy";
 
   static const String contactUs = "/contactUs";
+
+  static const String topicsByLesson = "/topicsByLesson";
 
   static String currentRoute = splash;
 
@@ -173,6 +176,10 @@ class Routes {
       case addOrEditAnnouncement:
         {
           return AddOrEditAnnouncementScreen.route(routeSettings);
+        }
+      case topicsByLesson:
+        {
+          return TopcisByLessonScreen.route(routeSettings);
         }
 
       default:

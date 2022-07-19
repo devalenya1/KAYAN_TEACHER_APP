@@ -58,12 +58,16 @@ class CustomAppBar extends StatelessWidget {
             ),
             Align(
               alignment: Alignment.center,
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top: boxConstraints.maxHeight * (0.28) +
+              child: Container(
+                alignment: Alignment.center,
+                width: boxConstraints.maxWidth * (0.6),
+                margin: EdgeInsets.only(
+                    top: boxConstraints.maxHeight * (0.25) +
                         UiUtils.screenTitleFontSize),
                 child: Text(
                   subTitle ?? "",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: UiUtils.screenSubTitleFontSize,
                       color: Theme.of(context).scaffoldBackgroundColor),

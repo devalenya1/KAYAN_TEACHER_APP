@@ -94,10 +94,10 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
 
   late TextEditingController _topicNameTextEditingController =
       TextEditingController(
-          text: widget.topic != null ? widget.lesson!.name : null);
+          text: widget.topic != null ? widget.topic!.name : null);
   late TextEditingController _topicDescriptionTextEditingController =
       TextEditingController(
-          text: widget.topic != null ? widget.lesson!.description : null);
+          text: widget.topic != null ? widget.topic!.description : null);
 
   List<PickedStudyMaterial> _addedStudyMaterials = [];
 
