@@ -80,7 +80,8 @@ class _ChangePasswordBottomsheetState extends State<ChangePasswordBottomsheet> {
                             });
                           }),
                       hideText: _hideCurrentPassword,
-                      hintText: currentPasswordKey,
+                      hintText: UiUtils.getTranslatedLabel(
+                          context, currentPasswordKey),
                       textEditingController:
                           _currentPasswordTextEditingController,
                     ),
@@ -95,7 +96,8 @@ class _ChangePasswordBottomsheetState extends State<ChangePasswordBottomsheet> {
                             });
                           }),
                       hideText: _hideNewPassword,
-                      hintText: newPasswordKey,
+                      hintText:
+                          UiUtils.getTranslatedLabel(context, newPasswordKey),
                       textEditingController: _newPasswordTextEditingController,
                     ),
                     BottomSheetTextFieldContainer(
@@ -110,7 +112,8 @@ class _ChangePasswordBottomsheetState extends State<ChangePasswordBottomsheet> {
                             });
                           }),
                       hideText: _hideConfirmNewPassword,
-                      hintText: confirmNewPasswordKey,
+                      hintText: UiUtils.getTranslatedLabel(
+                          context, confirmNewPasswordKey),
                       textEditingController:
                           _confirmNewPasswordTextEditingController,
                     ),
