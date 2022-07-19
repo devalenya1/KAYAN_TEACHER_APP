@@ -122,9 +122,9 @@ class AssignmentCubit extends Cubit<AssignmentState> {
     }
   }
 
-  void deleteAssignment({
-    required int assignmentId,
-  }) async {
+  void deleteAssignment(
+    int assignmentId,
+  ) async {
     if (state is AssignmentsFetchSuccess) {
       List<Assignment> listOfAssignments =
           (state as AssignmentsFetchSuccess).assignment;

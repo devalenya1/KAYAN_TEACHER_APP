@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
+import 'package:eschool_teacher/data/models/subject.dart';
 
 class Assignment {
   Assignment({
@@ -22,7 +23,7 @@ class Assignment {
   late final int subjectId;
   late final String name;
   late final String instructions;
-  late final String dueDate;
+  late final DateTime dueDate;
   late final int points;
   late final int resubmission;
   late final int extraDaysForResubmission;
@@ -38,7 +39,7 @@ class Assignment {
     subjectId = json['subject_id'] ?? 0;
     name = json['name'] ?? "";
     instructions = json["instructions"] ?? "";
-    dueDate = json['due_date'] ?? "";
+    dueDate = DateTime.parse(json['due_date'] ?? "");
     points = json["points"] ?? 0;
     resubmission = json['resubmission'] ?? 0;
     extraDaysForResubmission = json["extra_days_for_resubmission"] ?? 0;
@@ -118,34 +119,6 @@ class Section {
   }
 }
 
-class Subject {
-  Subject({
-    required this.id,
-    required this.name,
-    required this.code,
-    required this.bgColor,
-    required this.image,
-    required this.mediumId,
-    required this.type,
-  });
-  late final int id;
-  late final String name;
-  late final String code;
-  late final String bgColor;
-  late final String image;
-  late final int mediumId;
-  late final String type;
-
-  Subject.fromJson(Map<String, dynamic> json) {
-    id = json['id'] ?? 0;
-    name = json['name'] ?? "";
-    code = json['code'] ?? "";
-    bgColor = json['bg_color'] ?? "";
-    image = json['image'] ?? "";
-    mediumId = json['medium_id'] ?? 0;
-    type = json['type'] ?? "";
-  }
-}
 
 // class StudyMaterial {
 //   StudyMaterial({

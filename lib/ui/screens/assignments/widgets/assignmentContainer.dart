@@ -1,6 +1,9 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/assignmentCubit.dart';
 import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
+import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
+import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,23 +26,10 @@ class AssignmentContainer extends StatefulWidget {
 class _AssignmentContainerState extends State<AssignmentContainer> {
   void showAssignmentBottomSheet() {
     UiUtils.showBottomSheet(
-            enableDrag: true,
-            child: BlocProvider<DeleteAssignmentCubit>(
-              create: (context) =>
-                  DeleteAssignmentCubit(AssignmentRepository()),
-              child: AssignmentDetailsBottomsheetContainer(
-                  assignment: widget.assignment),
-            ),
-            context: context)
-        .then((value) {
-      if (value != null) {
-        context
-            .read<AssignmentCubit>()
-            .deleteAssignment(assignmentId: value["assignmentId"]);
-      } else {
-        print("value is null");
-      }
-    });
+        enableDrag: true,
+        child: AssignmentDetailsBottomsheetContainer(
+            assignment: widget.assignment),
+        context: context);
   }
 
   @override
@@ -71,19 +61,37 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.assignment.name.toString(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.0),
+                Row(
+                  children: [
+                    Text(
+                      widget.assignment.name.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.0),
+                    ),
+                    Spacer(),
+                    EditButton(onTap: () {
+                      Navigator.of(context).pushNamed(
+                        Routes.addAssignment,
+                        arguments: {
+                          "editAssignment": true,
+                          "assignment": widget.assignment,
+                        },
+                      );
+                    }),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    DeleteButton(onTap: () {})
+                  ],
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
-                Text(widget.assignment.dueDate,
+                Text(widget.assignment.dueDate.toString(),
                     style: TextStyle(
                         color: Theme.of(context)
                             .colorScheme

@@ -44,29 +44,34 @@ class AssignmentRepository {
     }
   }
 
-  Future<void> uploadassignment(
-      {required int assignmentId,
-      required int classSelectionId,
-      required int subjectId,
-      required String name,
-      required String dateTime,
-      String? instruction,
-      int? points,
-      bool? resubmission,
-      int? extraDayForResubmission,
-      List? files}) async {
+  Future<void> editassignment({
+    required int assignmentId,
+    required int classSelectionId,
+    required int subjectId,
+    String? name,
+    String? dateTime,
+    String? instruction,
+    int? points,
+    int? resubmission,
+    String? extraDayForResubmission,
+    List<String>? filePaths,
+  }) async {
     try {
+      List<MultipartFile> files = [];
+      for (var filePath in filePaths!) {
+        files.add(await MultipartFile.fromFile(filePath));
+      }
       var body = {
-        "assignment_id": assignmentId,
         "class_section_id": classSelectionId,
+        "assignment_id": assignmentId,
         "subject_id": subjectId,
         "name": name,
-        "due_date": dateTime,
         "instructions": instruction,
+        "due_date": dateTime,
         "points": points,
         "resubmission": resubmission,
         "extra_days_for_resubmission": extraDayForResubmission,
-        "file": files,
+        "file": files
       };
       if (instruction!.isEmpty) {
         body.remove("instructions");
@@ -74,15 +79,63 @@ class AssignmentRepository {
       if (points == 0) {
         body.remove("points");
       }
-      if (resubmission == false) {
-        body.remove("extra_days_for_resubmission");
-      }
-      if (files!.isEmpty) {
+      if (filePaths.isEmpty) {
         body.remove("file");
       }
+      print("bodyyyyy$body");
       await Api.post(body: body, url: Api.uploadassignment, useAuthToken: true);
     } catch (e) {
       ApiException(e.toString());
+    }
+  }
+
+  Future<void> createAssignment({
+    required int classsId,
+    required int subjectId,
+    required String name,
+    String? instruction,
+    required String datetime,
+    required int points,
+    required int resubmission,
+    String? extraDayForResubmission,
+    List<String>? filePaths,
+  }) async {
+    try {
+      List<MultipartFile> files = [];
+      for (var filePath in filePaths!) {
+        files.add(await MultipartFile.fromFile(filePath));
+      }
+      var body = {
+        "class_section_id": classsId,
+        "subject_id": subjectId,
+        "name": name,
+        "instructions": instruction,
+        "due_date": datetime,
+        "points": points,
+        "resubmission": resubmission,
+        "extra_days_for_resubmission": extraDayForResubmission,
+        "file": files
+      };
+      if (instruction!.isEmpty) {
+        body.remove("instructions");
+      }
+      if (points == 0) {
+        body.remove("points");
+      }
+
+      // if (file.isEmpty) {
+      //   body.remove("file");
+      // }
+
+      final result = await Api.post(
+        url: Api.createassignment,
+        body: body,
+        useAuthToken: true,
+      );
+      print(result);
+      print(files);
+    } catch (e) {
+      throw ApiException(e.toString());
     }
   }
 

@@ -104,7 +104,7 @@ class _AssignmentDetailsBottomsheetContainerState
   }
 
   Widget _buildAssignmentDueDateContainer() {
-    final DateTime now = DateTime.parse(widget.assignment.dueDate);
+    final DateTime now = widget.assignment.dueDate;
     final DateFormat formatter = DateFormat('dd MMM yyyyy, hh:mm aaa');
     final String formatted = formatter.format(now);
     return _buildAssignmentDetailBackgroundContainer(
@@ -454,7 +454,7 @@ class _AssignmentDetailsBottomsheetContainerState
               // _buildLateSubmissionToggleContainer(),
               _buildReSubmissionOfRejectedASsignmentToggleContainer(),
               _buildExtraDayForRejectedAssignmentContainer(),
-              _buildDeleteAndEditButtonContainer(),
+              //_buildDeleteAndEditButtonContainer(),
               SizedBox(
                 height: UiUtils.bottomSheetHorizontalContentPadding,
               ),
