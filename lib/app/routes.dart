@@ -13,7 +13,6 @@ import 'package:eschool_teacher/ui/screens/contactUsScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/lessonsScreen.dart';
 import 'package:eschool_teacher/ui/screens/login/loginScreen.dart';
-import 'package:eschool_teacher/ui/screens/monthWiseAttendance/monthWiseAttendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/privacyPolicyScreen.dart';
 import 'package:eschool_teacher/ui/screens/resultScreen.dart';
 import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
@@ -132,10 +131,7 @@ class Routes {
           return CupertinoPageRoute(
               builder: (context) => const AddResultScreen());
         }
-      case monthWiseAttendance:
-        {
-          return MonthWiseAttendanceScreen.route(routeSettings);
-        }
+
       case announcements:
         {
           return AnnouncementsScreen.route(routeSettings);

@@ -1,5 +1,7 @@
-import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
+import 'package:eschool_teacher/ui/widgets/customBackButton.dart';
 import 'package:eschool_teacher/ui/widgets/customRoundedButton.dart';
+import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
+import 'package:eschool_teacher/ui/widgets/searchButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
@@ -59,13 +61,90 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
   }
 
   Widget _buildAppbar() {
+    return ScreenTopBackgroundContainer(
+      padding: EdgeInsets.all(0),
+      child: LayoutBuilder(builder: (context, boxConstraints) {
+        return Stack(
+          children: [
+            CustomBackButton(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              alignmentDirectional: AlignmentDirectional.centerStart,
+            ),
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: SearchButton(onTap: () {}),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                alignment: Alignment.center,
+                width: boxConstraints.maxWidth * (0.6),
+                child: Text(
+                  UiUtils.getTranslatedLabel(context, takeAttendanceKey),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: UiUtils.screenTitleFontSize,
+                      color: Theme.of(context).scaffoldBackgroundColor),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                alignment: Alignment.center,
+                width: boxConstraints.maxWidth * (0.6),
+                margin: EdgeInsets.only(
+                    top: boxConstraints.maxHeight * (0.25) +
+                        UiUtils.screenTitleFontSize),
+                child: GestureDetector(
+                  onTap: () {
+                    _changeAttendanceDate();
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Transform.translate(
+                        offset: Offset(0.0, -0.75),
+                        child: Icon(
+                          Icons.calendar_month,
+                          size: 14,
+                          color: Theme.of(context).colorScheme.background,
+                        ),
+                      ),
+                      SizedBox(
+                        width: boxConstraints.maxWidth * (0.015),
+                      ),
+                      Text(
+                        _buildAttendanceDate(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: UiUtils.screenSubTitleFontSize,
+                            color: Theme.of(context).scaffoldBackgroundColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      }),
+      heightPercentage: UiUtils.appBarSmallerHeightPercentage,
+    );
+
+    /*
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
           subTitle: _buildAttendanceDate(),
           trailingWidget: GestureDetector(
             onTap: () {
-              _changeAttendanceDate();
             },
             child: Container(
               decoration:
@@ -73,7 +152,7 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
               width: 25,
               height: 25,
               child: Icon(
-                Icons.calendar_month,
+                CupertinoIcons.search, //Icons.calendar_month
                 size: 26,
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),
@@ -81,13 +160,14 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
           ),
           title: UiUtils.getTranslatedLabel(context, takeAttendanceKey)),
     );
+    */
   }
 
   Widget _buildSubmitAttendanceButton() {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 25.0),
+        padding: const EdgeInsets.only(bottom: 25),
         child: CustomRoundedButton(
             onTap: () {
               print("Attendance submitted");
@@ -118,10 +198,10 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
                     color: Theme.of(context)
                         .colorScheme
                         .secondary
-                        .withOpacity(0.05),
+                        .withOpacity(0.075),
                     offset: Offset(2.5, 2.5),
                     blurRadius: 10,
-                    spreadRadius: 0)
+                    spreadRadius: 0.5)
               ],
               color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(10)),

@@ -3,13 +3,11 @@ import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/studentsByClassSectionCubit.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/student.dart';
-import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,67 +16,10 @@ class StudentsContainer extends StatelessWidget {
   const StudentsContainer({Key? key, required this.classSectionDetails})
       : super(key: key);
 
-  Widget _buildSerchBar(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).pushNamed(Routes.searchStudent);
-      },
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        alignment: AlignmentDirectional.centerStart,
-        child: Row(
-          children: [
-            Text(
-              UiUtils.getTranslatedLabel(context, searchStudentKey),
-              style: TextStyle(color: hintTextColor, fontSize: 14),
-            ),
-            Spacer(),
-            Icon(
-              CupertinoIcons.search,
-              color: hintTextColor,
-            )
-          ],
-        ),
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onBackground
-                    .withOpacity(0.5))),
-        width: MediaQuery.of(context).size.width,
-        height: 45,
-      ),
-    );
-  }
-
-  Widget _buildStudentContainer(
-      {required Student student,
-      required BuildContext context,
-      required int index,
-      required int totalStudents,
-      required bool hasMoreStudents,
-      required bool hasMoreStudentsInProgress,
-      required bool fetchMoreStudentsFailure}) {
-    if (index == (totalStudents - 1)) {
-      if (hasMoreStudents) {
-        if (hasMoreStudentsInProgress) {
-          return _buildStudentShimmerLoadContainer();
-        }
-        if (fetchMoreStudentsFailure) {
-          return Center(
-            child: CupertinoButton(
-                child: Text(UiUtils.getTranslatedLabel(context, retryKey)),
-                onPressed: () {
-                  context.read<StudentsByClassSectionCubit>().fetchMoreStudents(
-                      classSectionId: classSectionDetails.id);
-                }),
-          );
-        }
-      }
-    }
+  Widget _buildStudentContainer({
+    required Student student,
+    required BuildContext context,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: InkWell(
@@ -191,7 +132,8 @@ class StudentsContainer extends StatelessWidget {
     });
   }
 
-  Widget _buildStudentList() {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<StudentsByClassSectionCubit,
         StudentsByClassSectionState>(
       builder: (context, state) {
@@ -199,15 +141,9 @@ class StudentsContainer extends StatelessWidget {
           return Column(
             children: List.generate(state.students.length, (index) => index)
                 .map((studentIndex) => _buildStudentContainer(
-                    student: state.students[studentIndex],
-                    context: context,
-                    index: studentIndex,
-                    totalStudents: state.students.length,
-                    hasMoreStudents:
-                        context.read<StudentsByClassSectionCubit>().hasMore(),
-                    hasMoreStudentsInProgress:
-                        state.fetchMoreStudentsInProgress,
-                    fetchMoreStudentsFailure: state.moreStudentsFetchError))
+                      student: state.students[studentIndex],
+                      context: context,
+                    ))
                 .toList(),
           );
         }
@@ -228,19 +164,6 @@ class StudentsContainer extends StatelessWidget {
               (index) => _buildStudentShimmerLoadContainer()).toList(),
         );
       },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildSerchBar(context),
-        SizedBox(
-          height: 25,
-        ),
-        _buildStudentList()
-      ],
     );
   }
 }

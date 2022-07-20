@@ -1,40 +1,44 @@
-import 'dart:async';
-
-import 'package:eschool_teacher/cubits/searchStudentCubit.dart';
+import 'package:eschool_teacher/data/models/student.dart';
 import 'package:eschool_teacher/ui/widgets/svgButton.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchStudentScreen extends StatefulWidget {
-  SearchStudentScreen({Key? key}) : super(key: key);
+  final List<Student> students;
+  final bool fromAttendanceScreen;
+  SearchStudentScreen(
+      {Key? key, required this.fromAttendanceScreen, required this.students})
+      : super(key: key);
 
   @override
   State<SearchStudentScreen> createState() => _SearchStudentScreenState();
 
   static Route<SearchStudentScreen> route(RouteSettings routeSettings) {
+    final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
-        builder: (_) => BlocProvider<SearchStudentCubit>(
-              create: (context) => SearchStudentCubit(),
-              child: SearchStudentScreen(),
+        builder: (_) => SearchStudentScreen(
+              fromAttendanceScreen: arguments['fromAttendanceScreen'],
+              students: arguments['students'],
             ));
   }
 }
 
 class _SearchStudentScreenState extends State<SearchStudentScreen> {
   late final TextEditingController searchQueryTextEditingController =
-      TextEditingController()..addListener(searchQueryTextControllerListener);
+      TextEditingController();
 
-  Timer? waitForNextSearchRequestTimer;
+  // Timer? waitForNextSearchRequestTimer;
 
-  int waitForNextRequestSearchQueryTimeInMilliSeconds = 500;
+  // int waitForNextRequestSearchQueryTimeInMilliSeconds = 500;
 
+  /*
   void searchQueryTextControllerListener() {
     waitForNextSearchRequestTimer?.cancel();
     setWaitForNextSearchRequestTimer();
   }
 
+  
   void setWaitForNextSearchRequestTimer() {
     if (waitForNextRequestSearchQueryTimeInMilliSeconds != 400) {
       waitForNextRequestSearchQueryTimeInMilliSeconds = 400;
@@ -53,11 +57,10 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
       }
     });
   }
+  */
 
   @override
   void dispose() {
-    searchQueryTextEditingController
-        .removeListener(searchQueryTextControllerListener);
     searchQueryTextEditingController.dispose();
     super.dispose();
   }
@@ -96,7 +99,7 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
               onTap: () {
                 Navigator.of(context).pop();
               },
-              svgIconUrl: UiUtils.getImagePath("back_icon.svg")),
+              svgIconUrl: UiUtils.getBackButtonPath(context)),
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),

@@ -69,8 +69,8 @@ class Student {
     lastName = json['user']['last_name'] ?? "";
     firstName = json['user']['first_name'] ?? "";
     gender = json['user']['gender'] ?? "";
-    currentAddress = json['current_address'] ?? "";
-    permanentAddress = json['permanent_address'] ?? "";
+    currentAddress = json['user']['current_address'] ?? "";
+    permanentAddress = json['user']['permanent_address'] ?? "";
 
     email = json['email'] ?? "";
     mobile = json['mobile'] ?? "";

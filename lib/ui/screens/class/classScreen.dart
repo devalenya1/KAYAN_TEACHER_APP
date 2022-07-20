@@ -8,9 +8,10 @@ import 'package:eschool_teacher/ui/screens/class/widgets/studentsContainer.dart'
 import 'package:eschool_teacher/ui/screens/class/widgets/subjectsContainer.dart';
 import 'package:eschool_teacher/ui/widgets/appBarTitleContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
+import 'package:eschool_teacher/ui/widgets/customBackButton.dart';
 import 'package:eschool_teacher/ui/widgets/customTabBarContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
-import 'package:eschool_teacher/ui/widgets/svgButton.dart';
+import 'package:eschool_teacher/ui/widgets/searchButton.dart';
 import 'package:eschool_teacher/ui/widgets/tabBarBackgroundContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -52,23 +53,6 @@ class ClassScreen extends StatefulWidget {
 }
 
 class _ClassScreenState extends State<ClassScreen> {
-  late final ScrollController _scrollController = ScrollController()
-    ..addListener(_studentsScrollListener);
-
-  void _studentsScrollListener() {
-    if (!widget.isClassTeacher) {
-      return;
-    }
-    if (_scrollController.offset ==
-        _scrollController.position.maxScrollExtent) {
-      if (context.read<StudentsByClassSectionCubit>().hasMore()) {
-        context.read<StudentsByClassSectionCubit>().fetchMoreStudents(
-              classSectionId: widget.classSection.id,
-            );
-      }
-    }
-  }
-
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
@@ -84,13 +68,6 @@ class _ClassScreenState extends State<ClassScreen> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _scrollController.removeListener(_studentsScrollListener);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
   late String _selectedTabTitle = studentsKey;
   Widget _buildAppbar() {
     return widget.isClassTeacher
@@ -100,18 +77,18 @@ class _ClassScreenState extends State<ClassScreen> {
               child: LayoutBuilder(builder: (context, boxConstraints) {
                 return Stack(
                   children: [
-                    Align(
-                      alignment: AlignmentDirectional.topStart,
-                      child: Padding(
-                        child: SvgButton(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            svgIconUrl: UiUtils.getImagePath("back_icon.svg")),
-                        padding: EdgeInsets.only(
-                            left: UiUtils.screenContentHorizontalPadding),
-                      ),
-                    ),
+                    CustomBackButton(),
+                    _selectedTabTitle == subjectsKey
+                        ? SizedBox()
+                        : Align(
+                            alignment: AlignmentDirectional.topEnd,
+                            child: SearchButton(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(Routes.searchStudent);
+                              },
+                            ),
+                          ),
                     AppBarTitleContainer(
                         boxConstraints: boxConstraints,
                         title:
@@ -187,8 +164,9 @@ class _ClassScreenState extends State<ClassScreen> {
                   right: MediaQuery.of(context).size.width * (0.075),
                   top: UiUtils.getScrollViewTopPadding(
                       context: context,
-                      appBarHeightPercentage:
-                          UiUtils.appBarBiggerHeightPercentage)),
+                      appBarHeightPercentage: widget.isClassTeacher
+                          ? UiUtils.appBarBiggerHeightPercentage
+                          : UiUtils.appBarSmallerHeightPercentage)),
               child: widget.isClassTeacher
                   ? _selectedTabTitle == subjectsKey
                       ? SubjectsContainer(

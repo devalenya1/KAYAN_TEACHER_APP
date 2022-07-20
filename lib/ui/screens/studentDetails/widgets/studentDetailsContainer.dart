@@ -1,10 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eschool_teacher/data/models/student.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 
-//TODO: address is not showing
-//and fix the width of address key
 class StudentDetailsContainer extends StatefulWidget {
   final Student student;
   const StudentDetailsContainer({Key? key, required this.student})
@@ -82,6 +81,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
+          backgroundImage: CachedNetworkImageProvider(widget.student.image),
           radius: 25,
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
@@ -159,14 +159,14 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                   children: [
                     SizedBox(
                       width: widthOfDetialsContainer *
-                          leftSideTitleWidthPercentage,
+                          (leftSideTitleWidthPercentage + 0.05),
                       child: Text(
                         UiUtils.getTranslatedLabel(context, addressKey),
                         style: _getLabelTextStyle(),
                       ),
                     ),
                     Text(
-                      widget.student.currentAddress,
+                      ":  " + widget.student.currentAddress,
                       style: _getLabelTextStyle(),
                     )
                   ],
