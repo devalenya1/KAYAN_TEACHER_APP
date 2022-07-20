@@ -22,7 +22,7 @@ import 'package:eschool_teacher/ui/screens/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/termsAndConditionScreen.dart';
 import 'package:eschool_teacher/ui/screens/topcisByLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
-import 'package:eschool_teacher/ui/screens/takeAttendance/takeAttendanceScreen.dart';
+import 'package:eschool_teacher/ui/screens/takeAttendance/attendanceScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +43,7 @@ class Routes {
 
   static const String addAssignment = "/addAssignment";
 
-  static const String takeAttendance = "/takeAttendance";
+  static const String attendance = "/attendance";
 
   static const String searchStudent = "/searchStudent";
 
@@ -110,9 +110,9 @@ class Routes {
           return AddAssignmentScreen.Routes(routeSettings);
         }
 
-      case takeAttendance:
+      case attendance:
         {
-          return CupertinoPageRoute(builder: (_) => TakeAttendanceScreen());
+          return AttendanceScreen.route(routeSettings);
         }
       case searchStudent:
         {

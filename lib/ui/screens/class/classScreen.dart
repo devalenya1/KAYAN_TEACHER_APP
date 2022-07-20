@@ -30,7 +30,7 @@ class ClassScreen extends StatefulWidget {
   @override
   State<ClassScreen> createState() => _ClassScreenState();
 
-  static Route<ClassScreen> route(RouteSettings routeSettings) {
+  static Route route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
         builder: (_) => MultiBlocProvider(
@@ -156,18 +156,28 @@ class _ClassScreenState extends State<ClassScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: widget.isClassTeacher
-          ? FloatingActionButton(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SvgPicture.asset(
-                  UiUtils.getImagePath("take_attendance.svg"),
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed(Routes.takeAttendance);
+          ? BlocBuilder<StudentsByClassSectionCubit,
+              StudentsByClassSectionState>(
+              builder: (context, state) {
+                if (state is StudentsByClassSectionFetchSuccess) {
+                  return FloatingActionButton(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: SvgPicture.asset(
+                        UiUtils.getImagePath("take_attendance.svg"),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(Routes.attendance,
+                          arguments: state.students);
+                    },
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  );
+                }
+
+                return SizedBox();
               },
-              backgroundColor: Theme.of(context).colorScheme.primary,
             )
           : SizedBox(),
       body: Stack(
