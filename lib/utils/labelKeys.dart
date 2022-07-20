@@ -255,3 +255,4 @@ const String phoneKey = "phone";
 const String motherKey = "mother";
 const String fatherKey = "father";
 const String guardianKey = "guardian";
+const String searchStudent = "searchStudent";

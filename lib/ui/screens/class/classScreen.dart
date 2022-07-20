@@ -82,10 +82,26 @@ class _ClassScreenState extends State<ClassScreen> {
                         ? SizedBox()
                         : Align(
                             alignment: AlignmentDirectional.topEnd,
-                            child: SearchButton(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(Routes.searchStudent);
+                            child: BlocBuilder<StudentsByClassSectionCubit,
+                                StudentsByClassSectionState>(
+                              builder: (context, state) {
+                                if (state
+                                    is StudentsByClassSectionFetchSuccess) {
+                                  return SearchButton(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          Routes.searchStudent,
+                                          arguments: {
+                                            "students": context
+                                                .read<
+                                                    StudentsByClassSectionCubit>()
+                                                .getStudents(),
+                                            "fromAttendanceScreen": false
+                                          });
+                                    },
+                                  );
+                                }
+                                return SizedBox();
                               },
                             ),
                           ),

@@ -37,4 +37,10 @@ class StudentsByClassSectionCubit extends Cubit<StudentsByClassSectionState> {
       emit(StudentsByClassSectionFetchFailure(e.toString()));
     }
   }
+
+  List<Student> getStudents() {
+    return (state is StudentsByClassSectionFetchSuccess)
+        ? (state as StudentsByClassSectionFetchSuccess).students
+        : [];
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:eschool_teacher/data/models/student.dart';
+import 'package:eschool_teacher/ui/widgets/studentTileContainer.dart';
 import 'package:eschool_teacher/ui/widgets/svgButton.dart';
+import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class SearchStudentScreen extends StatefulWidget {
   @override
   State<SearchStudentScreen> createState() => _SearchStudentScreenState();
 
-  static Route<SearchStudentScreen> route(RouteSettings routeSettings) {
+  static Route<dynamic> route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
         builder: (_) => SearchStudentScreen(
@@ -26,19 +28,29 @@ class SearchStudentScreen extends StatefulWidget {
 
 class _SearchStudentScreenState extends State<SearchStudentScreen> {
   late final TextEditingController searchQueryTextEditingController =
-      TextEditingController();
+      TextEditingController()..addListener(searchQueryTextControllerListener);
+
+  late List<Student> searchedStudents = [];
 
   // Timer? waitForNextSearchRequestTimer;
 
   // int waitForNextRequestSearchQueryTimeInMilliSeconds = 500;
 
-  /*
   void searchQueryTextControllerListener() {
-    waitForNextSearchRequestTimer?.cancel();
-    setWaitForNextSearchRequestTimer();
+    //waitForNextSearchRequestTimer?.cancel();
+    //setWaitForNextSearchRequestTimer();
+    if (searchQueryTextEditingController.text.isNotEmpty) {
+      searchedStudents.clear();
+      searchedStudents.addAll(widget.students.where((element) => element
+          .getFullName()
+          .toLowerCase()
+          .contains(
+              searchQueryTextEditingController.text.trim().toLowerCase())));
+      setState(() {});
+    }
   }
 
-  
+  /*
   void setWaitForNextSearchRequestTimer() {
     if (waitForNextRequestSearchQueryTimeInMilliSeconds != 400) {
       waitForNextRequestSearchQueryTimeInMilliSeconds = 400;
@@ -75,8 +87,27 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
           hintStyle:
               TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
           border: InputBorder.none,
-          hintText: "Search student"),
+          hintText: UiUtils.getTranslatedLabel(context, searchStudentKey)),
     );
+  }
+
+  Widget _buildStudents() {
+    return searchedStudents.isEmpty
+        ? Center(
+            child: Text(
+              UiUtils.getTranslatedLabel(context, searchStudentKey),
+              style: TextStyle(fontSize: 16),
+            ),
+          )
+        : ListView.builder(
+            padding: EdgeInsets.symmetric(
+                vertical: 20,
+                horizontal: MediaQuery.of(context).size.width *
+                    UiUtils.screenContentHorizontalPaddingPercentage),
+            itemCount: searchedStudents.length,
+            itemBuilder: (context, index) {
+              return StudentTileContainer(student: searchedStudents[index]);
+            });
   }
 
   @override
@@ -89,6 +120,8 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
               color: Theme.of(context).scaffoldBackgroundColor,
               onPressed: () {
                 searchQueryTextEditingController.clear();
+                searchedStudents.clear();
+                setState(() {});
               },
               icon: Icon(Icons.clear))
         ],
@@ -103,6 +136,7 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
         ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
+      body: _buildStudents(),
     );
   }
 }
