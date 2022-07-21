@@ -256,3 +256,5 @@ const String motherKey = "mother";
 const String fatherKey = "father";
 const String guardianKey = "guardian";
 const String searchStudent = "searchStudent";
+const String holidayKey = "holiday";
+const String attendanceNotViewEditKey = "attendanceNotViewEdit";

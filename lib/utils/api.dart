@@ -55,9 +55,9 @@ class Api {
       "${databaseUrl}teacher/delete-announcement";
   static String updateAnnouncement =
       "${databaseUrl}teacher/update-announcement";
-
   static String getStudentsByClassSection =
       "${databaseUrl}teacher/student-list";
+  static String getAttendance = "${databaseUrl}teacher/get-attendance";
 
   static String settings = "${databaseUrl}settings";
 

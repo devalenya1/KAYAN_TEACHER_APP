@@ -8,6 +8,7 @@ import 'package:eschool_teacher/ui/screens/announcementsScreen.dart';
 
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
+import 'package:eschool_teacher/ui/screens/attendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/contactUsScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
@@ -22,7 +23,6 @@ import 'package:eschool_teacher/ui/screens/subjectScreen.dart';
 import 'package:eschool_teacher/ui/screens/termsAndConditionScreen.dart';
 import 'package:eschool_teacher/ui/screens/topcisByLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
-import 'package:eschool_teacher/ui/screens/takeAttendance/attendanceScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

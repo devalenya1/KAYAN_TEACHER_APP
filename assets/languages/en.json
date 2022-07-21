@@ -208,6 +208,8 @@
     "phone" : "Phone",
     "mother" : "Mother",
     "father" : "Father",
-    "guardian" : "Guardian"
+    "guardian" : "Guardian",
+    "holiday" : "Holiday",
+    "attendanceNotViewEdit" : "Because of holiday can not view/take attendance"
 
 }
