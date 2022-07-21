@@ -380,11 +380,13 @@ class _AssignmentDetailsBottomsheetContainerState
               if (widget.assignment.studyMaterial.isNotEmpty &&
                   widget.assignment.studyMaterial != [])
                 _buildAssignmentReferenceMaterialsContainer(),
-              if (widget.assignment.points != 0)
-                _buildAssignmentPointsContainer(),
+
+              _buildAssignmentPointsContainer(),
               // _buildLateSubmissionToggleContainer(),
+
               _buildReSubmissionOfRejectedASsignmentToggleContainer(),
-              _buildExtraDayForRejectedAssignmentContainer(),
+              if (widget.assignment.resubmission == 1)
+                _buildExtraDayForRejectedAssignmentContainer(),
               //_buildDeleteAndEditButtonContainer(),
               SizedBox(
                 height: UiUtils.bottomSheetHorizontalContentPadding,

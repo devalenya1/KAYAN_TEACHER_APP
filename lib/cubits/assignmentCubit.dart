@@ -80,6 +80,10 @@ class AssignmentCubit extends Cubit<AssignmentState> {
     ;
   }
 
+  void updateState(AssignmentState updatedState) {
+    emit(updatedState);
+  }
+
   bool hasMore() {
     if (state is AssignmentsFetchSuccess) {
       return (state as AssignmentsFetchSuccess).currentPage <
@@ -128,8 +132,9 @@ class AssignmentCubit extends Cubit<AssignmentState> {
     if (state is AssignmentsFetchSuccess) {
       List<Assignment> listOfAssignments =
           (state as AssignmentsFetchSuccess).assignment;
+      print("listOfAssignments${listOfAssignments.length}");
       listOfAssignments.removeWhere((element) => element.id == assignmentId);
-
+      print("afte remove assignmwnt ${listOfAssignments.length}");
       emit(AssignmentsFetchSuccess(
           assignment: listOfAssignments,
           currentPage: (state as AssignmentsFetchSuccess).currentPage,

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';
 import 'package:eschool_teacher/utils/api.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AssignmentRepository {
   AssignmentRepository() {
@@ -20,6 +21,7 @@ class AssignmentRepository {
             "subject_id": subjectId,
             "page": page ?? 0
           });
+
       print(result["data"]['data']);
       return {
         "assignment": (result['data']['data'] as List).map((e) {
@@ -48,19 +50,21 @@ class AssignmentRepository {
     required int assignmentId,
     required int classSelectionId,
     required int subjectId,
-    String? name,
-    String? dateTime,
-    String? instruction,
-    int? points,
-    int? resubmission,
-    String? extraDayForResubmission,
-    List<String>? filePaths,
+    required String name,
+    required String dateTime,
+    required String instruction,
+    required int points,
+    required int resubmission,
+    required int extraDayForResubmission,
+    List<PlatformFile>? filePaths,
   }) async {
     try {
       List<MultipartFile> files = [];
       for (var filePath in filePaths!) {
-        files.add(await MultipartFile.fromFile(filePath));
+        files.add(await MultipartFile.fromFile(filePath.path!));
       }
+
+      print("uploadedFiles repo $files");
       var body = {
         "class_section_id": classSelectionId,
         "assignment_id": assignmentId,
@@ -73,7 +77,8 @@ class AssignmentRepository {
         "extra_days_for_resubmission": extraDayForResubmission,
         "file": files
       };
-      if (instruction!.isEmpty) {
+      print("bodyyyyy $body");
+      if (instruction.isEmpty) {
         body.remove("instructions");
       }
       if (points == 0) {
@@ -82,7 +87,10 @@ class AssignmentRepository {
       if (filePaths.isEmpty) {
         body.remove("file");
       }
-      print("bodyyyyy$body");
+      if (resubmission == false) {
+        body.remove("extra_days_for_resubmission");
+      }
+      print("bodyyyyy11 $body");
       await Api.post(body: body, url: Api.uploadassignment, useAuthToken: true);
     } catch (e) {
       ApiException(e.toString());
@@ -93,17 +101,17 @@ class AssignmentRepository {
     required int classsId,
     required int subjectId,
     required String name,
-    String? instruction,
+    required String instruction,
     required String datetime,
     required int points,
-    required int resubmission,
-    String? extraDayForResubmission,
-    List<String>? filePaths,
+    required bool resubmission,
+    required int extraDayForResubmission,
+    required List<PlatformFile>? filePaths,
   }) async {
     try {
       List<MultipartFile> files = [];
       for (var filePath in filePaths!) {
-        files.add(await MultipartFile.fromFile(filePath));
+        files.add(await MultipartFile.fromFile(filePath.path!));
       }
       var body = {
         "class_section_id": classsId,
@@ -112,17 +120,23 @@ class AssignmentRepository {
         "instructions": instruction,
         "due_date": datetime,
         "points": points,
-        "resubmission": resubmission,
+        "resubmission": resubmission ? 1 : 0,
         "extra_days_for_resubmission": extraDayForResubmission,
         "file": files
       };
-      if (instruction!.isEmpty) {
+      if (instruction.isEmpty) {
         body.remove("instructions");
       }
       if (points == 0) {
         body.remove("points");
       }
-
+      if (filePaths.isEmpty) {
+        body.remove("file");
+      }
+      if (resubmission == false) {
+        body.remove("extra_days_for_resubmission");
+      }
+      print("body$body");
       // if (file.isEmpty) {
       //   body.remove("file");
       // }

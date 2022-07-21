@@ -358,20 +358,22 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   Widget _buildAssignmentListWithFiltersContainer() {
-    return SingleChildScrollView(
+    return ListView(
       padding: EdgeInsets.only(
           top: UiUtils.getScrollViewTopPadding(
               context: context,
               appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
-      child: Column(
-        children: [
-          _buildAssignmentSubmissionFilters(),
-          SizedBox(
-            height: 20,
-          ),
-          _buildAssignments()
-        ],
-      ),
+      children: [
+        Column(
+          children: [
+            _buildAssignmentSubmissionFilters(),
+            SizedBox(
+              height: 20,
+            ),
+            _buildAssignments()
+          ],
+        ),
+      ],
     );
   }
 

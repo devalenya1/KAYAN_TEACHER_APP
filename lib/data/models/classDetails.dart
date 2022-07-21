@@ -13,10 +13,10 @@ class ClassDetails {
   late final Medium medium;
 
   ClassDetails.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    mediumId = json['medium_id'];
-    medium = Medium.fromJson(json['medium']);
+    id = json['id'] ?? -1;
+    name = json['name'] ?? "";
+    mediumId = json['medium_id'] ?? -1;
+    medium = Medium.fromJson(json['medium'] ?? []);
   }
 
   Map<String, dynamic> toJson() {

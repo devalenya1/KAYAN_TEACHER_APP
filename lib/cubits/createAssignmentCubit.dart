@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class createAssignmentState {}
@@ -26,13 +27,14 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
     required int classsId,
     required int subjectId,
     required String name,
-    String? instruction,
+    required String instruction,
     required String datetime,
     required String points,
-    required int resubmission,
-    String? extraDayForResubmission,
-    List<String>? file,
+    required bool resubmission,
+    required String extraDayForResubmission,
+    List<PlatformFile>? file,
   }) async {
+    print("bodypoints $points");
     emit(createAssignmentInProcess());
     try {
       await _assignmentRepository
@@ -42,10 +44,12 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
             name: name,
             datetime: datetime,
             resubmission: resubmission,
-            extraDayForResubmission: extraDayForResubmission,
+            extraDayForResubmission: int.parse(extraDayForResubmission.isEmpty
+                ? "0"
+                : extraDayForResubmission),
             filePaths: file,
             instruction: instruction,
-            points: int.parse(points),
+            points: int.parse(points.isEmpty ? "0" : points),
           )
           .then((value) => emit(createAssignmentSuccess()));
     } catch (e) {
