@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/cubits/studentsByClassSectionCubit.dart';
+import 'package:eschool_teacher/cubits/studentMoreDetailsCubit.dart';
 import 'package:eschool_teacher/data/models/student.dart';
 import 'package:eschool_teacher/data/repositories/studentRepository.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/widgets/studentDetailsContainer.dart';
@@ -20,8 +20,7 @@ class StudentDetailsScreen extends StatefulWidget {
   static Route<StudentDetailsScreen> route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
         builder: (_) => BlocProvider(
-              create: (context) =>
-                  StudentsByClassSectionCubit(StudentRepository()),
+              create: (context) => StudentMoreDetailsCubit(StudentRepository()),
               child: StudentDetailsScreen(
                 student: routeSettings.arguments as Student,
               ),
@@ -30,6 +29,16 @@ class StudentDetailsScreen extends StatefulWidget {
 }
 
 class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      context
+          .read<StudentMoreDetailsCubit>()
+          .fetchStudentMoreDetails(studentId: widget.student.id);
+    });
+  }
+
   Widget _buildAppBar() {
     return Align(
       alignment: Alignment.topCenter,
