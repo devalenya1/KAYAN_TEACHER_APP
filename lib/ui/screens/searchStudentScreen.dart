@@ -1,4 +1,5 @@
 import 'package:eschool_teacher/data/models/student.dart';
+import 'package:eschool_teacher/ui/widgets/studentAttendanceTileContainer.dart';
 import 'package:eschool_teacher/ui/widgets/studentTileContainer.dart';
 import 'package:eschool_teacher/ui/widgets/svgButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -9,19 +10,24 @@ import 'package:flutter/material.dart';
 class SearchStudentScreen extends StatefulWidget {
   final List<Student> students;
   final bool fromAttendanceScreen;
+  final List<Map<int, bool>>? listOfAttendanceReport;
   SearchStudentScreen(
-      {Key? key, required this.fromAttendanceScreen, required this.students})
+      {Key? key,
+      required this.fromAttendanceScreen,
+      required this.students,
+      this.listOfAttendanceReport})
       : super(key: key);
 
   @override
   State<SearchStudentScreen> createState() => _SearchStudentScreenState();
 
-  static Route<dynamic> route(RouteSettings routeSettings) {
+  static Route<List<Map<int, bool>>?> route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
         builder: (_) => SearchStudentScreen(
               fromAttendanceScreen: arguments['fromAttendanceScreen'],
               students: arguments['students'],
+              listOfAttendanceReport: arguments['listOfAttendanceReport'],
             ));
   }
 }
@@ -31,6 +37,16 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
       TextEditingController()..addListener(searchQueryTextControllerListener);
 
   late List<Student> searchedStudents = [];
+
+  late List<Map<int, bool>> listOfAttendance =
+      widget.fromAttendanceScreen ? widget.listOfAttendanceReport! : [];
+
+  void _updateAttendance(int studentId) {
+    final index = listOfAttendance
+        .indexWhere((element) => element.keys.first == studentId);
+    listOfAttendance[index][studentId] = !listOfAttendance[index][studentId]!;
+    setState(() {});
+  }
 
   // Timer? waitForNextSearchRequestTimer;
 
@@ -106,37 +122,56 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
                     UiUtils.screenContentHorizontalPaddingPercentage),
             itemCount: searchedStudents.length,
             itemBuilder: (context, index) {
+              if (widget.fromAttendanceScreen) {
+                final isPresent = listOfAttendance
+                    .where((element) =>
+                        element.keys.first == searchedStudents[index].id)
+                    .toList()
+                    .first[searchedStudents[index].id]!;
+
+                return StudentAttendanceTileContainer(
+                    isPresent: isPresent,
+                    student: searchedStudents[index],
+                    updateAttendance: _updateAttendance);
+              }
+
               return StudentTileContainer(student: searchedStudents[index]);
             });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              iconSize: 26,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              onPressed: () {
-                searchQueryTextEditingController.clear();
-                searchedStudents.clear();
-                setState(() {});
-              },
-              icon: Icon(Icons.clear))
-        ],
-        title: _buildSearchTextField(),
-        leading: Padding(
-          padding: const EdgeInsets.all(17),
-          child: SvgButton(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              svgIconUrl: UiUtils.getBackButtonPath(context)),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pop(listOfAttendance);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+                iconSize: 26,
+                color: Theme.of(context).scaffoldBackgroundColor,
+                onPressed: () {
+                  searchQueryTextEditingController.clear();
+                  searchedStudents.clear();
+                  setState(() {});
+                },
+                icon: Icon(Icons.clear))
+          ],
+          title: _buildSearchTextField(),
+          leading: Padding(
+            padding: const EdgeInsets.all(17),
+            child: SvgButton(
+                onTap: () {
+                  Navigator.of(context).pop(listOfAttendance);
+                },
+                svgIconUrl: UiUtils.getBackButtonPath(context)),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        body: _buildStudents(),
       ),
-      body: _buildStudents(),
     );
   }
 }

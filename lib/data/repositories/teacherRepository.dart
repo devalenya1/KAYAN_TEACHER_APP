@@ -62,4 +62,19 @@ class TeacherRepository {
       throw ApiException(e.toString());
     }
   }
+
+  Future<void> submitClassAttendance(
+      {required int classSectionId,
+      required String date,
+      required List<Map<String, dynamic>> attendance}) async {
+    try {
+      await Api.post(url: Api.submitAttendance, useAuthToken: true, body: {
+        "class_section_id": classSectionId,
+        "date": date,
+        "attendance": attendance,
+      });
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
 }

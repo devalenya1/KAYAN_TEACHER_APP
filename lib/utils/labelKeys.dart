@@ -258,3 +258,5 @@ const String guardianKey = "guardian";
 const String searchStudent = "searchStudent";
 const String holidayKey = "holiday";
 const String attendanceNotViewEditKey = "attendanceNotViewEdit";
+const String attendanceSubmittedSuccessfullyKey =
+    "attendanceSubmittedSuccessfully";

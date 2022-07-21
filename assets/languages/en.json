@@ -210,6 +210,7 @@
     "father" : "Father",
     "guardian" : "Guardian",
     "holiday" : "Holiday",
-    "attendanceNotViewEdit" : "Because of holiday can not view/take attendance"
+    "attendanceNotViewEdit" : "Because of holiday can not view/take attendance",
+    "attendanceSubmittedSuccessfully" : "Attendance submitted successfully"
 
 }

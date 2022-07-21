@@ -1,6 +1,7 @@
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/appConfigurationCubit.dart';
 import 'package:eschool_teacher/cubits/classAttendanceCubit.dart';
-import 'package:eschool_teacher/data/models/attendanceReport.dart';
+import 'package:eschool_teacher/cubits/submitClassAttendanceCubit.dart';
 import 'package:eschool_teacher/data/models/student.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/widgets/customBackButton.dart';
@@ -25,8 +26,17 @@ class AttendanceScreen extends StatefulWidget {
 
   static Route route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => BlocProvider(
-              create: (context) => ClassAttendanceCubit(TeacherRepository()),
+        builder: (_) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) =>
+                      ClassAttendanceCubit(TeacherRepository()),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                      SubmitClassAttendanceCubit(TeacherRepository()),
+                ),
+              ],
               child: AttendanceScreen(
                   students: routeSettings.arguments as List<Student>),
             ));
@@ -102,7 +112,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           children: [
             CustomBackButton(
               onTap: () {
-                //TODO: check if submit attendacne is in progress then do not allow back event
+                if (context.read<SubmitClassAttendanceCubit>().state
+                    is SubmitClassAttendanceInProgress) {
+                  return;
+                }
                 Navigator.of(context).pop();
               },
               alignmentDirectional: AlignmentDirectional.centerStart,
@@ -115,7 +128,24 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     if (state.isHoliday) {
                       return SizedBox();
                     }
-                    return SearchButton(onTap: () {});
+                    return SearchButton(onTap: () {
+                      if (context.read<SubmitClassAttendanceCubit>().state
+                          is SubmitClassAttendanceInProgress) {
+                        return;
+                      }
+                      Navigator.of(context).pushNamed<List<Map<int, bool>>?>(
+                          Routes.searchStudent,
+                          arguments: {
+                            "fromAttendanceScreen": true,
+                            "students": widget.students,
+                            "listOfAttendanceReport": _listOfAttendance
+                          }).then((value) {
+                        if (value != null) {
+                          _listOfAttendance = value;
+                          setState(() {});
+                        }
+                      });
+                    });
                   }
 
                   return SizedBox();
@@ -192,21 +222,60 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           if (state.isHoliday) {
             return SizedBox();
           }
-          return Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 25),
-              child: CustomRoundedButton(
-                  onTap: () {
-                    print("Attendance submitted");
-                  },
-                  elevation: 10.0,
-                  height: UiUtils.bottomSheetButtonHeight,
-                  widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  buttonTitle: UiUtils.getTranslatedLabel(context, submitKey),
-                  showBorder: false),
-            ),
+          return BlocConsumer<SubmitClassAttendanceCubit,
+              SubmitClassAttendanceState>(
+            listener: (context, submitAttendanceState) {
+              if (submitAttendanceState is SubmitClassAttendanceSuccess) {
+                UiUtils.showBottomToastOverlay(
+                    context: context,
+                    errorMessage: UiUtils.getTranslatedLabel(
+                        context, attendanceSubmittedSuccessfullyKey),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary);
+              } else if (submitAttendanceState
+                  is SubmitClassAttendanceFailure) {
+                UiUtils.showBottomToastOverlay(
+                    context: context,
+                    errorMessage: UiUtils.getErrorMessageFromErrorCode(
+                        context, submitAttendanceState.errorMessage),
+                    backgroundColor: Theme.of(context).colorScheme.error);
+              }
+            },
+            builder: (context, submitAttendanceState) {
+              return Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  child: CustomRoundedButton(
+                      child: submitAttendanceState
+                              is SubmitClassAttendanceInProgress
+                          ? CustomCircularProgressIndicator(
+                              strokeWidth: 2,
+                              widthAndHeight: 20,
+                            )
+                          : null,
+                      onTap: () {
+                        if (submitAttendanceState
+                            is SubmitClassAttendanceInProgress) {
+                          return;
+                        }
+                        context
+                            .read<SubmitClassAttendanceCubit>()
+                            .submitAttendance(
+                                dateTime: _selectedAttendanceDate,
+                                classSectionId:
+                                    widget.students.first.classSectionId,
+                                attendanceReport: _listOfAttendance);
+                      },
+                      elevation: 10.0,
+                      height: UiUtils.bottomSheetButtonHeight,
+                      widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      buttonTitle:
+                          UiUtils.getTranslatedLabel(context, submitKey),
+                      showBorder: false),
+                ),
+              );
+            },
           );
         }
         return SizedBox();
@@ -321,13 +390,22 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          _buildStudents(),
-          _buildAppbar(),
-          _buildSubmitAttendanceButton()
-        ],
+    return WillPopScope(
+      onWillPop: () {
+        if (context.read<SubmitClassAttendanceCubit>().state
+            is SubmitClassAttendanceInProgress) {
+          return Future.value(false);
+        }
+        return Future.value(true);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            _buildStudents(),
+            _buildAppbar(),
+            _buildSubmitAttendanceButton()
+          ],
+        ),
       ),
     );
   }
