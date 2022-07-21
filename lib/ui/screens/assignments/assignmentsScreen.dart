@@ -1,6 +1,5 @@
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/assignmentCubit.dart';
-import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
@@ -9,6 +8,7 @@ import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentContain
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
+import 'package:eschool_teacher/ui/widgets/customRefreshIndicator.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
@@ -34,9 +34,6 @@ class AssignmentsScreen extends StatefulWidget {
                   create: (context) => AssignmentCubit(
                         AssignmentRepository(),
                       )),
-              BlocProvider(
-                  create: (context) =>
-                      DeleteAssignmentCubit(AssignmentRepository()))
             ], child: AssignmentsScreen()));
   }
 
@@ -61,6 +58,22 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                 .read<SubjectsOfClassSectionCubit>()
                 .getSubjectIdByName(selectSubjectId));
       }
+    }
+  }
+
+  void fetchAssignment() {
+    final subjectId = context
+        .read<SubjectsOfClassSectionCubit>()
+        .getSubjectDetailsByName(currentSelectedSubject)
+        .id;
+    if (subjectId != -1) {
+      context.read<AssignmentCubit>().fetchassignment(
+          classSectionId: context
+              .read<MyClassesCubit>()
+              .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection)
+              .id,
+          subjectId: subjectId);
     }
   }
 
@@ -97,27 +110,24 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               currentSelectedItem: currentSelectedClassSection,
               width: boxConstraints.maxWidth,
               changeSelectedItem: (result) {
-                setState(() {
-                  currentSelectedClassSection = result;
-                });
+                setState(
+                  () {
+                    currentSelectedClassSection = result;
+                  },
+                );
+
+                context
+                    .read<AssignmentCubit>()
+                    .updateState(AssignmentInitial());
               }),
+
+          //
           ClassSubjectsDropDownMenu(
               changeSelectedItem: (result) {
                 setState(() {
                   currentSelectedSubject = result;
                 });
-                final subjectId = context
-                    .read<SubjectsOfClassSectionCubit>()
-                    .getSubjectIdByName(currentSelectedSubject);
-                if (subjectId != -1) {
-                  context.read<AssignmentCubit>().fetchassignment(
-                      classSectionId: context
-                          .read<MyClassesCubit>()
-                          .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection)
-                          .id,
-                      subjectId: subjectId);
-                }
+                fetchAssignment();
               },
               currentSelectedItem: currentSelectedSubject,
               width: boxConstraints.maxWidth),
@@ -127,82 +137,47 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
   }
 
   Widget _buildInformationShimmerLoadingContainer() {
-    return Container(
-      margin: EdgeInsets.only(
-        bottom: 15,
-      ),
-      height: 80,
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Row(
-          children: [
-            ShimmerLoadingContainer(
-                child: CustomShimmerContainer(
-              height: 60,
-              width: boxConstraints.maxWidth * (0.225),
-            )),
-            SizedBox(
-              width: boxConstraints.maxWidth * (0.05),
-            ),
-            ShimmerLoadingContainer(
-                child: CustomShimmerContainer(
-              width: boxConstraints.maxWidth * (0.475),
-            )),
-            Spacer(),
-            ShimmerLoadingContainer(
-                child: CustomShimmerContainer(
-              borderRadius: boxConstraints.maxWidth * (0.035),
-              height: boxConstraints.maxWidth * (0.07),
-              width: boxConstraints.maxWidth * (0.07),
-            )),
-          ],
-        );
-      }),
-    );
-  }
-
-  Widget _buildAssignmentList() {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      padding: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * (0.075),
-          right: MediaQuery.of(context).size.width * (0.075),
-          top: UiUtils.getScrollViewTopPadding(
-              context: context,
-              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
-      child: Column(
-        children: [
-          _buildAssignmentFilters(),
-          SizedBox(
-            height: 10,
-          ),
-          BlocBuilder<AssignmentCubit, AssignmentState>(
-            builder: (context, state) {
-              if (state is AssignmentsFetchSuccess) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: List.generate(
-                      state.assignment.length,
-                      (index) => AssignmentContainer(
-                        assignment: state.assignment[index],
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              if (state is AssignmentFetchInProgress) {
-                return Column(
-                    children: List.generate(5, (index) {
-                  return _buildInformationShimmerLoadingContainer();
-                }));
-              }
-              if (state is AssignmentFetchFailure) {
-                return ErrorContainer(errorMessageCode: state.errorMessage);
-              }
-              return Container();
-            },
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Container(
+        child: LayoutBuilder(builder: (context, boxConstraints) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.7)),
+              )),
+              SizedBox(
+                height: 5,
+              ),
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.5)),
+              )),
+              SizedBox(
+                height: 15,
+              ),
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.7)),
+              )),
+              SizedBox(
+                height: 5,
+              ),
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.5)),
+              )),
+            ],
+          );
+        }),
+        padding: EdgeInsets.symmetric(vertical: 15.0),
+        width: MediaQuery.of(context).size.width * (0.85),
       ),
     );
   }
@@ -210,16 +185,72 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(
-        onTap: () {
-          Navigator.of(context).pushNamed(Routes.addAssignment,
-              arguments: {"editAssignment": false});
-        },
-      ),
+      floatingActionButton: FloatingActionAddButton(onTap: () {
+        Navigator.of(context).pushNamed(Routes.addAssignment,
+            arguments: {"editAssignment": false});
+      }),
       body: Stack(
         children: [
-          _buildAssignmentList(),
-          _buildAppbar(),
+          Align(
+            alignment: Alignment.topCenter,
+            child: CustomRefreshIndicator(
+              displacment: UiUtils.getScrollViewTopPadding(
+                  context: context,
+                  appBarHeightPercentage:
+                      UiUtils.appBarSmallerHeightPercentage),
+              onRefreshCallback: () {
+                fetchAssignment();
+              },
+              child: ListView(
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width *
+                        UiUtils.screenContentHorizontalPaddingPercentage,
+                    right: MediaQuery.of(context).size.width *
+                        UiUtils.screenContentHorizontalPaddingPercentage,
+                    top: UiUtils.getScrollViewTopPadding(
+                        context: context,
+                        appBarHeightPercentage:
+                            UiUtils.appBarSmallerHeightPercentage)),
+                controller: _scrollController,
+                children: [
+                  //_buildAssignmentList(),
+
+                  _buildAssignmentFilters(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  BlocConsumer<AssignmentCubit, AssignmentState>(
+                    bloc: context.read<AssignmentCubit>(),
+                    listener: (context, state) {},
+                    builder: (context, state) {
+                      print("assignmentstate$state");
+                      if (state is AssignmentsFetchSuccess) {
+                        return Column(
+                          children: state.assignment
+                              .map(
+                                (assignment) => AssignmentContainer(
+                                  assignment: assignment,
+                                ),
+                              )
+                              .toList(),
+                        );
+                      }
+
+                      if (state is AssignmentFetchFailure) {
+                        return ErrorContainer(
+                            errorMessageCode: state.errorMessage);
+                      }
+                      return Column(
+                          children: List.generate(5, (index) {
+                        return _buildInformationShimmerLoadingContainer();
+                      }));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          _buildAppbar()
         ],
       ),
     );

@@ -118,7 +118,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 child: Padding(
                   child: SvgButton(
                       onTap: () {
-                        Navigator.of(context).pop();
+                        Navigator.pop(context);
                       },
                       svgIconUrl: UiUtils.getImagePath("back_icon.svg")),
                   padding: EdgeInsets.only(

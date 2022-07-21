@@ -313,7 +313,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                 ? BlocConsumer<EditLessonCubit, EditLessonState>(
                     listener: (context, state) {
                       if (state is EditLessonSuccess) {
-                        Navigator.of(context).pop(true);
+                        Navigator.of(context).pop({});
                       } else if (state is EditLessonFailure) {
                         UiUtils.showBottomToastOverlay(
                             context: context,

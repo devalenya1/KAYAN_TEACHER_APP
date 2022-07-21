@@ -178,13 +178,21 @@ const String pleaseEnterLessonDescriptionKey = "pleaseEnterLessonDescription";
 const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
 const String pleaseSelectLessonKey = "pleaseSelectLesson";
 
+const String pleaseEnterAssignmentnameKey = "pleseEnterAssignmentName";
+//const String pleaseEnterAssignmentInstructions =
+//  "pleaseEnterAssignmetInstructions";
+const String pleaseSelectDateKey = "pleaseSelectDate";
+const String pleaseSelectTimeKey = "plseaseSelectTime";
+
 const String lessonAddedKey = "lessonAdded";
 
 const String announcementAddedKey = "announcementAdded";
 const String unableToDeleteLessonKey = "unableToDeleteLesson";
 const String unableToDeleteTopicKey = "unableToDeleteTopic";
+const String unableToDeleteAssignmentKey = "unableToDeleteAssignment";
 
-const String sucessfullyassignmentkey = "Suceessfullycreatessignment";
+const String sucessfullycreateassignmentkey = "Suceessfullycreatessignment";
+const String editsucessfullyassignmentkey = "editsucessfullassignment";
 const String editassignmentkey = "editassignment";
 const String editLessonKey = "editLesson";
 const String editStudyMaterialKey = "editStudyMaterial";

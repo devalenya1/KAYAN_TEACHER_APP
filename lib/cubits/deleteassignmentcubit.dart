@@ -25,8 +25,9 @@ class DeleteAssignmentCubit extends Cubit<DeleteAssignmentState> {
   }) async {
     try {
       emit(DeleteAssignmentFetchInProgress());
-      await _assignmentRepository.deleteAssignment(assignmentId: assignmentId);
-      emit(DeleteAssignmentFetchSuccess());
+      await _assignmentRepository
+          .deleteAssignment(assignmentId: assignmentId)
+          .then((_) => emit(DeleteAssignmentFetchSuccess()));
     } catch (e) {
       emit(DeleteAssignmentFetchFailure(e.toString()));
     }

@@ -1,6 +1,7 @@
-import 'package:eschool_teacher/data/models/pickedStudyMaterial.dart';
+import 'dart:ffi';
+
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
-import 'package:eschool_teacher/data/repositories/lessonRepository.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class EditAssignmentState {}
@@ -29,11 +30,11 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
     required int subjectId,
     required String name,
     required String dateTime,
-    String? instruction,
+    required String instruction,
     required String points,
-    required int? resubmission,
-    String? extraDayForResubmission,
-    List<String>? filePaths,
+    required int resubmission,
+    required String extraDayForResubmission,
+    required List<PlatformFile> filePaths,
   }) async {
     emit(editAssignmentInProgress());
     try {
@@ -43,9 +44,10 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
         dateTime: dateTime,
         name: name,
         subjectId: subjectId,
-        extraDayForResubmission: extraDayForResubmission,
+        extraDayForResubmission: int.parse(
+            extraDayForResubmission.isEmpty ? "0" : extraDayForResubmission),
         instruction: instruction,
-        points: int.parse(points),
+        points: int.parse(points.isEmpty ? "0" : points),
         resubmission: resubmission,
         filePaths: filePaths,
       );

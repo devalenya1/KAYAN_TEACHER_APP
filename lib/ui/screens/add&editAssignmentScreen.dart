@@ -1,14 +1,17 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:eschool_teacher/cubits/assignmentCubit.dart';
 import 'package:eschool_teacher/cubits/createAssignmentCubit.dart';
+import 'package:eschool_teacher/cubits/deleteStudyMaterialCubit.dart';
+import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/editassignment.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';
-import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/data/models/studyMaterial.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
-import 'package:eschool_teacher/data/repositories/createAssignmentRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
+import 'package:eschool_teacher/ui/widgets/assignmentAttachmentContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomSheetTextFiledContainer.dart';
 import 'package:eschool_teacher/ui/widgets/bottomsheetAddFilesDottedBorderContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
@@ -39,7 +42,7 @@ class AddAssignmentScreen extends StatefulWidget {
     this.assignment,
   }) : super(key: key);
 
-  static Route<dynamic> Routes(RouteSettings routeSettings) {
+  static Route<bool?> Routes(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(builder: (context) {
       return MultiBlocProvider(
@@ -48,7 +51,7 @@ class AddAssignmentScreen extends StatefulWidget {
             create: (_) => SubjectsOfClassSectionCubit(TeacherRepository()),
           ),
           BlocProvider<CreateAssignmentCubit>(
-            create: (_) => CreateAssignmentCubit(CreateAssignmentRepository()),
+            create: (_) => CreateAssignmentCubit(AssignmentRepository()),
           ),
           BlocProvider<editAssignmentCubit>(
               create: (context) => editAssignmentCubit(AssignmentRepository()))
@@ -79,8 +82,6 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   DateTime? dueDate;
 
   TimeOfDay? dueTime;
-  int classSectionId = 0;
-  int subjectSectionId = 0;
 
   late TextEditingController _assignmentNameTextEditingController =
       TextEditingController(
@@ -118,9 +119,10 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           .getClassSectionDetails(classSectionName: currentSelectedClassSection)
           .id);
     } else {
-      print("datetimes ${widget.assignment!.dueDate}");
+      dueDate = DateFormat('dd-MM-yyyy')
+          .parse(UiUtils.formattedDate(widget.assignment!.dueDate.toString()));
 
-      setState(() {});
+      dueTime = TimeOfDay.fromDateTime(widget.assignment!.dueDate);
     }
     super.initState();
   }
@@ -133,11 +135,15 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
 
   List<PlatformFile> uploadedFiles = [];
 
+  late List<StudyMaterial> assignmentattatchments =
+      widget.editassignment ? widget.assignment!.studyMaterial : [];
+
   void _pickFiles() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
+
     if (result != null) {
-      uploadedFiles.addAll(result.files);
+      uploadedFiles.add(result.files.first);
       setState(() {});
     }
   }
@@ -156,6 +162,52 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   }
 
   Widget _buildUploadedFileContainer(int fileIndex) {
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Padding(
+          padding: EdgeInsetsDirectional.only(bottom: 15),
+          child: DottedBorder(
+            borderType: BorderType.RRect,
+            dashPattern: [10, 10],
+            radius: Radius.circular(10.0),
+            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
+            child: LayoutBuilder(builder: (context, boxConstraints) {
+              return Padding(
+                padding: EdgeInsetsDirectional.only(start: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: boxConstraints.maxWidth * (0.75),
+                      child: Text(uploadedFiles[fileIndex].name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                          )),
+                    ),
+                    Spacer(),
+                    IconButton(
+                        onPressed: () {
+                          if (context.read<CreateAssignmentCubit>().state
+                              is createAssignmentInProcess) {
+                            return;
+                          }
+                          uploadedFiles.removeAt(fileIndex);
+                          setState(() {});
+                        },
+                        icon: Icon(Icons.close)),
+                  ],
+                ),
+              );
+            }),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget assignmentassignmentattatchments(int fileIndex) {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return Padding(
         padding: EdgeInsetsDirectional.only(bottom: 15),
@@ -172,7 +224,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                 children: [
                   SizedBox(
                     width: boxConstraints.maxWidth * (0.75),
-                    child: Text(uploadedFiles[fileIndex].name,
+                    child: Text(assignmentattatchments[fileIndex].fileName,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -186,7 +238,8 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                             is createAssignmentInProcess) {
                           return;
                         }
-                        uploadedFiles.removeAt(fileIndex);
+
+                        assignmentattatchments.removeAt(fileIndex);
                         setState(() {});
                       },
                       icon: Icon(Icons.close)),
@@ -235,12 +288,99 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     setState(() {});
   }
 
+  void showErrorMessage(String errorMessageKey) {
+    UiUtils.showBottomToastOverlay(
+        context: context,
+        errorMessage: errorMessageKey,
+        backgroundColor: Theme.of(context).colorScheme.error);
+  }
+
+  void createAssignment() {
+    if (_assignmentNameTextEditingController.text.trim().isEmpty) {
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey));
+      return;
+    }
+    if (dueDate == null) {
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+      return;
+    }
+    if (dueTime == null) {
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+      return;
+    }
+    print("uploadedFiles create $uploadedFiles");
+    context.read<CreateAssignmentCubit>().createAssignment(
+          classsId: context
+              .read<MyClassesCubit>()
+              .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection)
+              .id,
+          subjectId: context
+              .read<SubjectsOfClassSectionCubit>()
+              .getSubjectIdByName(currentSelectedSubject),
+          name: _assignmentNameTextEditingController.text.trim(),
+          datetime:
+              "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
+          extraDayForResubmission:
+              _extraResubmissionDaysTextEditingController.text.trim(),
+          instruction: _assignmentInstructionTextEditingController.text.trim(),
+          points: _assignmentPointsTextEditingController.text.trim(),
+          resubmission: _allowedReSubmissionOfRejectedAssignment,
+          file: uploadedFiles,
+        );
+  }
+
+  void editAssignment() {
+    if (_assignmentNameTextEditingController.text.trim().isEmpty) {
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey));
+    }
+    if (dueDate == null) {
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+    }
+    if (dueTime == null) {
+      showErrorMessage(
+          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+    }
+
+    print("uploadedFiles upload $uploadedFiles");
+    context.read<editAssignmentCubit>().editAssignment(
+          classSelectionId: widget.assignment!.classSectionId,
+          subjectId: widget.assignment!.subjectId,
+          name: _assignmentNameTextEditingController.text.trim(),
+          dateTime:
+              "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
+          extraDayForResubmission:
+              _extraResubmissionDaysTextEditingController.text.trim(),
+          instruction: _assignmentInstructionTextEditingController.text.trim(),
+          points: _assignmentPointsTextEditingController.text.trim(),
+          resubmission: _allowedReSubmissionOfRejectedAssignment ? 1 : 0,
+          filePaths: uploadedFiles,
+          assignmentId: widget.assignment!.id,
+        );
+  }
+
   Widget _buildAppBar() {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
           title: UiUtils.getTranslatedLabel(context,
-              widget.editassignment ? editAssignmentKey : createAssignmentKey)),
+              widget.editassignment ? editAssignmentKey : createAssignmentKey),
+          onPressBackButton: () {
+            if (context.read<CreateAssignmentCubit>().state
+                is createAssignmentInProcess) {
+              return;
+            }
+            if (context.read<editAssignmentCubit>().state
+                is editAssignmentInProgress) {
+              return;
+            }
+            Navigator.of(context).pop();
+          }),
     );
   }
 
@@ -258,13 +398,6 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   changeSelectedItem: (result) {
                     setState(() {
                       currentSelectedClassSection = result;
-                      classSectionId = context
-                          .read<MyClassesCubit>()
-                          .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection)
-                          .id;
-                      setState(() {});
-                      print(classSectionId);
                     });
                   }),
           widget.editassignment
@@ -275,11 +408,6 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   changeSelectedItem: (result) {
                     setState(() {
                       currentSelectedSubject = result;
-                      subjectSectionId = context
-                          .read<SubjectsOfClassSectionCubit>()
-                          .getSubjectIdByName(result);
-
-                      print(subjectSectionId);
                     });
                   },
                   currentSelectedItem: currentSelectedSubject,
@@ -457,6 +585,21 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   maxLines: 2,
                   textEditingController:
                       _extraResubmissionDaysTextEditingController,
+                  keyboardType: TextInputType.number,
+                )
+              : SizedBox(),
+          assignmentattatchments.isNotEmpty
+              ? Column(
+                  children: assignmentattatchments
+                      .map((studyMaterial) => AssignmentAttachmentContainer(
+                          onDeleteCallback: (fileId) {
+                            assignmentattatchments
+                                .removeWhere((element) => element.id == fileId);
+                            setState(() {});
+                          },
+                          showDeleteButton: true,
+                          studyMaterial: studyMaterial))
+                      .toList(),
                 )
               : SizedBox(),
 
@@ -469,6 +612,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                 title:
                     UiUtils.getTranslatedLabel(context, referenceMaterialsKey)),
           ),
+
           ...List.generate(uploadedFiles.length, (index) => index)
               .map((fileIndex) => _buildUploadedFileContainer(fileIndex))
               .toList(),
@@ -480,10 +624,10 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       UiUtils.showBottomToastOverlay(
                           context: context,
                           errorMessage: UiUtils.getTranslatedLabel(
-                              context, editassignmentkey),
+                              context, editsucessfullyassignmentkey),
                           backgroundColor:
                               Theme.of(context).colorScheme.onPrimary);
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     }
                     if (state is editAssignmentFailure) {
                       UiUtils.showBottomToastOverlay(
@@ -496,23 +640,6 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is editAssignmentInProgress) {
-                      return CustomRoundedButton(
-                        maxLines: 1,
-                        height: 35,
-                        radius: 10,
-                        textSize: 13,
-                        widthPercentage: 0.35,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        buttonTitle: UiUtils.getTranslatedLabel(
-                            context, editassignmentkey),
-                        showBorder: false,
-                        child: CustomCircularProgressIndicator(
-                          strokeWidth: 2,
-                          widthAndHeight: 20,
-                        ),
-                      );
-                    }
                     return CustomRoundedButton(
                         height: 45,
                         radius: 10,
@@ -521,49 +648,17 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                         buttonTitle: UiUtils.getTranslatedLabel(
                             context, editassignmentkey),
                         showBorder: false,
+                        child: state is editAssignmentInProgress
+                            ? CustomCircularProgressIndicator(
+                                strokeWidth: 2,
+                                widthAndHeight: 20,
+                              )
+                            : null,
                         onTap: () {
-                          print("*******************");
-                          print(
-                              "classSectionId ${widget.assignment!.classSectionId}");
-                          print(
-                              "assignmentduedate ${widget.assignment!.dueDate}");
-                          print(
-                              "subjectSectionId ${widget.assignment!.subjectId}");
-                          print(
-                              "name ${_assignmentNameTextEditingController.text}");
-                          print(
-                              "resubmission ${_extraResubmissionDaysTextEditingController.text}");
-                          print(
-                              "instruction ${_assignmentInstructionTextEditingController.text}");
-                          print(
-                              "points ${_assignmentPointsTextEditingController.text}");
-                          print(
-                              " submmitesof reject ${_allowedReSubmissionOfRejectedAssignment ? 1 : 0}");
-                          print("assignmentid ${widget.assignment!.id}");
-
-                          print("*******************");
-                          context.read<editAssignmentCubit>().editAssignment(
-                                classSelectionId:
-                                    widget.assignment!.classSectionId,
-                                subjectId: widget.assignment!.subjectId,
-                                name: _assignmentNameTextEditingController.text,
-                                dateTime: "2022-07-26",
-                                extraDayForResubmission:
-                                    _extraResubmissionDaysTextEditingController
-                                        .text,
-                                instruction:
-                                    _assignmentInstructionTextEditingController
-                                        .text,
-                                points:
-                                    _assignmentPointsTextEditingController.text,
-                                resubmission:
-                                    _allowedReSubmissionOfRejectedAssignment
-                                        ? 1
-                                        : 0,
-                                filePaths:
-                                    uploadedFiles.map((e) => e.path!).toList(),
-                                assignmentId: widget.assignment!.id,
-                              );
+                          if (state is editAssignmentInProgress) {
+                            return;
+                          }
+                          editAssignment();
                         });
                   },
                 )
@@ -573,30 +668,20 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       UiUtils.showBottomToastOverlay(
                           context: context,
                           errorMessage: UiUtils.getTranslatedLabel(
-                              context, sucessfullyassignmentkey),
+                              context, sucessfullycreateassignmentkey),
                           backgroundColor:
                               Theme.of(context).colorScheme.onPrimary);
                       Navigator.of(context).pop();
                     }
+                    if (state is createAssignmentFailure) {
+                      UiUtils.showBottomToastOverlay(
+                          context: context,
+                          errorMessage: UiUtils.getTranslatedLabel(
+                              context, state.errormessage),
+                          backgroundColor: Theme.of(context).colorScheme.error);
+                    }
                   },
                   builder: (context, state) {
-                    if (state is createAssignmentInProcess) {
-                      return CustomRoundedButton(
-                        maxLines: 1,
-                        height: 35,
-                        radius: 10,
-                        textSize: 13,
-                        widthPercentage: 0.35,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        buttonTitle: UiUtils.getTranslatedLabel(
-                            context, createAssignmentKey),
-                        showBorder: false,
-                        child: CustomCircularProgressIndicator(
-                          strokeWidth: 2,
-                          widthAndHeight: 20,
-                        ),
-                      );
-                    }
                     return CustomRoundedButton(
                       height: 45,
                       radius: 10,
@@ -605,28 +690,17 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       buttonTitle: UiUtils.getTranslatedLabel(
                           context, createAssignmentKey),
                       showBorder: false,
+                      child: state is createAssignmentInProcess
+                          ? CustomCircularProgressIndicator(
+                              strokeWidth: 2,
+                              widthAndHeight: 20,
+                            )
+                          : null,
                       onTap: () {
-                        context.read<CreateAssignmentCubit>().createAssignment(
-                              classsId: classSectionId,
-                              subjectId: subjectSectionId,
-                              name: _assignmentNameTextEditingController.text,
-                              datetime:
-                                  "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
-                              extraDayForResubmission:
-                                  _extraResubmissionDaysTextEditingController
-                                      .text,
-                              instruction:
-                                  _assignmentInstructionTextEditingController
-                                      .text,
-                              points: _assignmentPointsTextEditingController
-                                  .text
-                                  .trim(),
-                              resubmission:
-                                  _allowedReSubmissionOfRejectedAssignment
-                                      ? 1
-                                      : 0,
-                              file: uploadedFiles.map((e) => e.path!).toList(),
-                            );
+                        if (state is createAssignmentInProcess) {
+                          return;
+                        }
+                        createAssignment();
                       },
                     );
                   },
@@ -641,14 +715,27 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          _buildAssignmentDetailsFormContaienr(),
-          _buildAppBar(),
-        ],
-      ),
-    );
+    return WillPopScope(
+        onWillPop: () {
+          if (context.read<CreateAssignmentCubit>().state
+              is createAssignmentInProcess) {
+            return Future.value(false);
+          }
+          if (context.read<editAssignmentCubit>().state
+              is editAssignmentInProgress) {
+            return Future.value(false);
+          }
+          Navigator.of(context).pop();
+          return Future.value(true);
+        },
+        child: Scaffold(
+          body: Stack(
+            children: [
+              _buildAssignmentDetailsFormContaienr(),
+              _buildAppBar(),
+            ],
+          ),
+        ));
   }
 }
 /*context.read<editAssignmentCubit>().editAssignment(
