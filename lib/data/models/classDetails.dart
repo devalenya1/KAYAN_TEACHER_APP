@@ -16,7 +16,7 @@ class ClassDetails {
     id = json['id'] ?? -1;
     name = json['name'] ?? "";
     mediumId = json['medium_id'] ?? -1;
-    medium = Medium.fromJson(json['medium'] ?? []);
+    medium = Medium.fromJson(json['medium'] ?? {});
   }
 
   Map<String, dynamic> toJson() {

@@ -199,7 +199,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
                           fontWeight: FontWeight.w500),
                     ),
                   ),
-                  //TODO: Add email key
                   _buildProfileDetailsTile(
                       label: UiUtils.getTranslatedLabel(context, emailKey),
                       value: teacher.email,

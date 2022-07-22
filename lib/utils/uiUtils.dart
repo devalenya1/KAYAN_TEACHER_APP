@@ -341,6 +341,25 @@ class UiUtils {
     return false;
   }
 
+  static final List<String> weekDays = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+  ];
+
+  static String formatTime(String time) {
+    final hourMinuteSecond = time.split(":");
+    final hour = int.parse(hourMinuteSecond.first) < 13
+        ? int.parse(hourMinuteSecond.first)
+        : int.parse(hourMinuteSecond.first) - 12;
+    final amOrPm = int.parse(hourMinuteSecond.first) > 12 ? "PM" : "AM";
+    return "${hour.toString().padLeft(2, '0')}:${hourMinuteSecond[1]} $amOrPm";
+  }
+
   static bool _shouldUpdateBasedOnBuildNumber(
       String currentBuildNumber, String updatedBuildNumber) {
     return int.parse(updatedBuildNumber) > int.parse(currentBuildNumber);
