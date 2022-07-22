@@ -127,7 +127,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                         _buildValueWithTitle(
                             width: widthOfDetialsContainer,
                             title: dobKey,
-                            value: UiUtils.formattedDate(widget.student.dob),
+                            value: UiUtils.formatStringDate(widget.student.dob),
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
                                 1.0 - leftSideTitleWidthPercentage),
@@ -260,10 +260,10 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: boxConstraints.maxWidth * (0.04)),
+                    horizontal: boxConstraints.maxWidth * (0.02)),
                 child: CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.primary,
-                  radius: 3,
+                  radius: 2.5,
                 ),
               ),
               Text(
@@ -367,7 +367,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                 if (state is StudentMoreDetailsFetchFailure) {
                   return Padding(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * (0.125)),
+                        top: MediaQuery.of(context).size.height * (0.1)),
                     child: Center(
                       child: ErrorContainer(
                           onTapRetry: () {

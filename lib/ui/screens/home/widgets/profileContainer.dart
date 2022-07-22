@@ -211,7 +211,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   _buildProfileDetailsTile(
                       label:
                           UiUtils.getTranslatedLabel(context, dateOfBirthKey),
-                      value: UiUtils.formattedDate(teacher.dob),
+                      value: UiUtils.formatStringDate(teacher.dob),
                       iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg")),
 
                   //TODO: add gender icon

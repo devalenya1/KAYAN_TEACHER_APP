@@ -217,6 +217,7 @@
     "holiday" : "Holiday",
     "attendanceNotViewEdit" : "Because of holiday can not view/take attendance",
     "attendanceSubmittedSuccessfully" : "Attendance submitted successfully",
-    "todayAttendance" : "Today's attendance"
+    "todayAttendance" : "Today's attendance",
+    "holidays" : "Holidays"
 
 }

@@ -366,8 +366,27 @@ class UiUtils {
   }
 
   //Date format is DD-MM-YYYY
-  static String formattedDate(String date) {
+  static String formatStringDate(String date) {
     final DateTime dateTime = DateTime.parse(date);
     return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+  }
+
+  static String formatDate(DateTime dateTime) {
+    return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+  }
+
+  static bool isToadyIsInAcademicYear(DateTime firstDate, DateTime lastDate) {
+    final currentDate = DateTime.now();
+
+    return (currentDate.isAfter(firstDate) && currentDate.isBefore(lastDate)) ||
+        isSameDay(firstDate) ||
+        isSameDay(lastDate);
+  }
+
+  static bool isSameDay(DateTime dateTime) {
+    final currentDate = DateTime.now();
+    return (currentDate.day == dateTime.day) &&
+        (currentDate.month == dateTime.month) &&
+        (currentDate.year == dateTime.year);
   }
 }

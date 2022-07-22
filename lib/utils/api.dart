@@ -67,6 +67,8 @@ class Api {
 
   static String settings = "${databaseUrl}settings";
 
+  static String holidays = "${databaseUrl}holidays";
+
   //Api methods
 
   static Future<Map<String, dynamic>> post({

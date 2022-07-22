@@ -116,8 +116,8 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           .getClassSectionDetails(classSectionName: currentSelectedClassSection)
           .id);
     } else {
-      dueDate = DateFormat('dd-MM-yyyy')
-          .parse(UiUtils.formattedDate(widget.assignment!.dueDate.toString()));
+      dueDate = DateFormat('dd-MM-yyyy').parse(
+          UiUtils.formatStringDate(widget.assignment!.dueDate.toString()));
 
       dueTime = TimeOfDay.fromDateTime(widget.assignment!.dueDate);
     }
