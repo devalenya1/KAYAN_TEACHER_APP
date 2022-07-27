@@ -11,11 +11,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AnnouncementAttachmentContainer extends StatelessWidget {
   final bool showDeleteButton;
   final StudyMaterial studyMaterial;
+  final Color? backgroundColor;
   final Function(int)? onDeleteCallback;
   const AnnouncementAttachmentContainer(
       {Key? key,
       required this.showDeleteButton,
       required this.studyMaterial,
+      this.backgroundColor,
       this.onDeleteCallback})
       : super(key: key);
 
@@ -86,7 +88,8 @@ class AnnouncementAttachmentContainer extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * (0.85),
                 padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
+                    color: backgroundColor ??
+                        Theme.of(context).colorScheme.background,
                     borderRadius: BorderRadius.circular(15)),
               ),
             );

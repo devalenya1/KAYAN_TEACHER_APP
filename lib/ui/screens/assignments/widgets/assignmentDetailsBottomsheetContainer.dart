@@ -1,12 +1,9 @@
-import 'package:eschool_teacher/cubits/downloadfileCubit.dart';
-import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
+import 'package:eschool_teacher/ui/widgets/announcementAttachmentContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';
 import 'package:eschool_teacher/ui/widgets/customCupertinoSwitch.dart';
-import 'package:eschool_teacher/ui/widgets/downloadFileButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 
@@ -185,31 +182,12 @@ class _AssignmentDetailsBottomsheetContainerState
             ),
             ...List.generate(
               widget.assignment.studyMaterial.length,
-              (index) => Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: boxConstraints.maxWidth * (0.7),
-                      child: Text(
-                        widget.assignment.studyMaterial[index].fileName
-                            .toString(),
-                        style: _getAssignmentDetailsLabelValueTextStyle(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Spacer(),
-                    BlocProvider<DownloadFileCubit>(
-                      create: (context) =>
-                          DownloadFileCubit(StudyMaterialRepository()),
-                      child: DownloadFileButton(
-                          studyMaterial:
-                              widget.assignment.studyMaterial[index]),
-                    ),
-                  ],
-                ),
+              (index) => Transform.translate(
+                offset: Offset(-15, 0),
+                child: AnnouncementAttachmentContainer(
+                    backgroundColor: Colors.transparent,
+                    showDeleteButton: false,
+                    studyMaterial: widget.assignment.studyMaterial[index]),
               ),
             ),
             SizedBox(
@@ -342,8 +320,7 @@ class _AssignmentDetailsBottomsheetContainerState
                     child: SizedBox(
                       width: boxConstraints.maxWidth * (0.75),
                       child: Text(
-                        //TODO:NAME CHANGRING
-                        "Integration and Diffraction",
+                        widget.assignment.name,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontSize: 16,
