@@ -45,12 +45,12 @@ class Assignment {
     extraDaysForResubmission = json["extra_days_for_resubmission"] ?? 0;
     sessionYearId = json['session_year_id'] ?? 0;
     createdAt = json['created_at'] ?? "";
-    classSection = ClassSection.fromJson(json['class_section'] ?? []);
-    studyMaterial = ((json['file'] ?? []) as List)
+    classSection = ClassSection.fromJson(json['class_section'] ?? {});
+    studyMaterial = ((json['file'] ?? {}) as List)
         .map((e) => StudyMaterial.fromJson(Map.from(e)))
         .toList();
     // file = List.castFrom<dynamic, dynamic>(json['file']);
-    subject = Subject.fromJson(json['subject']);
+    subject = Subject.fromJson(json['subject'] ?? {});
   }
 }
 
@@ -72,11 +72,11 @@ class ClassSection {
 
   ClassSection.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    classId = json['class_id'];
-    sectionId = json['section_id'];
-    classTeacherId = json['class_teacher_id'];
-    classs = Classs.fromJson(json['class']);
-    section = Section.fromJson(json['section']);
+    classId = json['class_id'] ?? 0;
+    sectionId = json['section_id'] ?? 0;
+    classTeacherId = json['class_teacher_id'] ?? 0;
+    classs = Classs.fromJson(json['class'] ?? {});
+    section = Section.fromJson(json['section'] ?? {});
   }
 }
 

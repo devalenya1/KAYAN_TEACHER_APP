@@ -56,6 +56,7 @@ class AssignmentCubit extends Cubit<AssignmentState> {
     int? page,
   }) async {
     try {
+      print("asssignemtclassandsubjectid  ${classSectionId}  ${subjectId}");
       emit(AssignmentFetchInProgress());
       await _assignmentRepository
           .fetchassignment(

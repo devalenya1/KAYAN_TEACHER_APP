@@ -59,6 +59,11 @@ class Api {
       "${databaseUrl}teacher/student-list";
   static String getAttendance = "${databaseUrl}teacher/get-attendance";
   static String submitAttendance = "${databaseUrl}teacher/submit-attendance";
+  static String getReviewAssignment =
+      "${databaseUrl}teacher/get-assignment-submission";
+
+  static String updateReviewAssignmet =
+      "${databaseUrl}teacher/update-assignment-submission";
 
   static String settings = "${databaseUrl}settings";
 
