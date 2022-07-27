@@ -19,10 +19,10 @@ class ClassSectionDetails {
 
   static ClassSectionDetails fromJson(Map<String, dynamic> json) {
     return ClassSectionDetails(
-      sectionDetails: SectionDetails.fromJson(json['section']),
-      classDetails: ClassDetails.fromJson(json['class']),
-      id: json['id'],
-      classTeacherId: json['class_teacher_id'],
+      sectionDetails: SectionDetails.fromJson(Map.from(json['section'])),
+      classDetails: ClassDetails.fromJson(Map.from(json['class'])),
+      id: json['id'] ?? 0,
+      classTeacherId: json['class_teacher_id'] ?? 0,
     );
   }
 }

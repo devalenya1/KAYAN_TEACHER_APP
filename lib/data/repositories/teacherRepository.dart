@@ -2,6 +2,7 @@ import 'package:eschool_teacher/data/models/attendanceReport.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/holiday.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
+import 'package:eschool_teacher/data/models/timeTableSlot.dart';
 import 'package:eschool_teacher/utils/api.dart';
 
 class TeacherRepository {
@@ -74,6 +75,20 @@ class TeacherRepository {
         "attendance": attendance,
       });
     } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
+  Future<List<TimeTableSlot>> fetchTimeTable() async {
+    try {
+      final result = await Api.get(url: Api.timeTable, useAuthToken: true);
+
+      return (result['data'] as List)
+          .map((timetableSlot) =>
+              TimeTableSlot.fromJson(Map.from(timetableSlot)))
+          .toList();
+    } catch (e) {
+      print(e.toString());
       throw ApiException(e.toString());
     }
   }

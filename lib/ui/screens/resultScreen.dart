@@ -368,12 +368,10 @@ class ResultScreen extends StatelessWidget {
                   SizedBox(
                     height: inBetweenDetailsPadding,
                   ),
-                  //TODO: Align the result titles properly
                   _buildResultTitles(context),
                   SizedBox(
                     height: inBetweenDetailsPadding,
                   ),
-                  //TODO: Align the result values properly
                   _buildResultValues(context),
                   SizedBox(
                     height: inBetweenDetailsPadding,

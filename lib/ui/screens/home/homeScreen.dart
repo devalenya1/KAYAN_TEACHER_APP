@@ -1,10 +1,12 @@
 import 'package:eschool_teacher/cubits/appConfigurationCubit.dart';
+import 'package:eschool_teacher/cubits/timeTableCubit.dart';
+import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/appUnderMaintenanceContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/bottomNavigationItemContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/forceUpdateDialogContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/homeContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
-import 'package:eschool_teacher/ui/screens/home/widgets/scheduleContainer.dart';
+import 'package:eschool_teacher/ui/screens/home/widgets/timeTableContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/settingsContainer.dart';
 
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -20,7 +22,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 
   static Route<dynamic> route(RouteSettings routeSettings) {
-    return CupertinoPageRoute(builder: (_) => HomeScreen());
+    return CupertinoPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => TimeTableCubit(TeacherRepository()),
+              child: HomeScreen(),
+            ));
   }
 }
 
@@ -154,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   index: _currentSelectedBottomNavIndex,
                   children: [
                     HomeContainer(),
-                    ScheduleContainer(),
+                    TimeTableContainer(),
                     ProfileContainer(),
                     SettingsContainer(),
                   ],

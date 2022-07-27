@@ -1,8 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
-import 'package:eschool_teacher/cubits/assignmentCubit.dart';
 import 'package:eschool_teacher/cubits/createAssignmentCubit.dart';
-import 'package:eschool_teacher/cubits/deleteStudyMaterialCubit.dart';
-import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/cubits/editassignment.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
@@ -119,8 +116,8 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           .getClassSectionDetails(classSectionName: currentSelectedClassSection)
           .id);
     } else {
-      dueDate = DateFormat('dd-MM-yyyy')
-          .parse(UiUtils.formattedDate(widget.assignment!.dueDate.toString()));
+      dueDate = DateFormat('dd-MM-yyyy').parse(
+          UiUtils.formatStringDate(widget.assignment!.dueDate.toString()));
 
       dueTime = TimeOfDay.fromDateTime(widget.assignment!.dueDate);
     }

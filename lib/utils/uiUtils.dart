@@ -341,14 +341,52 @@ class UiUtils {
     return false;
   }
 
+  static final List<String> weekDays = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+  ];
+
+  static String formatTime(String time) {
+    final hourMinuteSecond = time.split(":");
+    final hour = int.parse(hourMinuteSecond.first) < 13
+        ? int.parse(hourMinuteSecond.first)
+        : int.parse(hourMinuteSecond.first) - 12;
+    final amOrPm = int.parse(hourMinuteSecond.first) > 12 ? "PM" : "AM";
+    return "${hour.toString().padLeft(2, '0')}:${hourMinuteSecond[1]} $amOrPm";
+  }
+
   static bool _shouldUpdateBasedOnBuildNumber(
       String currentBuildNumber, String updatedBuildNumber) {
     return int.parse(updatedBuildNumber) > int.parse(currentBuildNumber);
   }
 
   //Date format is DD-MM-YYYY
-  static String formattedDate(String date) {
+  static String formatStringDate(String date) {
     final DateTime dateTime = DateTime.parse(date);
     return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+  }
+
+  static String formatDate(DateTime dateTime) {
+    return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+  }
+
+  static bool isToadyIsInAcademicYear(DateTime firstDate, DateTime lastDate) {
+    final currentDate = DateTime.now();
+
+    return (currentDate.isAfter(firstDate) && currentDate.isBefore(lastDate)) ||
+        isSameDay(firstDate) ||
+        isSameDay(lastDate);
+  }
+
+  static bool isSameDay(DateTime dateTime) {
+    final currentDate = DateTime.now();
+    return (currentDate.day == dateTime.day) &&
+        (currentDate.month == dateTime.month) &&
+        (currentDate.year == dateTime.year);
   }
 }

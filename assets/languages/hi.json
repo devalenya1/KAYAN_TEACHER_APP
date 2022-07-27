@@ -59,6 +59,7 @@
     "fileDownload" : "File Download",
 
     "createAssignment" : "Create Assignment",
+    "editassignment":"Edit Assignment",
     "assignmentName" : "Assignment Name",
     "dueTime" : "Due Time",
     "videos" : "Videos",
@@ -78,7 +79,7 @@
     "fileName" : "File Name",
     "students" : "Students",
     "subjects" : "Subjects",
-    "searchStudent" : "Search Student",
+    "searchStudent" : "Search student",
     "takeAttendance" : "Take Attendance",
     "present" : "Present",
     "absent" : "Absent",
@@ -141,10 +142,15 @@
     "pleaseEnterYoutubeLink" : "Please enter youtube link",
     "pleaseSelectVideo" : "Please select video",
     "permissionToPickFile" : "Please give permission to pick file",
+    "pleseEnterAssignmentName":"Please enter Assignment name",
+    "pleaseSelectDate":"Please Select Date",
+    "plseaseSelectTime":"PLease Select Time",
     "pleaseEnterLessonName" : "Please enter lesson name",
     "pleaseEnterLessonDescription" : "Please enter lesson description",
     "pleaseSelectSubject" : "Please select subject",
     "lessonAdded" : "Lesson added successfully",
+    "Suceessfullycreatessignment":"Suceessfully Create Assignment",
+    "editsucessfullassignment": "Edit Assignment Assignment",
     "unableToDeleteLesson" :"Unable to delete lesson",
     "editLesson" : "Edit lesson",
     "editStudyMaterial" : "Edit study material",
@@ -152,6 +158,7 @@
     "fetchingLessons" : "Fetching lessons",
     "attachments" : "Attachment(s)",
     "unableToDeleteTopic" : "Unable to delete topic",
+    "unableToDeleteAssignment":"Unable to delete Assignment",
     "topicName" : "Topic name",
     "topicDescription" : "Topic Description",
     "noLessons" : "No lessons",
@@ -190,12 +197,26 @@
     "editAnnouncement" : "Edit announcement",
     "pleaseAddAnnouncementTitle" : "Please add announcement title",
     "announcementTitle" : "Announcement title",
-
     "announcementAdded" : "Announcement added successfully",
     "unableToDelete" : "Unable to delete file",
-    "nameAlreadyTaken" : "The name has already been taken"
+    "nameAlreadyTaken" : "The name has already been taken",
+    "appUnderMaintenance" : "Sorry for the inconvenience. This app is under maintenance",
+    "update" : "Update",
+    "newUpdateAvailable" : "There is a new update. Please update this application",
+    "topic" : "Topic(s)",
+    "studentDetails" : "Student details",
+    "rollNo": "Roll No.",
+    "dob" : "Dob",
+    "bloodGrp": "Blood Grp.",
+    "grNo": "GR No.",
+    "occupation": "Occupation",
+    "phone" : "Phone",
+    "mother" : "Mother",
+    "father" : "Father",
+    "guardian" : "Guardian",
+    "holiday" : "Holiday",
+    "attendanceNotViewEdit" : "Because of holiday can not view/take attendance",
+    "attendanceSubmittedSuccessfully" : "Attendance submitted successfully",
+    "todayAttendance" : "Today's attendance"
+
 }
-
-
-
-   

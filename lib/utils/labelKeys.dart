@@ -268,3 +268,5 @@ const String holidayKey = "holiday";
 const String attendanceNotViewEditKey = "attendanceNotViewEdit";
 const String attendanceSubmittedSuccessfullyKey =
     "attendanceSubmittedSuccessfully";
+const String todayAttendanceKey = "todayAttendance";
+const String holidaysKey = "holidays";

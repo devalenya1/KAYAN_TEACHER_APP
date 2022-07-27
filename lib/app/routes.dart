@@ -11,6 +11,7 @@ import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/attendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/contactUsScreen.dart';
+import 'package:eschool_teacher/ui/screens/holidays/holidaysScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/lessonsScreen.dart';
 import 'package:eschool_teacher/ui/screens/login/loginScreen.dart';
@@ -71,6 +72,8 @@ class Routes {
   static const String contactUs = "/contactUs";
 
   static const String topicsByLesson = "/topicsByLesson";
+
+  static const String holidays = "/holidays";
 
   static String currentRoute = splash;
 
@@ -176,6 +179,10 @@ class Routes {
       case topicsByLesson:
         {
           return TopcisByLessonScreen.route(routeSettings);
+        }
+      case holidays:
+        {
+          return HolidaysScreen.route(routeSettings);
         }
 
       default:

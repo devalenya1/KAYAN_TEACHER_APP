@@ -428,7 +428,6 @@ class _HomeContainerState extends State<HomeContainer> {
     return Column(
       children: [
         _buildInformationAndMenuLabel(),
-        //TODO : add maxWidth and overflow checker
         _buildMenuContainer(
             route: Routes.assignments,
             iconPath: UiUtils.getImagePath("assignment_icon.svg"),
@@ -449,6 +448,12 @@ class _HomeContainerState extends State<HomeContainer> {
             route: Routes.topics,
             iconPath: UiUtils.getImagePath("study_material_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, topicsKey)),
+
+        //TODO: Add holidays icon
+        _buildMenuContainer(
+            route: Routes.holidays,
+            iconPath: UiUtils.getImagePath("study_material_icon.svg"),
+            title: UiUtils.getTranslatedLabel(context, holidaysKey)),
       ],
     );
   }

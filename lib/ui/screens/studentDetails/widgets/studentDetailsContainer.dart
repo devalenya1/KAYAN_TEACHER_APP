@@ -1,8 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eschool_teacher/cubits/studentMoreDetailsCubit.dart';
+import 'package:eschool_teacher/data/models/guardianDetails.dart';
 import 'package:eschool_teacher/data/models/student.dart';
+import 'package:eschool_teacher/ui/widgets/customCircularProgressIndicator.dart';
+import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StudentDetailsContainer extends StatefulWidget {
   final Student student;
@@ -122,7 +127,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                         _buildValueWithTitle(
                             width: widthOfDetialsContainer,
                             title: dobKey,
-                            value: UiUtils.formattedDate(widget.student.dob),
+                            value: UiUtils.formatStringDate(widget.student.dob),
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
                                 1.0 - leftSideTitleWidthPercentage),
@@ -179,7 +184,9 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
     ));
   }
 
-  Widget _buildGuardianDetailsContainer({required String guardianRole}) {
+  Widget _buildGuardianDetailsContainer(
+      {required String guardianRole,
+      required GuardianDetails guardianDetails}) {
     return _buildDetailBackgroundContainer(
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,6 +194,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
           CircleAvatar(
             radius: 25,
             backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundImage: CachedNetworkImageProvider(guardianDetails.image),
           ),
           SizedBox(
             width: 10,
@@ -198,7 +206,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Parent name",
+                    guardianDetails.getFullName(),
                     style: _getLabelValueTextStyle(),
                   ),
                   Text(
@@ -207,27 +215,20 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                   ),
                   _buildValueWithTitle(
                       title: UiUtils.getTranslatedLabel(context, occupationKey),
-                      value: "CEO",
+                      value: guardianDetails.occupation,
                       titleWidthPercentage: titleWidthPercentage,
                       width: boxConstraints.maxWidth,
                       valueWidthPercentage: 1.0 - titleWidthPercentage),
                   _buildValueWithTitle(
                       title: UiUtils.getTranslatedLabel(context,
                           UiUtils.getTranslatedLabel(context, phoneKey)),
-                      value: "1234567890",
+                      value: guardianDetails.mobile,
                       titleWidthPercentage: titleWidthPercentage,
                       width: boxConstraints.maxWidth,
                       valueWidthPercentage: 1.0 - titleWidthPercentage),
                   _buildValueWithTitle(
                       title: UiUtils.getTranslatedLabel(context, emailKey),
-                      value: "1234567890",
-                      titleWidthPercentage: titleWidthPercentage,
-                      width: boxConstraints.maxWidth,
-                      valueWidthPercentage: 1.0 - titleWidthPercentage),
-                  _buildValueWithTitle(
-                      title: UiUtils.getTranslatedLabel(context,
-                          UiUtils.getTranslatedLabel(context, addressKey)),
-                      value: "1234567890",
+                      value: guardianDetails.email,
                       titleWidthPercentage: titleWidthPercentage,
                       width: boxConstraints.maxWidth,
                       valueWidthPercentage: 1.0 - titleWidthPercentage),
@@ -240,7 +241,10 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
     );
   }
 
-  Widget _buildAttendanceSummaryContainer() {
+  Widget _buildAttendanceSummaryContainer(
+      {required int totalPresent,
+      required int totalAbsent,
+      required String todayAttendance}) {
     return _buildDetailBackgroundContainer(
         LayoutBuilder(builder: (context, boxConstraints) {
       return Column(
@@ -251,21 +255,21 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "Today's attendance",
+                UiUtils.getTranslatedLabel(context, todayAttendanceKey),
                 style: _getLabelValueTextStyle(),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: boxConstraints.maxWidth * (0.04)),
+                    horizontal: boxConstraints.maxWidth * (0.02)),
                 child: CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.primary,
-                  radius: 3,
+                  radius: 2.5,
                 ),
               ),
               Text(
-                "Present",
+                todayAttendance,
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).colorScheme.primary,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),
               ),
@@ -290,8 +294,10 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Present", style: _getLabelTextStyle()),
-                    Text("80", style: _getLabelValueTextStyle()),
+                    Text(UiUtils.getTranslatedLabel(context, totalPresentKey),
+                        style: _getLabelTextStyle()),
+                    Text(totalPresent.toString(),
+                        style: _getLabelValueTextStyle()),
                   ],
                 ),
               ),
@@ -308,8 +314,10 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Absent", style: _getLabelTextStyle()),
-                    Text("80", style: _getLabelValueTextStyle()),
+                    Text(UiUtils.getTranslatedLabel(context, totalAbsentKey),
+                        style: _getLabelTextStyle()),
+                    Text(totalAbsent.toString(),
+                        style: _getLabelValueTextStyle()),
                   ],
                 ),
               ),
@@ -329,10 +337,62 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
           children: [
             //
             _buildStudentInformationContainer(),
-            _buildGuardianDetailsContainer(
-                guardianRole: UiUtils.getTranslatedLabel(context, fatherKey)),
-            //_buildGuardianDetailsContainer(),
-            _buildAttendanceSummaryContainer(),
+
+            BlocBuilder<StudentMoreDetailsCubit, StudentMoreDetailsState>(
+              builder: (context, state) {
+                if (state is StudentMoreDetailsFetchSuccess) {
+                  return Column(
+                    children: [
+                      _buildGuardianDetailsContainer(
+                          guardianDetails: state.fatherDetails,
+                          guardianRole:
+                              UiUtils.getTranslatedLabel(context, fatherKey)),
+                      _buildGuardianDetailsContainer(
+                          guardianDetails: state.motherDetails,
+                          guardianRole:
+                              UiUtils.getTranslatedLabel(context, motherKey)),
+                      state.guardianDetails.id != 0
+                          ? _buildGuardianDetailsContainer(
+                              guardianRole: UiUtils.getTranslatedLabel(
+                                  context, guardianKey),
+                              guardianDetails: state.guardianDetails)
+                          : SizedBox(),
+                      _buildAttendanceSummaryContainer(
+                          todayAttendance: state.todayAttendance,
+                          totalAbsent: state.totalAbsent,
+                          totalPresent: state.totalPresent),
+                    ],
+                  );
+                }
+                if (state is StudentMoreDetailsFetchFailure) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * (0.1)),
+                    child: Center(
+                      child: ErrorContainer(
+                          onTapRetry: () {
+                            context
+                                .read<StudentMoreDetailsCubit>()
+                                .fetchStudentMoreDetails(
+                                    studentId: widget.student.id);
+                          },
+                          errorMessageCode:
+                              UiUtils.getErrorMessageFromErrorCode(
+                                  context, state.errorMessage)),
+                    ),
+                  );
+                }
+                return Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * (0.125)),
+                  child: Center(
+                    child: CustomCircularProgressIndicator(
+                      indicatorColor: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              },
+            )
           ],
         ),
         padding: EdgeInsets.only(

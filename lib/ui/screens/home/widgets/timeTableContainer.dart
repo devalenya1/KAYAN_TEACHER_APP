@@ -1,19 +1,32 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eschool_teacher/cubits/timeTableCubit.dart';
+import 'package:eschool_teacher/data/models/timeTableSlot.dart';
+import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
+import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
+import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ScheduleContainer extends StatefulWidget {
-  ScheduleContainer({Key? key}) : super(key: key);
+class TimeTableContainer extends StatefulWidget {
+  TimeTableContainer({Key? key}) : super(key: key);
 
   @override
-  State<ScheduleContainer> createState() => _ScheduleContainerState();
+  State<TimeTableContainer> createState() => _TimeTableContainerState();
 }
 
-class _ScheduleContainerState extends State<ScheduleContainer> {
-  final List<String> days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+class _TimeTableContainerState extends State<TimeTableContainer> {
+  late int _currentSelectedDayIndex = DateTime.now().weekday - 1;
 
-  late int _currentSelectedDayIndex = DateTime.now().weekday;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      context.read<TimeTableCubit>().fetchTimeTable();
+    });
+  }
 
   Widget _buildAppBar() {
     return ScreenTopBackgroundContainer(
@@ -53,7 +66,7 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
                 : Colors.transparent),
         padding: const EdgeInsets.all(7.5),
         child: Text(
-          days[index],
+          UiUtils.weekDays[index],
           style: TextStyle(
               fontSize: 13.0,
               fontWeight: FontWeight.w600,
@@ -68,7 +81,7 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
   Widget _buildDays() {
     final List<Widget> children = [];
 
-    for (var i = 0; i < days.length; i++) {
+    for (var i = 0; i < UiUtils.weekDays.length; i++) {
       children.add(_buildDayContainer(i));
     }
 
@@ -81,11 +94,7 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
     );
   }
 
-  Widget _buildTimeTableSlotDetainsContainer(
-      {required String subjectIconUrl,
-      required String subjectName,
-      required String classDivisionName,
-      required String timeslot}) {
+  Widget _buildTimeTableSlotDetainsContainer(TimeTableSlot timeTableSlot) {
     return Container(
       clipBehavior: Clip.none,
       margin: EdgeInsets.only(bottom: 20),
@@ -108,8 +117,11 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
           children: [
             Container(
               decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                          timeTableSlot.subject.image)),
                   borderRadius: BorderRadius.circular(7.5),
-                  color: Theme.of(context).colorScheme.error),
+                  color: Theme.of(context).colorScheme.primary),
               height: 60,
               width: boxConstraints.maxWidth * (0.2),
             ),
@@ -126,7 +138,7 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
                   Row(
                     children: [
                       Text(
-                        timeslot,
+                        "${UiUtils.formatTime(timeTableSlot.startTime)} - ${UiUtils.formatTime(timeTableSlot.endTime)}",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w600,
@@ -134,7 +146,7 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
                       ),
                       Spacer(),
                       Text(
-                        classDivisionName,
+                        timeTableSlot.classSectionDetails.getClassSectionName(),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.onBackground,
                             fontWeight: FontWeight.w400,
@@ -146,11 +158,10 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
                     height: 5,
                   ),
                   Text(
-                    "$subjectName",
+                    timeTableSlot.subject.name,
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.w400,
-                        fontFamily: "Poppins",
                         fontSize: 12.0),
                   )
                 ],
@@ -162,50 +173,87 @@ class _ScheduleContainerState extends State<ScheduleContainer> {
     );
   }
 
-  Widget _buildTimeTable() {
-    //TODO : Also make changes in e-school app time-table
-    return SizedBox(
+  List<TimeTableSlot> _buildTimeTableSlots(List<TimeTableSlot> timeTableSlot) {
+    final dayWiseTimeTableSlots = timeTableSlot
+        .where((element) => element.day == _currentSelectedDayIndex + 1)
+        .toList();
+    return dayWiseTimeTableSlots;
+  }
+
+  Widget _buildTimeTableShimmerLoadingContainer() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildTimeTableSlotDetainsContainer(
-              subjectIconUrl: "",
-              subjectName: "Hindi",
-              classDivisionName: "Class 10 - A",
-              timeslot: "08 - 09 AM"),
-          _buildTimeTableSlotDetainsContainer(
-            subjectIconUrl: "",
-            subjectName: "Hindi",
-            timeslot: "08 - 09 AM",
-            classDivisionName: "Class 10 - A",
-          ),
-          _buildTimeTableSlotDetainsContainer(
-            subjectIconUrl: "",
-            subjectName: "Hindi",
-            timeslot: "08 - 09 AM",
-            classDivisionName: "Class 10 - A",
-          ),
-          _buildTimeTableSlotDetainsContainer(
-            subjectIconUrl: "",
-            subjectName: "Hindi",
-            timeslot: "08 - 09 AM",
-            classDivisionName: "Class 10 - A",
-          ),
-          _buildTimeTableSlotDetainsContainer(
-            subjectIconUrl: "",
-            subjectName: "Hindi",
-            timeslot: "08 - 09 AM",
-            classDivisionName: "Class 10 - A",
-          ),
-          _buildTimeTableSlotDetainsContainer(
-            subjectIconUrl: "",
-            subjectName: "Hindi",
-            timeslot: "08 - 09 AM",
-            classDivisionName: "Class 10 - A",
-          ),
-        ],
+      padding: EdgeInsets.symmetric(
+          horizontal: UiUtils.screenContentHorizontalPaddingPercentage *
+              MediaQuery.of(context).size.width),
+      child: ShimmerLoadingContainer(
+        child: LayoutBuilder(builder: (context, boxConstraints) {
+          return Row(
+            children: [
+              CustomShimmerContainer(
+                height: 60,
+                width: boxConstraints.maxWidth * (0.25),
+              ),
+              SizedBox(
+                width: boxConstraints.maxWidth * (0.05),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomShimmerContainer(
+                    height: 9,
+                    width: boxConstraints.maxWidth * (0.6),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomShimmerContainer(
+                    height: 8,
+                    width: boxConstraints.maxWidth * (0.5),
+                  ),
+                ],
+              )
+            ],
+          );
+        }),
       ),
+    );
+  }
+
+  Widget _buildTimeTable() {
+    return BlocBuilder<TimeTableCubit, TimeTableState>(
+      builder: (context, state) {
+        if (state is TimeTableFetchSuccess) {
+          final timetableSlots = _buildTimeTableSlots(state.timetableSlots);
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: timetableSlots
+                  .map((slot) => _buildTimeTableSlotDetainsContainer(slot))
+                  .toList(),
+            ),
+          );
+        }
+
+        if (state is TimeTableFetchFailure) {
+          return ErrorContainer(
+            errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
+                context, state.errorMessage),
+            onTapRetry: () {
+              context.read<TimeTableCubit>().fetchTimeTable();
+            },
+          );
+        }
+
+        return Column(
+          children: List.generate(
+                  UiUtils.defaultShimmerLoadingContentCount, (index) => index)
+              .map((e) => _buildTimeTableShimmerLoadingContainer())
+              .toList(),
+        );
+      },
     );
   }
 
