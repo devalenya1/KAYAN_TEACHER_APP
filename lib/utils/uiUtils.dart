@@ -31,9 +31,11 @@ class UiUtils {
   static double bottomSheetButtonWidthPercentage = 0.625;
 
   static double extraScreenContentTopPaddingForScrolling = 0.0275;
-  static double appBarSmallerHeightPercentage = 0.175;
+  static double appBarSmallerHeightPercentage = 0.15;
 
-  static double appBarMediumtHeightPercentage = 0.2;
+  static double appBarMediumtHeightPercentage = 0.175;
+
+  static double appBarBiggerHeightPercentage = 0.225;
 
   static double bottomNavigationHeightPercentage = 0.075;
   static double bottomNavigationBottomMargin = 25;
@@ -46,7 +48,6 @@ class UiUtils {
 
   static int defaultShimmerLoadingContentCount = 4;
 
-  static double appBarBiggerHeightPercentage = 0.25;
   static double appBarContentTopPadding = 25.0;
   static double bottomSheetTopRadius = 20.0;
   static Duration tabBackgroundContainerAnimationDuration =

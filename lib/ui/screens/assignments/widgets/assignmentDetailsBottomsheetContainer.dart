@@ -161,7 +161,7 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            "Submit Assignment only in pdf format",
+            widget.assignment.instructions,
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -342,6 +342,7 @@ class _AssignmentDetailsBottomsheetContainerState
                     child: SizedBox(
                       width: boxConstraints.maxWidth * (0.75),
                       child: Text(
+                        //TODO:NAME CHANGRING
                         "Integration and Diffraction",
                         textAlign: TextAlign.left,
                         style: TextStyle(
@@ -353,7 +354,8 @@ class _AssignmentDetailsBottomsheetContainerState
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.assignment);
+                        Navigator.of(context).pushNamed(Routes.assignment,
+                            arguments: {"assignment": widget.assignment});
                       },
                       child: Text(
                         UiUtils.getTranslatedLabel(context, viewKey),
@@ -376,7 +378,8 @@ class _AssignmentDetailsBottomsheetContainerState
               _buildAssignmentSubjectNameContainer(),
               _buildAssignmentAssignedDateContainer(),
               _buildAssignmentDueDateContainer(),
-              _buildAssignmentInstructionsContainer(),
+              if (widget.assignment.instructions.isNotEmpty)
+                _buildAssignmentInstructionsContainer(),
               if (widget.assignment.studyMaterial.isNotEmpty &&
                   widget.assignment.studyMaterial != [])
                 _buildAssignmentReferenceMaterialsContainer(),

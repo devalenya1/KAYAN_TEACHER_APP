@@ -94,8 +94,8 @@ class Student {
     motherId = json['mother_id'] ?? 0;
     guardianId = json['guardian_id'] ?? 0;
     isNewAdmission = json['is_new_admission'] ?? 0;
-    final className = json['class_section']['class']['name'];
-    final sectionName = json['class_section']['section']['name'];
+    final className = json['class_section']['class']['name'] ?? "";
+    final sectionName = json['class_section']['section']['name'] ?? "";
     classSectionName = "$className - $sectionName";
     mediumName = json['class_section']['class']['medium']['name'];
     categoryName = json['category_name'] ?? "";

@@ -10,8 +10,11 @@ class AssignmentRepository {
   late Dio dio;
 
   //fetch assignments
-  Future<Map<String, dynamic>> fetchassignment(
-      {required int classSectionId, required int subjectId, int? page}) async {
+  Future<Map<String, dynamic>> fetchassignment({
+    required int classSectionId,
+    required int subjectId,
+    int? page,
+  }) async {
     try {
       final result = await Api.get(
           url: Api.getassignment,
@@ -19,14 +22,13 @@ class AssignmentRepository {
           queryParameters: {
             "class_section_id": classSectionId,
             "subject_id": subjectId,
-            "page": page ?? 0
+            "page": page ?? 0,
           });
 
-      print(result["data"]['data']);
       return {
-        "assignment": (result['data']['data'] as List).map((e) {
-          return Assignment.fromJson(e);
-        }).toList(),
+        "assignment": (result['data']['data'] as List)
+            .map((e) => Assignment.fromJson(e))
+            .toList(),
         "currentPage": (result["data"]["current_page"] as int),
         "lastPage": (result["data"]["last_page"] as int)
       };
@@ -35,11 +37,17 @@ class AssignmentRepository {
     }
   }
 
-  Future<void> deleteAssignment({required int assignmentId}) async {
+  Future<void> deleteAssignment({
+    required int assignmentId,
+  }) async {
     try {
       final body = {"assignment_id": assignmentId};
 
-      await Api.post(url: Api.deleteassignment, useAuthToken: true, body: body);
+      await Api.post(
+        url: Api.deleteassignment,
+        useAuthToken: true,
+        body: body,
+      );
     } catch (e) {
       print(e.toString());
       throw ApiException(e.toString());
@@ -64,7 +72,6 @@ class AssignmentRepository {
         files.add(await MultipartFile.fromFile(filePath.path!));
       }
 
-      print("uploadedFiles repo $files");
       var body = {
         "class_section_id": classSelectionId,
         "assignment_id": assignmentId,
@@ -77,7 +84,6 @@ class AssignmentRepository {
         "extra_days_for_resubmission": extraDayForResubmission,
         "file": files
       };
-      print("bodyyyyy $body");
       if (instruction.isEmpty) {
         body.remove("instructions");
       }
@@ -90,8 +96,11 @@ class AssignmentRepository {
       if (resubmission == false) {
         body.remove("extra_days_for_resubmission");
       }
-      print("bodyyyyy11 $body");
-      await Api.post(body: body, url: Api.uploadassignment, useAuthToken: true);
+      await Api.post(
+        body: body,
+        url: Api.uploadassignment,
+        useAuthToken: true,
+      );
     } catch (e) {
       ApiException(e.toString());
     }
@@ -136,18 +145,12 @@ class AssignmentRepository {
       if (resubmission == false) {
         body.remove("extra_days_for_resubmission");
       }
-      print("body$body");
-      // if (file.isEmpty) {
-      //   body.remove("file");
-      // }
 
-      final result = await Api.post(
+      await Api.post(
         url: Api.createassignment,
         body: body,
         useAuthToken: true,
       );
-      print(result);
-      print(files);
     } catch (e) {
       throw ApiException(e.toString());
     }

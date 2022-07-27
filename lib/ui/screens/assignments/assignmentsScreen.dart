@@ -223,7 +223,6 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                     bloc: context.read<AssignmentCubit>(),
                     listener: (context, state) {},
                     builder: (context, state) {
-                      print("assignmentstate$state");
                       if (state is AssignmentsFetchSuccess) {
                         return Column(
                           children: state.assignment

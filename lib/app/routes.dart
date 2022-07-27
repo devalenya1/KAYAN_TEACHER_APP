@@ -106,7 +106,7 @@ class Routes {
         }
       case assignment:
         {
-          return CupertinoPageRoute(builder: (_) => AssignmentScreen());
+          return AssignmentScreen.route(routeSettings);
         }
       case addAssignment:
         {

@@ -6,7 +6,7 @@ import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';
 import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentDetailsBottomsheetContainer.dart';
 
@@ -59,6 +59,7 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                 padding: EdgeInsets.only(bottom: 20),
                 child: GestureDetector(
                     onTap: () {
+                      print("subjectid${widget.assignment.id}");
                       showAssignmentBottomSheet();
                     },
                     child: Opacity(
@@ -142,7 +143,8 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                               SizedBox(
                                 height: 10.0,
                               ),
-                              Text(widget.assignment.dueDate.toString(),
+                              Text(
+                                  "dueDate: ${DateFormat('yyyy-MM-dd , kk:mm').format(widget.assignment.dueDate)}",
                                   style: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
