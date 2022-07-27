@@ -342,8 +342,7 @@ class _AssignmentDetailsBottomsheetContainerState
                     child: SizedBox(
                       width: boxConstraints.maxWidth * (0.75),
                       child: Text(
-                        //TODO:NAME CHANGRING
-                        "Integration and Diffraction",
+                        widget.assignment.name,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontSize: 16,
