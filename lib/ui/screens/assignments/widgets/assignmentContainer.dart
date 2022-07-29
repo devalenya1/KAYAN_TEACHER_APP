@@ -1,9 +1,14 @@
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/assignmentCubit.dart';
 import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
+import 'package:eschool_teacher/data/models/classSectionDetails.dart';
+import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
+import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
+import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,28 +18,23 @@ import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentDetails
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AssignmentContainer extends StatefulWidget {
-  final Assignment assignment;
-  AssignmentContainer({
-    Key? key,
-    required this.assignment,
-  }) : super(key: key);
+class AssignmentContainer extends StatelessWidget {
+  final ClassSectionDetails classSectionDetails;
+  final Subject subject;
 
-  @override
-  State<AssignmentContainer> createState() => _AssignmentContainerState();
-}
+  AssignmentContainer(
+      {Key? key, required this.classSectionDetails, required this.subject})
+      : super(key: key);
 
-class _AssignmentContainerState extends State<AssignmentContainer> {
-  void showAssignmentBottomSheet() {
+  void showAssignmentBottomSheet(
+      {required BuildContext context, required Assignment assignment}) {
     UiUtils.showBottomSheet(
         enableDrag: true,
-        child: AssignmentDetailsBottomsheetContainer(
-            assignment: widget.assignment),
+        child: AssignmentDetailsBottomsheetContainer(assignment: assignment),
         context: context);
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget asignmentListtile(Assignment assignment) {
     return BlocProvider<DeleteAssignmentCubit>(
       create: (context) => DeleteAssignmentCubit(
         AssignmentRepository(),
@@ -43,9 +43,7 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
         return BlocConsumer<DeleteAssignmentCubit, DeleteAssignmentState>(
           listener: (context, state) {
             if (state is DeleteAssignmentFetchSuccess) {
-              context
-                  .read<AssignmentCubit>()
-                  .deleteAssignment(widget.assignment.id);
+              context.read<AssignmentCubit>().deleteAssignment(assignment.id);
             } else if (state is DeleteAssignmentFetchFailure) {
               UiUtils.showBottomToastOverlay(
                   context: context,
@@ -59,39 +57,38 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                 padding: EdgeInsets.only(bottom: 20),
                 child: GestureDetector(
                     onTap: () {
-                      print("subjectid${widget.assignment.id}");
-                      showAssignmentBottomSheet();
+                      print("subjectid${assignment.id}");
+                      showAssignmentBottomSheet(
+                          context: context, assignment: assignment);
                     },
                     child: Opacity(
                       opacity:
                           state is DeleteAssignmentFetchInProgress ? 0.5 : 1.0,
                       child: Container(
-                        clipBehavior: Clip.none,
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(0.05),
-                                  offset: Offset(2.5, 2.5),
-                                  blurRadius: 10,
-                                  spreadRadius: 0)
-                            ],
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        width: MediaQuery.of(context).size.width * (0.85),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 17.5, vertical: 17.5),
-                        child:
-                            LayoutBuilder(builder: (context, boxConstraints) {
-                          return Column(
+                          clipBehavior: Clip.none,
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary
+                                        .withOpacity(0.05),
+                                    offset: Offset(2.5, 2.5),
+                                    blurRadius: 10,
+                                    spreadRadius: 0)
+                              ],
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          width: MediaQuery.of(context).size.width * (0.85),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 17.5, vertical: 17.5),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 children: [
                                   Text(
-                                    widget.assignment.name.toString(),
+                                    assignment.name.toString(),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
@@ -107,17 +104,16 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                                       Routes.addAssignment,
                                       arguments: {
                                         "editAssignment": true,
-                                        "assignment": widget.assignment,
+                                        "assignment": assignment,
                                       },
                                     ).then((value) {
                                       if (value != null && value) {
                                         context
                                             .read<AssignmentCubit>()
                                             .fetchassignment(
-                                              classSectionId: widget
-                                                  .assignment.classSectionId,
-                                              subjectId:
-                                                  widget.assignment.subjectId,
+                                              classSectionId:
+                                                  assignment.classSectionId,
+                                              subjectId: assignment.subjectId,
                                             );
                                       }
                                     });
@@ -134,8 +130,7 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                                       context
                                           .read<DeleteAssignmentCubit>()
                                           .deleteAssignment(
-                                              assignmentId:
-                                                  widget.assignment.id);
+                                              assignmentId: assignment.id);
                                     },
                                   ),
                                 ],
@@ -144,7 +139,7 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                                 height: 10.0,
                               ),
                               Text(
-                                  "dueDate: ${DateFormat('yyyy-MM-dd , kk:mm').format(widget.assignment.dueDate)}",
+                                  "dueDate: ${DateFormat('yyyy-MM-dd , kk:mm').format(assignment.dueDate)}",
                                   style: TextStyle(
                                       color: Theme.of(context)
                                           .colorScheme
@@ -153,13 +148,89 @@ class _AssignmentContainerState extends State<AssignmentContainer> {
                                       fontWeight: FontWeight.w400,
                                       fontSize: 11.0))
                             ],
-                          );
-                        }),
-                      ),
+                          )),
                     )));
           },
         );
       }),
     );
+  }
+
+  Widget _buildInformationShimmerLoadingContainer(
+      {required BuildContext context}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Container(
+        child: LayoutBuilder(builder: (context, boxConstraints) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.7)),
+              )),
+              SizedBox(
+                height: 5,
+              ),
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.5)),
+              )),
+              SizedBox(
+                height: 15,
+              ),
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.7)),
+              )),
+              SizedBox(
+                height: 5,
+              ),
+              ShimmerLoadingContainer(
+                  child: CustomShimmerContainer(
+                margin: EdgeInsetsDirectional.only(
+                    end: boxConstraints.maxWidth * (0.5)),
+              )),
+            ],
+          );
+        }),
+        padding: EdgeInsets.symmetric(vertical: 15.0),
+        width: MediaQuery.of(context).size.width * (0.85),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<AssignmentCubit, AssignmentState>(
+        bloc: context.read<AssignmentCubit>(),
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is AssignmentsFetchSuccess) {
+            return Column(
+                children: state.assignment
+                    .map((assignment) => asignmentListtile(assignment))
+                    .toList());
+          }
+          if (state is AssignmentFetchFailure) {
+            return Center(
+              child: ErrorContainer(
+                errorMessageCode: state.errorMessage,
+                onTapRetry: () {
+                  context.read<AssignmentCubit>().fetchassignment(
+                      classSectionId: classSectionDetails.id,
+                      subjectId: subject.id);
+                },
+              ),
+            );
+          }
+          return Column(
+              children: List.generate(5, (index) {
+            return _buildInformationShimmerLoadingContainer(context: context);
+          }));
+        });
   }
 }
