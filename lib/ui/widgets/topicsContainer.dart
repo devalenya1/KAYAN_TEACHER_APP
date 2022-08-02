@@ -8,6 +8,7 @@ import 'package:eschool_teacher/data/models/topic.dart';
 import 'package:eschool_teacher/data/repositories/topicRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/attachmentsBottomsheetContainer.dart';
+import 'package:eschool_teacher/ui/widgets/confirmDeleteDialog.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
@@ -140,9 +141,16 @@ class TopicsContainer extends StatelessWidget {
                             if (state is DeleteTopicInProgress) {
                               return;
                             }
-                            context
-                                .read<DeleteTopicCubit>()
-                                .deleteTopic(topicId: topic.id);
+                            showDialog<bool>(
+                                    context: context,
+                                    builder: (_) => ConfirmDeleteDialog())
+                                .then((value) {
+                              if (value != null && value) {
+                                context
+                                    .read<DeleteTopicCubit>()
+                                    .deleteTopic(topicId: topic.id);
+                              }
+                            });
                           })
                         ],
                       ),

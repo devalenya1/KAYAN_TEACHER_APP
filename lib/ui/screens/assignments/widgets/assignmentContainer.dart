@@ -4,6 +4,7 @@ import 'package:eschool_teacher/cubits/deleteassignmentcubit.dart';
 import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
+import 'package:eschool_teacher/ui/widgets/confirmDeleteDialog.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
@@ -128,10 +129,18 @@ class AssignmentContainer extends StatelessWidget {
                                           is DeleteAssignmentFetchInProgress) {
                                         return;
                                       }
-                                      context
-                                          .read<DeleteAssignmentCubit>()
-                                          .deleteAssignment(
-                                              assignmentId: assignment.id);
+                                      showDialog<bool>(
+                                              context: context,
+                                              builder: (_) =>
+                                                  ConfirmDeleteDialog())
+                                          .then((value) {
+                                        if (value != null && value) {
+                                          context
+                                              .read<DeleteAssignmentCubit>()
+                                              .deleteAssignment(
+                                                  assignmentId: assignment.id);
+                                        }
+                                      });
                                     },
                                   ),
                                 ],
@@ -211,7 +220,7 @@ class AssignmentContainer extends StatelessWidget {
         builder: (context, state) {
           if (state is AssignmentsFetchSuccess) {
             return state.assignment.isEmpty
-                ? NoDataContainer(titleKey: "No assignments")
+                ? NoDataContainer(titleKey: noAssignmentsKey)
                 : Column(
                     children: state.assignment
                         .map((assignment) => asignmentListtile(assignment))

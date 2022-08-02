@@ -7,6 +7,7 @@ import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/announcementRepository.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/ui/widgets/attachmentsBottomsheetContainer.dart';
+import 'package:eschool_teacher/ui/widgets/confirmDeleteDialog.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
@@ -164,9 +165,16 @@ class AnnouncementsContainer extends StatelessWidget {
                             if (state is DeleteAnnouncementInProgress) {
                               return;
                             }
-                            context
-                                .read<DeleteAnnouncementCubit>()
-                                .deleteAnnouncement(announcement.id);
+                            showDialog<bool>(
+                                    context: context,
+                                    builder: (_) => ConfirmDeleteDialog())
+                                .then((value) {
+                              if (value != null && value) {
+                                context
+                                    .read<DeleteAnnouncementCubit>()
+                                    .deleteAnnouncement(announcement.id);
+                              }
+                            });
                           })
                         ],
                       ),

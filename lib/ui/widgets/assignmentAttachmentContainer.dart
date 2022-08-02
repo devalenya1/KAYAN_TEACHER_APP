@@ -2,6 +2,7 @@ import 'package:eschool_teacher/cubits/deleteStudyMaterialCubit.dart';
 import 'package:eschool_teacher/data/models/studyMaterial.dart';
 import 'package:eschool_teacher/data/repositories/studyMaterialRepositoy.dart';
 import 'package:eschool_teacher/ui/styles/colors.dart';
+import 'package:eschool_teacher/ui/widgets/confirmDeleteDialog.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -73,10 +74,17 @@ class AssignmentAttachmentContainer extends StatelessWidget {
                               if (state is DeleteStudyMaterialInProgress) {
                                 return;
                               }
-                              context
-                                  .read<DeleteStudyMaterialCubit>()
-                                  .deleteStudyMaterial(
-                                      fileId: studyMaterial.id);
+                              showDialog<bool>(
+                                      context: context,
+                                      builder: (_) => ConfirmDeleteDialog())
+                                  .then((value) {
+                                if (value != null && value) {
+                                  context
+                                      .read<DeleteStudyMaterialCubit>()
+                                      .deleteStudyMaterial(
+                                          fileId: studyMaterial.id);
+                                }
+                              });
                             })
                           ],
                         )
