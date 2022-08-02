@@ -61,7 +61,6 @@ class MyClassesCubit extends Cubit<MyClassesState> {
   }
 
   List<String> getClassSectionName() {
-    //TODO: add medium at the end
     return getAllClasses()
         .map((classSection) => classSection.getClassSectionName())
         .toList();

@@ -192,7 +192,6 @@ class _HomeContainerState extends State<HomeContainer> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              //TODO: add medium also
               Align(
                 alignment: Alignment.center,
                 child: Text(
