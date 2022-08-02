@@ -8,6 +8,7 @@ import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/noDataContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
@@ -205,15 +206,16 @@ class AssignmentContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AssignmentCubit, AssignmentState>(
+    return BlocBuilder<AssignmentCubit, AssignmentState>(
         bloc: context.read<AssignmentCubit>(),
-        listener: (context, state) {},
         builder: (context, state) {
           if (state is AssignmentsFetchSuccess) {
-            return Column(
-                children: state.assignment
-                    .map((assignment) => asignmentListtile(assignment))
-                    .toList());
+            return state.assignment.isEmpty
+                ? NoDataContainer(titleKey: "No assignments")
+                : Column(
+                    children: state.assignment
+                        .map((assignment) => asignmentListtile(assignment))
+                        .toList());
           }
           if (state is AssignmentFetchFailure) {
             return Center(

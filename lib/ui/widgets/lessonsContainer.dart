@@ -11,6 +11,7 @@ import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/noDataContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -234,12 +235,14 @@ class LessonsContainer extends StatelessWidget {
     return BlocBuilder<LessonsCubit, LessonsState>(
       builder: (context, state) {
         if (state is LessonsFetchSuccess) {
-          return Column(
-            children: state.lessons
-                .map((lesson) => _buildLessonDetailsContainer(
-                    lesson: lesson, context: context))
-                .toList(),
-          );
+          return state.lessons.isEmpty
+              ? NoDataContainer(titleKey: noLessonsKey)
+              : Column(
+                  children: state.lessons
+                      .map((lesson) => _buildLessonDetailsContainer(
+                          lesson: lesson, context: context))
+                      .toList(),
+                );
         }
         if (state is LessonsFetchFailure) {
           return Center(

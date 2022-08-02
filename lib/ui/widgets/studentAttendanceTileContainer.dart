@@ -81,18 +81,19 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                   width: boxConstraints.maxWidth * (0.045),
                 ),
                 SizedBox(
-                  width: boxConstraints.maxWidth * (0.58),
+                  width: boxConstraints.maxWidth * (0.56),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Student name",
+                        student.getFullName(),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w600,
                             fontSize: 13.0),
                       ),
-                      Text("Roll No - 18",
+                      Text(
+                          "${UiUtils.getTranslatedLabel(context, rollNoKey)} - ${student.rollNumber}",
                           style: TextStyle(
                               color: Theme.of(context)
                                   .colorScheme
@@ -106,7 +107,7 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(horizontal: 7.5, vertical: 2.5),
+                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
                   child: Text(
                     UiUtils.getTranslatedLabel(
                         context, isPresent ? presentKey : absentKey),
@@ -120,7 +121,7 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                       color: isPresent
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).colorScheme.error),
-                  width: boxConstraints.maxWidth * (0.2),
+                  width: boxConstraints.maxWidth * (0.22),
                 )
               ],
             );

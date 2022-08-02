@@ -11,6 +11,7 @@ import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/deleteButton.dart';
 import 'package:eschool_teacher/ui/widgets/editButton.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/noDataContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
@@ -233,22 +234,24 @@ class AnnouncementsContainer extends StatelessWidget {
     return BlocBuilder<AnnouncementsCubit, AnnouncementsState>(
       builder: (context, state) {
         if (state is AnnouncementsFetchSuccess) {
-          return Column(
-            children:
-                List.generate(state.announcements.length, (index) => index)
-                    .map((index) => _buildAnnouncementContainer(
-                        context: context,
-                        announcement: state.announcements[index],
-                        index: index,
-                        totalAnnouncements: state.announcements.length,
-                        hasMoreAnnouncements:
-                            context.read<AnnouncementsCubit>().hasMore(),
-                        hasMoreAnnouncementsInProgress:
-                            state.fetchMoreAnnouncementsInProgress,
-                        fetchMoreAnnouncementsFailure:
-                            state.moreAnnouncementsFetchError))
-                    .toList(),
-          );
+          return state.announcements.isEmpty
+              ? NoDataContainer(titleKey: noAnnouncementsKey)
+              : Column(
+                  children: List.generate(
+                          state.announcements.length, (index) => index)
+                      .map((index) => _buildAnnouncementContainer(
+                          context: context,
+                          announcement: state.announcements[index],
+                          index: index,
+                          totalAnnouncements: state.announcements.length,
+                          hasMoreAnnouncements:
+                              context.read<AnnouncementsCubit>().hasMore(),
+                          hasMoreAnnouncementsInProgress:
+                              state.fetchMoreAnnouncementsInProgress,
+                          fetchMoreAnnouncementsFailure:
+                              state.moreAnnouncementsFetchError))
+                      .toList(),
+                );
         }
         if (state is AnnouncementsFetchFailure) {
           return Center(

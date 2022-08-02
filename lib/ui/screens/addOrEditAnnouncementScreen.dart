@@ -293,7 +293,7 @@ class _AddOrEditAnnouncementScreenState
                       return LayoutBuilder(builder: (context, boxConstraints) {
                         return Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: boxConstraints.maxWidth * (0.2)),
+                              horizontal: boxConstraints.maxWidth * (0.15)),
                           child: CustomRoundedButton(
                               onTap: () {
                                 if (state is EditAnnouncementInProgress) {

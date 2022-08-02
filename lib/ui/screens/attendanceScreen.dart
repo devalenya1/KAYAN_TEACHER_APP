@@ -63,6 +63,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   void _updateAttendance(int studentId) {
+    if (context.read<SubmitClassAttendanceCubit>().state
+        is SubmitClassAttendanceInProgress) {
+      return;
+    }
     final index = _listOfAttendance
         .indexWhere((element) => element.keys.first == studentId);
     _listOfAttendance[index][studentId] = !_listOfAttendance[index][studentId]!;

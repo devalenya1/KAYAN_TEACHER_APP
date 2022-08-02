@@ -223,6 +223,13 @@
     "attendanceNotViewEdit" : "Because of holiday can not view/take attendance",
     "attendanceSubmittedSuccessfully" : "Attendance submitted successfully",
     "todayAttendance" : "Today's attendance",
-    "holidays" : "Holidays"
+    "holidays" : "Holidays",
+    "noAnnouncements" : "No announcements",
+    "noTopics" : "No topics",
+    "noLectures" : "No lectures",
+    "areYouSureToDelete" : "Are you sure to delete?",
+    "noAssignments" : "No assignments"
+    
+
 
 }

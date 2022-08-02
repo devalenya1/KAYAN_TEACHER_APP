@@ -275,3 +275,8 @@ const String attendanceSubmittedSuccessfullyKey =
     "attendanceSubmittedSuccessfully";
 const String todayAttendanceKey = "todayAttendance";
 const String holidaysKey = "holidays";
+const String noAnnouncementsKey = "noAnnouncements";
+const String noAssignmentsKey = "noAssignments";
+const String noTopicsKey = "noTopics";
+const String noLecturesKey = "noLectures";
+const String areYouSureToDeleteKey = "areYouSureToDelete";

@@ -3,6 +3,7 @@ import 'package:eschool_teacher/cubits/timeTableCubit.dart';
 import 'package:eschool_teacher/data/models/timeTableSlot.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
+import 'package:eschool_teacher/ui/widgets/noDataContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -227,14 +228,17 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
       builder: (context, state) {
         if (state is TimeTableFetchSuccess) {
           final timetableSlots = _buildTimeTableSlots(state.timetableSlots);
-          return SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: timetableSlots
-                  .map((slot) => _buildTimeTableSlotDetainsContainer(slot))
-                  .toList(),
-            ),
-          );
+          return timetableSlots.isEmpty
+              ? NoDataContainer(titleKey: noLecturesKey)
+              : SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: timetableSlots
+                        .map(
+                            (slot) => _buildTimeTableSlotDetainsContainer(slot))
+                        .toList(),
+                  ),
+                );
         }
 
         if (state is TimeTableFetchFailure) {

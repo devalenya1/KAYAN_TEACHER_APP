@@ -81,7 +81,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                       Row(
                         children: [
                           SizedBox(
-                            width: boxConstraints.maxWidth * (0.7),
+                            width: boxConstraints.maxWidth * (0.675),
                             child: Text(
                               holiday.title,
                               style: TextStyle(
@@ -93,7 +93,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                           ),
                           Spacer(),
                           SizedBox(
-                            width: boxConstraints.maxWidth * (0.25),
+                            width: boxConstraints.maxWidth * (0.275),
                             child: Text(
                               UiUtils.formatDate(holiday.date),
                               style: TextStyle(
