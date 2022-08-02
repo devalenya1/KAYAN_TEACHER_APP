@@ -431,27 +431,21 @@ class _HomeContainerState extends State<HomeContainer> {
             route: Routes.assignments,
             iconPath: UiUtils.getImagePath("assignment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, assignmentsKey)),
-
         _buildMenuContainer(
             route: Routes.announcements,
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, announcementsKey)),
-
-        //TODO: add lessons and topics icon
         _buildMenuContainer(
             route: Routes.lessons,
-            iconPath: UiUtils.getImagePath("announcment_icon.svg"),
+            iconPath: UiUtils.getImagePath("lesson.svg"),
             title: UiUtils.getTranslatedLabel(context, chaptersKey)),
-
         _buildMenuContainer(
             route: Routes.topics,
-            iconPath: UiUtils.getImagePath("study_material_icon.svg"),
+            iconPath: UiUtils.getImagePath("topics.svg"),
             title: UiUtils.getTranslatedLabel(context, topicsKey)),
-
-        //TODO: Add holidays icon
         _buildMenuContainer(
             route: Routes.holidays,
-            iconPath: UiUtils.getImagePath("study_material_icon.svg"),
+            iconPath: UiUtils.getImagePath("holiday_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, holidaysKey)),
       ],
     );

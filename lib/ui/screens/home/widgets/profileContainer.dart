@@ -214,18 +214,16 @@ class _ProfileContainerState extends State<ProfileContainer> {
                       value: UiUtils.formatStringDate(teacher.dob),
                       iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg")),
 
-                  //TODO: add gender icon
                   _buildProfileDetailsTile(
                       label: UiUtils.getTranslatedLabel(context, genderKey),
                       value: teacher.gender,
-                      iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg")),
+                      iconUrl: UiUtils.getImagePath("gender.svg")),
 
-                  //TODO: add qualification icon
                   _buildProfileDetailsTile(
                       label:
                           UiUtils.getTranslatedLabel(context, qualificationKey),
                       value: teacher.qualification,
-                      iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg")),
+                      iconUrl: UiUtils.getImagePath("qualification.svg")),
                   _buildProfileDetailsTile(
                       label: UiUtils.getTranslatedLabel(
                           context, currentAddressKey),
