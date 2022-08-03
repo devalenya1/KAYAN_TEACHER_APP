@@ -21,6 +21,7 @@ import 'package:eschool_teacher/ui/widgets/myClassesDropDownMenu.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -298,6 +299,10 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey));
       return;
     }
+    if (_assignmentPointsTextEditingController.text.length >= 10) {
+      showErrorMessage(UiUtils.getTranslatedLabel(context, pointsLengthKey));
+      return;
+    }
     if (dueDate == null) {
       showErrorMessage(
           UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
@@ -338,6 +343,10 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     if (dueDate == null) {
       showErrorMessage(
           UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+    }
+    if (_assignmentPointsTextEditingController.text.length >= 10) {
+      showErrorMessage(UiUtils.getTranslatedLabel(context, pointsLengthKey));
+      return;
     }
     if (dueTime == null) {
       showErrorMessage(
@@ -567,6 +576,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
             maxLines: 1,
             keyboardType: TextInputType.number,
             textEditingController: _assignmentPointsTextEditingController,
+            textInputFormatter: [FilteringTextInputFormatter.digitsOnly],
           ),
 
           //_buildLateSubmissionToggleContainer(),
@@ -583,6 +593,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   textEditingController:
                       _extraResubmissionDaysTextEditingController,
                   keyboardType: TextInputType.number,
+                  textInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 )
               : SizedBox(),
           assignmentattatchments.isNotEmpty
@@ -637,26 +648,33 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                     }
                   },
                   builder: (context, state) {
-                    return CustomRoundedButton(
-                        height: 45,
-                        radius: 10,
-                        widthPercentage: 0.65,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        buttonTitle: UiUtils.getTranslatedLabel(
-                            context, editassignmentkey),
-                        showBorder: false,
-                        child: state is editAssignmentInProgress
-                            ? CustomCircularProgressIndicator(
-                                strokeWidth: 2,
-                                widthAndHeight: 20,
-                              )
-                            : null,
-                        onTap: () {
-                          if (state is editAssignmentInProgress) {
-                            return;
-                          }
-                          editAssignment();
-                        });
+                    return LayoutBuilder(builder: (context, boxConstraints) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: boxConstraints.maxWidth * (0.125)),
+                        child: CustomRoundedButton(
+                            height: 45,
+                            radius: 10,
+                            widthPercentage: boxConstraints.maxWidth * (0.45),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            buttonTitle: UiUtils.getTranslatedLabel(
+                                context, editassignmentkey),
+                            showBorder: false,
+                            child: state is editAssignmentInProgress
+                                ? CustomCircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    widthAndHeight: 20,
+                                  )
+                                : null,
+                            onTap: () {
+                              if (state is editAssignmentInProgress) {
+                                return;
+                              }
+                              editAssignment();
+                            }),
+                      );
+                    });
                   },
                 )
               : BlocConsumer<CreateAssignmentCubit, createAssignmentState>(

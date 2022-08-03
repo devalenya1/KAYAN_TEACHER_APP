@@ -144,6 +144,7 @@
     "permissionToPickFile" : "Please give permission to pick file",
     "pleseEnterAssignmentName":"Please enter Assignment name",
     "pleaseSelectDate":"Please Select Date",
+    "pointsLength":"Please Enter Point Length Less Then 10",
     "plseaseSelectTime":"PLease Select Time",
     "pleaseEnterLessPoints":"Not Assign Point higher to Assignment Points",
     "pleaseEnterRemark":"Please Enter Remark",

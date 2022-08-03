@@ -187,6 +187,7 @@ const String pleaseEnterlessPointskey = "pleaseEnterLessPoints";
 const String pleaseEnterRemarkkey = "pleaseEnterRemark";
 const String pleaseEnterPointskey = "pleaseEnterRemark";
 
+const String pointsLengthKey = "pointsLength";
 const String lessonAddedKey = "lessonAdded";
 
 const String announcementAddedKey = "announcementAdded";
