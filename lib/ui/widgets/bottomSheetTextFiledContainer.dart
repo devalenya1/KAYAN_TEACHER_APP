@@ -1,6 +1,7 @@
 import 'package:eschool_teacher/ui/styles/colors.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BottomSheetTextFieldContainer extends StatelessWidget {
   final String hintText;
@@ -9,11 +10,13 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
   final EdgeInsetsGeometry? contentPadding;
   final double? height;
   final int? maxLines;
+  final List<TextInputFormatter>? textInputFormatter;
   final TextInputType? keyboardType;
 
   final EdgeInsetsGeometry? margin;
   final bool? hideText;
   final Widget? suffix;
+  final int? maxlength;
 
   const BottomSheetTextFieldContainer(
       {Key? key,
@@ -21,7 +24,9 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       required this.maxLines,
       required this.textEditingController,
       this.height,
+      this.textInputFormatter,
       this.suffix,
+      this.maxlength,
       this.hideText,
       this.keyboardType,
       this.margin,
@@ -43,6 +48,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
             color: Theme.of(context).colorScheme.secondary,
             fontSize: UiUtils.textFieldFontSize),
         maxLines: maxLines,
+        inputFormatters: textInputFormatter,
         decoration: InputDecoration(
           suffixIcon: suffix,
           hintText: hintText,
@@ -50,6 +56,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
               color: hintTextColor, fontSize: UiUtils.textFieldFontSize),
           border: InputBorder.none,
         ),
+        maxLength: maxlength,
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
