@@ -20,11 +20,11 @@ import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentDetails
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AssignmentContainer extends StatelessWidget {
+class AssignmentsContainer extends StatelessWidget {
   final ClassSectionDetails classSectionDetails;
   final Subject subject;
 
-  AssignmentContainer(
+  AssignmentsContainer(
       {Key? key, required this.classSectionDetails, required this.subject})
       : super(key: key);
 
@@ -59,7 +59,9 @@ class AssignmentContainer extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: 20),
                 child: GestureDetector(
                     onTap: () {
-                      print("subjectid${assignment.id}");
+                      if (state is DeleteAssignmentFetchInProgress) {
+                        return;
+                      }
                       showAssignmentBottomSheet(
                           context: context, assignment: assignment);
                     },

@@ -4,7 +4,7 @@ import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
-import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentContainer.dart';
+import 'package:eschool_teacher/ui/screens/assignments/widgets/assignmentsContainer.dart';
 import 'package:eschool_teacher/ui/widgets/classSubjectsDropDownMenu.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 import 'package:eschool_teacher/ui/widgets/customFloatingActionButton.dart';
@@ -151,6 +151,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               fetchAssignment();
             },
             child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: _scrollController,
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width *
@@ -166,7 +167,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                AssignmentContainer(
+                AssignmentsContainer(
                   classSectionDetails: context
                       .read<MyClassesCubit>()
                       .getClassSectionDetails(

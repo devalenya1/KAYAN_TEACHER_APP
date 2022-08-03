@@ -131,42 +131,39 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
       }),
       body: Stack(
         children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: CustomRefreshIndicator(
-              displacment: UiUtils.getScrollViewTopPadding(
-                  context: context,
-                  appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage),
-              onRefreshCallback: () {
-                fetchAnnouncements();
-              },
-              child: ListView(
-                controller: _scrollController,
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width *
-                        UiUtils.screenContentHorizontalPaddingPercentage,
-                    right: MediaQuery.of(context).size.width *
-                        UiUtils.screenContentHorizontalPaddingPercentage,
-                    top: UiUtils.getScrollViewTopPadding(
-                        context: context,
-                        appBarHeightPercentage:
-                            UiUtils.appBarSmallerHeightPercentage)),
-                children: [
-                  _buildClassAndSubjectDropDowns(),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * (0.0125),
-                  ),
-                  AnnouncementsContainer(
-                      classSectionDetails: context
-                          .read<MyClassesCubit>()
-                          .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection),
-                      subject: context
-                          .read<SubjectsOfClassSectionCubit>()
-                          .getSubjectDetailsByName(currentSelectedSubject)),
-                ],
-              ),
+          CustomRefreshIndicator(
+            displacment: UiUtils.getScrollViewTopPadding(
+                context: context,
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage),
+            onRefreshCallback: () {
+              fetchAnnouncements();
+            },
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: _scrollController,
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width *
+                      UiUtils.screenContentHorizontalPaddingPercentage,
+                  right: MediaQuery.of(context).size.width *
+                      UiUtils.screenContentHorizontalPaddingPercentage,
+                  top: UiUtils.getScrollViewTopPadding(
+                      context: context,
+                      appBarHeightPercentage:
+                          UiUtils.appBarSmallerHeightPercentage)),
+              children: [
+                _buildClassAndSubjectDropDowns(),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * (0.0125),
+                ),
+                AnnouncementsContainer(
+                    classSectionDetails: context
+                        .read<MyClassesCubit>()
+                        .getClassSectionDetails(
+                            classSectionName: currentSelectedClassSection),
+                    subject: context
+                        .read<SubjectsOfClassSectionCubit>()
+                        .getSubjectDetailsByName(currentSelectedSubject)),
+              ],
             ),
           ),
           Align(

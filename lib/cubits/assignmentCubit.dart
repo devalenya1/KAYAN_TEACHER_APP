@@ -104,7 +104,7 @@ class AssignmentCubit extends Cubit<AssignmentState> {
       final fetchMoreAssignment = await _assignmentRepository.fetchassignment(
         classSectionId: classSectionId,
         subjectId: subjectId,
-        //page: (state as AssignmentFetchSuccess).currentPage + 1,
+        page: (state as AssignmentsFetchSuccess).currentPage + 1,
       );
 
       final currentState = (state as AssignmentsFetchSuccess);
