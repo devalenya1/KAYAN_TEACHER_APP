@@ -8,8 +8,10 @@ class SystemRepository {
           queryParameters: {"type": type},
           url: Api.settings,
           useAuthToken: false);
+
       return result['data'];
     } catch (e) {
+      print(e.toString());
       throw ApiException(e.toString());
     }
   }

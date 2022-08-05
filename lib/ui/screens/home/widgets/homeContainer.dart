@@ -68,11 +68,6 @@ class _HomeContainerState extends State<HomeContainer> {
                 padding: EdgeInsets.only(right: 20.0, bottom: 20.0),
                 child: Container(
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(context
-                              .read<AuthCubit>()
-                              .getTeacherDetails()
-                              .image)),
                       border: Border.all(
                           color: Theme.of(context)
                               .scaffoldBackgroundColor
@@ -115,6 +110,11 @@ class _HomeContainerState extends State<HomeContainer> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(context
+                                  .read<AuthCubit>()
+                                  .getTeacherDetails()
+                                  .image)),
                           shape: BoxShape.circle,
                           border: Border.all(
                               width: 2.0,
