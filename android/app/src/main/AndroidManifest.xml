@@ -24,7 +24,7 @@
        
     </queries>
    <application
-        android:label="eschool_teacher"
+        android:label="eschool Teacher"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
