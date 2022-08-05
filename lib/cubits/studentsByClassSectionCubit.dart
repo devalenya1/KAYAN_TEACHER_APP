@@ -30,9 +30,12 @@ class StudentsByClassSectionCubit extends Cubit<StudentsByClassSectionState> {
   void fetchStudents({required int classSectionId}) async {
     emit(StudentsByClassSectionFetchInProgress());
     try {
-      emit(StudentsByClassSectionFetchSuccess(
-          students: await _studentRepository.getStudentsByClassSection(
-              classSectionId: classSectionId)));
+      emit(
+        StudentsByClassSectionFetchSuccess(
+          students: (await _studentRepository.getStudentsByClassSection(
+              classSectionId: classSectionId)),
+        ),
+      );
     } catch (e) {
       emit(StudentsByClassSectionFetchFailure(e.toString()));
     }

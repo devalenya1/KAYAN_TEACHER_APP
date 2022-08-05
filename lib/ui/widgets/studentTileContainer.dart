@@ -43,6 +43,7 @@ class StudentTileContainer extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
+                          fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(student.image)),
                       borderRadius: BorderRadius.circular(7.5),
                       color: Theme.of(context).colorScheme.error),

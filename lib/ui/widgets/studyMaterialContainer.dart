@@ -197,6 +197,7 @@ class StudyMaterialContainer extends StatelessWidget {
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                       image: DecorationImage(
+                                          fit: BoxFit.cover,
                                           image: CachedNetworkImageProvider(
                                               studyMaterial.fileThumbnail)),
                                       borderRadius: BorderRadius.circular(10)),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eschool_teacher/cubits/timeTableCubit.dart';
 import 'package:eschool_teacher/data/models/timeTableSlot.dart';
+import 'package:eschool_teacher/ui/screens/class/widgets/subjectImageContainer.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/noDataContainer.dart';
@@ -116,15 +117,12 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                          timeTableSlot.subject.image)),
-                  borderRadius: BorderRadius.circular(7.5),
-                  color: Theme.of(context).colorScheme.primary),
+            SubjectImageContainer(
+              showShadow: false,
               height: 60,
               width: boxConstraints.maxWidth * (0.2),
+              radius: 7.5,
+              subject: timeTableSlot.subject,
             ),
             SizedBox(
               width: boxConstraints.maxWidth * (0.05),
