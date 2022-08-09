@@ -189,7 +189,7 @@ class UiUtils {
 
   static bool isDemoVersionEnable() {
     //If isDemoVersion is not declarer then it return always false
-    return false;
+    return true;
   }
 
   static int getStudyMaterialId(
