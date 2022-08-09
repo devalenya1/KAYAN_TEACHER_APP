@@ -1,3 +1,5 @@
+import 'package:eschool_teacher/utils/labelKeys.dart';
+
 class ErrorMessageKeysAndCode {
   static const String defaultErrorMessageKey = "defaultErrorMessage";
   static const String noInternetKey = "noInternet";
@@ -42,6 +44,9 @@ class ErrorMessageKeysAndCode {
 
     if (errorCode == "109") {
       return invalidPasswordKey;
+    }
+    if (errorCode == "112") {
+      return featureDisableInDemoVersionKey;
     }
     if (errorCode == permissionNotGivenCode) {
       return "permissionsNotGivenKey";
