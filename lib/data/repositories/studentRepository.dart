@@ -2,6 +2,8 @@ import 'package:eschool_teacher/data/models/guardianDetails.dart';
 import 'package:eschool_teacher/data/models/student.dart';
 import 'package:eschool_teacher/utils/api.dart';
 
+import '../models/exam.dart';
+
 class StudentRepository {
   Future<List<Student>> getStudentsByClassSection(
       {required int classSectionId}) async {
@@ -50,4 +52,45 @@ class StudentRepository {
       throw ApiException(e.toString());
     }
   }
+
+  //
+  //This method is used to fetch exams list
+  Future<List<Exam>> fetchExamsList({required int examStatus}) async {
+    try {
+      final result = await Api.get(
+          url: Api.examList,
+          useAuthToken: true,
+          queryParameters:  {'status':examStatus});
+
+      return (result['data'] as List)
+          .map((e) => Exam.fromExamJson(Map.from(e)))
+          .toList();
+    } catch (e) {
+      print('error is ${e.toString()}');
+      throw ApiException(e.toString());
+    }
+  }
+
+  //
+  //This method is used to fetch time-table of particular exam
+  Future<List<ExamTimeTable>> fetchExamTimeTable(
+      {
+        required int examId}) async {
+    try {
+
+      final result = await Api.get(
+          url: Api.examTimeTable,
+          useAuthToken: true,
+          queryParameters
+              : {"exam_id": examId});
+
+      return (result['data'] as List)
+          .map((e) => ExamTimeTable.fromJson(Map.from(e)))
+          .toList();
+    } catch (e) {
+
+      throw ApiException(e.toString());
+    }
+  }
+
 }

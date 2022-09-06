@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/cubits/studentMoreDetailsCubit.dart';
 import 'package:eschool_teacher/data/models/guardianDetails.dart';
 import 'package:eschool_teacher/data/models/student.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StudentDetailsContainer extends StatefulWidget {
   final Student student;
+
   const StudentDetailsContainer({Key? key, required this.student})
       : super(key: key);
 
@@ -328,6 +330,32 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
     }));
   }
 
+  _buildViewResultContainer() {
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context, Routes.resultList);
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 20.0),
+        padding: EdgeInsets.all(2.5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              width: 2,
+              color: Theme.of(context).colorScheme.primary,
+            )),
+        alignment: AlignmentDirectional.center,
+        width: MediaQuery.of(context).size.width * (0.85),
+        height: MediaQuery.of(context).size.width * (0.15),
+        child: Text(UiUtils.getTranslatedLabel(context, viewResultKey),
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.w600,
+                fontSize: 14.0)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -384,7 +412,8 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                 }
                 return Padding(
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * (0.125)),
+                      top: MediaQuery.of(context).size.height * (0.125),
+                      bottom: MediaQuery.of(context).size.height * (0.125)),
                   child: Center(
                     child: CustomCircularProgressIndicator(
                       indicatorColor: Theme.of(context).colorScheme.primary,
@@ -392,7 +421,9 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                   ),
                 );
               },
-            )
+            ),
+
+            _buildViewResultContainer(),
           ],
         ),
         padding: EdgeInsets.only(

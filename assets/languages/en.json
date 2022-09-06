@@ -100,6 +100,7 @@
     "addResult" : "Add Result",
     "obtainedMarks" : "Obtained Marks",
     "submitResult" : "Submit Result",
+    "viewResultResult" : "View Result",
     "attendance" : "Attendance",
     "forgotPassword": "Forgot password",
 
@@ -229,8 +230,15 @@
     "noTopics" : "No topics",
     "noLectures" : "No lectures",
     "areYouSureToDelete" : "Are you sure to delete?",
-    "noAssignments" : "No assignments"
-    
+    "noAssignments" : "No assignments",
+    "exams" : "Exams",
 
+    "allExams": "All Exams",
+    "upComing": "Upcoming",
+    "onGoing": "Ongoing",
+    "examName": "Exam Name",
+    "noExamsFound": "Yee.. No Exam found!",
+    "noExamTimeTableFound" : "No Timetable Added",
+    "examTimeTable": "Exam Timetable"
 
 }

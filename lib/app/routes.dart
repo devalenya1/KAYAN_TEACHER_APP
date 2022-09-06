@@ -11,6 +11,7 @@ import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
 import 'package:eschool_teacher/ui/screens/attendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/contactUsScreen.dart';
+import 'package:eschool_teacher/ui/screens/exam/examScreen.dart';
 import 'package:eschool_teacher/ui/screens/holidays/holidaysScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/lessonsScreen.dart';
@@ -26,6 +27,8 @@ import 'package:eschool_teacher/ui/screens/topcisByLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/topicsScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../ui/screens/result/resultScreen.dart';
 
 class Routes {
   static const String splash = "splash";
@@ -50,7 +53,9 @@ class Routes {
 
   static const String studentDetails = "/studentDetails";
 
-  static const String result = "/result";
+  static const String viewResult = "/result";
+
+  static const String resultList = "/resultList";
 
   static const String addResult = "/addResult";
 
@@ -75,7 +80,11 @@ class Routes {
 
   static const String holidays = "/holidays";
 
+  static const String exams = "/exam";
+  static const String examTimeTable = "/examTimeTable";
+
   static String currentRoute = splash;
+
 
   static Route<dynamic> onGenerateRouted(RouteSettings routeSettings) {
     currentRoute = routeSettings.name ?? "";
@@ -125,9 +134,13 @@ class Routes {
         {
           return StudentDetailsScreen.route(routeSettings);
         }
-      case result:
+      case resultList:
         {
           return CupertinoPageRoute(builder: (context) => const ResultScreen());
+        }
+        case viewResult:
+        {
+          return CupertinoPageRoute(builder: (context) => const ViewResultScreen());
         }
       case addResult:
         {
@@ -183,6 +196,10 @@ class Routes {
       case holidays:
         {
           return HolidaysScreen.route(routeSettings);
+        }
+      case exams:
+        {
+          return ExamScreen.route(routeSettings);
         }
 
       default:

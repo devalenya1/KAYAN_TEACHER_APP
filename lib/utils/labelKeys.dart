@@ -137,6 +137,7 @@ const String percentageKey = "percentage";
 const String resultKey = "result";
 const String addResultKey = "addResult";
 const String submitResultKey = "submitResult";
+const String viewResultKey = "viewResult";
 const String totalPresentKey = "totalPresent";
 const String totalAbsentKey = "totalAbsent";
 const String attendanceKey = "attendance";
@@ -281,3 +282,15 @@ const String noAssignmentsKey = "noAssignments";
 const String noTopicsKey = "noTopics";
 const String noLecturesKey = "noLectures";
 const String areYouSureToDeleteKey = "areYouSureToDelete";
+
+const String examsKey = "exams";
+const String allExamsKey = "allExams";
+const String upComingKey = "upComing";
+const String onGoingKey = "onGoing";
+const String completedKey = "completed";
+
+const String examNameKey = "examName";
+const String noExamsFoundKey = "noExamsFound";
+const String noExamTimeTableFoundKey = "noExamTimeTableFound";
+const String examTimeTableKey = "examTimeTable";
+

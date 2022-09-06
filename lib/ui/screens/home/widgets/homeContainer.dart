@@ -447,6 +447,18 @@ class _HomeContainerState extends State<HomeContainer> {
             route: Routes.holidays,
             iconPath: UiUtils.getImagePath("holiday_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, holidaysKey)),
+        context.read<MyClassesCubit>().primaryClass().id == '0'
+            ? SizedBox()
+            : _buildMenuContainer(
+                route: Routes.exams,
+                iconPath: UiUtils.getImagePath("exam_icon.svg"),
+                title: UiUtils.getTranslatedLabel(context, examsKey)),
+        context.read<MyClassesCubit>().primaryClass().id == '0'
+            ? SizedBox()
+            : _buildMenuContainer(
+                route: Routes.exams,
+                iconPath: UiUtils.getImagePath("result_icon.svg"),
+                title: UiUtils.getTranslatedLabel(context, examsKey)),
       ],
     );
   }
