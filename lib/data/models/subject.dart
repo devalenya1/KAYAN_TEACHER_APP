@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Subject {
   Subject({
     required this.id,
@@ -17,7 +19,12 @@ class Subject {
   late final String type;
   late final bool isSubjectImageSvg;
 
+  String getSubjectName() {
+    return "${this.name}";
+  }
+
   Subject.fromJson(Map<String, dynamic> json) {
+    print('sub json is $json');
     id = json['id'] ?? 0;
     name = json['name'] ?? "";
     code = json['code'] ?? "";

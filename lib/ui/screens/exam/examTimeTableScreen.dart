@@ -16,13 +16,13 @@ import '../../widgets/noDataContainer.dart';
 import '../../widgets/screenTopBackgroundContainer.dart';
 
 class ExamTimeTableScreen extends StatefulWidget {
-  final int? childID;
+  final int? studentId;
   final int examID;
   final String examName;
 
   const ExamTimeTableScreen({
     Key? key,
-    this.childID,
+    this.studentId,
     required this.examID,
     required this.examName,
   }) : super(key: key);
@@ -37,7 +37,7 @@ class ExamTimeTableScreen extends StatefulWidget {
         builder: (_) => BlocProvider(
               create: (context) => ExamTimeTableCubit(StudentRepository()),
               child: ExamTimeTableScreen(
-                childID: examDetails['childID'],
+                studentId: examDetails['studentId'],
                 examID: examDetails['examID'],
                 examName: examDetails['examName'],
               ),
@@ -205,7 +205,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
   }
 
   void fetchExamTimeTableList() {
-    context.read<ExamTimeTableCubit>().fetchStudentExamsList(
+    context.read<ExamTimeTableCubit>().fetchStudentExamTimeTable(
           examID: widget.examID,
         );
   }

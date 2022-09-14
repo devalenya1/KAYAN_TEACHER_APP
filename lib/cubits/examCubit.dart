@@ -25,12 +25,32 @@ class ExamDetailsCubit extends Cubit<ExamDetailsState> {
 
   ExamDetailsCubit(this._studentRepository) : super(ExamDetailsInitial());
 
-  void fetchStudentExamsList({required int examStatus}) {
+  void fetchStudentExamsList(
+      {required int examStatus, int? studentId, int? publishStatus}) {
     emit(ExamDetailsFetchInProgress());
     _studentRepository
-        .fetchExamsList(examStatus: examStatus,)
+        .fetchExamsList(
+            examStatus: examStatus,
+            studentID: studentId,
+            publishStatus: publishStatus)
         .then((value) => emit(ExamDetailsFetchSuccess(examList: value)))
-        .catchError((e) =>
-        emit(ExamDetailsFetchFailure(e.toString())));
+        .catchError((e) => emit(ExamDetailsFetchFailure(e.toString())));
+  }
+
+  List<Exam> getAllExams() {
+    if (state is ExamDetailsFetchSuccess) {
+      return (state as ExamDetailsFetchSuccess).examList;
+    }
+    return [];
+  }
+
+  List<String> getExamName() {
+    return getAllExams().map((exams) => exams.getExamName()).toList();
+  }
+
+  Exam getExamDetailsByExamName({required String examName}) {
+    return getAllExams()
+        .where((element) => element.examName == examName.trim())
+        .first;
   }
 }

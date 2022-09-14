@@ -15,9 +15,9 @@ import '../../utils/labelKeys.dart';
 import 'shimmerLoadingContainer.dart';
 
 class ExamListContainer extends StatefulWidget {
-  final int? childId;
+  final int? studentId;
 
-  ExamListContainer({Key? key, this.childId}) : super(key: key);
+  ExamListContainer({Key? key, this.studentId}) : super(key: key);
 
   @override
   State<ExamListContainer> createState() => _ExamListContainerState();
@@ -71,7 +71,7 @@ class _ExamListContainerState extends State<ExamListContainer> {
                           .pushNamed(Routes.examTimeTable, arguments: {
                         'examID': examList[index].examID,
                         'examName': examList[index].examName.toString(),
-                        'childID': widget.childId
+                        'studentId': widget.studentId
                       });
                     }))),
       ),

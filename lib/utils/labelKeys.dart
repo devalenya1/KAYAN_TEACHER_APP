@@ -114,6 +114,7 @@ const String selectThumbnailKey = "selectThumbnail";
 const String fileNameKey = "fileName";
 const String studentsKey = "students";
 const String subjectsKey = "subjects";
+const String subjectCodeKey = "subjectCode";
 
 const String searchStudentKey = "searchStudent";
 const String takeAttendanceKey = "takeAttendance";
@@ -294,3 +295,11 @@ const String noExamsFoundKey = "noExamsFound";
 const String noExamTimeTableFoundKey = "noExamTimeTableFound";
 const String examTimeTableKey = "examTimeTable";
 
+const String fetchingExamsKey = "fetchingExams";
+const String noExamsKey = "noExams";
+const String noSubjectsKey = "noSubjects";
+
+const String marksAddedSuccessfullyKey = "marksAddedSuccessfully";
+const String marksMoreThanTotalMarksKey = "marksMoreThanTotalMarks";
+const String pleaseEnterSomeDataKey = "pleaseEnterSomeData";
+const String noDataFoundKey = "noDataFound";

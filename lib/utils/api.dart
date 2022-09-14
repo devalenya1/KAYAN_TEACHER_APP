@@ -66,6 +66,11 @@ print('token is $jwtToken');
   static String timeTable = "${databaseUrl}teacher/teacher_timetable";
   static String examList = "${databaseUrl}teacher/get-exam-list";
   static String examTimeTable = "${databaseUrl}teacher/get-exam-details";
+  static String examResults = "${databaseUrl}teacher/exam-marks";
+  static String submitExamMarksBySubjectId = "${databaseUrl}teacher/submit-exam-marks/subject";
+  static String submitExamMarksByStudentId = "${databaseUrl}teacher/submit-exam-marks/student";
+  static String getStudentResultList = "${databaseUrl}teacher/get-student-result";
+
   static String getReviewAssignment =
       "${databaseUrl}teacher/get-assignment-submission";
 

@@ -5,6 +5,7 @@ import 'package:eschool_teacher/cubits/appLocalizationCubit.dart';
 import 'package:eschool_teacher/cubits/authCubit.dart';
 import 'package:eschool_teacher/cubits/internetConnectivityCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
+
 import 'package:eschool_teacher/data/repositories/authRepository.dart';
 import 'package:eschool_teacher/data/repositories/settingsRepository.dart';
 import 'package:eschool_teacher/data/repositories/systemInfoRepository.dart';

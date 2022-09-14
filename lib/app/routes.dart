@@ -3,7 +3,7 @@ import 'package:eschool_teacher/ui/screens/add&editAssignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditAnnouncementScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
-import 'package:eschool_teacher/ui/screens/addResultScreen.dart';
+import 'package:eschool_teacher/ui/screens/result/addResultOfStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/announcementsScreen.dart';
 
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
@@ -12,12 +12,14 @@ import 'package:eschool_teacher/ui/screens/attendanceScreen.dart';
 import 'package:eschool_teacher/ui/screens/class/classScreen.dart';
 import 'package:eschool_teacher/ui/screens/contactUsScreen.dart';
 import 'package:eschool_teacher/ui/screens/exam/examScreen.dart';
+import 'package:eschool_teacher/ui/screens/exam/examTimeTableScreen.dart';
 import 'package:eschool_teacher/ui/screens/holidays/holidaysScreen.dart';
 import 'package:eschool_teacher/ui/screens/home/homeScreen.dart';
 import 'package:eschool_teacher/ui/screens/lessonsScreen.dart';
 import 'package:eschool_teacher/ui/screens/login/loginScreen.dart';
 import 'package:eschool_teacher/ui/screens/privacyPolicyScreen.dart';
-import 'package:eschool_teacher/ui/screens/resultScreen.dart';
+import 'package:eschool_teacher/ui/screens/result/addResultForAllStudentsScreen.dart';
+
 import 'package:eschool_teacher/ui/screens/searchStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/splashScreen.dart';
 import 'package:eschool_teacher/ui/screens/studentDetails/studentDetailsScreen.dart';
@@ -53,11 +55,11 @@ class Routes {
 
   static const String studentDetails = "/studentDetails";
 
-  static const String viewResult = "/result";
 
   static const String resultList = "/resultList";
 
   static const String addResult = "/addResult";
+  static const String addResultForAllStudents = "/addResultForAllStudents";
 
   static const String lessons = "/lessons";
 
@@ -84,7 +86,6 @@ class Routes {
   static const String examTimeTable = "/examTimeTable";
 
   static String currentRoute = splash;
-
 
   static Route<dynamic> onGenerateRouted(RouteSettings routeSettings) {
     currentRoute = routeSettings.name ?? "";
@@ -136,16 +137,15 @@ class Routes {
         }
       case resultList:
         {
-          return CupertinoPageRoute(builder: (context) => const ResultScreen());
-        }
-        case viewResult:
-        {
-          return CupertinoPageRoute(builder: (context) => const ViewResultScreen());
+          return ResultListScreen.route(routeSettings);
         }
       case addResult:
         {
-          return CupertinoPageRoute(
-              builder: (context) => const AddResultScreen());
+          return AddResultScreen.route(routeSettings);
+        }
+        case addResultForAllStudents:
+        {
+          return AddResultForAllStudents.route(routeSettings);
         }
 
       case announcements:
@@ -200,6 +200,11 @@ class Routes {
       case exams:
         {
           return ExamScreen.route(routeSettings);
+        }
+
+        case examTimeTable:
+        {
+          return ExamTimeTableScreen.route(routeSettings);
         }
 
       default:

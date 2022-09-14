@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StudentsContainer extends StatelessWidget {
   final ClassSectionDetails classSectionDetails;
+
   const StudentsContainer({Key? key, required this.classSectionDetails})
       : super(key: key);
 
