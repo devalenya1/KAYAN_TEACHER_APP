@@ -61,6 +61,8 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
   late String currentSelectedSubject =
       UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
 
+  late String totalMarksOfSelectedSubject = '';
+
   Subject? selectedSubjectDetails;
 
   late List<TextEditingController> obtainedMarksTextEditingController = [];
@@ -72,6 +74,14 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    for (int i = 0; i < obtainedMarksTextEditingController.length; i++) {
+      obtainedMarksTextEditingController[i].dispose();
+    }
   }
 
   void fetchExamList() {
@@ -297,7 +307,10 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   context, marksAddedSuccessfullyKey),
               backgroundColor: Theme.of(context).colorScheme.onPrimary);
 
-          // Navigator.of(context).pop();
+          obtainedMarksTextEditingController.forEach((element) {
+            element.clear();
+          });
+          //Navigator.of(context).pop();
         } else if (state is SubjectMarksBySubjectIdSubmitFailure) {
           UiUtils.showBottomToastOverlay(
               context: context,
@@ -309,6 +322,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
       builder: (context, state) {
         return CustomRoundedButton(
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
             bool hasError = false;
             List<Map<String, dynamic>> studentsMarksList = [];
             for (int index = 0;
@@ -334,6 +348,19 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   'student_id': studentList[index].id
                 });
               }
+            }
+
+
+            if (studentsMarksList.length !=
+                obtainedMarksTextEditingController.length) {
+              //if marks of all students are not inserted then error message will be shown
+
+              UiUtils.showBottomToastOverlay(
+                  context: context,
+                  errorMessage: UiUtils.getTranslatedLabel(
+                      context, pleaseEnterAllMarksKey),
+                  backgroundColor: Theme.of(context).colorScheme.error);
+              return;
             }
             //if marks list is empty and doesn't show any error message before then this will be shown
             if (studentsMarksList.isEmpty && !hasError) {
@@ -376,8 +403,20 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
   }
 
   Widget _buildStudentContainer() {
-    return BlocBuilder<StudentsByClassSectionCubit,
+    return BlocConsumer<StudentsByClassSectionCubit,
         StudentsByClassSectionState>(
+      listener: (context, state) {
+        if (state is StudentsByClassSectionFetchSuccess) {
+          //create textController
+          for (var i = 0; i < state.students.length; i++) {
+            obtainedMarksTextEditingController.add(TextEditingController());
+          }
+          //
+          totalMarksOfSelectedSubject = context
+              .read<ExamTimeTableCubit>()
+              .getTotalMarksOfSubject(subjectId: selectedSubjectDetails!.id);
+        }
+      },
       builder: (context, state) {
         //
         if (state is StudentsByClassSectionFetchSuccess) {
@@ -386,14 +425,6 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
             return NoDataContainer(
                 titleKey: UiUtils.getTranslatedLabel(context, noDataFoundKey));
           }
-          //create textController
-          for (var i = 0; i < state.students.length; i++) {
-            obtainedMarksTextEditingController.add(TextEditingController());
-          }
-          //
-          String totalMarksOfSelectedSubject = context
-              .read<ExamTimeTableCubit>()
-              .getTotalMarksOfSubject(subjectId: selectedSubjectDetails!.id);
           //
           return Column(
             mainAxisSize: MainAxisSize.min,

@@ -240,5 +240,6 @@
   "marksAddedSuccessfully" : "Marks Added Successfully",
   "marksMoreThanTotalMarks" : "Marks Should not more than Total Marks",
   "pleaseEnterSomeData" : "Please... Enter some data",
-  "noDataFound": "No Data Found..!"
+  "noDataFound": "No Data Found..!",
+  "pleaseEnterAllMarks" : "Please Enter All Marks"
 }

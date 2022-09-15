@@ -2,26 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AddMarksContainer extends StatelessWidget {
-
   final String title;
   final String alias;
   final String totalMarks;
   final TextEditingController obtainedMarksTextEditingController;
+  final bool? isReadOnly;
 
   const AddMarksContainer(
       {Key? key,
       required this.title,
       required this.alias,
       required this.totalMarks,
-
-      required this.obtainedMarksTextEditingController})
+      required this.obtainedMarksTextEditingController,
+      this.isReadOnly})
       : super(key: key);
 
   Widget _buildSubjectNameWithObtainedMarksContainer(
       {required BuildContext context,
       required String alias,
       required String studentName,
-      required String totalMarks}) {
+      required String totalMarks,
+      bool? isReadOnly}) {
     return Container(
       margin: EdgeInsets.only(bottom: 15),
       width: MediaQuery.of(context).size.width,
@@ -76,7 +77,7 @@ class AddMarksContainer extends StatelessWidget {
                   fontSize: 12.0,
                 ),
                 controller: obtainedMarksTextEditingController,
-
+                readOnly: isReadOnly ?? false,
                 decoration: InputDecoration(border: InputBorder.none),
                 keyboardType: TextInputType.numberWithOptions(
                     decimal: true, signed: false),
@@ -105,6 +106,7 @@ class AddMarksContainer extends StatelessWidget {
         context: context,
         alias: alias,
         studentName: title,
-        totalMarks: totalMarks);
+        totalMarks: totalMarks,
+        isReadOnly: isReadOnly);
   }
 }

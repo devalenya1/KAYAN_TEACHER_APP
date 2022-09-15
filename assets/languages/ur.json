@@ -240,5 +240,6 @@
   "marksAddedSuccessfully" : "مارکس نے شاندار کامیابی حاصل کی. ",
   "marksMoreThanTotalMarks" : "مارکس کو کل مارکس سے زیادہ نہیں چاہئے ",
   "pleaseEnterSomeData" : "کریں گے ...  کچھ ڈیٹا داخل کریں ",
-  "noDataFound" : "کوئی ڈیٹا ملا ..!"
+  "noDataFound" : "کوئی ڈیٹا ملا ..!",
+  "pleaseEnterAllMarks" : "براہ کرم تمام نشانات درج کریں۔"
 }

@@ -152,12 +152,13 @@ class _AddResultScreenState extends State<AddResultScreen> {
     for (var i = 0; i < widget.studentResultData.marksData!.length; i++) {
       var data = widget.studentResultData.marksData![i];
       children.add(AddMarksContainer(
-        alias: data.subjectCode!,
-        title: data.subjectName!,
-        obtainedMarksTextEditingController:
-            obtainedMarksTextEditingController[i],
-        totalMarks: data.totalMarks!,
-      ));
+          alias: data.subjectCode!,
+          title: data.subjectName!,
+          obtainedMarksTextEditingController:
+              obtainedMarksTextEditingController[i],
+          totalMarks: data.totalMarks!,
+          isReadOnly:
+              widget.studentResultData.result!.resultId == 0 ? false : true));
     }
     return Column(
       children: children,
@@ -198,6 +199,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
                 )
               : null,
           onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
             bool hasError = false;
             List<Map<String, dynamic>> studentsMarksList = [];
             for (int index = 0;

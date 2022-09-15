@@ -303,3 +303,4 @@ const String marksAddedSuccessfullyKey = "marksAddedSuccessfully";
 const String marksMoreThanTotalMarksKey = "marksMoreThanTotalMarks";
 const String pleaseEnterSomeDataKey = "pleaseEnterSomeData";
 const String noDataFoundKey = "noDataFound";
+const String pleaseEnterAllMarksKey = "pleaseEnterAllMarks";

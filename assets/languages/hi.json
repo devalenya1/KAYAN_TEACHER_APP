@@ -240,5 +240,6 @@
   "marksAddedSuccessfully" : "प्राप्तांक को सफलतापूर्वक जोड़ा गया ",
   "marksMoreThanTotalMarks" : "अंक कुल प्राप्तांक से अधिक नहीं होना चाहिए ",
   "pleaseEnterSomeData" : "कृपया ...  कुछ डेटा दर्ज करें ",
-  "noDataFound" : "कोई डेटा नहीं मिला ..!"
+  "noDataFound" : "कोई डेटा नहीं मिला ..!",
+  "pleaseEnterAllMarks" : "कृपया सभी अंक दर्ज करें"
 }
