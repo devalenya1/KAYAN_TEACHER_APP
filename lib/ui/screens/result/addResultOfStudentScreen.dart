@@ -102,6 +102,9 @@ class _AddResultScreenState extends State<AddResultScreen> {
               width: boxConstraints.maxWidth * (0.1),
               child: Text(
                 UiUtils.getTranslatedLabel(context, subjectCodeKey),
+                maxLines: 1,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
                 style: _getResultTitleTextStyle(),
               ),
             ),
@@ -209,8 +212,6 @@ class _AddResultScreenState extends State<AddResultScreen> {
               String inputMarks =
                   obtainedMarksTextEditingController[index].text;
               //
-              print(
-                  'input marks is ${double.parse(inputMarks) > double.parse(widget.studentResultData.marksData![index].totalMarks!)}');
               if (inputMarks != '') {
                 if (double.parse(inputMarks) >
                     double.parse(widget

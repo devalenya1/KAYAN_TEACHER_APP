@@ -34,6 +34,7 @@ class StudentCompletedExamWithResultCubit
 
   void fetchStudentCompletedExamWithResult({required int studentId}) async {
     try {
+      print('calling');
       emit(StudentCompletedExamWithResultFetchInProgress());
       var result = await _studentRepository
           .fetchStudentCompletedExamListWithResult(studentId: studentId);
