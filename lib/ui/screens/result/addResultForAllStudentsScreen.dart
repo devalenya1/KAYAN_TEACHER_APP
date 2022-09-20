@@ -3,7 +3,6 @@ import 'package:eschool_teacher/cubits/examTimeTableCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/studentsByClassSectionCubit.dart';
 import 'package:eschool_teacher/cubits/submitSubjectMarksBySubjectIdCubit.dart';
-import 'package:eschool_teacher/cubits/submitSubjectMarksByStudentIdCubit.dart';
 import 'package:eschool_teacher/data/models/student.dart';
 import 'package:eschool_teacher/data/models/subject.dart';
 import 'package:eschool_teacher/data/repositories/studentRepository.dart';
@@ -21,7 +20,6 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddResultForAllStudents extends StatefulWidget {
@@ -349,7 +347,6 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                 });
               }
             }
-
 
             if (studentsMarksList.length !=
                 obtainedMarksTextEditingController.length) {

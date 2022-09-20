@@ -10,7 +10,8 @@ import 'package:eschool_teacher/utils/errorMessageKeysAndCodes.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
+
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -285,7 +286,7 @@ class UiUtils {
               backgroundColor: Theme.of(context).colorScheme.error);
         } else {
           try {
-            OpenFile.open(result['filePath'].toString());
+            OpenFilex.open(result['filePath'].toString());
           } catch (e) {
             showBottomToastOverlay(
                 context: context,

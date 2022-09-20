@@ -42,7 +42,7 @@ class MarksData {
   MarksData.fromJson(Map<String, dynamic> json) {
     subjectId = json['subject_id'] ?? 0;
     subjectName = json['subject_name'] ?? '';
-    totalMarks = json['total_marks'].toString() ?? '';
+    totalMarks = (json['total_marks'] ?? "").toString();
     subjectType = json['subject_type'] ?? '';
     subjectCode = json['subject_code'] ?? '';
     marks = json['marks'] != null ? Marks.fromJson(json['marks']) : null;

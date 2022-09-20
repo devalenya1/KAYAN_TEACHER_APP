@@ -1,5 +1,4 @@
 import 'package:eschool_teacher/data/models/subject.dart';
-import 'package:flutter/material.dart';
 
 class Exam {
   int? examID;
@@ -11,16 +10,15 @@ class Exam {
   String? examEndingDate;
   String? examStatus;
 
-
   Exam(
       {this.examID,
-        this.examName,
-        this.description,
-        this.publish,
-        this.sessionYear,
-        this.examStartingDate,
-        this.examEndingDate,
-        this.examStatus});
+      this.examName,
+      this.description,
+      this.publish,
+      this.sessionYear,
+      this.examStartingDate,
+      this.examEndingDate,
+      this.examStatus});
 
   String getExamName() {
     return "${this.examName}";
@@ -36,7 +34,6 @@ class Exam {
     examEndingDate = json['exam_ending_date'] ?? "";
     examStatus = json['exam_status'] ?? "";
   }
-
 }
 
 class ExamTimeTable {
@@ -50,19 +47,18 @@ class ExamTimeTable {
 
   ExamTimeTable(
       {this.id,
-        this.totalMarks,
-        this.passingMarks,
-        this.date,
-        this.startingTime,
-        this.endingTime,
-        this.subject});
+      this.totalMarks,
+      this.passingMarks,
+      this.date,
+      this.startingTime,
+      this.endingTime,
+      this.subject});
 
   String getSubjectDetails() {
     return "${this.subject}";
   }
 
   ExamTimeTable.fromJson(Map<String, dynamic> json) {
-
     id = json['id'] ?? 0;
     totalMarks = json['total_marks'] ?? 0;
     passingMarks = json['passing_marks'] ?? 0;

@@ -1,5 +1,4 @@
 import 'package:eschool_teacher/cubits/examCubit.dart';
-import 'package:eschool_teacher/cubits/examTimeTableCubit.dart';
 import 'package:eschool_teacher/cubits/myClassesCubit.dart';
 import 'package:eschool_teacher/cubits/subjectsOfClassSectionCubit.dart';
 import 'package:eschool_teacher/ui/widgets/customDropDownMenu.dart';
@@ -27,7 +26,6 @@ class MyExamsDropDownMenu extends StatelessWidget {
           changeSelectedItem(result!);
 
           //
-
 
           context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
               .read<MyClassesCubit>()

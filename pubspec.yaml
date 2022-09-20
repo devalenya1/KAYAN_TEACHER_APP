@@ -59,7 +59,7 @@ dependencies:
   external_path: ^1.0.1
   flutter_html: ^3.0.0-alpha.5
   timeago: ^3.2.2
-  open_file:
+  open_filex:
   package_info_plus:
 
 dev_dependencies:
