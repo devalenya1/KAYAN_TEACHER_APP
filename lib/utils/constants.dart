@@ -2,7 +2,8 @@
 //Please add your admin panel url here and make sure you do not add '/' at the end of the url
 import 'package:eschool_teacher/utils/labelKeys.dart';
 
-const String baseUrl = "https://testschool.wrteam.in";
+const String baseUrl =
+    "https://e-school.wrteam.in"; //https://testschool.wrteam.in
 
 const String databaseUrl = "$baseUrl/api/";
 
@@ -19,5 +20,4 @@ String getExamStatusTypeKey(String examStatus) {
   return completedKey;
 }
 
-List<String> examFilters = [allExamsKey,upComingKey,onGoingKey,completedKey];
-
+List<String> examFilters = [allExamsKey, upComingKey, onGoingKey, completedKey];
