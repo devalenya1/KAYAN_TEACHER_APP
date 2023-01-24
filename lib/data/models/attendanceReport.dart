@@ -23,7 +23,7 @@ class AttendanceReport {
     sessionYearId = json['session_year_id'] ?? 0;
     type = json['type'] ?? -1;
     date = json['date'] == null ? DateTime.now() : DateTime.parse(json['date']);
-    remark = json['remark'] ?? 0;
+    remark = json['remark'] ?? "";
   }
 
   bool isPresent() {
