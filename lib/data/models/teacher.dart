@@ -32,21 +32,22 @@ class Teacher {
   late final int teacherId;
 
   Teacher.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
-    gender = json['gender'];
-    email = json['email'];
-    fcmId = json['fcm_id'];
-    mobile = json['mobile'];
-    image = json['image'];
-    dob = json['dob'];
-    currentAddress = json['current_address'];
-    permanentAddress = json['permanent_address'];
-    status = json['status'];
-    resetRequest = json['reset_request'];
-    teacherId = json['teacher']['id'];
-    qualification = json['teacher']['qualification'];
+    id = json['id'] ?? 0;
+    firstName = json['first_name'] ?? "";
+    lastName = json['last_name'] ?? "";
+    gender = json['gender'] ?? "";
+    email = json['email'] ?? "";
+    fcmId = json['fcm_id'] ?? "";
+    mobile = json['mobile'] ?? "";
+    image = json['image'] ?? "";
+    dob = json['dob'] ?? "";
+    currentAddress = json['current_address'] ?? "";
+    permanentAddress = json['permanent_address'] ?? "";
+    status = json['status'] ?? 0;
+    resetRequest = json['reset_request'] ?? 0;
+    teacherId = (json['teacher'] != null) ? json['teacher']['id'] : 0;
+    qualification =
+        (json['teacher'] != null) ? json['teacher']['qualification'] : "";
   }
 
   String getFullName() {

@@ -45,10 +45,11 @@ class _LoginScreenState extends State<LoginScreen>
           curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
 
   bool _hidePassword = true;
-  TextEditingController _emailTextEditingController = TextEditingController();
+  TextEditingController _emailTextEditingController =
+      TextEditingController(text: "teacher@gmail.com");
 
   TextEditingController _passwordTextEditingController =
-      TextEditingController();
+      TextEditingController(text: "teacher123");
 
   @override
   void initState() {

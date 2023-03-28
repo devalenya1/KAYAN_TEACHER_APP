@@ -38,11 +38,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: 
   flutter_svg: any
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.3
   dotted_border: ^2.0.0+2
-  lottie: ^1.2.2
+  lottie: ^2.3.0
   dio:
-  showcaseview: ^1.1.5
+  showcaseview: ^2.0.2
   hive:
   hive_flutter:
   table_calendar: ^3.0.4
@@ -59,7 +59,7 @@ dependencies:
   external_path: ^1.0.1
   flutter_html: ^3.0.0-alpha.5
   timeago: ^3.2.2
-  open_file:
+  open_file: ^3.2.1
   package_info_plus:
 
 dev_dependencies:
