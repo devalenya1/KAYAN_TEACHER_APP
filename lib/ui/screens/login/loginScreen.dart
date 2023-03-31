@@ -22,34 +22,21 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 
   static Route<dynamic> route(RouteSettings routeSettings) {
-    return CupertinoPageRoute(
-        builder: (_) => BlocProvider<SignInCubit>(
-            child: LoginScreen(),
-            create: (_) => SignInCubit(AuthRepository())));
+    return CupertinoPageRoute(builder: (_) => BlocProvider<SignInCubit>(child: LoginScreen(), create: (_) => SignInCubit(AuthRepository())));
   }
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin {
-  late AnimationController _animationController =
-      AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
+class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
+  late AnimationController _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
 
-  late Animation<double> _patterntAnimation =
-      Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(0.0, 0.5, curve: Curves.easeInOut)));
+  late Animation<double> _patterntAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.0, 0.5, curve: Curves.easeInOut)));
 
-  late Animation<double> _formAnimation = Tween<double>(begin: 0.0, end: 1.0)
-      .animate(CurvedAnimation(
-          parent: _animationController,
-          curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
+  late Animation<double> _formAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
 
   bool _hidePassword = true;
-  TextEditingController _emailTextEditingController =
-      TextEditingController(text: "teacher@gmail.com");
+  TextEditingController _emailTextEditingController = TextEditingController(text: "teacher@gmail.com");
 
-  TextEditingController _passwordTextEditingController =
-      TextEditingController(text: "teacher123");
+  TextEditingController _passwordTextEditingController = TextEditingController(text: "teacher123");
 
   @override
   void initState() {
@@ -67,26 +54,16 @@ class _LoginScreenState extends State<LoginScreen>
 
   void _signInTeacher() {
     if (_emailTextEditingController.text.trim().isEmpty) {
-      UiUtils.showBottomToastOverlay(
-          context: context,
-          errorMessage:
-              UiUtils.getTranslatedLabel(context, pleaseEnterEmailKey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+      UiUtils.showBottomToastOverlay(context: context, errorMessage: UiUtils.getTranslatedLabel(context, pleaseEnterEmailKey), backgroundColor: Theme.of(context).colorScheme.error);
       return;
     }
 
     if (_passwordTextEditingController.text.trim().isEmpty) {
-      UiUtils.showBottomToastOverlay(
-          context: context,
-          errorMessage:
-              UiUtils.getTranslatedLabel(context, pleaseEnterPasswordKey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+      UiUtils.showBottomToastOverlay(context: context, errorMessage: UiUtils.getTranslatedLabel(context, pleaseEnterPasswordKey), backgroundColor: Theme.of(context).colorScheme.error);
       return;
     }
 
-    context.read<SignInCubit>().signInUser(
-        email: _emailTextEditingController.text.trim(),
-        password: _passwordTextEditingController.text.trim());
+    context.read<SignInCubit>().signInUser(email: _emailTextEditingController.text.trim(), password: _passwordTextEditingController.text.trim());
   }
 
   Widget _buildUpperPattern() {
@@ -94,10 +71,7 @@ class _LoginScreenState extends State<LoginScreen>
       alignment: Alignment.topRight,
       child: FadeTransition(
         opacity: _patterntAnimation,
-        child: SlideTransition(
-            position: _patterntAnimation.drive(
-                Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset.zero)),
-            child: Image.asset(UiUtils.getImagePath("upper_pattern.png"))),
+        child: SlideTransition(position: _patterntAnimation.drive(Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset.zero)), child: Image.asset(UiUtils.getImagePath("upper_pattern.png"))),
       ),
     );
   }
@@ -107,10 +81,7 @@ class _LoginScreenState extends State<LoginScreen>
       alignment: Alignment.bottomLeft,
       child: FadeTransition(
         opacity: _patterntAnimation,
-        child: SlideTransition(
-            position: _patterntAnimation.drive(
-                Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)),
-            child: Image.asset(UiUtils.getImagePath("lower_pattern.png"))),
+        child: SlideTransition(position: _patterntAnimation.drive(Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)), child: Image.asset(UiUtils.getImagePath("lower_pattern.png"))),
       ),
     );
   }
@@ -140,11 +111,7 @@ class _LoginScreenState extends State<LoginScreen>
             ).then((value) {
               if (value != null && !value['error']) {
                 UiUtils.showBottomToastOverlay(
-                    context: context,
-                    errorMessage: UiUtils.getTranslatedLabel(
-                            context, passwordUpdateLinkSentKey) +
-                        " ${value['email']}",
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary);
+                    context: context, errorMessage: UiUtils.getTranslatedLabel(context, passwordUpdateLinkSentKey) + " ${value['email']}", backgroundColor: Theme.of(context).colorScheme.onPrimary);
               }
             });
           },
@@ -163,10 +130,7 @@ class _LoginScreenState extends State<LoginScreen>
       child: FadeTransition(
         opacity: _formAnimation,
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width * (0.075),
-              right: MediaQuery.of(context).size.width * (0.075),
-              top: MediaQuery.of(context).size.height * (0.25)),
+          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * (0.075), right: MediaQuery.of(context).size.width * (0.075), top: MediaQuery.of(context).size.height * (0.25)),
           child: Form(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,30 +138,21 @@ class _LoginScreenState extends State<LoginScreen>
               children: [
                 Text(
                   UiUtils.getTranslatedLabel(context, letsSignInKey),
-                  style: TextStyle(
-                      fontSize: 34.0,
-                      fontWeight: FontWeight.bold,
-                      color: UiUtils.getColorScheme(context).secondary),
+                  style: TextStyle(fontSize: 34.0, fontWeight: FontWeight.bold, color: UiUtils.getColorScheme(context).secondary),
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
                 Text(
                   "${UiUtils.getTranslatedLabel(context, welcomeBackKey)}, \n${UiUtils.getTranslatedLabel(context, youHaveBeenMissedKey)}",
-                  style: TextStyle(
-                      fontSize: 24.0,
-                      height: 1.5,
-                      color: UiUtils.getColorScheme(context).secondary),
+                  style: TextStyle(fontSize: 24.0, height: 1.5, color: UiUtils.getColorScheme(context).secondary),
                 ),
                 SizedBox(
                   height: 30.0,
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 20.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: UiUtils.getColorScheme(context).secondary)),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: UiUtils.getColorScheme(context).secondary)),
                   child: TextFormField(
                     controller: _emailTextEditingController,
                     decoration: InputDecoration(
@@ -205,11 +160,11 @@ class _LoginScreenState extends State<LoginScreen>
                           padding: const EdgeInsets.all(12.0),
                           child: SvgPicture.asset(
                             UiUtils.getImagePath("mail_icon.svg"),
-                            color: UiUtils.getColorScheme(context).secondary,
+                            colorFilter: ColorFilter.mode(UiUtils.getColorScheme(context).secondary, BlendMode.srcIn),
+                            // color: UiUtils.getColorScheme(context).secondary,
                           ),
                         ),
-                        hintStyle: TextStyle(
-                            color: UiUtils.getColorScheme(context).secondary),
+                        hintStyle: TextStyle(color: UiUtils.getColorScheme(context).secondary),
                         hintText: UiUtils.getTranslatedLabel(context, emailKey),
                         border: InputBorder.none),
                   ),
@@ -219,10 +174,7 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 20.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: UiUtils.getColorScheme(context).secondary)),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: UiUtils.getColorScheme(context).secondary)),
                   child: TextFormField(
                     controller: _passwordTextEditingController,
                     obscureText: _hidePassword,
@@ -235,10 +187,8 @@ class _LoginScreenState extends State<LoginScreen>
                                 _hidePassword = !_hidePassword;
                               });
                             }),
-                        hintStyle: TextStyle(
-                            color: UiUtils.getColorScheme(context).secondary),
-                        hintText:
-                            UiUtils.getTranslatedLabel(context, passwordKey),
+                        hintStyle: TextStyle(color: UiUtils.getColorScheme(context).secondary),
+                        hintText: UiUtils.getTranslatedLabel(context, passwordKey),
                         border: InputBorder.none),
                   ),
                 ),
@@ -250,18 +200,11 @@ class _LoginScreenState extends State<LoginScreen>
                   child: BlocConsumer<SignInCubit, SignInState>(
                     listener: (context, state) {
                       if (state is SignInSuccess) {
-                        //
-                        context.read<AuthCubit>().authenticateUser(
-                            jwtToken: state.jwtToken, teacher: state.teacher);
-
+                        context.read<AuthCubit>().authenticateUser(jwtToken: state.jwtToken, teacher: state.teacher);
                         Navigator.of(context).pushReplacementNamed(Routes.home);
                       } else if (state is SignInFailure) {
                         UiUtils.showBottomToastOverlay(
-                            context: context,
-                            errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                                context, state.errorMessage),
-                            backgroundColor:
-                                Theme.of(context).colorScheme.error);
+                            context: context, errorMessage: UiUtils.getErrorMessageFromErrorCode(context, state.errorMessage), backgroundColor: Theme.of(context).colorScheme.error);
                       }
                     },
                     builder: (context, state) {
@@ -276,16 +219,14 @@ class _LoginScreenState extends State<LoginScreen>
                           _signInTeacher();
                         },
                         widthPercentage: 0.8,
-                        backgroundColor:
-                            UiUtils.getColorScheme(context).primary,
+                        backgroundColor: UiUtils.getColorScheme(context).primary,
                         child: state is SignInInProgress
                             ? CustomCircularProgressIndicator(
                                 strokeWidth: 2,
                                 widthAndHeight: 20,
                               )
                             : null,
-                        buttonTitle:
-                            UiUtils.getTranslatedLabel(context, signInKey),
+                        buttonTitle: UiUtils.getTranslatedLabel(context, signInKey),
                         titleColor: Theme.of(context).scaffoldBackgroundColor,
                         showBorder: false,
                       );

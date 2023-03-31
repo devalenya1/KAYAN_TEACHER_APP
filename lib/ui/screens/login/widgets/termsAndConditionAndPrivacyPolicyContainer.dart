@@ -8,17 +8,13 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-            Widget>[
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             UiUtils.getTranslatedLabel(context, termsAndConditionAgreementKey),
-            style: TextStyle(
-                fontSize: 13,
-                color: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
-                fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.secondary.withOpacity(0.8), fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -34,19 +30,12 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
               },
               child: Text(
                 UiUtils.getTranslatedLabel(context, termsAndConditionKey),
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.underline, fontWeight: FontWeight.bold, fontSize: 13),
               )),
           SizedBox(
             width: 5.0,
           ),
-          Text("&",
-              style: Theme.of(context).textTheme.caption!.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.bold)),
+          Text("&", style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold)),
           SizedBox(
             width: 5.0,
           ),
@@ -56,11 +45,7 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
               },
               child: Text(
                 UiUtils.getTranslatedLabel(context, privacyPolicyKey),
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    decoration: TextDecoration.underline,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13),
+                style: TextStyle(color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.underline, fontWeight: FontWeight.bold, fontSize: 13),
               )),
         ],
       ),

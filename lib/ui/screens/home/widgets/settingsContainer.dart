@@ -25,26 +25,18 @@ class SettingsContainer extends StatelessWidget {
       launchUrl(Uri.parse(appUrl));
     } else {
       UiUtils.showBottomToastOverlay(
-          context: context,
-          errorMessage: UiUtils.getTranslatedLabel(
-              context, ErrorMessageKeysAndCode.defaultErrorMessageKey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+          context: context, errorMessage: UiUtils.getTranslatedLabel(context, ErrorMessageKeysAndCode.defaultErrorMessageKey), backgroundColor: Theme.of(context).colorScheme.error);
     }
   }
 
   Widget _buildAppbar(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
-      child: CustomAppBar(
-          showBackButton: false,
-          title: UiUtils.getTranslatedLabel(context, settingKey)),
+      child: CustomAppBar(showBackButton: false, title: UiUtils.getTranslatedLabel(context, settingKey)),
     );
   }
 
-  Widget _buildMoreSettingDetailsTile(
-      {required String title,
-      required Function onTap,
-      required BuildContext context}) {
+  Widget _buildMoreSettingDetailsTile({required String title, required Function onTap, required BuildContext context}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: GestureDetector(
@@ -52,25 +44,17 @@ class SettingsContainer extends StatelessWidget {
           onTap();
         },
         child: DecoratedBox(
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.transparent)),
+          decoration: BoxDecoration(border: Border.all(color: Colors.transparent)),
           child: Row(
             children: [
               Text(
                 title,
-                style: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.8),
-                    fontSize: 14.5,
-                    fontWeight: FontWeight.w400),
+                style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8), fontSize: 14.5, fontWeight: FontWeight.w400),
               ),
               Spacer(),
               Icon(
                 Icons.chevron_right,
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
               ),
             ],
           ),
@@ -89,7 +73,8 @@ class SettingsContainer extends StatelessWidget {
               width: 15,
               child: SvgPicture.asset(
                 UiUtils.getImagePath("more_icon.svg"),
-                color: Theme.of(context).colorScheme.secondary,
+                colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+                // color: Theme.of(context).colorScheme.secondary,
               ),
             ),
             SizedBox(
@@ -97,10 +82,7 @@ class SettingsContainer extends StatelessWidget {
             ),
             Text(
               UiUtils.getTranslatedLabel(context, moreKey),
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.0),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.w500, fontSize: 14.0),
             ),
           ],
         ),
@@ -129,10 +111,7 @@ class SettingsContainer extends StatelessWidget {
                   .then((value) {
                 if (value != null && !value['error']) {
                   UiUtils.showBottomToastOverlay(
-                      context: context,
-                      errorMessage: UiUtils.getTranslatedLabel(
-                          context, passwordChangedSuccessfullyKey),
-                      backgroundColor: Theme.of(context).colorScheme.onPrimary);
+                      context: context, errorMessage: UiUtils.getTranslatedLabel(context, passwordChangedSuccessfullyKey), backgroundColor: Theme.of(context).colorScheme.onPrimary);
                 }
               });
             },
@@ -187,7 +166,8 @@ class SettingsContainer extends StatelessWidget {
               width: 25,
               child: SvgPicture.asset(
                 UiUtils.getImagePath("language.svg"),
-                color: Theme.of(context).colorScheme.secondary,
+                colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.secondary, BlendMode.srcIn),
+                // color: Theme.of(context).colorScheme.secondary,
               ),
             ),
             SizedBox(
@@ -195,10 +175,7 @@ class SettingsContainer extends StatelessWidget {
             ),
             Text(
               UiUtils.getTranslatedLabel(context, appLanguageKey),
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14.0),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.w500, fontSize: 14.0),
             ),
           ],
         ),
@@ -210,36 +187,23 @@ class SettingsContainer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            UiUtils.showBottomSheet(
-                child: ChangeLanguageBottomsheetContainer(), context: context);
+            UiUtils.showBottomSheet(child: ChangeLanguageBottomsheetContainer(), context: context);
           },
           child: Row(
             children: [
               BlocBuilder<AppLocalizationCubit, AppLocalizationState>(
                 builder: (context, state) {
-                  final String languageName = appLanguages
-                      .where((element) =>
-                          element.languageCode == state.language.languageCode)
-                      .toList()
-                      .first
-                      .languageName;
+                  final String languageName = appLanguages.where((element) => element.languageCode == state.language.languageCode).toList().first.languageName;
                   return Text(
                     languageName,
-                    style: TextStyle(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onBackground
-                            .withOpacity(0.8),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 13.0),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8), fontWeight: FontWeight.w400, fontSize: 13.0),
                   );
                 },
               ),
               Spacer(),
               Icon(
                 Icons.chevron_right,
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
               ),
             ],
           ),
@@ -269,23 +233,15 @@ class SettingsContainer extends StatelessWidget {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Text(
-                      "${UiUtils.getTranslatedLabel(context, appVersionKey)}  ${context.read<AppConfigurationCubit>().getAppVersion()}",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11.0),
-                      textAlign: TextAlign.start),
+                  Text("${UiUtils.getTranslatedLabel(context, appVersionKey)}  ${context.read<AppConfigurationCubit>().getAppVersion()}",
+                      style: TextStyle(color: Theme.of(context).colorScheme.onBackground, fontWeight: FontWeight.w500, fontSize: 11.0), textAlign: TextAlign.start),
                 ],
               ),
               padding: EdgeInsetsDirectional.only(
                   bottom: UiUtils.getScrollViewBottomPadding(context),
                   start: MediaQuery.of(context).size.width * (0.075),
                   end: MediaQuery.of(context).size.width * (0.075),
-                  top: UiUtils.getScrollViewTopPadding(
-                      context: context,
-                      appBarHeightPercentage:
-                          UiUtils.appBarSmallerHeightPercentage))),
+                  top: UiUtils.getScrollViewTopPadding(context: context, appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage))),
         ),
         _buildAppbar(context),
       ],

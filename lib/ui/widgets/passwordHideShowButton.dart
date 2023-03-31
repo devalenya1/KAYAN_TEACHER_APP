@@ -6,12 +6,7 @@ class PasswordHideShowButton extends StatelessWidget {
   final bool hidePassword;
   final Function onTap;
   final double? allSidePadding;
-  const PasswordHideShowButton(
-      {Key? key,
-      required this.hidePassword,
-      required this.onTap,
-      this.allSidePadding})
-      : super(key: key);
+  const PasswordHideShowButton({Key? key, required this.hidePassword, required this.onTap, this.allSidePadding}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +17,9 @@ class PasswordHideShowButton extends StatelessWidget {
           onTap();
         },
         child: SvgPicture.asset(
-          UiUtils.getImagePath(
-              hidePassword ? "hide_password.svg" : "show_password.svg"),
-          color: UiUtils.getColorScheme(context).secondary,
+          UiUtils.getImagePath(hidePassword ? "hide_password.svg" : "show_password.svg"),
+          colorFilter: ColorFilter.mode(UiUtils.getColorScheme(context).secondary, BlendMode.srcIn),
+          // color: UiUtils.getColorScheme(context).secondary,
         ),
       ),
     );

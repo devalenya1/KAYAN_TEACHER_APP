@@ -23,9 +23,7 @@ import 'package:flutter_svg/svg.dart';
 class ClassScreen extends StatefulWidget {
   final bool isClassTeacher;
   final ClassSectionDetails classSection;
-  ClassScreen(
-      {Key? key, required this.isClassTeacher, required this.classSection})
-      : super(key: key);
+  ClassScreen({Key? key, required this.isClassTeacher, required this.classSection}) : super(key: key);
 
   @override
   State<ClassScreen> createState() => _ClassScreenState();
@@ -36,12 +34,10 @@ class ClassScreen extends StatefulWidget {
         builder: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) =>
-                      SubjectsOfClassSectionCubit(TeacherRepository()),
+                  create: (context) => SubjectsOfClassSectionCubit(TeacherRepository()),
                 ),
                 BlocProvider(
-                  create: (context) =>
-                      StudentsByClassSectionCubit(StudentRepository()),
+                  create: (context) => StudentsByClassSectionCubit(StudentRepository()),
                 ),
               ],
               child: ClassScreen(
@@ -56,13 +52,9 @@ class _ClassScreenState extends State<ClassScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      context
-          .read<SubjectsOfClassSectionCubit>()
-          .fetchSubjects(widget.classSection.id);
+      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(widget.classSection.id);
       if (widget.isClassTeacher) {
-        context
-            .read<StudentsByClassSectionCubit>()
-            .fetchStudents(classSectionId: widget.classSection.id);
+        context.read<StudentsByClassSectionCubit>().fetchStudents(classSectionId: widget.classSection.id);
       }
     });
     super.initState();
@@ -82,22 +74,13 @@ class _ClassScreenState extends State<ClassScreen> {
                         ? SizedBox()
                         : Align(
                             alignment: AlignmentDirectional.topEnd,
-                            child: BlocBuilder<StudentsByClassSectionCubit,
-                                StudentsByClassSectionState>(
+                            child: BlocBuilder<StudentsByClassSectionCubit, StudentsByClassSectionState>(
                               builder: (context, state) {
-                                if (state
-                                    is StudentsByClassSectionFetchSuccess) {
+                                if (state is StudentsByClassSectionFetchSuccess) {
                                   return SearchButton(
                                     onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                          Routes.searchStudent,
-                                          arguments: {
-                                            "students": context
-                                                .read<
-                                                    StudentsByClassSectionCubit>()
-                                                .getStudents(),
-                                            "fromAttendanceScreen": false
-                                          });
+                                      Navigator.of(context)
+                                          .pushNamed(Routes.searchStudent, arguments: {"students": context.read<StudentsByClassSectionCubit>().getStudents(), "fromAttendanceScreen": false});
                                     },
                                   );
                                 }
@@ -107,16 +90,12 @@ class _ClassScreenState extends State<ClassScreen> {
                           ),
                     AppBarTitleContainer(
                         boxConstraints: boxConstraints,
-                        title:
-                            "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}"),
+                        title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}"),
                     AnimatedAlign(
                       curve: UiUtils.tabBackgroundContainerAnimationCurve,
                       duration: UiUtils.tabBackgroundContainerAnimationDuration,
-                      alignment: _selectedTabTitle == studentsKey
-                          ? AlignmentDirectional.centerStart
-                          : AlignmentDirectional.centerEnd,
-                      child: TabBackgroundContainer(
-                          boxConstraints: boxConstraints),
+                      alignment: _selectedTabTitle == studentsKey ? AlignmentDirectional.centerStart : AlignmentDirectional.centerEnd,
+                      child: TabBackgroundContainer(boxConstraints: boxConstraints),
                     ),
                     CustomTabBarContainer(
                         boxConstraints: boxConstraints,
@@ -147,8 +126,7 @@ class _ClassScreenState extends State<ClassScreen> {
             alignment: Alignment.topCenter,
             child: CustomAppBar(
                 subTitle: UiUtils.getTranslatedLabel(context, subjectsKey),
-                title:
-                    "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}"),
+                title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}"),
           );
   }
 
@@ -156,8 +134,7 @@ class _ClassScreenState extends State<ClassScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: widget.isClassTeacher
-          ? BlocBuilder<StudentsByClassSectionCubit,
-              StudentsByClassSectionState>(
+          ? BlocBuilder<StudentsByClassSectionCubit, StudentsByClassSectionState>(
               builder: (context, state) {
                 if (state is StudentsByClassSectionFetchSuccess) {
                   return FloatingActionButton(
@@ -165,12 +142,12 @@ class _ClassScreenState extends State<ClassScreen> {
                       padding: const EdgeInsets.all(16.0),
                       child: SvgPicture.asset(
                         UiUtils.getImagePath("take_attendance.svg"),
-                        color: Theme.of(context).scaffoldBackgroundColor,
+                        colorFilter: ColorFilter.mode(Theme.of(context).scaffoldBackgroundColor, BlendMode.srcIn),
+                        // color: Theme.of(context).scaffoldBackgroundColor,
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.attendance,
-                          arguments: state.students);
+                      Navigator.of(context).pushNamed(Routes.attendance, arguments: state.students);
                     },
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   );
@@ -188,11 +165,7 @@ class _ClassScreenState extends State<ClassScreen> {
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width * (0.075),
                   right: MediaQuery.of(context).size.width * (0.075),
-                  top: UiUtils.getScrollViewTopPadding(
-                      context: context,
-                      appBarHeightPercentage: widget.isClassTeacher
-                          ? UiUtils.appBarBiggerHeightPercentage
-                          : UiUtils.appBarSmallerHeightPercentage)),
+                  top: UiUtils.getScrollViewTopPadding(context: context, appBarHeightPercentage: widget.isClassTeacher ? UiUtils.appBarBiggerHeightPercentage : UiUtils.appBarSmallerHeightPercentage)),
               child: widget.isClassTeacher
                   ? _selectedTabTitle == subjectsKey
                       ? SubjectsContainer(

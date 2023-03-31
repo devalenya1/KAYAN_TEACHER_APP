@@ -6,12 +6,7 @@ class SvgButton extends StatelessWidget {
   final Color? buttonColor;
   final String svgIconUrl;
 
-  const SvgButton(
-      {Key? key,
-      required this.onTap,
-      this.buttonColor,
-      required this.svgIconUrl})
-      : super(key: key);
+  const SvgButton({Key? key, required this.onTap, this.buttonColor, required this.svgIconUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +15,12 @@ class SvgButton extends StatelessWidget {
         onTap.call();
       },
       child: Container(
-        decoration:
-            BoxDecoration(border: Border.all(color: Colors.transparent)),
+        decoration: BoxDecoration(border: Border.all(color: Colors.transparent)),
         height: 25,
         width: 25,
         child: SvgPicture.asset(
           svgIconUrl,
-          color: buttonColor ?? Theme.of(context).scaffoldBackgroundColor,
+          colorFilter: ColorFilter.mode(buttonColor ?? Theme.of(context).scaffoldBackgroundColor, BlendMode.srcIn),
         ),
       ),
     );
