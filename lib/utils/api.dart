@@ -20,7 +20,7 @@ class ApiException implements Exception {
 class Api {
   static Map<String, dynamic> headers() {
     final String jwtToken = Hive.box(authBoxKey).get(jwtTokenKey) ?? "";
-
+print('token is $jwtToken');
     return {"Authorization": "Bearer $jwtToken"};
   }
 
@@ -64,6 +64,13 @@ class Api {
   static String getAttendance = "${databaseUrl}teacher/get-attendance";
   static String submitAttendance = "${databaseUrl}teacher/submit-attendance";
   static String timeTable = "${databaseUrl}teacher/teacher_timetable";
+  static String examList = "${databaseUrl}teacher/get-exam-list";
+  static String examTimeTable = "${databaseUrl}teacher/get-exam-details";
+  static String examResults = "${databaseUrl}teacher/exam-marks";
+  static String submitExamMarksBySubjectId = "${databaseUrl}teacher/submit-exam-marks/subject";
+  static String submitExamMarksByStudentId = "${databaseUrl}teacher/submit-exam-marks/student";
+  static String getStudentResultList = "${databaseUrl}teacher/get-student-result";
+
   static String getReviewAssignment =
       "${databaseUrl}teacher/get-assignment-submission";
 
@@ -89,7 +96,7 @@ class Api {
       final Dio dio = Dio();
       final FormData formData =
           FormData.fromMap(body, ListFormat.multiCompatible);
-
+      print('url is $url and query $queryParameters and $useAuthToken');
       final response = await dio.post(url,
           data: formData,
           queryParameters: queryParameters,
@@ -121,19 +128,22 @@ class Api {
     required bool useAuthToken,
     Map<String, dynamic>? queryParameters,
   }) async {
+    print('called');
     try {
       //
       final Dio dio = Dio();
       final response = await dio.get(url,
           queryParameters: queryParameters,
           options: useAuthToken ? Options(headers: headers()) : null);
-
+print('url is $url and query $queryParameters and $useAuthToken');
       if (response.data['error']) {
+        print(response.data['error']);
         throw ApiException(response.data['code'].toString());
       }
 
       return Map.from(response.data);
     } on DioError catch (e) {
+      print('error is ${e.response}');
       throw ApiException(e.error is SocketException
           ? ErrorMessageKeysAndCode.noInternetCode
           : ErrorMessageKeysAndCode.defaultErrorMessageCode);

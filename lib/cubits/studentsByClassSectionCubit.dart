@@ -27,6 +27,10 @@ class StudentsByClassSectionCubit extends Cubit<StudentsByClassSectionState> {
   StudentsByClassSectionCubit(this._studentRepository)
       : super(StudentsByClassSectionInitial());
 
+  void updateState(StudentsByClassSectionState updatedState) {
+    emit(updatedState);
+  }
+
   void fetchStudents({required int classSectionId}) async {
     emit(StudentsByClassSectionFetchInProgress());
     try {

@@ -114,6 +114,7 @@ const String selectThumbnailKey = "selectThumbnail";
 const String fileNameKey = "fileName";
 const String studentsKey = "students";
 const String subjectsKey = "subjects";
+const String subjectCodeKey = "subjectCode";
 
 const String searchStudentKey = "searchStudent";
 const String takeAttendanceKey = "takeAttendance";
@@ -137,6 +138,7 @@ const String percentageKey = "percentage";
 const String resultKey = "result";
 const String addResultKey = "addResult";
 const String submitResultKey = "submitResult";
+const String viewResultKey = "viewResult";
 const String totalPresentKey = "totalPresent";
 const String totalAbsentKey = "totalAbsent";
 const String attendanceKey = "attendance";
@@ -281,3 +283,24 @@ const String noAssignmentsKey = "noAssignments";
 const String noTopicsKey = "noTopics";
 const String noLecturesKey = "noLectures";
 const String areYouSureToDeleteKey = "areYouSureToDelete";
+
+const String examsKey = "exams";
+const String allExamsKey = "allExams";
+const String upComingKey = "upComing";
+const String onGoingKey = "onGoing";
+const String completedKey = "completed";
+
+const String examNameKey = "examName";
+const String noExamsFoundKey = "noExamsFound";
+const String noExamTimeTableFoundKey = "noExamTimeTableFound";
+const String examTimeTableKey = "examTimeTable";
+
+const String fetchingExamsKey = "fetchingExams";
+const String noExamsKey = "noExams";
+const String noSubjectsKey = "noSubjects";
+
+const String marksAddedSuccessfullyKey = "marksAddedSuccessfully";
+const String marksMoreThanTotalMarksKey = "marksMoreThanTotalMarks";
+const String pleaseEnterSomeDataKey = "pleaseEnterSomeData";
+const String noDataFoundKey = "noDataFound";
+const String pleaseEnterAllMarksKey = "pleaseEnterAllMarks";

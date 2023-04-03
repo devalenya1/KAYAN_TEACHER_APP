@@ -50,27 +50,39 @@ class UiUtils {
 
   static double appBarContentTopPadding = 25.0;
   static double bottomSheetTopRadius = 20.0;
-  static Duration tabBackgroundContainerAnimationDuration = Duration(milliseconds: 300);
+  static Duration tabBackgroundContainerAnimationDuration =
+      Duration(milliseconds: 300);
   static Curve tabBackgroundContainerAnimationCurve = Curves.easeInOut;
 
   //to give bottom scroll padding in screen where
   //bottom navigation bar is displayed
   static double getScrollViewBottomPadding(BuildContext context) {
-    return MediaQuery.of(context).size.height * (UiUtils.bottomNavigationHeightPercentage) + UiUtils.bottomNavigationBottomMargin * (1.5);
+    return MediaQuery.of(context).size.height *
+            (UiUtils.bottomNavigationHeightPercentage) +
+        UiUtils.bottomNavigationBottomMargin * (1.5);
   }
 
-  static Future<dynamic> showBottomSheet({required Widget child, required BuildContext context, bool? enableDrag}) async {
+  static Future<dynamic> showBottomSheet(
+      {required Widget child,
+      required BuildContext context,
+      bool? enableDrag}) async {
     final result = await showModalBottomSheet(
         enableDrag: enableDrag ?? false,
         isScrollControlled: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(bottomSheetTopRadius), topRight: Radius.circular(bottomSheetTopRadius))),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(bottomSheetTopRadius),
+                topRight: Radius.circular(bottomSheetTopRadius))),
         context: context,
         builder: (_) => child);
 
     return result;
   }
 
-  static Future<void> showBottomToastOverlay({required BuildContext context, required String errorMessage, required Color backgroundColor}) async {
+  static Future<void> showBottomToastOverlay(
+      {required BuildContext context,
+      required String errorMessage,
+      required Color backgroundColor}) async {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => BottomToastOverlayContainer(
@@ -84,14 +96,18 @@ class UiUtils {
     overlayEntry.remove();
   }
 
-  static String getErrorMessageFromErrorCode(BuildContext context, String errorCode) {
-    return UiUtils.getTranslatedLabel(context, ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode));
+  static String getErrorMessageFromErrorCode(
+      BuildContext context, String errorCode) {
+    return UiUtils.getTranslatedLabel(
+        context, ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode));
   }
 
   //to give top scroll padding to screen content
   //
-  static double getScrollViewTopPadding({required BuildContext context, required double appBarHeightPercentage}) {
-    return MediaQuery.of(context).size.height * (appBarHeightPercentage + extraScreenContentTopPaddingForScrolling);
+  static double getScrollViewTopPadding(
+      {required BuildContext context, required double appBarHeightPercentage}) {
+    return MediaQuery.of(context).size.height *
+        (appBarHeightPercentage + extraScreenContentTopPaddingForScrolling);
   }
 
   static String getImagePath(String imageName) {
@@ -113,19 +129,37 @@ class UiUtils {
 
   static Locale getLocaleFromLanguageCode(String languageCode) {
     List<String> result = languageCode.split("-");
-    return result.length == 1 ? Locale(result.first) : Locale(result.first, result.last);
+    return result.length == 1
+        ? Locale(result.first)
+        : Locale(result.first, result.last);
   }
 
   static String getTranslatedLabel(BuildContext context, String labelKey) {
-    return (AppLocalization.of(context)!.getTranslatedValues(labelKey) ?? labelKey).trim();
+    return (AppLocalization.of(context)!.getTranslatedValues(labelKey) ??
+            labelKey)
+        .trim();
   }
 
   static String getMonthName(int monthNumber) {
-    List<String> months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    List<String> months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
     return months[monthNumber - 1];
   }
 
-  static List<String> buildMonthYearsBetweenTwoDates(DateTime startDate, DateTime endDate) {
+  static List<String> buildMonthYearsBetweenTwoDates(
+      DateTime startDate, DateTime endDate) {
     List<String> dateTimes = [];
     DateTime current = startDate;
     while (current.difference(endDate).isNegative) {
@@ -138,13 +172,19 @@ class UiUtils {
   }
 
   static Color getClassColor(int index) {
-    int colorIndex = index < myClassesColors.length ? index : (index % myClassesColors.length);
+    int colorIndex = index < myClassesColors.length
+        ? index
+        : (index % myClassesColors.length);
 
     return myClassesColors[colorIndex];
   }
 
   static void showFeatureDisableInDemoVersion(BuildContext context) {
-    showBottomToastOverlay(context: context, errorMessage: UiUtils.getTranslatedLabel(context, featureDisableInDemoVersionKey), backgroundColor: Theme.of(context).colorScheme.error);
+    showBottomToastOverlay(
+        context: context,
+        errorMessage:
+            UiUtils.getTranslatedLabel(context, featureDisableInDemoVersionKey),
+        backgroundColor: Theme.of(context).colorScheme.error);
   }
 
   static bool isDemoVersionEnable() {
@@ -152,7 +192,8 @@ class UiUtils {
     return true;
   }
 
-  static int getStudyMaterialId(String studyMaterialLabel, BuildContext context) {
+  static int getStudyMaterialId(
+      String studyMaterialLabel, BuildContext context) {
     if (studyMaterialLabel == getTranslatedLabel(context, fileUploadKey)) {
       return 1;
     }
@@ -165,7 +206,8 @@ class UiUtils {
     return 0;
   }
 
-  static int getStudyMaterialIdByEnum(StudyMaterialType studyMaterialType, BuildContext context) {
+  static int getStudyMaterialIdByEnum(
+      StudyMaterialType studyMaterialType, BuildContext context) {
     if (studyMaterialType == StudyMaterialType.file) {
       return 1;
     }
@@ -179,10 +221,13 @@ class UiUtils {
   }
 
   static String getBackButtonPath(BuildContext context) {
-    return Directionality.of(context).name == TextDirection.rtl.name ? getImagePath("rtl_back_icon.svg") : getImagePath("back_icon.svg");
+    return Directionality.of(context).name == TextDirection.rtl.name
+        ? getImagePath("rtl_back_icon.svg")
+        : getImagePath("back_icon.svg");
   }
 
-  static String getStudyMaterialTypeLabelByEnum(StudyMaterialType studyMaterialType, BuildContext context) {
+  static String getStudyMaterialTypeLabelByEnum(
+      StudyMaterialType studyMaterialType, BuildContext context) {
     if (studyMaterialType == StudyMaterialType.file) {
       return UiUtils.getTranslatedLabel(context, fileUploadKey);
     }
@@ -202,14 +247,25 @@ class UiUtils {
       if (canLaunch) {
         launchUrl(Uri.parse(fileUrl), mode: LaunchMode.externalApplication);
       } else {
-        UiUtils.showBottomToastOverlay(context: context, errorMessage: UiUtils.getTranslatedLabel(context, unableToOpenFileKey), backgroundColor: Theme.of(context).colorScheme.error);
+        UiUtils.showBottomToastOverlay(
+            context: context,
+            errorMessage:
+                UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
+            backgroundColor: Theme.of(context).colorScheme.error);
       }
     } catch (e) {
-      UiUtils.showBottomToastOverlay(context: context, errorMessage: UiUtils.getTranslatedLabel(context, unableToOpenFileKey), backgroundColor: Theme.of(context).colorScheme.error);
+      UiUtils.showBottomToastOverlay(
+          context: context,
+          errorMessage:
+              UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
+          backgroundColor: Theme.of(context).colorScheme.error);
     }
   }
 
-  static void openDownloadBottomsheet({required BuildContext context, required bool storeInExternalStorage, required StudyMaterial studyMaterial}) {
+  static void openDownloadBottomsheet(
+      {required BuildContext context,
+      required bool storeInExternalStorage,
+      required StudyMaterial studyMaterial}) {
     showBottomSheet(
             child: BlocProvider<DownloadFileCubit>(
               create: (context) => DownloadFileCubit(StudyMaterialRepository()),
@@ -222,14 +278,22 @@ class UiUtils {
         .then((result) {
       if (result != null) {
         if (result['error']) {
-          showBottomToastOverlay(context: context, errorMessage: getErrorMessageFromErrorCode(context, result['message'].toString()), backgroundColor: Theme.of(context).colorScheme.error);
+          showBottomToastOverlay(
+              context: context,
+              errorMessage: getErrorMessageFromErrorCode(
+                  context, result['message'].toString()),
+              backgroundColor: Theme.of(context).colorScheme.error);
         } else {
           try {
             OpenFilex.open(result['filePath'].toString());
           } catch (e) {
             showBottomToastOverlay(
                 context: context,
-                errorMessage: getTranslatedLabel(context, storeInExternalStorage ? fileDownloadedSuccessfullyKey : unableToOpenKey),
+                errorMessage: getTranslatedLabel(
+                    context,
+                    storeInExternalStorage
+                        ? fileDownloadedSuccessfullyKey
+                        : unableToOpenKey),
                 backgroundColor: Theme.of(context).colorScheme.error);
           }
         }
@@ -244,20 +308,26 @@ class UiUtils {
       return false;
     }
 
-    bool updateBasedOnVersion = _shouldUpdateBasedOnVersion(currentVersion.split("+").first, updatedVersion.split("+").first);
+    bool updateBasedOnVersion = _shouldUpdateBasedOnVersion(
+        currentVersion.split("+").first, updatedVersion.split("+").first);
 
-    if (updatedVersion.split("+").length == 1 || currentVersion.split("+").length == 1) {
+    if (updatedVersion.split("+").length == 1 ||
+        currentVersion.split("+").length == 1) {
       return updateBasedOnVersion;
     }
 
-    bool updateBasedOnBuildNumber = _shouldUpdateBasedOnBuildNumber(currentVersion.split("+").last, updatedVersion.split("+").last);
+    bool updateBasedOnBuildNumber = _shouldUpdateBasedOnBuildNumber(
+        currentVersion.split("+").last, updatedVersion.split("+").last);
 
     return (updateBasedOnVersion || updateBasedOnBuildNumber);
   }
 
-  static bool _shouldUpdateBasedOnVersion(String currentVersion, String updatedVersion) {
-    List<int> currentVersionList = currentVersion.split(".").map((e) => int.parse(e)).toList();
-    List<int> updatedVersionList = updatedVersion.split(".").map((e) => int.parse(e)).toList();
+  static bool _shouldUpdateBasedOnVersion(
+      String currentVersion, String updatedVersion) {
+    List<int> currentVersionList =
+        currentVersion.split(".").map((e) => int.parse(e)).toList();
+    List<int> updatedVersionList =
+        updatedVersion.split(".").map((e) => int.parse(e)).toList();
 
     if (updatedVersionList[0] > currentVersionList[0]) {
       return true;
@@ -272,16 +342,27 @@ class UiUtils {
     return false;
   }
 
-  static final List<String> weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  static final List<String> weekDays = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+  ];
 
   static String formatTime(String time) {
     final hourMinuteSecond = time.split(":");
-    final hour = int.parse(hourMinuteSecond.first) < 13 ? int.parse(hourMinuteSecond.first) : int.parse(hourMinuteSecond.first) - 12;
+    final hour = int.parse(hourMinuteSecond.first) < 13
+        ? int.parse(hourMinuteSecond.first)
+        : int.parse(hourMinuteSecond.first) - 12;
     final amOrPm = int.parse(hourMinuteSecond.first) > 12 ? "PM" : "AM";
     return "${hour.toString().padLeft(2, '0')}:${hourMinuteSecond[1]} $amOrPm";
   }
 
-  static bool _shouldUpdateBasedOnBuildNumber(String currentBuildNumber, String updatedBuildNumber) {
+  static bool _shouldUpdateBasedOnBuildNumber(
+      String currentBuildNumber, String updatedBuildNumber) {
     return int.parse(updatedBuildNumber) > int.parse(currentBuildNumber);
   }
 
@@ -298,11 +379,15 @@ class UiUtils {
   static bool isToadyIsInAcademicYear(DateTime firstDate, DateTime lastDate) {
     final currentDate = DateTime.now();
 
-    return (currentDate.isAfter(firstDate) && currentDate.isBefore(lastDate)) || isSameDay(firstDate) || isSameDay(lastDate);
+    return (currentDate.isAfter(firstDate) && currentDate.isBefore(lastDate)) ||
+        isSameDay(firstDate) ||
+        isSameDay(lastDate);
   }
 
   static bool isSameDay(DateTime dateTime) {
     final currentDate = DateTime.now();
-    return (currentDate.day == dateTime.day) && (currentDate.month == dateTime.month) && (currentDate.year == dateTime.year);
+    return (currentDate.day == dateTime.day) &&
+        (currentDate.month == dateTime.month) &&
+        (currentDate.year == dateTime.year);
   }
 }
