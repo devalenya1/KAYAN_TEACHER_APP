@@ -332,10 +332,11 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
 
   _buildViewResultContainer() {
     return GestureDetector(
-      onTap: (){
-        Navigator.pushNamed(context, Routes.resultList,arguments: {
-          'studentId':widget.student.id,
-          'studentName' :'${widget.student.firstName} ${widget.student.lastName}'
+      onTap: () {
+        Navigator.pushNamed(context, Routes.resultList, arguments: {
+          'studentId': widget.student.id,
+          'studentName':
+              '${widget.student.firstName} ${widget.student.lastName}'
         });
       },
       child: Container(
@@ -407,9 +408,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                                 .fetchStudentMoreDetails(
                                     studentId: widget.student.id);
                           },
-                          errorMessageCode:
-                              UiUtils.getErrorMessageFromErrorCode(
-                                  context, state.errorMessage)),
+                          errorMessageCode: state.errorMessage),
                     ),
                   );
                 }

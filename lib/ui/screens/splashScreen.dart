@@ -52,8 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   onTapRetry: () {
                     fetchAppConfiguration();
                   },
-                  errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                      context, state.errorMessage)),
+                  errorMessageCode: state.errorMessage),
             );
           }
           return Center(

@@ -250,8 +250,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
             if (state is HolidaysFetchFailure) {
               return Center(
                 child: ErrorContainer(
-                  errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                      context, state.errorMessage),
+                  errorMessageCode: state.errorMessage,
                   onTapRetry: () {
                     context.read<HolidaysCubit>().fetchHolidays();
                   },

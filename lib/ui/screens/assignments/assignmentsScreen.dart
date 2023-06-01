@@ -108,11 +108,9 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               currentSelectedItem: currentSelectedClassSection,
               width: boxConstraints.maxWidth,
               changeSelectedItem: (result) {
-                setState(
-                  () {
-                    currentSelectedClassSection = result;
-                  },
-                );
+                setState(() {
+                  currentSelectedClassSection = result;
+                });
 
                 context
                     .read<AssignmentCubit>()

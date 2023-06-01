@@ -372,8 +372,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
             if (state is ClassAttendanceFetchFailure) {
               return ErrorContainer(
-                errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                    context, state.errorMessage),
+                errorMessageCode: state.errorMessage,
                 onTapRetry: () {
                   fetchClassAttendanceReports();
                 },

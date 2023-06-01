@@ -10,7 +10,7 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 
 class AddStudyMaterialBottomsheet extends StatefulWidget {
   final Function(PickedStudyMaterial) onTapSubmit;
@@ -81,13 +81,13 @@ class _AddStudyMaterialBottomsheetState
     super.dispose();
   }
 
-  Future<bool> _isPermissionGiven() async {
-    bool permissionGiven = (await Permission.storage.status).isGranted;
-    if (!permissionGiven) {
-      permissionGiven = (await Permission.storage.request()).isGranted;
-    }
-    return permissionGiven;
-  }
+  // Future<bool> _isPermissionGiven() async {
+  //   bool permissionGiven = (await Permission.storage.status).isGranted;
+  //   if (!permissionGiven) {
+  //     permissionGiven = (await Permission.storage.request()).isGranted;
+  //   }
+  //   return permissionGiven;
+  // }
 
   void showErrorMessage(String messageKey) {
     UiUtils.showBottomToastOverlay(
@@ -225,7 +225,7 @@ class _AddStudyMaterialBottomsheetState
                                   })
                               : BottomsheetAddFilesDottedBorderContainer(
                                   onTap: () async {
-                                    if (await _isPermissionGiven()) {
+                                    try {
                                       final pickedFile =
                                           await FilePicker.platform.pickFiles(
                                               type: currentSelectedStudyMaterialType ==
@@ -250,7 +250,7 @@ class _AddStudyMaterialBottomsheetState
 
                                         setState(() {});
                                       }
-                                    } else {
+                                    } on Exception {
                                       showErrorMessage(permissionToPickFileKey);
                                     }
                                   },
@@ -288,7 +288,7 @@ class _AddStudyMaterialBottomsheetState
                                       })
                                   : BottomsheetAddFilesDottedBorderContainer(
                                       onTap: () async {
-                                        if (await _isPermissionGiven()) {
+                                        try {
                                           final pickedFile = await FilePicker
                                               .platform
                                               .pickFiles(type: FileType.video);
@@ -298,7 +298,7 @@ class _AddStudyMaterialBottomsheetState
                                                 pickedFile.files.first;
                                             setState(() {});
                                           }
-                                        } else {
+                                        } on Exception {
                                           showErrorMessage(
                                               permissionToPickFileKey);
                                         }

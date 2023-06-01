@@ -11,8 +11,10 @@ class TeacherRepository {
       final result = await Api.get(url: Api.getClasses, useAuthToken: true);
 
       return {
-        "primaryClass": ClassSectionDetails.fromJson(
-            Map.from(result['data']['class_teacher'])),
+        "primaryClass": result['data']['class_teacher'].isEmpty
+            ? null
+            : ClassSectionDetails.fromJson(
+                Map.from(result['data']['class_teacher'])),
         "classes": (result['data']['other'] as List)
             .map((e) => ClassSectionDetails.fromJson(Map.from(e)))
             .toList()

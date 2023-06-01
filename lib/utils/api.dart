@@ -20,7 +20,7 @@ class ApiException implements Exception {
 class Api {
   static Map<String, dynamic> headers() {
     final String jwtToken = Hive.box(authBoxKey).get(jwtTokenKey) ?? "";
-print('token is $jwtToken');
+    print('token is $jwtToken');
     return {"Authorization": "Bearer $jwtToken"};
   }
 
@@ -67,9 +67,12 @@ print('token is $jwtToken');
   static String examList = "${databaseUrl}teacher/get-exam-list";
   static String examTimeTable = "${databaseUrl}teacher/get-exam-details";
   static String examResults = "${databaseUrl}teacher/exam-marks";
-  static String submitExamMarksBySubjectId = "${databaseUrl}teacher/submit-exam-marks/subject";
-  static String submitExamMarksByStudentId = "${databaseUrl}teacher/submit-exam-marks/student";
-  static String getStudentResultList = "${databaseUrl}teacher/get-student-result";
+  static String submitExamMarksBySubjectId =
+      "${databaseUrl}teacher/submit-exam-marks/subject";
+  static String submitExamMarksByStudentId =
+      "${databaseUrl}teacher/submit-exam-marks/student";
+  static String getStudentResultList =
+      "${databaseUrl}teacher/get-student-result";
 
   static String getReviewAssignment =
       "${databaseUrl}teacher/get-assignment-submission";
@@ -135,7 +138,7 @@ print('token is $jwtToken');
       final response = await dio.get(url,
           queryParameters: queryParameters,
           options: useAuthToken ? Options(headers: headers()) : null);
-print('url is $url and query $queryParameters and $useAuthToken');
+      print('url is $url and query $queryParameters and $useAuthToken');
       if (response.data['error']) {
         print(response.data['error']);
         throw ApiException(response.data['code'].toString());

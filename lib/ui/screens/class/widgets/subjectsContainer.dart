@@ -123,8 +123,7 @@ class SubjectsContainer extends StatelessWidget {
           if (state is SubjectsOfClassSectionFetchFailure) {
             return Center(
               child: ErrorContainer(
-                errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                    context, state.errorMessage),
+                errorMessageCode: state.errorMessage,
                 onTapRetry: () {
                   context
                       .read<SubjectsOfClassSectionCubit>()

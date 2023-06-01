@@ -11,7 +11,7 @@ class MyClassesFetchInProgress extends MyClassesState {}
 class MyClassesFetchSuccess extends MyClassesState {
   final List<ClassSectionDetails> classes;
   //Primary class will be act as a class teacher's class
-  final ClassSectionDetails primaryClass;
+  final ClassSectionDetails? primaryClass;
 
   MyClassesFetchSuccess({required this.classes, required this.primaryClass});
 }
@@ -39,7 +39,7 @@ class MyClassesCubit extends Cubit<MyClassesState> {
     }
   }
 
-  ClassSectionDetails primaryClass() {
+  ClassSectionDetails? primaryClass() {
     if (state is MyClassesFetchSuccess) {
       return (state as MyClassesFetchSuccess).primaryClass;
     }
@@ -55,7 +55,11 @@ class MyClassesCubit extends Cubit<MyClassesState> {
 
   List<ClassSectionDetails> getAllClasses() {
     final allClass = List<ClassSectionDetails>.from(classes());
-    allClass.add(primaryClass());
+
+    final primaryClassTemp = primaryClass();
+    if (primaryClassTemp != null) {
+      allClass.add(primaryClassTemp);
+    }
 
     return allClass;
   }

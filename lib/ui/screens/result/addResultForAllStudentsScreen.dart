@@ -92,7 +92,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
   //
   void fetchStudentList() {
     context.read<StudentsByClassSectionCubit>().fetchStudents(
-        classSectionId: context.read<MyClassesCubit>().primaryClass().id);
+        classSectionId: context.read<MyClassesCubit>().primaryClass()!.id);
   }
 
   //

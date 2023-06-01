@@ -294,12 +294,14 @@ class _HomeContainerState extends State<HomeContainer> {
       children: [
         _buildClassTeacherLabel(),
         LayoutBuilder(builder: (context, boxConstraints) {
-          return _buildClassContainer(
-              classSectionDetails:
-                  context.read<MyClassesCubit>().primaryClass(),
-              boxConstraints: boxConstraints,
-              index: 0,
-              isClassTeacher: true);
+          final primaryClass = context.read<MyClassesCubit>().primaryClass();
+          return primaryClass != null
+              ? _buildClassContainer(
+                  classSectionDetails: primaryClass,
+                  boxConstraints: boxConstraints,
+                  index: 0,
+                  isClassTeacher: true)
+              : const SizedBox.shrink();
         }),
       ],
     );
@@ -447,16 +449,18 @@ class _HomeContainerState extends State<HomeContainer> {
             route: Routes.holidays,
             iconPath: UiUtils.getImagePath("holiday_icon.svg"),
             title: UiUtils.getTranslatedLabel(context, holidaysKey)),
-      _buildMenuContainer(
-                route: Routes.exams,
-                iconPath: UiUtils.getImagePath("exam_icon.svg"),
-                title: UiUtils.getTranslatedLabel(context, examsKey)),
-        context.read<MyClassesCubit>().primaryClass().id == '0'
+        _buildMenuContainer(
+            route: Routes.exams,
+            iconPath: UiUtils.getImagePath("exam_icon.svg"),
+            title: UiUtils.getTranslatedLabel(context, examsKey)),
+        context.read<MyClassesCubit>().primaryClass() == null ||
+                context.read<MyClassesCubit>().primaryClass()!.id == '0'
             ? SizedBox()
             : _buildMenuContainer(
                 route: Routes.addResultForAllStudents,
                 iconPath: UiUtils.getImagePath("result_icon.svg"),
-                title: UiUtils.getTranslatedLabel(context, addResultKey),),
+                title: UiUtils.getTranslatedLabel(context, addResultKey),
+              ),
       ],
     );
   }
@@ -485,16 +489,18 @@ class _HomeContainerState extends State<HomeContainer> {
               child: BlocBuilder<MyClassesCubit, MyClassesState>(
                 builder: (context, state) {
                   if (state is MyClassesFetchSuccess) {
+                    final primaryClass = state.primaryClass;
                     return Column(
                       children: [
                         _buildMyClasses(),
                         SizedBox(
                           height: 20.0,
                         ),
-                        _buildClassTeacher(),
-                        SizedBox(
-                          height: 20.0,
-                        ),
+                        if (primaryClass != null) _buildClassTeacher(),
+                        if (primaryClass != null)
+                          SizedBox(
+                            height: 20.0,
+                          ),
                         _buildInformationAndMenu()
                       ],
                     );
@@ -502,8 +508,7 @@ class _HomeContainerState extends State<HomeContainer> {
                   if (state is MyClassesFetchFailure) {
                     return Center(
                       child: ErrorContainer(
-                        errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                            context, state.errorMessage),
+                        errorMessageCode: state.errorMessage,
                         onTapRetry: () {
                           context.read<MyClassesCubit>().fetchMyClasses();
                         },

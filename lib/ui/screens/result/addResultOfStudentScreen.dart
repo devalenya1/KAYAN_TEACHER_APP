@@ -385,7 +385,8 @@ class _AddResultScreenState extends State<AddResultScreen> {
           //If result is not declared and teacher is class teacher
           // then show submit marks option
           if (widget.studentResultData.result!.resultId == 0 &&
-              context.read<MyClassesCubit>().primaryClass().id != '0')
+              context.read<MyClassesCubit>().primaryClass() != null &&
+              context.read<MyClassesCubit>().primaryClass()!.id != '0')
             Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(

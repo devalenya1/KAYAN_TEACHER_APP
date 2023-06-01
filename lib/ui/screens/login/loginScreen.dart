@@ -34,9 +34,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   late Animation<double> _formAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
 
   bool _hidePassword = true;
-  TextEditingController _emailTextEditingController = TextEditingController(text: "teacher@gmail.com");
+  TextEditingController _emailTextEditingController = TextEditingController();
 
-  TextEditingController _passwordTextEditingController = TextEditingController(text: "teacher123");
+  TextEditingController _passwordTextEditingController = TextEditingController();
 
   @override
   void initState() {

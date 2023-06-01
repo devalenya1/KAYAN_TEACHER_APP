@@ -128,11 +128,25 @@ class _AddOrEditAnnouncementScreenState
         setState(() {});
       }
     } else {
-      UiUtils.showBottomToastOverlay(
-          context: context,
-          errorMessage:
-              UiUtils.getTranslatedLabel(context, permissionToPickFileKey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+      try {
+        final pickedFile = await FilePicker.platform.pickFiles();
+        if (pickedFile != null) {
+          _addedAttatchments.add(pickedFile.files.first);
+          setState(() {});
+        }
+      } on Exception {
+        UiUtils.showBottomToastOverlay(
+            context: context,
+            errorMessage:
+                UiUtils.getTranslatedLabel(context, permissionToPickFileKey),
+            backgroundColor: Theme.of(context).colorScheme.error);
+      } on Error {
+        UiUtils.showBottomToastOverlay(
+            context: context,
+            errorMessage:
+                UiUtils.getTranslatedLabel(context, permissionToPickFileKey),
+            backgroundColor: Theme.of(context).colorScheme.error);
+      }
     }
   }
 

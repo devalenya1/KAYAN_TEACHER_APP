@@ -240,8 +240,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
 
         if (state is TimeTableFetchFailure) {
           return ErrorContainer(
-            errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                context, state.errorMessage),
+            errorMessageCode: state.errorMessage,
             onTapRetry: () {
               context.read<TimeTableCubit>().fetchTimeTable();
             },

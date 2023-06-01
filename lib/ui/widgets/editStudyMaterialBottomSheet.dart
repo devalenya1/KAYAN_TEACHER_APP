@@ -193,7 +193,7 @@ class _EditStudyMaterialBottomSheetState
                                     })
                                   : BottomsheetAddFilesDottedBorderContainer(
                                       onTap: () async {
-                                        if (await _isPermissionGiven()) {
+                                        try {
                                           final pickedFile = await FilePicker
                                               .platform
                                               .pickFiles(
@@ -218,7 +218,7 @@ class _EditStudyMaterialBottomSheetState
 
                                             setState(() {});
                                           }
-                                        } else {
+                                        } on Error {
                                           showErrorMessage(
                                               permissionToPickFileKey);
                                         }
@@ -255,7 +255,7 @@ class _EditStudyMaterialBottomSheetState
                                         child:
                                             BottomsheetAddFilesDottedBorderContainer(
                                                 onTap: () async {
-                                                  if (await _isPermissionGiven()) {
+                                                  try {
                                                     final pickedFile =
                                                         await FilePicker
                                                             .platform
@@ -269,7 +269,7 @@ class _EditStudyMaterialBottomSheetState
                                                               .files.first;
                                                       setState(() {});
                                                     }
-                                                  } else {
+                                                  } on Exception {
                                                     showErrorMessage(
                                                         permissionToPickFileKey);
                                                   }

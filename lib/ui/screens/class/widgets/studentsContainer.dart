@@ -69,8 +69,7 @@ class StudentsContainer extends StatelessWidget {
         }
         if (state is StudentsByClassSectionFetchFailure) {
           return ErrorContainer(
-            errorMessageCode: UiUtils.getErrorMessageFromErrorCode(
-                context, state.errorMessage),
+            errorMessageCode: state.errorMessage,
             onTapRetry: () {
               context
                   .read<StudentsByClassSectionCubit>()
