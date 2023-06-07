@@ -19,7 +19,7 @@ class AnnouncementAttachmentContainer extends StatelessWidget {
       required this.showDeleteButton,
       required this.studyMaterial,
       this.backgroundColor,
-      this.onDeleteCallback})
+      this.onDeleteCallback,})
       : super(key: key);
 
   Widget _buildFileName(BuildContext context) {
@@ -29,11 +29,11 @@ class AnnouncementAttachmentContainer extends StatelessWidget {
       },
       child: Text(
         studyMaterial.fileName,
-        style: TextStyle(
+        style: const TextStyle(
             color: assignmentViewButtonColor,
             fontWeight: FontWeight.w500,
             height: 1.25,
-            fontSize: 13.5),
+            fontSize: 13.5,),
         textAlign: TextAlign.left,
       ),
     );
@@ -55,13 +55,20 @@ class AnnouncementAttachmentContainer extends StatelessWidget {
                   //
                   errorMessage:
                       UiUtils.getTranslatedLabel(context, unableToDeleteKey),
-                  backgroundColor: Theme.of(context).colorScheme.error);
+                  backgroundColor: Theme.of(context).colorScheme.error,);
             }
           },
           builder: (context, state) {
             return Opacity(
               opacity: state is DeleteStudyMaterialInProgress ? 0.5 : 1.0,
               child: Container(
+                margin: const EdgeInsets.only(bottom: 15),
+                width: MediaQuery.of(context).size.width * (0.85),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+                decoration: BoxDecoration(
+                    color: backgroundColor ??
+                        Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(15),),
                 child: LayoutBuilder(builder: (context, boxConstraints) {
                   return showDeleteButton
                       ? Row(
@@ -71,39 +78,32 @@ class AnnouncementAttachmentContainer extends StatelessWidget {
                               width: boxConstraints.maxWidth * (0.75),
                               child: _buildFileName(context),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             DeleteButton(onTap: () {
                               if (state is DeleteStudyMaterialInProgress) {
                                 return;
                               }
                               showDialog<bool>(
                                       context: context,
-                                      builder: (_) => ConfirmDeleteDialog())
+                                      builder: (_) => const ConfirmDeleteDialog(),)
                                   .then((value) {
                                 if (value != null && value) {
                                   context
                                       .read<DeleteStudyMaterialCubit>()
                                       .deleteStudyMaterial(
-                                          fileId: studyMaterial.id);
+                                          fileId: studyMaterial.id,);
                                 }
                               });
-                            })
+                            },)
                           ],
                         )
                       : _buildFileName(context);
-                }),
-                margin: EdgeInsets.only(bottom: 15),
-                width: MediaQuery.of(context).size.width * (0.85),
-                padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-                decoration: BoxDecoration(
-                    color: backgroundColor ??
-                        Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.circular(15)),
+                },),
               ),
             );
           },
         );
-      }),
+      },),
     );
   }
 }

@@ -13,15 +13,23 @@ class DefaultDropDownLabelContainer extends StatelessWidget {
       this.height,
       required this.width,
       this.radius,
-      this.margin})
+      this.margin,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin ?? EdgeInsets.only(bottom: (20)),
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: margin ?? const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       alignment: AlignmentDirectional.centerStart,
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(radius ?? 5),
+          border: Border.all(
+              color:
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),),),
+      width: width,
+      height: height ?? 40,
       child: Text(UiUtils.getTranslatedLabel(context, titleLabelKey),
           style: TextStyle(
               fontWeight: FontWeight.w400,
@@ -29,15 +37,7 @@ class DefaultDropDownLabelContainer extends StatelessWidget {
               color: Theme.of(context)
                   .colorScheme
                   .onBackground
-                  .withOpacity(0.75))),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(radius ?? 5),
-          border: Border.all(
-              color:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5))),
-      width: width,
-      height: height ?? 40,
+                  .withOpacity(0.75),),),
     );
   }
 }

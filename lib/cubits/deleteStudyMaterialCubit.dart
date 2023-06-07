@@ -21,7 +21,7 @@ class DeleteStudyMaterialCubit extends Cubit<DeleteStudyMaterialState> {
   DeleteStudyMaterialCubit(this._studyMaterialRepository)
       : super(DeleteStudyMaterialInitial());
 
-  void deleteStudyMaterial({required int fileId}) async {
+  Future<void> deleteStudyMaterial({required int fileId}) async {
     emit(DeleteStudyMaterialInProgress());
     try {
       await _studyMaterialRepository.deleteStudyMaterial(fileId: fileId);

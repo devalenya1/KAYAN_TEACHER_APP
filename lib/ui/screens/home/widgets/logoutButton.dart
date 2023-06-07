@@ -23,14 +23,14 @@ class LogoutButton extends StatelessWidget {
                       context.read<AuthCubit>().signOut();
                       Navigator.of(context).pop();
                       Navigator.of(context).pushReplacementNamed(Routes.login);
-                    }),
+                    },),
                 CupertinoButton(
                     child: Text(UiUtils.getTranslatedLabel(context, noKey)),
                     onPressed: () {
                       Navigator.of(context).pop();
-                    }),
+                    },),
               ],
-            ));
+            ),);
   }
 
   @override
@@ -43,6 +43,11 @@ class LogoutButton extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(20.0),
         child: Container(
+          width: MediaQuery.of(context).size.width * (0.4),
+          height: 40,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.0),
+              color: Theme.of(context).colorScheme.secondary,),
           child: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,8 +56,8 @@ class LogoutButton extends StatelessWidget {
                     height: 16,
                     width: 16,
                     child: SvgPicture.asset(
-                        UiUtils.getImagePath("logout_icon.svg"))),
-                SizedBox(
+                        UiUtils.getImagePath("logout_icon.svg"),),),
+                const SizedBox(
                   width: 10.0,
                 ),
                 Text(
@@ -67,11 +72,6 @@ class LogoutButton extends StatelessWidget {
               ],
             ),
           ),
-          width: MediaQuery.of(context).size.width * (0.4),
-          height: 40,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: Theme.of(context).colorScheme.secondary),
         ),
       ),
     );

@@ -28,13 +28,15 @@ class TopicsContainer extends StatelessWidget {
       {Key? key,
       required this.classSectionDetails,
       required this.lesson,
-      required this.subject})
+      required this.subject,})
       : super(key: key);
 
   Widget _buildTopicDetailsShimmerContainer(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15.0),
+        width: MediaQuery.of(context).size.width * (0.85),
         child: LayoutBuilder(builder: (context, boxConstraints) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,48 +44,46 @@ class TopicsContainer extends StatelessWidget {
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.7)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.7),),
+              ),),
+              const SizedBox(
                 height: 5,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.5)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.5),),
+              ),),
+              const SizedBox(
                 height: 15,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.7)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.7),),
+              ),),
+              const SizedBox(
                 height: 5,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.5)),
-              )),
+                    end: boxConstraints.maxWidth * (0.5),),
+              ),),
             ],
           );
-        }),
-        padding: EdgeInsets.symmetric(vertical: 15.0),
-        width: MediaQuery.of(context).size.width * (0.85),
+        },),
       ),
     );
   }
 
   Widget _buildTopicDetailsContainer(
-      {required Topic topic, required BuildContext context}) {
+      {required Topic topic, required BuildContext context,}) {
     return BlocProvider<DeleteTopicCubit>(
       create: (context) => DeleteTopicCubit(TopicRepository()),
       child: Builder(builder: (context) {
         return BlocConsumer<DeleteTopicCubit, DeleteTopicState>(
-          listener: ((context, state) {
+          listener: (context, state) {
             if (state is DeleteTopicSuccess) {
               context.read<TopicsCubit>().deleteTopic(topic.id);
             } else if (state is DeleteTopicFailure) {
@@ -91,15 +91,21 @@ class TopicsContainer extends StatelessWidget {
                   context: context,
                   errorMessage:
                       "${UiUtils.getTranslatedLabel(context, unableToDeleteTopicKey)} ${topic.name}",
-                  backgroundColor: Theme.of(context).colorScheme.error);
+                  backgroundColor: Theme.of(context).colorScheme.error,);
             }
-          }),
+          },
           builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Opacity(
                 opacity: state is DeleteTopicInProgress ? 0.5 : 1.0,
                 child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: BorderRadius.circular(10.0),),
+                  width: MediaQuery.of(context).size.width * (0.85),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -112,9 +118,9 @@ class TopicsContainer extends StatelessWidget {
                                       .colorScheme
                                       .onBackground,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 12.0),
-                              textAlign: TextAlign.left),
-                          Spacer(),
+                                  fontSize: 12.0,),
+                              textAlign: TextAlign.left,),
+                          const Spacer(),
                           EditButton(onTap: () {
                             if (state is DeleteTopicInProgress) {
                               return;
@@ -126,15 +132,15 @@ class TopicsContainer extends StatelessWidget {
                                   "subject": subject,
                                   "lesson": lesson,
                                   "topic": topic
-                                }).then((value) {
+                                },).then((value) {
                               if (value != null && value) {
                                 context
                                     .read<TopicsCubit>()
                                     .fetchTopics(lessonId: lesson.id);
                               }
                             });
-                          }),
-                          SizedBox(
+                          },),
+                          const SizedBox(
                             width: 10,
                           ),
                           DeleteButton(onTap: () {
@@ -143,7 +149,7 @@ class TopicsContainer extends StatelessWidget {
                             }
                             showDialog<bool>(
                                     context: context,
-                                    builder: (_) => ConfirmDeleteDialog())
+                                    builder: (_) => const ConfirmDeleteDialog(),)
                                 .then((value) {
                               if (value != null && value) {
                                 context
@@ -151,38 +157,38 @@ class TopicsContainer extends StatelessWidget {
                                     .deleteTopic(topicId: topic.id);
                               }
                             });
-                          })
+                          },)
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 2.5,
                       ),
                       Text(topic.name,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14.0),
-                          textAlign: TextAlign.left),
-                      SizedBox(
+                              fontSize: 14.0,),
+                          textAlign: TextAlign.left,),
+                      const SizedBox(
                         height: 15,
                       ),
                       Text(
                           UiUtils.getTranslatedLabel(
-                              context, topicDescriptionKey),
+                              context, topicDescriptionKey,),
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.onBackground,
                               fontWeight: FontWeight.w400,
-                              fontSize: 12.0),
-                          textAlign: TextAlign.left),
-                      SizedBox(
+                              fontSize: 12.0,),
+                          textAlign: TextAlign.left,),
+                      const SizedBox(
                         height: 2.5,
                       ),
                       Text(topic.description,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14.0),
-                          textAlign: TextAlign.left),
+                              fontSize: 14.0,),
+                          textAlign: TextAlign.left,),
                       topic.studyMaterials.isNotEmpty
                           ? Padding(
                               padding: const EdgeInsets.only(top: 5.0),
@@ -191,31 +197,25 @@ class TopicsContainer extends StatelessWidget {
                                   UiUtils.showBottomSheet(
                                       child: AttachmentBottomsheetContainer(
                                           fromAnnouncementsContainer: false,
-                                          studyMaterials: topic.studyMaterials),
-                                      context: context);
+                                          studyMaterials: topic.studyMaterials,),
+                                      context: context,);
                                 },
                                 child: Text(
                                   "${topic.studyMaterials.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                                  style: TextStyle(
-                                      color: assignmentViewButtonColor),
+                                  style: const TextStyle(
+                                      color: assignmentViewButtonColor,),
                                 ),
                               ),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                     ],
                   ),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  width: MediaQuery.of(context).size.width * (0.85),
                 ),
               ),
             );
           },
         );
-      }),
+      },),
     );
   }
 
@@ -225,11 +225,11 @@ class TopicsContainer extends StatelessWidget {
       builder: (context, state) {
         if (state is TopicsFetchSuccess) {
           return state.topics.isEmpty
-              ? NoDataContainer(titleKey: noTopicsKey)
+              ? const NoDataContainer(titleKey: noTopicsKey)
               : Column(
                   children: state.topics
                       .map((topic) => _buildTopicDetailsContainer(
-                          topic: topic, context: context))
+                          topic: topic, context: context,),)
                       .toList(),
                 );
         }
@@ -245,7 +245,7 @@ class TopicsContainer extends StatelessWidget {
         }
         return Column(
           children: List.generate(
-                  UiUtils.defaultShimmerLoadingContentCount, (index) => index)
+                  UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
               .map((e) => _buildTopicDetailsShimmerContainer(context))
               .toList(),
         );

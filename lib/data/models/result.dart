@@ -13,7 +13,7 @@ class Result {
         required this.obtainedMark,
         required this.percentage,
         required this.subjectMarks,
-        required this.totalMark});
+        required this.totalMark,});
 
   late final int resultId;
   late final int examId;

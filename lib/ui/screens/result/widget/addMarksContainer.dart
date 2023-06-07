@@ -14,7 +14,7 @@ class AddMarksContainer extends StatelessWidget {
       required this.alias,
       required this.totalMarks,
       required this.obtainedMarksTextEditingController,
-      this.isReadOnly})
+      this.isReadOnly,})
       : super(key: key);
 
   Widget _buildSubjectNameWithObtainedMarksContainer(
@@ -22,11 +22,11 @@ class AddMarksContainer extends StatelessWidget {
       required String alias,
       required String studentName,
       required String totalMarks,
-      bool? isReadOnly}) {
+      bool? isReadOnly,}) {
     return Container(
-      margin: EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 15),
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,7 +40,7 @@ class AddMarksContainer extends StatelessWidget {
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: 12.0,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w600,),
               ),
             ),
             Container(
@@ -51,7 +51,7 @@ class AddMarksContainer extends StatelessWidget {
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                     fontSize: 12.0,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w600,),
               ),
             ),
             Container(
@@ -62,10 +62,10 @@ class AddMarksContainer extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .onBackground
-                          .withOpacity(0.5))),
+                          .withOpacity(0.5),),),
               width: boxConstraints.maxWidth * (0.2),
               height: 35,
-              padding: EdgeInsets.only(bottom: 6),
+              padding: const EdgeInsets.only(bottom: 6),
               child: TextField(
                 inputFormatters: <TextInputFormatter>[
                   //allow only one decimal point (.)
@@ -78,9 +78,9 @@ class AddMarksContainer extends StatelessWidget {
                 ),
                 controller: obtainedMarksTextEditingController,
                 readOnly: isReadOnly ?? false,
-                decoration: InputDecoration(border: InputBorder.none),
-                keyboardType: TextInputType.numberWithOptions(
-                    decimal: true, signed: false),
+                decoration: const InputDecoration(border: InputBorder.none),
+                keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,),
               ),
             ),
             Container(
@@ -96,7 +96,7 @@ class AddMarksContainer extends StatelessWidget {
             ),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -107,6 +107,6 @@ class AddMarksContainer extends StatelessWidget {
         alias: alias,
         studentName: title,
         totalMarks: totalMarks,
-        isReadOnly: isReadOnly);
+        isReadOnly: isReadOnly,);
   }
 }

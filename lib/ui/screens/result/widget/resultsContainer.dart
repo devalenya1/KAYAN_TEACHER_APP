@@ -31,13 +31,13 @@ class _ResultsContainerState extends State<ResultsContainer> {
 
   Widget _buildResultListShimmerLoadingContainer() {
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         bottom: 20,
       ),
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(
           horizontal: UiUtils.screenContentHorizontalPaddingPercentage *
-              MediaQuery.of(context).size.width),
+              MediaQuery.of(context).size.width,),
       child: ShimmerLoadingContainer(
         child: LayoutBuilder(builder: (context, boxConstraints) {
           return Column(
@@ -47,7 +47,7 @@ class _ResultsContainerState extends State<ResultsContainer> {
                   child: CustomShimmerContainer(
                 height: 9,
                 width: boxConstraints.maxWidth * (0.3),
-              )),
+              ),),
               SizedBox(
                 height: boxConstraints.maxWidth * (0.02),
               ),
@@ -55,13 +55,13 @@ class _ResultsContainerState extends State<ResultsContainer> {
                   child: CustomShimmerContainer(
                 height: 10,
                 width: boxConstraints.maxWidth * (0.8),
-              )),
+              ),),
               SizedBox(
                 height: boxConstraints.maxWidth * (0.1),
               ),
             ],
           );
-        }),
+        },),
       ),
     );
   }
@@ -75,13 +75,12 @@ class _ResultsContainerState extends State<ResultsContainer> {
               top: UiUtils.appBarMediumtHeightPercentage *
                   MediaQuery.of(context).size.height,
               right: 20.0,
-              left: 20),
+              left: 20,),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(UiUtils.defaultShimmerLoadingContentCount,
-                (index) => _buildResultListShimmerLoadingContainer()),
+                (index) => _buildResultListShimmerLoadingContainer(),),
           ),
         ),
       ),
@@ -104,7 +103,7 @@ class _ResultsContainerState extends State<ResultsContainer> {
           },
           displacment: UiUtils.getScrollViewTopPadding(
               context: context,
-              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage),
+              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),
           child: BlocBuilder<StudentCompletedExamWithResultCubit,
               StudentCompletedExamWithResultState>(
             builder: (context, state) {
@@ -123,7 +122,7 @@ class _ResultsContainerState extends State<ResultsContainer> {
                         top: UiUtils.getScrollViewTopPadding(
                             context: context,
                             appBarHeightPercentage:
-                                UiUtils.appBarSmallerHeightPercentage)),
+                                UiUtils.appBarSmallerHeightPercentage,),),
                     itemCount: state.studentCompletedExamWithResultList.length,
                     itemBuilder: (context, index) {
                       StudentResult resultData =
@@ -146,7 +145,7 @@ class _ResultsContainerState extends State<ResultsContainer> {
                             'studentResultData': resultData,
                             'studentName': widget.studentName,
                             'studentId': widget.studentId
-                          }).then((value) {
+                          },).then((value) {
                             //If marks is submitted then re-call the API to get updated data
                             if (value == 'true') {
                               fetchCompletedExamList();
@@ -156,11 +155,11 @@ class _ResultsContainerState extends State<ResultsContainer> {
                       );
 
                       //_buildCompletedExamListContainer(studentExamList: state.studentCompletedExamWithResultList[index]);
-                    });
+                    },);
               }
               return _buildResultLoading();
             },
           ),
-        ));
+        ),);
   }
 }

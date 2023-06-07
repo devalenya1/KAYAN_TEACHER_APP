@@ -20,7 +20,7 @@ class AddStudyMaterialBottomsheet extends StatefulWidget {
       {Key? key,
       required this.editFileDetails,
       required this.onTapSubmit,
-      this.pickedStudyMaterial})
+      this.pickedStudyMaterial,})
       : super(key: key);
 
   @override
@@ -93,7 +93,7 @@ class _AddStudyMaterialBottomsheetState
     UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: UiUtils.getTranslatedLabel(context, messageKey),
-        backgroundColor: Theme.of(context).colorScheme.error);
+        backgroundColor: Theme.of(context).colorScheme.error,);
   }
 
   void addStudyMaterial() {
@@ -132,7 +132,7 @@ class _AddStudyMaterialBottomsheetState
         studyMaterialFile:
             pickedStudyMaterialId == 1 ? addedFile : addedVideoFile,
         videoThumbnailFile: addedVideoThumbnailFile,
-        youTubeLink: _youtubeLinkEditingController.text.trim()));
+        youTubeLink: _youtubeLinkEditingController.text.trim(),),);
     Navigator.of(context).pop();
   }
 
@@ -154,12 +154,12 @@ class _AddStudyMaterialBottomsheetState
                         context,
                         widget.editFileDetails
                             ? editStudyMaterialKey
-                            : addStudyMaterialKey)),
+                            : addStudyMaterialKey,),),
 
                 //
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: UiUtils.bottomSheetHorizontalContentPadding),
+                      horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
                   child: Column(
                     children: [
                       LayoutBuilder(builder: (context, boxConstraints) {
@@ -175,30 +175,30 @@ class _AddStudyMaterialBottomsheetState
                             },
                             textStyle: TextStyle(
                                 color: hintTextColor,
-                                fontSize: UiUtils.textFieldFontSize),
+                                fontSize: UiUtils.textFieldFontSize,),
                             borderRadius: 10,
                             height: 50,
                             width: boxConstraints.maxWidth,
                             menu: [
                               UiUtils.getTranslatedLabel(
-                                  context, fileUploadKey),
+                                  context, fileUploadKey,),
                               UiUtils.getTranslatedLabel(
-                                  context, youtubeLinkKey),
+                                  context, youtubeLinkKey,),
                               UiUtils.getTranslatedLabel(
-                                  context, videoUploadKey)
+                                  context, videoUploadKey,)
                             ],
                             currentSelectedItem:
-                                currentSelectedStudyMaterialType);
-                      }),
+                                currentSelectedStudyMaterialType,);
+                      },),
                       //
                       //File name
                       //
                       BottomSheetTextFieldContainer(
-                          margin: EdgeInsets.only(bottom: 25),
+                          margin: const EdgeInsets.only(bottom: 25),
                           hintText: UiUtils.getTranslatedLabel(
-                              context, studyMaterialNameKey),
+                              context, studyMaterialNameKey,),
                           maxLines: 1,
-                          textEditingController: _fileNameEditingController),
+                          textEditingController: _fileNameEditingController,),
 
                       //
                       //Select file picker. If study material type is fileUpload then it will pick file
@@ -215,14 +215,14 @@ class _AddStudyMaterialBottomsheetState
                               onDelete: () {
                                 addedFile = null;
                                 setState(() {});
-                              })
+                              },)
                           : addedVideoThumbnailFile != null
                               ? AddedFileContainer(
                                   platformFile: addedVideoThumbnailFile!,
                                   onDelete: () {
                                     addedVideoThumbnailFile = null;
                                     setState(() {});
-                                  })
+                                  },)
                               : BottomsheetAddFilesDottedBorderContainer(
                                   onTap: () async {
                                     try {
@@ -232,16 +232,16 @@ class _AddStudyMaterialBottomsheetState
                                                       UiUtils
                                                           .getTranslatedLabel(
                                                               context,
-                                                              fileUploadKey)
+                                                              fileUploadKey,)
                                                   ? FileType.any
-                                                  : FileType.image);
+                                                  : FileType.image,);
                                       //
                                       //
                                       if (pickedFile != null) {
                                         //if current selected study material type is file
                                         if (currentSelectedStudyMaterialType ==
                                             UiUtils.getTranslatedLabel(
-                                                context, fileUploadKey)) {
+                                                context, fileUploadKey,)) {
                                           addedFile = pickedFile.files.first;
                                         } else {
                                           addedVideoThumbnailFile =
@@ -256,36 +256,36 @@ class _AddStudyMaterialBottomsheetState
                                   },
                                   title: currentSelectedStudyMaterialType ==
                                           UiUtils.getTranslatedLabel(
-                                              context, fileUploadKey)
+                                              context, fileUploadKey,)
                                       ? UiUtils.getTranslatedLabel(
-                                          context, selectFileKey)
+                                          context, selectFileKey,)
                                       : UiUtils.getTranslatedLabel(
-                                          context, selectThumbnailKey)),
+                                          context, selectThumbnailKey,),),
 
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
 
                       currentSelectedStudyMaterialType ==
                               UiUtils.getTranslatedLabel(
-                                  context, youtubeLinkKey)
+                                  context, youtubeLinkKey,)
                           ? BottomSheetTextFieldContainer(
-                              margin: EdgeInsets.only(bottom: 25),
+                              margin: const EdgeInsets.only(bottom: 25),
                               hintText: UiUtils.getTranslatedLabel(
-                                  context, youtubeLinkKey),
+                                  context, youtubeLinkKey,),
                               maxLines: 1,
                               textEditingController:
-                                  _youtubeLinkEditingController)
+                                  _youtubeLinkEditingController,)
                           : currentSelectedStudyMaterialType ==
                                   UiUtils.getTranslatedLabel(
-                                      context, videoUploadKey)
+                                      context, videoUploadKey,)
                               ? addedVideoFile != null
                                   ? AddedFileContainer(
                                       platformFile: addedVideoFile!,
                                       onDelete: () {
                                         addedVideoFile = null;
                                         setState(() {});
-                                      })
+                                      },)
                                   : BottomsheetAddFilesDottedBorderContainer(
                                       onTap: () async {
                                         try {
@@ -300,19 +300,19 @@ class _AddStudyMaterialBottomsheetState
                                           }
                                         } on Exception {
                                           showErrorMessage(
-                                              permissionToPickFileKey);
+                                              permissionToPickFileKey,);
                                         }
                                       },
                                       title: currentSelectedStudyMaterialType ==
                                               UiUtils.getTranslatedLabel(
-                                                  context, fileUploadKey)
+                                                  context, fileUploadKey,)
                                           ? UiUtils.getTranslatedLabel(
-                                              context, selectFileKey)
+                                              context, selectFileKey,)
                                           : UiUtils.getTranslatedLabel(
-                                              context, selectVideoKey))
-                              : SizedBox(),
+                                              context, selectVideoKey,),)
+                              : const SizedBox(),
 
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
 
@@ -327,17 +327,17 @@ class _AddStudyMaterialBottomsheetState
                               Theme.of(context).colorScheme.primary,
                           buttonTitle:
                               UiUtils.getTranslatedLabel(context, submitKey),
-                          showBorder: false),
+                          showBorder: false,),
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
               ],
             ),
           ),
         ),
-        onWillPop: () => Future.value(true));
+        onWillPop: () => Future.value(true),);
   }
 }

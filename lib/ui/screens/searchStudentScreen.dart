@@ -15,7 +15,7 @@ class SearchStudentScreen extends StatefulWidget {
       {Key? key,
       required this.fromAttendanceScreen,
       required this.students,
-      this.listOfAttendanceReport})
+      this.listOfAttendanceReport,})
       : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class SearchStudentScreen extends StatefulWidget {
               fromAttendanceScreen: arguments['fromAttendanceScreen'],
               students: arguments['students'],
               listOfAttendanceReport: arguments['listOfAttendanceReport'],
-            ));
+            ),);
   }
 }
 
@@ -61,7 +61,7 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
           .getFullName()
           .toLowerCase()
           .contains(
-              searchQueryTextEditingController.text.trim().toLowerCase())));
+              searchQueryTextEditingController.text.trim().toLowerCase(),),),);
       setState(() {});
     }
   }
@@ -103,7 +103,7 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
           hintStyle:
               TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
           border: InputBorder.none,
-          hintText: UiUtils.getTranslatedLabel(context, searchStudentKey)),
+          hintText: UiUtils.getTranslatedLabel(context, searchStudentKey),),
     );
   }
 
@@ -112,31 +112,31 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
         ? Center(
             child: Text(
               UiUtils.getTranslatedLabel(context, searchStudentKey),
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           )
         : ListView.builder(
             padding: EdgeInsets.symmetric(
                 vertical: 20,
                 horizontal: MediaQuery.of(context).size.width *
-                    UiUtils.screenContentHorizontalPaddingPercentage),
+                    UiUtils.screenContentHorizontalPaddingPercentage,),
             itemCount: searchedStudents.length,
             itemBuilder: (context, index) {
               if (widget.fromAttendanceScreen) {
                 final isPresent = listOfAttendance
                     .where((element) =>
-                        element.keys.first == searchedStudents[index].id)
+                        element.keys.first == searchedStudents[index].id,)
                     .toList()
                     .first[searchedStudents[index].id]!;
 
                 return StudentAttendanceTileContainer(
                     isPresent: isPresent,
                     student: searchedStudents[index],
-                    updateAttendance: _updateAttendance);
+                    updateAttendance: _updateAttendance,);
               }
 
               return StudentTileContainer(student: searchedStudents[index]);
-            });
+            },);
   }
 
   @override
@@ -157,7 +157,7 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
                   searchedStudents.clear();
                   setState(() {});
                 },
-                icon: Icon(Icons.clear))
+                icon: const Icon(Icons.clear),)
           ],
           title: _buildSearchTextField(),
           leading: Padding(
@@ -166,7 +166,7 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
                 onTap: () {
                   Navigator.of(context).pop(listOfAttendance);
                 },
-                svgIconUrl: UiUtils.getBackButtonPath(context)),
+                svgIconUrl: UiUtils.getBackButtonPath(context),),
           ),
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),

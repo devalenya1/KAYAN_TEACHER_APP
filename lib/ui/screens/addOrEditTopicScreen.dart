@@ -41,7 +41,7 @@ class AddOrEditTopicScreen extends StatefulWidget {
       this.lesson,
       required this.subject,
       this.topic,
-      this.classSectionDetails})
+      this.classSectionDetails,})
       : super(key: key);
 
   static Route<bool?> route(RouteSettings routeSettings) {
@@ -94,10 +94,10 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
 
   late TextEditingController _topicNameTextEditingController =
       TextEditingController(
-          text: widget.topic != null ? widget.topic!.name : null);
+          text: widget.topic != null ? widget.topic!.name : null,);
   late TextEditingController _topicDescriptionTextEditingController =
       TextEditingController(
-          text: widget.topic != null ? widget.topic!.description : null);
+          text: widget.topic != null ? widget.topic!.description : null,);
 
   List<PickedStudyMaterial> _addedStudyMaterials = [];
 
@@ -113,7 +113,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
   void initState() {
     if (widget.classSectionDetails == null) {
       context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
-          context.read<MyClassesCubit>().getAllClasses().first.id);
+          context.read<MyClassesCubit>().getAllClasses().first.id,);
     }
 
     super.initState();
@@ -143,19 +143,19 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
     UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: errorMessageKey,
-        backgroundColor: Theme.of(context).colorScheme.error);
+        backgroundColor: Theme.of(context).colorScheme.error,);
   }
 
   void editTopic() {
     if (_topicNameTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey));
+          UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey),);
       return;
     }
 
     if (_topicDescriptionTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey));
+          UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey),);
       return;
     }
 
@@ -166,20 +166,20 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
         classSectionId: widget.classSectionDetails!.id,
         subjectId: widget.subject!.id,
         topicId: widget.topic!.id,
-        files: _addedStudyMaterials);
+        files: _addedStudyMaterials,);
   }
 
   void createTopic() {
     //
     if (_topicNameTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey));
+          UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey),);
       return;
     }
 
     if (_topicDescriptionTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey));
+          UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey),);
       return;
     }
     final selectedSubjectId = widget.subject != null
@@ -191,7 +191,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
     //
     if (selectedSubjectId == -1) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleasefetchingSubjectsKey));
+          UiUtils.getTranslatedLabel(context, pleasefetchingSubjectsKey),);
       return;
     }
 
@@ -203,7 +203,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
             .id;
     if (lessonId == 0) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseSelectLessonKey));
+          UiUtils.getTranslatedLabel(context, pleaseSelectLessonKey),);
       return;
     }
 
@@ -216,11 +216,11 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
             : context
                 .read<MyClassesCubit>()
                 .getClassSectionDetails(
-                    classSectionName: currentSelectedClassSection)
+                    classSectionName: currentSelectedClassSection,)
                 .id,
         subjectId: selectedSubjectId,
         topicDescription: _topicDescriptionTextEditingController.text.trim(),
-        files: _addedStudyMaterials);
+        files: _addedStudyMaterials,);
   }
 
   Widget _buildClassSubjectAndLessonDropDowns() {
@@ -230,7 +230,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
           widget.classSectionDetails != null
               ? DefaultDropDownLabelContainer(
                   titleLabelKey: currentSelectedClassSection,
-                  width: boxConstraints.maxWidth)
+                  width: boxConstraints.maxWidth,)
               : MyClassesDropDownMenu(
                   currentSelectedItem: currentSelectedClassSection,
                   width: boxConstraints.maxWidth,
@@ -238,11 +238,11 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                     currentSelectedClassSection = value;
                     context.read<LessonsCubit>().updateState(LessonsInitial());
                     setState(() {});
-                  }),
+                  },),
           widget.subject != null
               ? DefaultDropDownLabelContainer(
                   titleLabelKey: widget.subject!.name,
-                  width: boxConstraints.maxWidth)
+                  width: boxConstraints.maxWidth,)
               : ClassSubjectsDropDownMenu(
                   changeSelectedItem: (result) {
                     setState(() {
@@ -256,27 +256,27 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                           classSectionId: context
                               .read<MyClassesCubit>()
                               .getClassSectionDetails(
-                                  classSectionName: currentSelectedClassSection)
+                                  classSectionName: currentSelectedClassSection,)
                               .id,
-                          subjectId: subjectId);
+                          subjectId: subjectId,);
                     }
                   },
                   currentSelectedItem: currentSelectedSubject,
-                  width: boxConstraints.maxWidth),
+                  width: boxConstraints.maxWidth,),
           //
 
           widget.lesson != null
               ? DefaultDropDownLabelContainer(
                   titleLabelKey: widget.lesson!.name,
-                  width: boxConstraints.maxWidth)
+                  width: boxConstraints.maxWidth,)
               : BlocConsumer<LessonsCubit, LessonsState>(
                   builder: (context, state) {
                   return state is LessonsFetchSuccess
                       ? state.lessons.isEmpty
                           ? DefaultDropDownLabelContainer(
                               titleLabelKey: UiUtils.getTranslatedLabel(
-                                  context, noLessonsKey),
-                              width: boxConstraints.maxWidth)
+                                  context, noLessonsKey,),
+                              width: boxConstraints.maxWidth,)
                           : CustomDropDownMenu(
                               width: boxConstraints.maxWidth,
                               onChanged: (value) {
@@ -284,10 +284,10 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                                 setState(() {});
                               },
                               menu: state.lessons.map((e) => e.name).toList(),
-                              currentSelectedItem: currentSelectedLesson)
+                              currentSelectedItem: currentSelectedLesson,)
                       : DefaultDropDownLabelContainer(
                           titleLabelKey: fetchingLessonsKey,
-                          width: boxConstraints.maxWidth);
+                          width: boxConstraints.maxWidth,);
                 }, listener: (context, state) {
                   if (state is LessonsFetchSuccess) {
                     if (state.lessons.isNotEmpty) {
@@ -296,10 +296,10 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                       });
                     }
                   }
-                }),
+                },),
         ],
       );
-    });
+    },);
   }
 
   Widget _buildAppbar() {
@@ -318,7 +318,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
             Navigator.of(context).pop(refreshTopicsInPreviousPage);
           },
           title: UiUtils.getTranslatedLabel(
-              context, widget.topic != null ? editTopicKey : addTopicKey)),
+              context, widget.topic != null ? editTopicKey : addTopicKey,),),
     );
   }
 
@@ -332,24 +332,24 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
               MediaQuery.of(context).size.width,
           top: UiUtils.getScrollViewTopPadding(
               context: context,
-              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
+              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Column(
           children: [
             _buildClassSubjectAndLessonDropDowns(),
             BottomSheetTextFieldContainer(
                 hintText: UiUtils.getTranslatedLabel(context, topicNameKey),
-                margin: EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 20),
                 maxLines: 1,
-                contentPadding: EdgeInsetsDirectional.only(start: 15),
-                textEditingController: _topicNameTextEditingController),
+                contentPadding: const EdgeInsetsDirectional.only(start: 15),
+                textEditingController: _topicNameTextEditingController,),
             BottomSheetTextFieldContainer(
-                margin: EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 20),
                 hintText:
                     UiUtils.getTranslatedLabel(context, topicDescriptionKey),
                 maxLines: 3,
-                contentPadding: EdgeInsetsDirectional.only(start: 15),
-                textEditingController: _topicDescriptionTextEditingController),
+                contentPadding: const EdgeInsetsDirectional.only(start: 15),
+                textEditingController: _topicDescriptionTextEditingController,),
             widget.topic != null
                 ? Column(
                     children: studyMaterials
@@ -357,21 +357,21 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                             onDeleteStudyMaterial: deleteStudyMaterial,
                             onEditStudyMaterial: updateStudyMaterials,
                             showEditAndDeleteButton: true,
-                            studyMaterial: studyMaterial))
+                            studyMaterial: studyMaterial,),)
                         .toList(),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             BottomsheetAddFilesDottedBorderContainer(
                 onTap: () async {
                   FocusScope.of(context).unfocus();
                   UiUtils.showBottomSheet(
                       child: AddStudyMaterialBottomsheet(
                           editFileDetails: false,
-                          onTapSubmit: _addStudyMaterial),
-                      context: context);
+                          onTapSubmit: _addStudyMaterial,),
+                      context: context,);
                 },
-                title: UiUtils.getTranslatedLabel(context, studyMaterialsKey)),
-            SizedBox(
+                title: UiUtils.getTranslatedLabel(context, studyMaterialsKey),),
+            const SizedBox(
               height: 20,
             ),
             ...List.generate(_addedStudyMaterials.length, (index) => index)
@@ -385,7 +385,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                       setState(() {});
                     },
                     file: _addedStudyMaterials[index],
-                    fileIndex: index))
+                    fileIndex: index,),)
                 .toList(),
             widget.topic != null
                 ? BlocConsumer<EditTopicCubit, EditTopicState>(
@@ -396,15 +396,15 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                         UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                                context, state.errorMessage),
+                                context, state.errorMessage,),
                             backgroundColor:
-                                Theme.of(context).colorScheme.error);
+                                Theme.of(context).colorScheme.error,);
                       }
                     },
                     builder: (context, state) {
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: boxConstraints.maxWidth * (0.25)),
+                            horizontal: boxConstraints.maxWidth * (0.25),),
                         child: CustomRoundedButton(
                             onTap: () {
                               if (state is EditTopicInProgress) {
@@ -413,19 +413,19 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                               //
                               editTopic();
                             },
-                            child: state is EditTopicInProgress
-                                ? CustomCircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    widthAndHeight: 20,
-                                  )
-                                : null,
                             height: 45,
                             widthPercentage: boxConstraints.maxWidth * (0.45),
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             buttonTitle: UiUtils.getTranslatedLabel(
-                                context, editTopicKey),
-                            showBorder: false),
+                                context, editTopicKey,),
+                            showBorder: false,
+                            child: state is EditTopicInProgress
+                                ? const CustomCircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    widthAndHeight: 20,
+                                  )
+                                : null,),
                       );
                     },
                   )
@@ -441,22 +441,22 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                             errorMessage: UiUtils.getTranslatedLabel(
                                 context,
                                 UiUtils.getTranslatedLabel(
-                                    context, topicAddedSuccessfullyKey)),
+                                    context, topicAddedSuccessfullyKey,),),
                             backgroundColor:
-                                Theme.of(context).colorScheme.onPrimary);
+                                Theme.of(context).colorScheme.onPrimary,);
                       } else if (state is CreateTopicFailure) {
                         UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                                context, state.errorMessage),
+                                context, state.errorMessage,),
                             backgroundColor:
-                                Theme.of(context).colorScheme.error);
+                                Theme.of(context).colorScheme.error,);
                       }
                     },
                     builder: (context, state) {
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: boxConstraints.maxWidth * (0.25)),
+                            horizontal: boxConstraints.maxWidth * (0.25),),
                         child: CustomRoundedButton(
                             onTap: () {
                               if (state is CreateTopicInProgress) {
@@ -464,25 +464,25 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                               }
                               createTopic();
                             },
-                            child: state is CreateTopicInProgress
-                                ? CustomCircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    widthAndHeight: 20,
-                                  )
-                                : null,
                             height: 45,
                             widthPercentage: boxConstraints.maxWidth * (0.45),
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             buttonTitle: UiUtils.getTranslatedLabel(
-                                context, addTopicKey),
-                            showBorder: false),
+                                context, addTopicKey,),
+                            showBorder: false,
+                            child: state is CreateTopicInProgress
+                                ? const CustomCircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    widthAndHeight: 20,
+                                  )
+                                : null,),
                       );
                     },
                   )
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -506,7 +506,7 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
           _buildAddOrEditTopicForm(),
           _buildAppbar(),
         ],
-      )),
+      ),),
     );
   }
 }

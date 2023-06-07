@@ -18,10 +18,10 @@ class Exam {
       this.sessionYear,
       this.examStartingDate,
       this.examEndingDate,
-      this.examStatus});
+      this.examStatus,});
 
   String getExamName() {
-    return "${this.examName}";
+    return "$examName";
   }
 
   Exam.fromExamJson(Map<String, dynamic> json) {
@@ -52,10 +52,10 @@ class ExamTimeTable {
       this.date,
       this.startingTime,
       this.endingTime,
-      this.subject});
+      this.subject,});
 
   String getSubjectDetails() {
-    return "${this.subject}";
+    return "$subject";
   }
 
   ExamTimeTable.fromJson(Map<String, dynamic> json) {

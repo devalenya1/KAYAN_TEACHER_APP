@@ -10,16 +10,16 @@ class FloatingActionAddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      child: Padding(
-        padding: const EdgeInsets.all(13.5),
-        child: Lottie.asset(UiUtils.getLottieAnimationPath("add_floating.json"),
-            animate: true, repeat: true),
-      ),
       elevation: 4.5,
       onPressed: () {
         onTap();
       },
       backgroundColor: Theme.of(context).colorScheme.primary,
+      child: Padding(
+        padding: const EdgeInsets.all(13.5),
+        child: Lottie.asset(UiUtils.getLottieAnimationPath("add_floating.json"),
+            animate: true, repeat: true,),
+      ),
     );
   }
 }

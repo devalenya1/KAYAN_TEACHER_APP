@@ -15,7 +15,7 @@ class DownloadFileBottomsheetContainer extends StatefulWidget {
   const DownloadFileBottomsheetContainer(
       {Key? key,
       required this.studyMaterial,
-      required this.storeInExternalStorage})
+      required this.storeInExternalStorage,})
       : super(key: key);
 
   @override
@@ -31,12 +31,12 @@ class _DownloadFileBottomsheetContainerState
     Future.delayed(Duration.zero, () {
       context.read<DownloadFileCubit>().downloadFile(
           studyMaterial: widget.studyMaterial,
-          storeInExternalStorage: widget.storeInExternalStorage);
+          storeInExternalStorage: widget.storeInExternalStorage,);
     });
   }
 
   Widget _buildProgressContainer(
-      {required double width, required Color color}) {
+      {required double width, required Color color,}) {
     return Container(
       width: width,
       decoration:
@@ -64,12 +64,12 @@ class _DownloadFileBottomsheetContainerState
                 }
                 Navigator.of(context).pop();
               },
-              title: UiUtils.getTranslatedLabel(context, fileDownloadingKey)),
+              title: UiUtils.getTranslatedLabel(context, fileDownloadingKey),),
 
           //
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: UiUtils.bottomSheetHorizontalContentPadding),
+                horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
             child: Column(
               children: [
                 Text(
@@ -77,13 +77,13 @@ class _DownloadFileBottomsheetContainerState
                   style: TextStyle(
                       fontSize: 18.0,
                       color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w600,),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * (0.0125),
                 ),
                 BlocConsumer<DownloadFileCubit, DownloadFileState>(
-                  listener: ((context, state) {
+                  listener: (context, state) {
                     if (state is DownloadFileSuccess) {
                       Navigator.of(context).pop({
                         "error": false,
@@ -93,7 +93,7 @@ class _DownloadFileBottomsheetContainerState
                       Navigator.of(context)
                           .pop({"error": true, "message": state.errorMessage});
                     }
-                  }),
+                  },
                   builder: (context, state) {
                     if (state is DownloadFileInProgress) {
                       return Column(
@@ -110,19 +110,19 @@ class _DownloadFileBottomsheetContainerState
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onBackground
-                                          .withOpacity(0.5)),
+                                          .withOpacity(0.5),),
                                   _buildProgressContainer(
                                       width: boxConstraints.maxWidth *
                                           state.uploadedPercentage *
                                           0.01,
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .primary),
+                                          .primary,),
                                 ],
                               );
-                            }),
+                            },),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(
@@ -131,7 +131,7 @@ class _DownloadFileBottomsheetContainerState
                         ],
                       );
                     }
-                    return SizedBox();
+                    return const SizedBox();
                   },
                 ),
                 SizedBox(
@@ -148,7 +148,7 @@ class _DownloadFileBottomsheetContainerState
                     titleColor: Theme.of(context).scaffoldBackgroundColor,
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     buttonTitle: UiUtils.getTranslatedLabel(context, cancelKey),
-                    showBorder: false),
+                    showBorder: false,),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * (0.025),
                 ),

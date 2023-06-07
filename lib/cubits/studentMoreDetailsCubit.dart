@@ -22,7 +22,7 @@ class StudentMoreDetailsFetchSuccess extends StudentMoreDetailsState {
       required this.motherDetails,
       required this.todayAttendance,
       required this.totalAbsent,
-      required this.totalPresent});
+      required this.totalPresent,});
 }
 
 class StudentMoreDetailsFetchFailure extends StudentMoreDetailsState {
@@ -37,7 +37,7 @@ class StudentMoreDetailsCubit extends Cubit<StudentMoreDetailsState> {
   StudentMoreDetailsCubit(this._studentRepository)
       : super(StudentMoreDetailsInitial());
 
-  void fetchStudentMoreDetails({required int studentId}) async {
+  Future<void> fetchStudentMoreDetails({required int studentId}) async {
     emit(StudentMoreDetailsFetchInProgress());
     try {
       final result =
@@ -48,7 +48,7 @@ class StudentMoreDetailsCubit extends Cubit<StudentMoreDetailsState> {
           motherDetails: result['motherDetails'],
           todayAttendance: result['todayAttendance'],
           totalAbsent: result['totalAbsent'],
-          totalPresent: result['totalPresent']));
+          totalPresent: result['totalPresent'],),);
     } catch (e) {
       emit(StudentMoreDetailsFetchFailure(e.toString()));
     }

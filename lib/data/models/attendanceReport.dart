@@ -27,6 +27,6 @@ class AttendanceReport {
   }
 
   bool isPresent() {
-    return this.type == 1;
+    return type == 1;
   }
 }

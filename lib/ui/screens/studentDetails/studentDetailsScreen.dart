@@ -24,7 +24,7 @@ class StudentDetailsScreen extends StatefulWidget {
               child: StudentDetailsScreen(
                 student: routeSettings.arguments as Student,
               ),
-            ));
+            ),);
   }
 }
 
@@ -43,7 +43,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
-          title: UiUtils.getTranslatedLabel(context, studentDetailsKey)),
+          title: UiUtils.getTranslatedLabel(context, studentDetailsKey),),
     );
   }
 

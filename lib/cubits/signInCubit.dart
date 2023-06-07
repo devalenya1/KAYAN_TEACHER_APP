@@ -26,7 +26,7 @@ class SignInCubit extends Cubit<SignInState> {
 
   SignInCubit(this._authRepository) : super(SignInInitial());
 
-  void signInUser({required String email, required String password}) async {
+  Future<void> signInUser({required String email, required String password}) async {
     emit(SignInInProgress());
 
     try {
@@ -36,7 +36,7 @@ class SignInCubit extends Cubit<SignInState> {
       emit(SignInSuccess(
         jwtToken: result['jwtToken'],
         teacher: result['teacher'] as Teacher,
-      ));
+      ),);
     } catch (e) {
       print(e.toString());
       emit(SignInFailure(e.toString()));

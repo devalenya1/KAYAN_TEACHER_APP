@@ -19,7 +19,7 @@ class AboutUsScreen extends StatefulWidget {
         builder: (_) => BlocProvider<AppSettingsCubit>(
               create: (context) => AppSettingsCubit(SystemRepository()),
               child: AboutUsScreen(),
-            ));
+            ),);
   }
 }
 

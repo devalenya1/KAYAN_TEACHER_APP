@@ -38,6 +38,12 @@ class _ForgotPasswordRequestBottomsheetState
       },
       child: Container(
         margin: MediaQuery.of(context).viewInsets,
+        decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(UiUtils.bottomSheetTopRadius),
+              topRight: Radius.circular(UiUtils.bottomSheetTopRadius),
+            ),),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -51,11 +57,11 @@ class _ForgotPasswordRequestBottomsheetState
                     Navigator.of(context).pop();
                   },
                   title:
-                      UiUtils.getTranslatedLabel(context, forgotPasswordKey)),
+                      UiUtils.getTranslatedLabel(context, forgotPasswordKey),),
               BottomSheetTextFieldContainer(
                 hintText: emailKey,
                 margin: EdgeInsets.symmetric(
-                    horizontal: UiUtils.bottomSheetHorizontalContentPadding),
+                    horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
                 maxLines: 1,
                 textEditingController: _emailTextEditingController,
               ),
@@ -64,20 +70,20 @@ class _ForgotPasswordRequestBottomsheetState
               ),
               BlocConsumer<ForgotPasswordRequestCubit,
                   ForgotPasswordRequestState>(
-                listener: ((context, state) {
+                listener: (context, state) {
                   if (state is ForgotPasswordRequestFailure) {
                     UiUtils.showBottomToastOverlay(
                         context: context,
                         errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                            context, state.errorMessage),
-                        backgroundColor: Theme.of(context).colorScheme.error);
+                            context, state.errorMessage,),
+                        backgroundColor: Theme.of(context).colorScheme.error,);
                   } else if (state is ForgotPasswordRequestSuccess) {
                     Navigator.of(context).pop({
                       "error": false,
                       "email": _emailTextEditingController.text.trim()
                     });
                   }
-                }),
+                },
                 builder: (context, state) {
                   return CustomRoundedButton(
                       onTap: () {
@@ -89,16 +95,16 @@ class _ForgotPasswordRequestBottomsheetState
                           UiUtils.showBottomToastOverlay(
                               context: context,
                               errorMessage: UiUtils.getTranslatedLabel(
-                                  context, pleaseEnterEmailKey),
+                                  context, pleaseEnterEmailKey,),
                               backgroundColor:
-                                  Theme.of(context).colorScheme.error);
+                                  Theme.of(context).colorScheme.error,);
                           return;
                         }
 
                         context
                             .read<ForgotPasswordRequestCubit>()
                             .requestforgotPassword(
-                                email: _emailTextEditingController.text.trim());
+                                email: _emailTextEditingController.text.trim(),);
                       },
                       height: 40,
                       textSize: 16.0,
@@ -109,8 +115,8 @@ class _ForgotPasswordRequestBottomsheetState
                           context,
                           state is ForgotPasswordRequestInProgress
                               ? submittingKey
-                              : submitKey),
-                      showBorder: false);
+                              : submitKey,),
+                      showBorder: false,);
                 },
               ),
               SizedBox(
@@ -119,12 +125,6 @@ class _ForgotPasswordRequestBottomsheetState
             ],
           ),
         ),
-        decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(UiUtils.bottomSheetTopRadius),
-              topRight: Radius.circular(UiUtils.bottomSheetTopRadius),
-            )),
       ),
     );
   }

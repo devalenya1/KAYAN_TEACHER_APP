@@ -6,7 +6,7 @@ class AddedFileContainer extends StatelessWidget {
   final PlatformFile platformFile;
   final Function onDelete;
   const AddedFileContainer(
-      {Key? key, required this.onDelete, required this.platformFile})
+      {Key? key, required this.onDelete, required this.platformFile,})
       : super(key: key);
 
   @override
@@ -14,11 +14,11 @@ class AddedFileContainer extends StatelessWidget {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return DottedBorder(
         borderType: BorderType.RRect,
-        dashPattern: [10, 10],
-        radius: Radius.circular(10.0),
+        dashPattern: const [10, 10],
+        radius: const Radius.circular(10.0),
         color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
         child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 10),
+          padding: const EdgeInsetsDirectional.only(start: 10),
           child: Row(
             children: [
               SizedBox(
@@ -29,16 +29,16 @@ class AddedFileContainer extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               IconButton(
                   onPressed: () {
                     onDelete();
                   },
-                  icon: Icon(Icons.close)),
+                  icon: const Icon(Icons.close),),
             ],
           ),
         ),
       );
-    });
+    },);
   }
 }

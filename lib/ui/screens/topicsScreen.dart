@@ -38,7 +38,7 @@ class TopicsScreen extends StatefulWidget {
               BlocProvider(
                 create: (context) => TopicsCubit(TopicRepository()),
               ),
-            ], child: TopicsScreen()));
+            ], child: TopicsScreen(),),);
   }
 
   @override
@@ -60,7 +60,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
     context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
         .read<MyClassesCubit>()
         .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-        .id);
+        .id,);
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
                 context.read<LessonsCubit>().updateState(LessonsInitial());
                 context.read<TopicsCubit>().updateState(TopicsInitial());
                 setState(() {});
-              }),
+              },),
           ClassSubjectsDropDownMenu(
               changeSelectedItem: (result) {
                 setState(() {
@@ -90,15 +90,15 @@ class _TopicsScreenState extends State<TopicsScreen> {
                       classSectionId: context
                           .read<MyClassesCubit>()
                           .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection)
+                              classSectionName: currentSelectedClassSection,)
                           .id,
-                      subjectId: subjectId);
+                      subjectId: subjectId,);
 
                   context.read<TopicsCubit>().updateState(TopicsInitial());
                 }
               },
               currentSelectedItem: currentSelectedSubject,
-              width: boxConstraints.maxWidth),
+              width: boxConstraints.maxWidth,),
           //
 
           BlocConsumer<LessonsCubit, LessonsState>(builder: (context, state) {
@@ -107,7 +107,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
                     ? DefaultDropDownLabelContainer(
                         titleLabelKey:
                             UiUtils.getTranslatedLabel(context, noLessonsKey),
-                        width: boxConstraints.maxWidth)
+                        width: boxConstraints.maxWidth,)
                     : CustomDropDownMenu(
                         width: boxConstraints.maxWidth,
                         onChanged: (value) {
@@ -117,13 +117,13 @@ class _TopicsScreenState extends State<TopicsScreen> {
                               lessonId: context
                                   .read<LessonsCubit>()
                                   .getLessonByName(currentSelectedLesson)
-                                  .id);
+                                  .id,);
                         },
                         menu: state.lessons.map((e) => e.name).toList(),
-                        currentSelectedItem: currentSelectedLesson)
+                        currentSelectedItem: currentSelectedLesson,)
                 : DefaultDropDownLabelContainer(
                     titleLabelKey: fetchingLessonsKey,
-                    width: boxConstraints.maxWidth);
+                    width: boxConstraints.maxWidth,);
           }, listener: (context, state) {
             if (state is LessonsFetchSuccess) {
               if (state.lessons.isNotEmpty) {
@@ -134,13 +134,13 @@ class _TopicsScreenState extends State<TopicsScreen> {
                     lessonId: context
                         .read<LessonsCubit>()
                         .getLessonByName(currentSelectedLesson)
-                        .id);
+                        .id,);
               }
             }
-          }),
+          },),
         ],
       );
-    });
+    },);
   }
 
   @override
@@ -148,7 +148,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionAddButton(onTap: () {
         Navigator.of(context).pushNamed(Routes.addOrEditTopic);
-      }),
+      },),
       body: Stack(
         children: [
           Align(
@@ -159,12 +159,12 @@ class _TopicsScreenState extends State<TopicsScreen> {
                     lessonId: context
                         .read<LessonsCubit>()
                         .getLessonByName(currentSelectedLesson)
-                        .id);
+                        .id,);
               },
               displacment: UiUtils.getScrollViewTopPadding(
                   context: context,
                   appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage),
+                      UiUtils.appBarSmallerHeightPercentage,),
               child: ListView(
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width *
@@ -174,7 +174,7 @@ class _TopicsScreenState extends State<TopicsScreen> {
                     top: UiUtils.getScrollViewTopPadding(
                         context: context,
                         appBarHeightPercentage:
-                            UiUtils.appBarSmallerHeightPercentage)),
+                            UiUtils.appBarSmallerHeightPercentage,),),
                 children: [
                   //
                   _buildClassSubjectAndLessonDropDowns(),
@@ -186,20 +186,20 @@ class _TopicsScreenState extends State<TopicsScreen> {
                     builder: (context, state) {
                       if (state is LessonsFetchSuccess &&
                           state.lessons.isEmpty) {
-                        return SizedBox();
+                        return const SizedBox();
                       }
                       return TopicsContainer(
                           classSectionDetails: context
                               .read<MyClassesCubit>()
                               .getClassSectionDetails(
                                   classSectionName:
-                                      currentSelectedClassSection),
+                                      currentSelectedClassSection,),
                           subject: context
                               .read<SubjectsOfClassSectionCubit>()
                               .getSubjectDetailsByName(currentSelectedSubject),
                           lesson: context.read<LessonsCubit>().getLessonByName(
                                 currentSelectedLesson,
-                              ));
+                              ),);
                     },
                   ),
                 ],

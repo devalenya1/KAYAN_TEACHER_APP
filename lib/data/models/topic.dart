@@ -5,7 +5,7 @@ class Topic {
       {required this.id,
       required this.name,
       required this.lessonId,
-      required this.description});
+      required this.description,});
   late final int id;
   late final String description;
   late final String name;

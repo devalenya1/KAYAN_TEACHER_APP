@@ -30,7 +30,7 @@ class Student {
       required this.categoryName,
       required this.classSectionName,
       required this.gender,
-      required this.mediumName});
+      required this.mediumName,});
   late final int id;
   late final String gender;
   late final String email;

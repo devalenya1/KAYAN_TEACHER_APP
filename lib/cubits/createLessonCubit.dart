@@ -21,12 +21,12 @@ class CreateLessonCubit extends Cubit<CreateLessonState> {
 
   CreateLessonCubit(this._lessonRepository) : super(CreateLessonInitial());
 
-  void createLesson(
+  Future<void> createLesson(
       {required String lessonName,
       required int classSectionId,
       required int subjectId,
       required String lessonDescription,
-      required List<PickedStudyMaterial> files}) async {
+      required List<PickedStudyMaterial> files,}) async {
     emit(CreateLessonInProgress());
     try {
       List<Map<String, dynamic>> filesJosn = [];
@@ -39,7 +39,7 @@ class CreateLessonCubit extends Cubit<CreateLessonState> {
           classSectionId: classSectionId,
           subjectId: subjectId,
           lessonDescription: lessonDescription,
-          files: filesJosn);
+          files: filesJosn,);
       emit(CreateLessonSuccess());
     } catch (e) {
       print(e.toString());

@@ -19,7 +19,7 @@ class ContactUsScreen extends StatefulWidget {
         builder: (_) => BlocProvider<AppSettingsCubit>(
               create: (context) => AppSettingsCubit(SystemRepository()),
               child: ContactUsScreen(),
-            ));
+            ),);
   }
 }
 
@@ -40,7 +40,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         children: [
           AppSettingsBlocBuilder(appSettingsType: contactUsType),
           CustomAppBar(
-              title: UiUtils.getTranslatedLabel(context, contactUsKey)),
+              title: UiUtils.getTranslatedLabel(context, contactUsKey),),
         ],
       ),
     );

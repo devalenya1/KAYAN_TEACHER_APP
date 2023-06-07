@@ -14,22 +14,21 @@ class ErrorContainer extends StatelessWidget {
   final Function? onTapRetry;
   final Color? retryButtonBackgroundColor;
   final Color? retryButtonTextColor;
-  const ErrorContainer(
-      {Key? key,
-      required this.errorMessageCode,
-      this.errorMessageColor,
-      this.errorMessageFontSize,
-      this.onTapRetry,
-      this.showErrorImage,
-      this.retryButtonBackgroundColor,
-      this.retryButtonTextColor,
-      this.showRetryButton})
-      : super(key: key);
+  const ErrorContainer({
+    Key? key,
+    required this.errorMessageCode,
+    this.errorMessageColor,
+    this.errorMessageFontSize,
+    this.onTapRetry,
+    this.showErrorImage,
+    this.retryButtonBackgroundColor,
+    this.retryButtonTextColor,
+    this.showRetryButton,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
@@ -37,26 +36,30 @@ class ErrorContainer extends StatelessWidget {
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * (0.35),
-          child: SvgPicture.asset(UiUtils.getImagePath(
+          child: SvgPicture.asset(
+            UiUtils.getImagePath(
               errorMessageCode == ErrorMessageKeysAndCode.noInternetCode
                   ? "noInternet.svg"
-                  : "somethingWentWrong.svg")),
+                  : "somethingWentWrong.svg",
+            ),
+          ),
         ),
         SizedBox(
           height: MediaQuery.of(context).size.height * (0.025),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
             UiUtils.getErrorMessageFromErrorCode(context, errorMessageCode),
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: errorMessageColor ??
-                    Theme.of(context).colorScheme.secondary,
-                fontSize: errorMessageFontSize ?? 16),
+              color:
+                  errorMessageColor ?? Theme.of(context).colorScheme.secondary,
+              fontSize: errorMessageFontSize ?? 16,
+            ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 15,
         ),
         (showRetryButton ?? true)
@@ -68,11 +71,12 @@ class ErrorContainer extends StatelessWidget {
                 onTap: () {
                   onTapRetry?.call();
                 },
-                titleColor: (retryButtonTextColor ??
-                    Theme.of(context).scaffoldBackgroundColor),
+                titleColor: retryButtonTextColor ??
+                    Theme.of(context).scaffoldBackgroundColor,
                 buttonTitle: UiUtils.getTranslatedLabel(context, retryKey),
-                showBorder: false)
-            : SizedBox()
+                showBorder: false,
+              )
+            : const SizedBox()
       ],
     );
   }

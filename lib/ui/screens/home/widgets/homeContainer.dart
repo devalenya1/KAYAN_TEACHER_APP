@@ -34,7 +34,7 @@ class _HomeContainerState extends State<HomeContainer> {
     return TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontSize: 17.0,
-        fontWeight: FontWeight.w600);
+        fontWeight: FontWeight.w600,);
   }
 
   Widget _buildMyClassesLabel() {
@@ -47,7 +47,7 @@ class _HomeContainerState extends State<HomeContainer> {
             style: _titleFontStyle(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20.0,
         ),
       ],
@@ -56,7 +56,7 @@ class _HomeContainerState extends State<HomeContainer> {
 
   Widget _buildTopProfileContainer(BuildContext context) {
     return ScreenTopBackgroundContainer(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Stack(
           children: [
@@ -65,23 +65,23 @@ class _HomeContainerState extends State<HomeContainer> {
               top: MediaQuery.of(context).size.width * (-0.15),
               start: MediaQuery.of(context).size.width * (-0.225),
               child: Container(
-                padding: EdgeInsets.only(right: 20.0, bottom: 20.0),
+                padding: const EdgeInsets.only(right: 20.0, bottom: 20.0),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context)
+                            .scaffoldBackgroundColor
+                            .withOpacity(0.1),),
+                    shape: BoxShape.circle,),
+                width: MediaQuery.of(context).size.width * (0.6),
+                height: MediaQuery.of(context).size.width * (0.6),
                 child: Container(
                   decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context)
                               .scaffoldBackgroundColor
-                              .withOpacity(0.1)),
-                      shape: BoxShape.circle),
+                              .withOpacity(0.1),),
+                      shape: BoxShape.circle,),
                 ),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context)
-                            .scaffoldBackgroundColor
-                            .withOpacity(0.1)),
-                    shape: BoxShape.circle),
-                width: MediaQuery.of(context).size.width * (0.6),
-                height: MediaQuery.of(context).size.width * (0.6),
               ),
             ),
 
@@ -94,7 +94,7 @@ class _HomeContainerState extends State<HomeContainer> {
                     color: Theme.of(context)
                         .scaffoldBackgroundColor
                         .withOpacity(0.1),
-                    shape: BoxShape.circle),
+                    shape: BoxShape.circle,),
                 width: MediaQuery.of(context).size.width * (0.4),
                 height: MediaQuery.of(context).size.width * (0.4),
               ),
@@ -105,7 +105,7 @@ class _HomeContainerState extends State<HomeContainer> {
               child: Container(
                 margin: EdgeInsetsDirectional.only(
                     start: boxConstraints.maxWidth * (0.075),
-                    bottom: boxConstraints.maxHeight * (0.2)),
+                    bottom: boxConstraints.maxHeight * (0.2),),
                 child: Row(
                   children: [
                     Container(
@@ -114,12 +114,12 @@ class _HomeContainerState extends State<HomeContainer> {
                               image: CachedNetworkImageProvider(context
                                   .read<AuthCubit>()
                                   .getTeacherDetails()
-                                  .image)),
+                                  .image,),),
                           shape: BoxShape.circle,
                           border: Border.all(
                               width: 2.0,
                               color:
-                                  Theme.of(context).scaffoldBackgroundColor)),
+                                  Theme.of(context).scaffoldBackgroundColor,),),
                       width: boxConstraints.maxWidth * (0.175),
                       height: boxConstraints.maxWidth * (0.175),
                     ),
@@ -144,19 +144,19 @@ class _HomeContainerState extends State<HomeContainer> {
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,
                                   color: Theme.of(context)
-                                      .scaffoldBackgroundColor),
+                                      .scaffoldBackgroundColor,),
                             ),
                           ],
                         )
                       ],
-                    ))
+                    ),)
                   ],
                 ),
               ),
             ),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -166,14 +166,14 @@ class _HomeContainerState extends State<HomeContainer> {
       height: 80,
       borderRadius: 10,
       width: boxConstraints.maxWidth * (0.45),
-    ));
+    ),);
   }
 
   Widget _buildClassContainer(
       {required BoxConstraints boxConstraints,
       required ClassSectionDetails classSectionDetails,
       required int index,
-      required bool isClassTeacher}) {
+      required bool isClassTeacher,}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5),
       child: InkWell(
@@ -189,48 +189,6 @@ class _HomeContainerState extends State<HomeContainer> {
         borderRadius: BorderRadius.circular(10),
         child: Container(
           height: 80,
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "${classSectionDetails.classDetails.name} - ${classSectionDetails.sectionDetails.name}",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              Positioned(
-                  bottom: -15,
-                  left: (boxConstraints.maxWidth * 0.225) - 15, //0.45
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 30,
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 18,
-                    ),
-                    height: 30,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.2),
-                              offset: Offset(0, 4),
-                              blurRadius: 20)
-                        ],
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).scaffoldBackgroundColor),
-                  ))
-            ],
-          ),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               //Diplaying different(4) class color
@@ -239,9 +197,50 @@ class _HomeContainerState extends State<HomeContainer> {
                 BoxShadow(
                     blurRadius: 10,
                     color: UiUtils.getClassColor(index).withOpacity(0.2),
-                    offset: Offset(0, 2.5))
-              ]),
+                    offset: const Offset(0, 2.5),)
+              ],),
           width: boxConstraints.maxWidth * 0.45,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Align(
+                child: Text(
+                  "${classSectionDetails.classDetails.name} - ${classSectionDetails.sectionDetails.name}",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,),
+                ),
+              ),
+              Positioned(
+                  bottom: -15,
+                  left: (boxConstraints.maxWidth * 0.225) - 15, //0.45
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.2),
+                              offset: const Offset(0, 4),
+                              blurRadius: 20,)
+                        ],
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).scaffoldBackgroundColor,),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 18,
+                    ),
+                  ),)
+            ],
+          ),
         ),
       ),
     );
@@ -256,17 +255,16 @@ class _HomeContainerState extends State<HomeContainer> {
           return Wrap(
             spacing: boxConstraints.maxWidth * (0.1),
             runSpacing: 40,
-            direction: Axis.horizontal,
             children: List.generate(classes.length, (index) => index)
                 .map((index) => _buildClassContainer(
                       boxConstraints: boxConstraints,
                       classSectionDetails: classes[index],
                       index: index,
                       isClassTeacher: false,
-                    ))
+                    ),)
                 .toList(),
           );
-        }),
+        },),
       ],
     );
   }
@@ -281,7 +279,7 @@ class _HomeContainerState extends State<HomeContainer> {
             style: _titleFontStyle(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20.0,
         ),
       ],
@@ -300,9 +298,9 @@ class _HomeContainerState extends State<HomeContainer> {
                   classSectionDetails: primaryClass,
                   boxConstraints: boxConstraints,
                   index: 0,
-                  isClassTeacher: true)
+                  isClassTeacher: true,)
               : const SizedBox.shrink();
-        }),
+        },),
       ],
     );
   }
@@ -310,7 +308,7 @@ class _HomeContainerState extends State<HomeContainer> {
   Widget _buildMenuContainer(
       {required String iconPath,
       required String title,
-      required String route}) {
+      required String route,}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: InkWell(
@@ -320,23 +318,29 @@ class _HomeContainerState extends State<HomeContainer> {
         },
         child: Container(
           height: 80,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.25),
+              ),),
           child: LayoutBuilder(builder: (context, boxConstraints) {
             return Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(14),
-                  margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.all(14),
+                  margin: const EdgeInsets.symmetric(horizontal: 10.0),
                   height: 60,
-                  child: SvgPicture.asset(iconPath),
                   decoration: BoxDecoration(
                       color: Theme.of(context)
                           .colorScheme
                           .onSecondary
                           .withOpacity(0.225),
-                      borderRadius: BorderRadius.circular(15.0)),
+                      borderRadius: BorderRadius.circular(15.0),),
                   width: boxConstraints.maxWidth * (0.225),
+                  child: SvgPicture.asset(iconPath),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10.0,
                 ),
                 Text(
@@ -344,9 +348,9 @@ class _HomeContainerState extends State<HomeContainer> {
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w500,
-                      fontSize: 15),
+                      fontSize: 15,),
                 ),
-                Spacer(),
+                const Spacer(),
                 CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                   radius: 17.5,
@@ -356,19 +360,12 @@ class _HomeContainerState extends State<HomeContainer> {
                     color: Theme.of(context).scaffoldBackgroundColor,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15.0,
                 ),
               ],
             );
-          }),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                width: 1.0,
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.25),
-              )),
+          },),
         ),
       ),
     );
@@ -384,7 +381,7 @@ class _HomeContainerState extends State<HomeContainer> {
             style: _titleFontStyle(),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 20.0,
         ),
       ],
@@ -393,7 +390,7 @@ class _HomeContainerState extends State<HomeContainer> {
 
   Widget _buildInformationShimmerLoadingContainer() {
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         bottom: 15,
       ),
       height: 80,
@@ -404,24 +401,24 @@ class _HomeContainerState extends State<HomeContainer> {
                 child: CustomShimmerContainer(
               height: 60,
               width: boxConstraints.maxWidth * (0.225),
-            )),
+            ),),
             SizedBox(
               width: boxConstraints.maxWidth * (0.05),
             ),
             ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
               width: boxConstraints.maxWidth * (0.475),
-            )),
-            Spacer(),
+            ),),
+            const Spacer(),
             ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
               borderRadius: boxConstraints.maxWidth * (0.035),
               height: boxConstraints.maxWidth * (0.07),
               width: boxConstraints.maxWidth * (0.07),
-            )),
+            ),),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -432,30 +429,30 @@ class _HomeContainerState extends State<HomeContainer> {
         _buildMenuContainer(
             route: Routes.assignments,
             iconPath: UiUtils.getImagePath("assignment_icon.svg"),
-            title: UiUtils.getTranslatedLabel(context, assignmentsKey)),
+            title: UiUtils.getTranslatedLabel(context, assignmentsKey),),
         _buildMenuContainer(
             route: Routes.announcements,
             iconPath: UiUtils.getImagePath("announcment_icon.svg"),
-            title: UiUtils.getTranslatedLabel(context, announcementsKey)),
+            title: UiUtils.getTranslatedLabel(context, announcementsKey),),
         _buildMenuContainer(
             route: Routes.lessons,
             iconPath: UiUtils.getImagePath("lesson.svg"),
-            title: UiUtils.getTranslatedLabel(context, chaptersKey)),
+            title: UiUtils.getTranslatedLabel(context, chaptersKey),),
         _buildMenuContainer(
             route: Routes.topics,
             iconPath: UiUtils.getImagePath("topics.svg"),
-            title: UiUtils.getTranslatedLabel(context, topicsKey)),
+            title: UiUtils.getTranslatedLabel(context, topicsKey),),
         _buildMenuContainer(
             route: Routes.holidays,
             iconPath: UiUtils.getImagePath("holiday_icon.svg"),
-            title: UiUtils.getTranslatedLabel(context, holidaysKey)),
+            title: UiUtils.getTranslatedLabel(context, holidaysKey),),
         _buildMenuContainer(
             route: Routes.exams,
             iconPath: UiUtils.getImagePath("exam_icon.svg"),
-            title: UiUtils.getTranslatedLabel(context, examsKey)),
+            title: UiUtils.getTranslatedLabel(context, examsKey),),
         context.read<MyClassesCubit>().primaryClass() == null ||
                 context.read<MyClassesCubit>().primaryClass()!.id == '0'
-            ? SizedBox()
+            ? const SizedBox()
             : _buildMenuContainer(
                 route: Routes.addResultForAllStudents,
                 iconPath: UiUtils.getImagePath("result_icon.svg"),
@@ -485,7 +482,7 @@ class _HomeContainerState extends State<HomeContainer> {
                   top: UiUtils.getScrollViewTopPadding(
                       context: context,
                       appBarHeightPercentage:
-                          UiUtils.appBarBiggerHeightPercentage)),
+                          UiUtils.appBarBiggerHeightPercentage,),),
               child: BlocBuilder<MyClassesCubit, MyClassesState>(
                 builder: (context, state) {
                   if (state is MyClassesFetchSuccess) {
@@ -493,12 +490,12 @@ class _HomeContainerState extends State<HomeContainer> {
                     return Column(
                       children: [
                         _buildMyClasses(),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         if (primaryClass != null) _buildClassTeacher(),
                         if (primaryClass != null)
-                          SizedBox(
+                          const SizedBox(
                             height: 20.0,
                           ),
                         _buildInformationAndMenu()
@@ -524,32 +521,31 @@ class _HomeContainerState extends State<HomeContainer> {
                         Wrap(
                           spacing: boxConstraints.maxWidth * (0.1),
                           runSpacing: 40,
-                          direction: Axis.horizontal,
                           children: List.generate(
                                   UiUtils.defaultShimmerLoadingContentCount,
-                                  (index) => index)
+                                  (index) => index,)
                               .map((index) =>
-                                  _buildClassShimmerLoading(boxConstraints))
+                                  _buildClassShimmerLoading(boxConstraints),)
                               .toList(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         _buildClassTeacherLabel(),
                         _buildClassShimmerLoading(boxConstraints),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         _buildInformationAndMenuLabel(),
                         ...List.generate(
                                 UiUtils.defaultShimmerLoadingContentCount,
-                                (index) => index)
+                                (index) => index,)
                             .map((e) =>
-                                _buildInformationShimmerLoadingContainer())
+                                _buildInformationShimmerLoadingContainer(),)
                             .toList(),
                       ],
                     );
-                  });
+                  },);
                 },
               ),
             ),

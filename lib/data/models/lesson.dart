@@ -8,7 +8,7 @@ class Lesson {
       required this.classSectionId,
       required this.subjectId,
       required this.studyMaterials,
-      required this.topicsCount});
+      required this.topicsCount,});
   late final int id;
   late final List<StudyMaterial> studyMaterials;
 

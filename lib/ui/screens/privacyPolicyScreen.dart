@@ -18,8 +18,8 @@ class PrivacyPolicyScreen extends StatefulWidget {
     return CupertinoPageRoute(
         builder: (_) => BlocProvider<AppSettingsCubit>(
               create: (context) => AppSettingsCubit(SystemRepository()),
-              child: PrivacyPolicyScreen(),
-            ));
+              child: const PrivacyPolicyScreen(),
+            ),);
   }
 }
 
@@ -45,7 +45,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
             appSettingsType: privacyPolicyType,
           ),
           CustomAppBar(
-              title: UiUtils.getTranslatedLabel(context, privacyPolicyKey))
+              title: UiUtils.getTranslatedLabel(context, privacyPolicyKey),)
         ],
       ),
     );

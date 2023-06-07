@@ -25,12 +25,12 @@ class LessonsCubit extends Cubit<LessonsState> {
 
   LessonsCubit(this._lessonRepository) : super(LessonsInitial());
 
-  void fetchLessons(
-      {required int classSectionId, required int subjectId}) async {
+  Future<void> fetchLessons(
+      {required int classSectionId, required int subjectId,}) async {
     emit(LessonsFetchInProgress());
     try {
       emit(LessonsFetchSuccess(await _lessonRepository.getLessons(
-          classSectionId: classSectionId, subjectId: subjectId)));
+          classSectionId: classSectionId, subjectId: subjectId,),),);
     } catch (e) {
       emit(LessonsFetchFailure(e.toString()));
     }

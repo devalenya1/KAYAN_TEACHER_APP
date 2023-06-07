@@ -21,13 +21,13 @@ class EditLessonCubit extends Cubit<EditLessonState> {
 
   EditLessonCubit(this._lessonRepository) : super(EditLessonInitial());
 
-  void editLesson(
+  Future<void> editLesson(
       {required String lessonName,
       required int lessonId,
       required int classSectionId,
       required int subjectId,
       required String lessonDescription,
-      required List<PickedStudyMaterial> files}) async {
+      required List<PickedStudyMaterial> files,}) async {
     emit(EditLessonInProgress());
     try {
       List<Map<String, dynamic>> filesJosn = [];
@@ -41,7 +41,7 @@ class EditLessonCubit extends Cubit<EditLessonState> {
           classSectionId: classSectionId,
           subjectId: subjectId,
           lessonDescription: lessonDescription,
-          files: filesJosn);
+          files: filesJosn,);
       emit(EditLessonSuccess());
     } catch (e) {
       print(e.toString());

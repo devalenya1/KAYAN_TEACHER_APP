@@ -27,8 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  void navigateToNextScreen() async {
-    await Future.delayed(Duration(seconds: 1));
+  Future<void> navigateToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 1));
     if (context.read<AuthCubit>().state is Unauthenticated) {
       Navigator.of(context).pushReplacementNamed(Routes.login);
     } else {
@@ -52,11 +52,11 @@ class _SplashScreenState extends State<SplashScreen> {
                   onTapRetry: () {
                     fetchAppConfiguration();
                   },
-                  errorMessageCode: state.errorMessage),
+                  errorMessageCode: state.errorMessage,),
             );
           }
           return Center(
-              child: SvgPicture.asset(UiUtils.getImagePath("appLogo.svg")));
+              child: SvgPicture.asset(UiUtils.getImagePath("appLogo.svg")),);
         },
       ),
     );

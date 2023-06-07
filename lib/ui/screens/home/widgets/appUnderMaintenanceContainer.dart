@@ -24,7 +24,7 @@ class AppUnderMaintenanceContainer extends StatelessWidget {
             child: Text(
               UiUtils.getTranslatedLabel(context, appUnderMaintenanceKey),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
               ),
             ),

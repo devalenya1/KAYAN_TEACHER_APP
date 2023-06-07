@@ -31,7 +31,7 @@ class ReviewAssignmentCubit extends Cubit<ReviewAssignmentState> {
   ReviewAssignmentCubit(this._reviewAssignmentRepository)
       : super(ReviewAssignmentInitial());
 
-  void fetchReviewAssignment({
+  Future<void> fetchReviewAssignment({
     required int assignmentId,
   }) async {
     try {
@@ -51,16 +51,16 @@ class ReviewAssignmentCubit extends Cubit<ReviewAssignmentState> {
     }
   }
 
-  void updateReviewAssignmet(
+  Future<void> updateReviewAssignmet(
       {required ReviewAssignmentssubmition
-          updatedReviewAssignmentSubmition}) async {
+          updatedReviewAssignmentSubmition,}) async {
     try {
       List<ReviewAssignmentssubmition> currentassignment =
           (state as ReviewAssignmentSuccess).reviewAssignment;
       List<ReviewAssignmentssubmition> updateassignment =
           List.from(currentassignment);
       int reviewAssignmentIndex = currentassignment.indexWhere(
-          (element) => element.id == updatedReviewAssignmentSubmition.id);
+          (element) => element.id == updatedReviewAssignmentSubmition.id,);
       updateassignment[reviewAssignmentIndex] =
           updatedReviewAssignmentSubmition;
       emit(ReviewAssignmentSuccess(reviewAssignment: updateassignment));

@@ -16,13 +16,14 @@ class CustomAppBar extends StatelessWidget {
       this.showBackButton,
       required this.title,
       this.subTitle,
-      this.trailingWidget})
+      this.trailingWidget,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ScreenTopBackgroundContainer(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
+      heightPercentage: UiUtils.appBarSmallerHeightPercentage,
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Stack(
           children: [
@@ -31,17 +32,16 @@ class CustomAppBar extends StatelessWidget {
                     onTap: onPressBackButton,
                     alignmentDirectional: AlignmentDirectional.centerStart,
                   )
-                : SizedBox(),
+                : const SizedBox(),
             Align(
               alignment: AlignmentDirectional.centerEnd,
               child: Padding(
-                  child: trailingWidget,
                   padding: EdgeInsetsDirectional.only(
                     end: UiUtils.screenContentHorizontalPadding,
-                  )),
+                  ),
+                  child: trailingWidget,),
             ),
             Align(
-              alignment: Alignment.center,
               child: Container(
                 alignment: Alignment.center,
                 width: boxConstraints.maxWidth * (0.6),
@@ -52,32 +52,30 @@ class CustomAppBar extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: UiUtils.screenTitleFontSize,
-                      color: Theme.of(context).scaffoldBackgroundColor),
+                      color: Theme.of(context).scaffoldBackgroundColor,),
                 ),
               ),
             ),
             Align(
-              alignment: Alignment.center,
               child: Container(
                 alignment: Alignment.center,
                 width: boxConstraints.maxWidth * (0.6),
                 margin: EdgeInsets.only(
                     top: boxConstraints.maxHeight * (0.25) +
-                        UiUtils.screenTitleFontSize),
+                        UiUtils.screenTitleFontSize,),
                 child: Text(
                   subTitle ?? "",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: UiUtils.screenSubTitleFontSize,
-                      color: Theme.of(context).scaffoldBackgroundColor),
+                      color: Theme.of(context).scaffoldBackgroundColor,),
                 ),
               ),
             ),
           ],
         );
-      }),
-      heightPercentage: UiUtils.appBarSmallerHeightPercentage,
+      },),
     );
   }
 }

@@ -20,9 +20,8 @@ class AppSettingsBlocBuilder extends StatelessWidget {
           return SingleChildScrollView(
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height *
-                    (UiUtils.appBarSmallerHeightPercentage + 0.025)),
+                    (UiUtils.appBarSmallerHeightPercentage + 0.025),),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -20,7 +20,7 @@ class LessonDeleteCubit extends Cubit<LessonDeleteState> {
 
   LessonDeleteCubit(this._lessonRepository) : super(LessonDeleteInitial());
 
-  void deleteLesson(int lessonId) async {
+  Future<void> deleteLesson(int lessonId) async {
     emit(LessonDeleteInProgress());
     try {
       await _lessonRepository.deleteLesson(lessonId: lessonId);

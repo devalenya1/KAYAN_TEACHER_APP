@@ -7,7 +7,7 @@ class LessonRepository {
       required int classSectionId,
       required int subjectId,
       required String lessonDescription,
-      required List<Map<String, dynamic>> files}) async {
+      required List<Map<String, dynamic>> files,}) async {
     try {
       Map<String, dynamic> body = {
         "class_section_id": classSectionId,
@@ -27,7 +27,7 @@ class LessonRepository {
   }
 
   Future<List<Lesson>> getLessons(
-      {required int classSectionId, required int subjectId}) async {
+      {required int classSectionId, required int subjectId,}) async {
     try {
       final result = await Api.get(
           url: Api.getLessons,
@@ -35,7 +35,7 @@ class LessonRepository {
           queryParameters: {
             "class_section_id": classSectionId,
             "subject_id": subjectId
-          });
+          },);
       return (result['data'] as List)
           .map((lesson) => Lesson.fromJson(Map.from(lesson)))
           .toList();
@@ -62,7 +62,7 @@ class LessonRepository {
       required int classSectionId,
       required int subjectId,
       required String lessonDescription,
-      required List<Map<String, dynamic>> files}) async {
+      required List<Map<String, dynamic>> files,}) async {
     try {
       Map<String, dynamic> body = {
         "class_section_id": classSectionId,

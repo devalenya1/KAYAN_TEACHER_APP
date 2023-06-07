@@ -32,10 +32,10 @@ class AnnouncementsScreen extends StatefulWidget {
                 ),
                 BlocProvider(
                     create: (context) =>
-                        AnnouncementsCubit(AnnouncementRepository()))
+                        AnnouncementsCubit(AnnouncementRepository()),)
               ],
-              child: AnnouncementsScreen(),
-            ));
+              child: const AnnouncementsScreen(),
+            ),);
   }
 }
 
@@ -61,7 +61,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
               classSectionId: context
                   .read<MyClassesCubit>()
                   .getClassSectionDetails(
-                      classSectionName: currentSelectedClassSection)
+                      classSectionName: currentSelectedClassSection,)
                   .id,
             );
       }
@@ -73,7 +73,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
     context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
         .read<MyClassesCubit>()
         .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-        .id);
+        .id,);
     super.initState();
   }
 
@@ -87,9 +87,9 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
           classSectionId: context
               .read<MyClassesCubit>()
               .getClassSectionDetails(
-                  classSectionName: currentSelectedClassSection)
+                  classSectionName: currentSelectedClassSection,)
               .id,
-          subjectId: subjectId);
+          subjectId: subjectId,);
     }
   }
 
@@ -108,7 +108,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                 context
                     .read<AnnouncementsCubit>()
                     .updateState(AnnouncementsInitial());
-              }),
+              },),
           ClassSubjectsDropDownMenu(
               changeSelectedItem: (result) {
                 setState(() {
@@ -117,10 +117,10 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                 fetchAnnouncements();
               },
               currentSelectedItem: currentSelectedSubject,
-              width: boxConstraints.maxWidth),
+              width: boxConstraints.maxWidth,),
         ],
       );
-    });
+    },);
   }
 
   @override
@@ -128,13 +128,13 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionAddButton(onTap: () {
         Navigator.of(context).pushNamed<bool?>(Routes.addOrEditAnnouncement);
-      }),
+      },),
       body: Stack(
         children: [
           CustomRefreshIndicator(
             displacment: UiUtils.getScrollViewTopPadding(
                 context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage),
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),
             onRefreshCallback: () {
               fetchAnnouncements();
             },
@@ -149,7 +149,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                   top: UiUtils.getScrollViewTopPadding(
                       context: context,
                       appBarHeightPercentage:
-                          UiUtils.appBarSmallerHeightPercentage)),
+                          UiUtils.appBarSmallerHeightPercentage,),),
               children: [
                 _buildClassAndSubjectDropDowns(),
                 SizedBox(
@@ -159,17 +159,17 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                     classSectionDetails: context
                         .read<MyClassesCubit>()
                         .getClassSectionDetails(
-                            classSectionName: currentSelectedClassSection),
+                            classSectionName: currentSelectedClassSection,),
                     subject: context
                         .read<SubjectsOfClassSectionCubit>()
-                        .getSubjectDetailsByName(currentSelectedSubject)),
+                        .getSubjectDetailsByName(currentSelectedSubject),),
               ],
             ),
           ),
           Align(
             alignment: Alignment.topCenter,
             child: CustomAppBar(
-                title: UiUtils.getTranslatedLabel(context, announcementsKey)),
+                title: UiUtils.getTranslatedLabel(context, announcementsKey),),
           ),
         ],
       ),

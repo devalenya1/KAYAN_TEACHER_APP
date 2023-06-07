@@ -1,4 +1,4 @@
-import 'package:eschool_teacher/data/models/academicYear.dart';
+import 'package:eschool_teacher/data/models/sessionYear.dart';
 
 class AppConfiguration {
   AppConfiguration({
@@ -15,7 +15,7 @@ class AppConfiguration {
   late final String iosAppVersion;
   late final String forceAppUpdate;
   late final String appMaintenance;
-  late final AcademicYear academicYear;
+  late final SessionYear sessionYear;
   late final String schoolName;
   late final String schoolTagline;
 
@@ -28,6 +28,6 @@ class AppConfiguration {
     appMaintenance = json['teacher_app_maintenance'] ?? "0";
     schoolName = json['school_name'] ?? "";
     schoolTagline = json['school_tagline'] ?? "";
-    academicYear = AcademicYear.fromJson(json['session_year'] ?? {});
+    sessionYear = SessionYear.fromJson(json['session_year'] ?? {});
   }
 }

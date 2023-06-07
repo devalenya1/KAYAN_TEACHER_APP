@@ -32,13 +32,13 @@ class _RejectAssignmentBottomsheetContainerState
     UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: errorMessageKey,
-        backgroundColor: Theme.of(context).colorScheme.error);
+        backgroundColor: Theme.of(context).colorScheme.error,);
   }
 
   void updateReviewAssignment() {
     if (_remarkTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterRemarkkey));
+          UiUtils.getTranslatedLabel(context, pleaseEnterRemarkkey),);
     } else {
       context.read<EditReviewAssignmetCubit>().updateReviewAssignmet(
             reviewAssignmetId: widget.reviewAssignment.id,
@@ -61,10 +61,10 @@ class _RejectAssignmentBottomsheetContainerState
                   onTapCloseButton: () {
                     Navigator.of(context).pop();
                   },
-                  title: UiUtils.getTranslatedLabel(context, rejectKey)),
+                  title: UiUtils.getTranslatedLabel(context, rejectKey),),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: UiUtils.bottomSheetHorizontalContentPadding),
+                    horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
                 child: Column(
                   children: [
                     SizedBox(
@@ -74,7 +74,7 @@ class _RejectAssignmentBottomsheetContainerState
                         hintText:
                             UiUtils.getTranslatedLabel(context, addRemarkKey),
                         maxLines: 2,
-                        textEditingController: _remarkTextEditingController),
+                        textEditingController: _remarkTextEditingController,),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * (0.025),
                     ),
@@ -85,24 +85,24 @@ class _RejectAssignmentBottomsheetContainerState
                           UiUtils.showBottomToastOverlay(
                               context: context,
                               errorMessage: UiUtils.getTranslatedLabel(
-                                  context, reviewAssignmentsucessfullukey),
+                                  context, reviewAssignmentsucessfullukey,),
                               backgroundColor:
-                                  Theme.of(context).colorScheme.onPrimary);
+                                  Theme.of(context).colorScheme.onPrimary,);
                           Navigator.of(context).pop(
                             widget.reviewAssignment.copywith(
                                 id: widget.reviewAssignment.id,
                                 feedback:
                                     _remarkTextEditingController.text.trim(),
-                                status: 2),
+                                status: 2,),
                           );
                         }
                         if (state is EditReviewAssignmetFailure) {
                           UiUtils.showBottomToastOverlay(
                               context: context,
                               errorMessage: UiUtils.getTranslatedLabel(
-                                  context, failureAssignmentReviewkey),
+                                  context, failureAssignmentReviewkey,),
                               backgroundColor:
-                                  Theme.of(context).colorScheme.error);
+                                  Theme.of(context).colorScheme.error,);
                           Navigator.of(context).pop();
                         }
                       },
@@ -117,7 +117,7 @@ class _RejectAssignmentBottomsheetContainerState
                               UiUtils.getTranslatedLabel(context, submitKey),
                           showBorder: false,
                           child: state is EditReviewAssignmetInProgress
-                              ? CustomCircularProgressIndicator(
+                              ? const CustomCircularProgressIndicator(
                                   strokeWidth: 2,
                                   widthAndHeight: 20,
                                 )
@@ -140,6 +140,6 @@ class _RejectAssignmentBottomsheetContainerState
         ),
         onWillPop: () {
           return Future.value(true);
-        });
+        },);
   }
 }

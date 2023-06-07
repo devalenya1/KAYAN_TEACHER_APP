@@ -13,7 +13,7 @@ class MyClassesDropDownMenu extends StatelessWidget {
       {Key? key,
       required this.currentSelectedItem,
       required this.width,
-      required this.changeSelectedItem})
+      required this.changeSelectedItem,})
       : super(key: key);
 
   @override
@@ -28,9 +28,9 @@ class MyClassesDropDownMenu extends StatelessWidget {
           context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
               .read<MyClassesCubit>()
               .getClassSectionDetails(classSectionName: result)
-              .id);
+              .id,);
         },
         menu: context.read<MyClassesCubit>().getClassSectionName(),
-        currentSelectedItem: currentSelectedItem);
+        currentSelectedItem: currentSelectedItem,);
   }
 }

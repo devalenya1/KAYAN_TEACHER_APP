@@ -41,7 +41,7 @@ class ExamTimeTableScreen extends StatefulWidget {
                 examID: examDetails['examID'],
                 examName: examDetails['examName'],
               ),
-            ));
+            ),);
   }
 }
 
@@ -53,6 +53,15 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
     var subjectDetails = examTimeTable.subject;
 
     return Container(
+      margin: EdgeInsetsDirectional.only(
+          bottom: 20.0,
+          start: MediaQuery.of(context).size.width * (0.15),
+          end: MediaQuery.of(context).size.width * (0.075),),
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(15),),
+      width: MediaQuery.of(context).size.width,
+      height: 100,
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Stack(
           clipBehavior: Clip.none,
@@ -66,7 +75,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
                   height: boxConstraints.maxWidth * (0.235),
                   radius: 10,
                   subject: subjectDetails!,
-                  width: boxConstraints.maxWidth * (0.26)),
+                  width: boxConstraints.maxWidth * (0.26),),
             ),
             Align(
               alignment: AlignmentDirectional.topStart,
@@ -74,7 +83,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
                 padding: EdgeInsetsDirectional.only(
                     start: boxConstraints.maxWidth * (0.175),
                     top: boxConstraints.maxHeight * (0.125),
-                    bottom: boxConstraints.maxHeight * (0.075)),
+                    bottom: boxConstraints.maxHeight * (0.075),),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -89,15 +98,15 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
                                   color:
                                       Theme.of(context).colorScheme.secondary,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 14.0),
-                              textAlign: TextAlign.start),
+                                  fontSize: 14.0,),
+                              textAlign: TextAlign.start,),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Container(
                           alignment: Alignment.center,
                           width: boxConstraints.maxWidth * (0.31),
                           padding:
-                              EdgeInsets.symmetric(vertical: 2, horizontal: 3),
+                              const EdgeInsets.symmetric(vertical: 2, horizontal: 3),
                           child: Text(
                             '${examTimeTable.totalMarks} ${UiUtils.getTranslatedLabel(context, marksKey)}', //
                             maxLines: 1,
@@ -105,44 +114,44 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
                             style: TextStyle(
                                 fontSize: 10.75,
                                 color:
-                                    Theme.of(context).colorScheme.onBackground),
+                                    Theme.of(context).colorScheme.onBackground,),
                           ),
                         ),
                       ],
                     ),
                     subjectDetails.type == ' '
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Text(
                             subjectDetails.type,
                             style: TextStyle(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 10.5),
+                                fontSize: 10.5,),
                           ),
-                    Spacer(),
+                    const Spacer(),
                     examTimeTable.date == ''
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Text(
                             UiUtils.formatDate(
-                                DateTime.parse(examTimeTable.date!)),
+                                DateTime.parse(examTimeTable.date!),),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 height: 1.0,
                                 color: Theme.of(context).colorScheme.secondary,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 12.0)),
+                                fontSize: 12.0,),),
                     examTimeTable.startingTime == '' &&
                             examTimeTable.endingTime == ''
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Text(
                             '${UiUtils.formatTime(examTimeTable.startingTime!)} - ${UiUtils.formatTime(examTimeTable.endingTime!)}',
                             style: TextStyle(
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 10.5),
+                                fontSize: 10.5,),
                           )
                   ],
                 ),
@@ -150,16 +159,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
             ),
           ],
         );
-      }),
-      margin: EdgeInsetsDirectional.only(
-          bottom: 20.0,
-          start: MediaQuery.of(context).size.width * (0.15),
-          end: MediaQuery.of(context).size.width * (0.075)),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(15)),
-      width: MediaQuery.of(context).size.width,
-      height: 100,
+      },),
     );
   }
 
@@ -179,17 +179,17 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
           top: UiUtils.getScrollViewTopPadding(
               context: context,
               appBarHeightPercentage:
-                  UiUtils.appBarBiggerHeightPercentage - 0.025)),
+                  UiUtils.appBarBiggerHeightPercentage - 0.025,),),
       child: BlocBuilder<ExamTimeTableCubit, ExamTimeTableState>(
         builder: (context, state) {
           if (state is ExamTimeTableFetchSuccess) {
             return state.examTimeTableList.isEmpty
-                ? NoDataContainer(titleKey: noExamTimeTableFoundKey)
+                ? const NoDataContainer(titleKey: noExamTimeTableFoundKey)
                 : Column(
                     children: List.generate(
                         state.examTimeTableList.length,
                         (index) => _buildExamTimeTableContainer(
-                            examTimeTable: state.examTimeTableList[index])),
+                            examTimeTable: state.examTimeTableList[index],),),
                   );
           } else if (state is ExamTimeTableFetchFailure) {
             return ErrorContainer(
@@ -231,12 +231,12 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: UiUtils.screenContentHorizontalPadding),
+                    left: UiUtils.screenContentHorizontalPadding,),
                 child: SvgButton(
                     onTap: () {
                       Navigator.of(context).pop();
                     },
-                    svgIconUrl: UiUtils.getBackButtonPath(context)),
+                    svgIconUrl: UiUtils.getBackButtonPath(context),),
               ),
             ),
             Align(
@@ -245,7 +245,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
                 UiUtils.getTranslatedLabel(context, examTimeTableKey),
                 style: TextStyle(
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    fontSize: UiUtils.screenTitleFontSize),
+                    fontSize: UiUtils.screenTitleFontSize,),
               ),
             ),
             Align(
@@ -253,13 +253,13 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
               child: Padding(
                 padding: EdgeInsets.only(
                     top: boxConstraints.maxHeight * (0.075) +
-                        UiUtils.screenTitleFontSize),
+                        UiUtils.screenTitleFontSize,),
                 child: Text(
                   studentName,
                   maxLines: 1,
                   style: TextStyle(
                       fontSize: UiUtils.screenSubTitleFontSize,
-                      color: Theme.of(context).scaffoldBackgroundColor),
+                      color: Theme.of(context).scaffoldBackgroundColor,),
                 ),
               ),
             ),
@@ -267,21 +267,8 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
               bottom: -20,
               left: MediaQuery.of(context).size.width * (0.075),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.5),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.5),
                 alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    Text(
-                      widget.examName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Spacer(),
-                  ],
-                ),
                 height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -291,17 +278,29 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
                               .colorScheme
                               .secondary
                               .withOpacity(0.075),
-                          offset: Offset(2.5, 2.5),
-                          blurRadius: 5,
-                          spreadRadius: 0)
+                          offset: const Offset(2.5, 2.5),
+                          blurRadius: 5,)
                     ],
-                    color: Theme.of(context).scaffoldBackgroundColor),
+                    color: Theme.of(context).scaffoldBackgroundColor,),
                 width: MediaQuery.of(context).size.width * (0.85),
+                child: Column(
+                  children: [
+                    Text(
+                      widget.examName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w600,),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
               ),
             ),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -312,7 +311,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
         children: [
           Align(
               alignment: Alignment.topCenter,
-              child: _buildExamTimeTableDetailsContainer()),
+              child: _buildExamTimeTableDetailsContainer(),),
           Align(alignment: Alignment.topCenter, child: _buildAppBar(context)),
         ],
       ),
@@ -336,7 +335,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
               CustomShimmerContainer(
                   borderRadius: 10,
                   height: boxConstraints.maxHeight,
-                  width: boxConstraints.maxWidth * (0.26)),
+                  width: boxConstraints.maxWidth * (0.26),),
               SizedBox(
                 width: boxConstraints.maxWidth * (0.05),
               ),
@@ -347,26 +346,26 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
                     height: boxConstraints.maxHeight * (0.075),
                   ),
                   CustomShimmerContainer(
-                      borderRadius: 10, width: boxConstraints.maxWidth * (0.6)),
+                      borderRadius: 10, width: boxConstraints.maxWidth * (0.6),),
                   SizedBox(
                     height: boxConstraints.maxHeight * (0.075),
                   ),
                   CustomShimmerContainer(
                       height: 8,
                       borderRadius: 10,
-                      width: boxConstraints.maxWidth * (0.45)),
-                  Spacer(),
+                      width: boxConstraints.maxWidth * (0.45),),
+                  const Spacer(),
                   CustomShimmerContainer(
                       height: 8,
                       borderRadius: 10,
-                      width: boxConstraints.maxWidth * (0.3)),
+                      width: boxConstraints.maxWidth * (0.3),),
                   SizedBox(
                     height: boxConstraints.maxHeight * (0.075),
                   ),
                   CustomShimmerContainer(
                       height: 8,
                       borderRadius: 10,
-                      width: boxConstraints.maxWidth * (0.3)),
+                      width: boxConstraints.maxWidth * (0.3),),
                   SizedBox(
                     height: boxConstraints.maxHeight * (0.075),
                   ),
@@ -375,7 +374,7 @@ class _ExamTimeTableState extends State<ExamTimeTableScreen> {
             ],
           ),
         );
-      }),
+      },),
     );
   }
 }

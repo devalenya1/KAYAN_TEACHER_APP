@@ -25,11 +25,11 @@ class HolidaysCubit extends Cubit<HolidaysState> {
 
   HolidaysCubit(this._systemRepository) : super(HolidaysInitial());
 
-  void fetchHolidays() async {
+  Future<void> fetchHolidays() async {
     emit(HolidaysFetchInProgress());
     try {
       emit(HolidaysFetchSuccess(
-          holidays: await _systemRepository.fetchHolidays()));
+          holidays: await _systemRepository.fetchHolidays(),),);
     } catch (e) {
       emit(HolidaysFetchFailure(e.toString()));
     }

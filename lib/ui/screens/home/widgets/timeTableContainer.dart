@@ -32,17 +32,16 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
   Widget _buildAppBar() {
     return ScreenTopBackgroundContainer(
       heightPercentage: UiUtils.appBarSmallerHeightPercentage,
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Align(
-            alignment: Alignment.center,
             child: Text(
               UiUtils.getTranslatedLabel(context, scheduleKey),
               style: TextStyle(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  fontSize: UiUtils.screenTitleFontSize),
+                  fontSize: UiUtils.screenTitleFontSize,),
             ),
           ),
         ],
@@ -64,7 +63,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
             borderRadius: BorderRadius.circular(5.0),
             color: index == _currentSelectedDayIndex
                 ? Theme.of(context).colorScheme.primary
-                : Colors.transparent),
+                : Colors.transparent,),
         padding: const EdgeInsets.all(7.5),
         child: Text(
           UiUtils.weekDays[index],
@@ -73,7 +72,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
               fontWeight: FontWeight.w600,
               color: index == _currentSelectedDayIndex
                   ? Theme.of(context).scaffoldBackgroundColor
-                  : Theme.of(context).colorScheme.primary),
+                  : Theme.of(context).colorScheme.primary,),
         ),
       ),
     );
@@ -97,22 +96,20 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
 
   Widget _buildTimeTableSlotDetainsContainer(TimeTableSlot timeTableSlot) {
     return Container(
-      clipBehavior: Clip.none,
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
                 color:
                     Theme.of(context).colorScheme.secondary.withOpacity(0.05),
-                offset: Offset(2.5, 2.5),
-                blurRadius: 10,
-                spreadRadius: 0)
+                offset: const Offset(2.5, 2.5),
+                blurRadius: 10,)
           ],
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(10)),
+          borderRadius: BorderRadius.circular(10),),
       height: 80,
       width: MediaQuery.of(context).size.width * (0.85),
-      padding: EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Row(
           children: [
@@ -140,19 +137,19 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14.0),
+                            fontSize: 14.0,),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         timeTableSlot.classSectionDetails.getClassSectionName(),
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.onBackground,
                             fontWeight: FontWeight.w400,
-                            fontSize: 12.0),
+                            fontSize: 12.0,),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(
@@ -160,14 +157,14 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
                     style: TextStyle(
                         color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.w400,
-                        fontSize: 12.0),
+                        fontSize: 12.0,),
                   )
                 ],
               ),
             ),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -180,11 +177,11 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
 
   Widget _buildTimeTableShimmerLoadingContainer() {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(
           horizontal: UiUtils.screenContentHorizontalPaddingPercentage *
-              MediaQuery.of(context).size.width),
+              MediaQuery.of(context).size.width,),
       child: ShimmerLoadingContainer(
         child: LayoutBuilder(builder: (context, boxConstraints) {
           return Row(
@@ -204,7 +201,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
                     height: 9,
                     width: boxConstraints.maxWidth * (0.6),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   CustomShimmerContainer(
@@ -215,7 +212,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
               )
             ],
           );
-        }),
+        },),
       ),
     );
   }
@@ -226,13 +223,13 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
         if (state is TimeTableFetchSuccess) {
           final timetableSlots = _buildTimeTableSlots(state.timetableSlots);
           return timetableSlots.isEmpty
-              ? NoDataContainer(titleKey: noLecturesKey)
+              ? const NoDataContainer(titleKey: noLecturesKey)
               : SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: timetableSlots
                         .map(
-                            (slot) => _buildTimeTableSlotDetainsContainer(slot))
+                            (slot) => _buildTimeTableSlotDetainsContainer(slot),)
                         .toList(),
                   ),
                 );
@@ -249,7 +246,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
 
         return Column(
           children: List.generate(
-                  UiUtils.defaultShimmerLoadingContentCount, (index) => index)
+                  UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
               .map((e) => _buildTimeTableShimmerLoadingContainer())
               .toList(),
         );
@@ -269,7 +266,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
                 top: UiUtils.getScrollViewTopPadding(
                     context: context,
                     appBarHeightPercentage:
-                        UiUtils.appBarSmallerHeightPercentage)),
+                        UiUtils.appBarSmallerHeightPercentage,),),
             child: Column(
               children: [
                 _buildDays(),

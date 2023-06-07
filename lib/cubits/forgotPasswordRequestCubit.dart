@@ -21,7 +21,7 @@ class ForgotPasswordRequestCubit extends Cubit<ForgotPasswordRequestState> {
   ForgotPasswordRequestCubit(this._authRepository)
       : super(ForgotPasswordRequestInitial());
 
-  void requestforgotPassword({required String email}) async {
+  Future<void> requestforgotPassword({required String email}) async {
     emit(ForgotPasswordRequestInProgress());
     try {
       await _authRepository.forgotPassword(email: email);

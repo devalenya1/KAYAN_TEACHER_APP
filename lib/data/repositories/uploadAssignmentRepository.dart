@@ -18,7 +18,7 @@ class UploadAssignmentRepository {
       int? points,
       bool? resubmission,
       int? extraDayForResubmission,
-      List? files}) async {
+      List? files,}) async {
     try {
       var body = {
         "assignment_id": assignmentId,

@@ -11,10 +11,10 @@ class ClassSectionDetails {
       {required this.classTeacherId,
       required this.id,
       required this.classDetails,
-      required this.sectionDetails});
+      required this.sectionDetails,});
 
   String getClassSectionName() {
-    return "${this.classDetails.name} - ${this.sectionDetails.name}";
+    return "${classDetails.name} - ${sectionDetails.name}";
   }
 
   static ClassSectionDetails fromJson(Map<String, dynamic> json) {

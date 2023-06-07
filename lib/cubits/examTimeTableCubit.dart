@@ -34,7 +34,7 @@ class ExamTimeTableCubit extends Cubit<ExamTimeTableState> {
           examId: examID,
         )
         .then((value) =>
-            emit(ExamTimeTableFetchSuccess(examTimeTableList: value)))
+            emit(ExamTimeTableFetchSuccess(examTimeTableList: value)),)
         .catchError((e) => emit(ExamTimeTableFetchFailure(e.toString())));
   }
 
@@ -51,7 +51,7 @@ class ExamTimeTableCubit extends Cubit<ExamTimeTableState> {
 
   List<Subject> getAllSubjects() {
     var list = List<Subject>.from(
-        getAllSubjectOfExamTimeTable().map((e) => e.subject));
+        getAllSubjectOfExamTimeTable().map((e) => e.subject),);
 
     return list;
   }

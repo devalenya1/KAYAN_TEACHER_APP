@@ -16,7 +16,7 @@ class AddedStudyMaterialContainer extends StatelessWidget {
       required this.file,
       required this.fileIndex,
       required this.onDelete,
-      required this.onEdit})
+      required this.onEdit,})
       : super(key: key);
 
   @override
@@ -24,14 +24,19 @@ class AddedStudyMaterialContainer extends StatelessWidget {
     final titleTextStyle = TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontWeight: FontWeight.w500,
-        fontSize: 13.5);
+        fontSize: 13.5,);
 
     final subTitleTextStyle = TextStyle(
         color: Theme.of(context).colorScheme.secondary.withOpacity(0.7),
-        fontSize: 13);
+        fontSize: 13,);
 
     return Container(
-      margin: EdgeInsets.only(bottom: 25),
+      margin: const EdgeInsets.only(bottom: 25),
+      width: MediaQuery.of(context).size.width * (0.85),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(15),),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +53,7 @@ class AddedStudyMaterialContainer extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 EditButton(onTap: () {
                   UiUtils.showBottomSheet(
                       child: AddStudyMaterialBottomsheet(
@@ -56,15 +61,15 @@ class AddedStudyMaterialContainer extends StatelessWidget {
                           pickedStudyMaterial: file,
                           onTapSubmit: (updatedFile) {
                             onEdit(fileIndex, updatedFile);
-                          }),
-                      context: context);
-                }),
-                SizedBox(
+                          },),
+                      context: context,);
+                },),
+                const SizedBox(
                   width: 10,
                 ),
                 DeleteButton(onTap: () {
                   onDelete(fileIndex);
-                })
+                },)
               ],
             ),
 
@@ -72,62 +77,57 @@ class AddedStudyMaterialContainer extends StatelessWidget {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Divider(),
+                      const Divider(),
                       Text(UiUtils.getTranslatedLabel(context, filePathKey),
                           overflow: TextOverflow.ellipsis,
                           style: titleTextStyle,
-                          textAlign: TextAlign.left),
+                          textAlign: TextAlign.left,),
                       Text(
                         file.studyMaterialFile?.name ?? "",
                         style: subTitleTextStyle,
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
 
             file.pickedStudyMaterialTypeId == 2
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Divider(),
+                      const Divider(),
                       Text(UiUtils.getTranslatedLabel(context, youtubeLinkKey),
                           overflow: TextOverflow.ellipsis,
                           style: titleTextStyle,
-                          textAlign: TextAlign.left),
+                          textAlign: TextAlign.left,),
                       Text(
                         file.youTubeLink ?? "",
                         style: subTitleTextStyle,
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
 
             file.pickedStudyMaterialTypeId != 1
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Divider(),
+                      const Divider(),
                       Text(
                           UiUtils.getTranslatedLabel(
-                              context, thumbnailImageKey),
+                              context, thumbnailImageKey,),
                           overflow: TextOverflow.ellipsis,
                           style: titleTextStyle,
-                          textAlign: TextAlign.left),
+                          textAlign: TextAlign.left,),
                       Text(
                         file.videoThumbnailFile?.name ?? "",
                         style: subTitleTextStyle,
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
           ],
         );
-      }),
-      width: MediaQuery.of(context).size.width * (0.85),
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-      decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(15)),
+      },),
     );
   }
 }

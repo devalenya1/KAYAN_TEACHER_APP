@@ -35,7 +35,7 @@ class _EditStudyMaterialBottomSheetState
           text: widget.studyMaterial.studyMaterialType ==
                   StudyMaterialType.youtubeVideo
               ? widget.studyMaterial.fileUrl
-              : null);
+              : null,);
 
   PlatformFile? addedFile; //if studymaterial type is fileUpload
   PlatformFile?
@@ -54,10 +54,10 @@ class _EditStudyMaterialBottomSheetState
     UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: UiUtils.getTranslatedLabel(context, messageKey),
-        backgroundColor: Theme.of(context).colorScheme.error);
+        backgroundColor: Theme.of(context).colorScheme.error,);
   }
 
-  void editStudyMaterial() async {
+  Future<void> editStudyMaterial() async {
     if (_studyMaterialNameEditingController.text.trim().isEmpty) {
       showErrorMessage(pleaseEnterStudyMaterialNameKey);
       return;
@@ -71,7 +71,7 @@ class _EditStudyMaterialBottomSheetState
     }
 
     final pickedStudyMaterialTypeId = UiUtils.getStudyMaterialIdByEnum(
-        widget.studyMaterial.studyMaterialType, context);
+        widget.studyMaterial.studyMaterialType, context,);
 
     final pickedStudyMaterial = PickedStudyMaterial(
         fileName: _studyMaterialNameEditingController.text.trim(),
@@ -79,22 +79,22 @@ class _EditStudyMaterialBottomSheetState
         studyMaterialFile:
             pickedStudyMaterialTypeId == 1 ? addedFile : addedVideoFile,
         videoThumbnailFile: addedVideoThumbnailFile,
-        youTubeLink: _youtubeLinkEditingController.text.trim());
+        youTubeLink: _youtubeLinkEditingController.text.trim(),);
 
     context.read<UpdateStudyMaterialCubit>().updateStudyMaterial(
         fileId: widget.studyMaterial.id,
-        pickedStudyMaterial: pickedStudyMaterial);
+        pickedStudyMaterial: pickedStudyMaterial,);
   }
 
   Widget _buildAddedFileContainer(PlatformFile file, Function onTap) {
     return LayoutBuilder(builder: (context, boxConstraints) {
       return DottedBorder(
         borderType: BorderType.RRect,
-        dashPattern: [10, 10],
-        radius: Radius.circular(10.0),
+        dashPattern: const [10, 10],
+        radius: const Radius.circular(10.0),
         color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
         child: Padding(
-          padding: EdgeInsetsDirectional.only(start: 10),
+          padding: const EdgeInsetsDirectional.only(start: 10),
           child: Row(
             children: [
               SizedBox(
@@ -105,17 +105,17 @@ class _EditStudyMaterialBottomSheetState
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               IconButton(
                   onPressed: () {
                     onTap();
                   },
-                  icon: Icon(Icons.close)),
+                  icon: const Icon(Icons.close),),
             ],
           ),
         ),
       );
-    });
+    },);
   }
 
   @override
@@ -132,27 +132,29 @@ class _EditStudyMaterialBottomSheetState
                       Navigator.of(context).pop();
                     },
                     title: UiUtils.getTranslatedLabel(
-                        context, editStudyMaterialKey)),
+                        context, editStudyMaterialKey,),),
                 Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal:
+                            UiUtils.bottomSheetHorizontalContentPadding,),
                     child: Column(
                       children: [
                         Transform.translate(
-                          offset: Offset(0, -15),
+                          offset: const Offset(0, -15),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               CircleAvatar(
                                 radius: 2.5,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.onBackground,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
                                 UiUtils.getTranslatedLabel(context,
-                                    oldFilesWillBeReplacedWithLatestOneKey),
-                                style: TextStyle(fontSize: 13),
+                                    oldFilesWillBeReplacedWithLatestOneKey,),
+                                style: const TextStyle(fontSize: 13),
                               )
                             ],
                           ),
@@ -163,16 +165,16 @@ class _EditStudyMaterialBottomSheetState
                               titleLabelKey:
                                   UiUtils.getStudyMaterialTypeLabelByEnum(
                                       widget.studyMaterial.studyMaterialType,
-                                      context),
-                              width: boxConstraints.maxWidth);
-                        }),
+                                      context,),
+                              width: boxConstraints.maxWidth,);
+                        },),
                         BottomSheetTextFieldContainer(
-                            margin: EdgeInsets.only(bottom: 25),
+                            margin: const EdgeInsets.only(bottom: 25),
                             hintText: UiUtils.getTranslatedLabel(
-                                context, studyMaterialNameKey),
+                                context, studyMaterialNameKey,),
                             maxLines: 1,
                             textEditingController:
-                                _studyMaterialNameEditingController),
+                                _studyMaterialNameEditingController,),
 
                         //
                         //if file or images has been picked then show the pickedFile name and remove button
@@ -201,7 +203,7 @@ class _EditStudyMaterialBottomSheetState
                                                               .studyMaterialType ==
                                                           StudyMaterialType.file
                                                       ? FileType.any
-                                                      : FileType.image);
+                                                      : FileType.image,);
                                           //
                                           //
                                           if (pickedFile != null) {
@@ -220,27 +222,27 @@ class _EditStudyMaterialBottomSheetState
                                           }
                                         } on Error {
                                           showErrorMessage(
-                                              permissionToPickFileKey);
+                                              permissionToPickFileKey,);
                                         }
                                       },
                                       title: widget.studyMaterial
                                                   .studyMaterialType ==
                                               StudyMaterialType.file
                                           ? UiUtils.getTranslatedLabel(
-                                              context, selectFileKey)
+                                              context, selectFileKey,)
                                           : UiUtils.getTranslatedLabel(
-                                              context, selectThumbnailKey)),
+                                              context, selectThumbnailKey,),),
                         ),
 
                         widget.studyMaterial.studyMaterialType ==
                                 StudyMaterialType.youtubeVideo
                             ? BottomSheetTextFieldContainer(
-                                margin: EdgeInsets.only(bottom: 25),
+                                margin: const EdgeInsets.only(bottom: 25),
                                 hintText: UiUtils.getTranslatedLabel(
-                                    context, youtubeLinkKey),
+                                    context, youtubeLinkKey,),
                                 maxLines: 2,
                                 textEditingController:
-                                    _youtubeLinkEditingController)
+                                    _youtubeLinkEditingController,)
                             : widget.studyMaterial.studyMaterialType ==
                                     StudyMaterialType.uploadedVideoUrl
                                 ? addedVideoFile != null
@@ -261,7 +263,7 @@ class _EditStudyMaterialBottomSheetState
                                                             .platform
                                                             .pickFiles(
                                                                 type: FileType
-                                                                    .video);
+                                                                    .video,);
 
                                                     if (pickedFile != null) {
                                                       addedVideoFile =
@@ -271,7 +273,7 @@ class _EditStudyMaterialBottomSheetState
                                                     }
                                                   } on Exception {
                                                     showErrorMessage(
-                                                        permissionToPickFileKey);
+                                                        permissionToPickFileKey,);
                                                   }
                                                 },
                                                 title: widget.studyMaterial
@@ -280,18 +282,15 @@ class _EditStudyMaterialBottomSheetState
                                                     ? UiUtils
                                                         .getTranslatedLabel(
                                                             context,
-                                                            selectFileKey)
+                                                            selectFileKey,)
                                                     : UiUtils
                                                         .getTranslatedLabel(
                                                             context,
-                                                            selectVideoKey)),
+                                                            selectVideoKey,),),
                                       )
-                                : SizedBox(),
+                                : const SizedBox(),
                       ],
-                    ),
-                    padding: EdgeInsets.symmetric(
-                        horizontal:
-                            UiUtils.bottomSheetHorizontalContentPadding)),
+                    ),),
                 BlocConsumer<UpdateStudyMaterialCubit,
                     UpdateStudyMaterialState>(
                   listener: (context, state) {
@@ -301,18 +300,12 @@ class _EditStudyMaterialBottomSheetState
                       UiUtils.showBottomToastOverlay(
                           context: context,
                           errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                              context, state.errorMessage),
-                          backgroundColor: Theme.of(context).colorScheme.error);
+                              context, state.errorMessage,),
+                          backgroundColor: Theme.of(context).colorScheme.error,);
                     }
                   },
                   builder: (context, state) {
                     return CustomRoundedButton(
-                        child: state is UpdateStudyMaterialInProgress
-                            ? CustomCircularProgressIndicator(
-                                strokeWidth: 2,
-                                widthAndHeight: 20,
-                              )
-                            : null,
                         onTap: () {
                           if (state is UpdateStudyMaterialInProgress) {
                             return;
@@ -325,10 +318,16 @@ class _EditStudyMaterialBottomSheetState
                         backgroundColor: Theme.of(context).colorScheme.primary,
                         buttonTitle:
                             UiUtils.getTranslatedLabel(context, submitKey),
-                        showBorder: false);
+                        showBorder: false,
+                        child: state is UpdateStudyMaterialInProgress
+                            ? const CustomCircularProgressIndicator(
+                                strokeWidth: 2,
+                                widthAndHeight: 20,
+                              )
+                            : null,);
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
               ],
@@ -341,6 +340,6 @@ class _EditStudyMaterialBottomSheetState
             return Future.value(false);
           }
           return Future.value(true);
-        });
+        },);
   }
 }

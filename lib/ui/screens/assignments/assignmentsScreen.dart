@@ -30,8 +30,8 @@ class AssignmentsScreen extends StatefulWidget {
               BlocProvider<AssignmentCubit>(
                   create: (context) => AssignmentCubit(
                         AssignmentRepository(),
-                      )),
-            ], child: AssignmentsScreen()));
+                      ),),
+            ], child: AssignmentsScreen(),),);
   }
 
   @override
@@ -54,7 +54,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               classSectionId: context
                   .read<MyClassesCubit>()
                   .getClassSectionDetails(
-                      classSectionName: currentSelectedClassSection)
+                      classSectionName: currentSelectedClassSection,)
                   .id,
             );
       }
@@ -71,9 +71,9 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           classSectionId: context
               .read<MyClassesCubit>()
               .getClassSectionDetails(
-                  classSectionName: currentSelectedClassSection)
+                  classSectionName: currentSelectedClassSection,)
               .id,
-          subjectId: subjectId);
+          subjectId: subjectId,);
     }
   }
 
@@ -82,7 +82,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
         .read<MyClassesCubit>()
         .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-        .id);
+        .id,);
     super.initState();
   }
 
@@ -96,7 +96,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
-          title: UiUtils.getTranslatedLabel(context, assignmentsKey)),
+          title: UiUtils.getTranslatedLabel(context, assignmentsKey),),
     );
   }
 
@@ -115,7 +115,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                 context
                     .read<AssignmentCubit>()
                     .updateState(AssignmentInitial());
-              }),
+              },),
 
           //
           ClassSubjectsDropDownMenu(
@@ -126,10 +126,10 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                 fetchAssignment();
               },
               currentSelectedItem: currentSelectedSubject,
-              width: boxConstraints.maxWidth),
+              width: boxConstraints.maxWidth,),
         ],
       );
-    });
+    },);
   }
 
   @override
@@ -137,14 +137,14 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionAddButton(onTap: () {
         Navigator.of(context).pushNamed(Routes.addAssignment,
-            arguments: {"editAssignment": false});
-      }),
+            arguments: {"editAssignment": false},);
+      },),
       body: Stack(
         children: [
           CustomRefreshIndicator(
             displacment: UiUtils.getScrollViewTopPadding(
                 context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage),
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),
             onRefreshCallback: () {
               fetchAssignment();
             },
@@ -159,17 +159,17 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                   top: UiUtils.getScrollViewTopPadding(
                       context: context,
                       appBarHeightPercentage:
-                          UiUtils.appBarSmallerHeightPercentage)),
+                          UiUtils.appBarSmallerHeightPercentage,),),
               children: [
                 _buildAssignmentFilters(),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 AssignmentsContainer(
                   classSectionDetails: context
                       .read<MyClassesCubit>()
                       .getClassSectionDetails(
-                          classSectionName: currentSelectedClassSection),
+                          classSectionName: currentSelectedClassSection,),
                   subject: context
                       .read<SubjectsOfClassSectionCubit>()
                       .getSubjectDetailsByName(currentSelectedSubject),

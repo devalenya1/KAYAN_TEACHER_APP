@@ -15,20 +15,20 @@ class ListItemForExamAndResult extends StatelessWidget {
         required this.examName,
         required this.resultGrade,
         required this.resultPercentage,
-        required this.onItemTap})
+        required this.onItemTap,})
       : super(key: key);
 
   Widget _buildDetailsBackgroundContainer(
-      {required Widget child, required BuildContext context}) {
+      {required Widget child, required BuildContext context,}) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(bottom: 30),
+        margin: const EdgeInsets.only(bottom: 30),
         width: MediaQuery.of(context).size.width * (0.85),
-        child: child,
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.circular(10.0)),
+            borderRadius: BorderRadius.circular(10.0),),
+        child: child,
       ),
     );
   }
@@ -37,18 +37,18 @@ class ListItemForExamAndResult extends StatelessWidget {
     return TextStyle(
         color: Theme.of(context).colorScheme.onBackground,
         fontSize: 12,
-        fontWeight: FontWeight.w400);
+        fontWeight: FontWeight.w400,);
   }
 
   Widget _buildExamNameLabelAndDateContainer(
-      {required BuildContext context, String? examDate}) {
+      {required BuildContext context, String? examDate,}) {
     return Row(
       children: [
         Text(
           UiUtils.getTranslatedLabel(context, examNameKey),
           style: _getExamDetailsLabelTextStyle(context: context),
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           '${UiUtils.getTranslatedLabel(context, dateKey)}: ',
           style: _getExamDetailsLabelTextStyle(context: context),
@@ -62,15 +62,15 @@ class ListItemForExamAndResult extends StatelessWidget {
   }
 
   TextStyle _getExamNameValueTextStyle(
-      {required BuildContext context}) {
+      {required BuildContext context,}) {
     return TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontSize: 14,
-        fontWeight: FontWeight.w600);
+        fontWeight: FontWeight.w600,);
   }
 
   Widget _buildExamNameContainer(
-      {required String examName, required BuildContext context}) {
+      {required String examName, required BuildContext context,}) {
     return Text(
       examName,
       style: _getExamNameValueTextStyle(context: context),
@@ -88,8 +88,8 @@ class ListItemForExamAndResult extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildExamNameLabelAndDateContainer(
-                  context: context, examDate: examStartingDate),
-              SizedBox(
+                  context: context, examDate: examStartingDate,),
+              const SizedBox(
                 height: 5.0,
               ),
               _buildExamNameContainer(examName: examName, context: context),
@@ -97,25 +97,25 @@ class ListItemForExamAndResult extends StatelessWidget {
                   ? _buildResultGradeAndPercentageContainer(context: context)
                   : Container()
             ],
-          )),
+          ),),
     );
   }
 
   Widget _buildResultGradeAndPercentageContainer(
-      {required BuildContext context}) {
+      {required BuildContext context,}) {
     return Column(
       children: [
-        Divider(),
+        const Divider(),
         Row(
           children: [
             Row(
               children: [
                 Text("${UiUtils.getTranslatedLabel(context, gradeKey)} - ",
                   style: _getExamNameValueTextStyle(context: context),),
-                Text('${resultGrade}'),
+                Text(resultGrade),
               ],
             ),
-            Spacer(),
+            const Spacer(),
             Row(
               children: [
                 Text( "${UiUtils.getTranslatedLabel(context, percentageKey)} : ",

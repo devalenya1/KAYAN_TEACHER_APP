@@ -7,7 +7,7 @@ class CustomBackButton extends StatelessWidget {
   final double? topPadding;
   final AlignmentDirectional? alignmentDirectional;
   const CustomBackButton(
-      {Key? key, this.onTap, this.topPadding, this.alignmentDirectional})
+      {Key? key, this.onTap, this.topPadding, this.alignmentDirectional,})
       : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class CustomBackButton extends StatelessWidget {
                 Navigator.of(context).pop();
               }
             },
-            svgIconUrl: UiUtils.getBackButtonPath(context)),
+            svgIconUrl: UiUtils.getBackButtonPath(context),),
       ),
     );
   }

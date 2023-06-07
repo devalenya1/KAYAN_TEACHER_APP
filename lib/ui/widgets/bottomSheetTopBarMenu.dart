@@ -6,7 +6,7 @@ class BottomSheetTopBarMenu extends StatelessWidget {
   final String title;
   final Function onTapCloseButton;
   const BottomSheetTopBarMenu(
-      {Key? key, required this.onTapCloseButton, required this.title})
+      {Key? key, required this.onTapCloseButton, required this.title,})
       : super(key: key);
 
   @override
@@ -22,12 +22,12 @@ class BottomSheetTopBarMenu extends StatelessWidget {
                 title,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: FontWeight.w600),
+                    fontWeight: FontWeight.w600,),
               ),
-              Spacer(),
+              const Spacer(),
               CustomCloseButton(onTapCloseButton: () {
                 onTapCloseButton();
-              }),
+              },),
             ],
           ),
           Divider(

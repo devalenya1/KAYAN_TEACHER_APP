@@ -29,11 +29,11 @@ class TopicsCubit extends Cubit<TopicsState> {
     emit(updatedState);
   }
 
-  void fetchTopics({required int lessonId}) async {
+  Future<void> fetchTopics({required int lessonId}) async {
     emit(TopicsFetchInProgress());
     try {
       emit(TopicsFetchSuccess(
-          await _topicRepository.fetchTopics(lessonId: lessonId)));
+          await _topicRepository.fetchTopics(lessonId: lessonId),),);
     } catch (e) {
       emit(TopicsFetchFailure(e.toString()));
     }

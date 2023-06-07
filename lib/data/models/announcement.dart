@@ -5,7 +5,7 @@ class Announcement {
       {required this.id,
       required this.title,
       required this.description,
-      required this.createdAt});
+      required this.createdAt,});
   late final int id;
   late final DateTime createdAt;
   late final String title;

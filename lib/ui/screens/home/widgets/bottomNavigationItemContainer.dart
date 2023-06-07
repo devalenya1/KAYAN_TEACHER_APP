@@ -10,7 +10,7 @@ class BottomNavItem {
   BottomNavItem(
       {required this.activeImageUrl,
       required this.disableImageUrl,
-      required this.title});
+      required this.title,});
 }
 
 class BottomNavItemContainer extends StatefulWidget {
@@ -27,7 +27,7 @@ class BottomNavItemContainer extends StatefulWidget {
       required this.bottomNavItem,
       required this.animationController,
       required this.onTap,
-      required this.index})
+      required this.index,})
       : super(key: key);
 
   @override
@@ -50,13 +50,13 @@ class _BottomNavItemContainerState extends State<BottomNavItemContainer> {
             SlideTransition(
               position: Tween<Offset>(
                       begin: const Offset(0.0, 0.05),
-                      end: const Offset(0.0, 0.4))
+                      end: const Offset(0.0, 0.4),)
                   .animate(CurvedAnimation(
                       parent: widget.animationController,
-                      curve: Curves.easeInOut)),
+                      curve: Curves.easeInOut,),),
               child: SvgPicture.asset(widget.index == widget.currentIndex
                   ? widget.bottomNavItem.activeImageUrl
-                  : widget.bottomNavItem.disableImageUrl),
+                  : widget.bottomNavItem.disableImageUrl,),
             ),
             SizedBox(
               height: widget.boxConstraints.maxHeight * (0.051),
@@ -67,16 +67,16 @@ class _BottomNavItemContainerState extends State<BottomNavItemContainer> {
               child: SlideTransition(
                 position: Tween<Offset>(
                         begin: const Offset(0.0, 0.0),
-                        end: const Offset(0.0, 0.5))
+                        end: const Offset(0.0, 0.5),)
                     .animate(CurvedAnimation(
                         parent: widget.animationController,
-                        curve: Curves.easeInOut)),
+                        curve: Curves.easeInOut,),),
                 child: Text(
                   UiUtils.getTranslatedLabel(
-                      context, widget.bottomNavItem.title),
+                      context, widget.bottomNavItem.title,),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 11.5,
                   ),
                 ),

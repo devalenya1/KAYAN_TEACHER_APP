@@ -10,7 +10,7 @@ class ExamFiltersContainer extends StatefulWidget {
   const ExamFiltersContainer(
       {Key? key,
         required this.onTapSubject,
-        required this.selectedExamFilterIndex})
+        required this.selectedExamFilterIndex,})
       : super(key: key);
 
   @override
@@ -40,19 +40,19 @@ class _ExamFiltersContainerState extends State<ExamFiltersContainer> {
                       (index > widget.selectedExamFilterIndex ? 1 : -1) *
                           MediaQuery.of(context).size.width *
                           (0.2),
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOut);
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,);
 
-              widget.onTapSubject((index));
+              widget.onTapSubject(index);
             },
             child: Container(
-              margin: EdgeInsetsDirectional.only(end: 20.0),
+              margin: const EdgeInsetsDirectional.only(end: 20.0),
               decoration: BoxDecoration(
-                  color: widget.selectedExamFilterIndex == (index)
+                  color: widget.selectedExamFilterIndex == index
                       ? Theme.of(context).colorScheme.primary
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.symmetric(horizontal: 15),
+                  borderRadius: BorderRadius.circular(10),),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               alignment: Alignment.center,
               child: Text(
                 UiUtils.getTranslatedLabel(context, examFilters[index]),
@@ -68,7 +68,7 @@ class _ExamFiltersContainerState extends State<ExamFiltersContainer> {
         itemCount: examFilters.length,
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * (0.1)),
+            horizontal: MediaQuery.of(context).size.width * (0.1),),
       ),
     );
   }

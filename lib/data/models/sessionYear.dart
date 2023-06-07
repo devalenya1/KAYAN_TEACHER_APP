@@ -1,5 +1,5 @@
-class AcademicYear {
-  AcademicYear({
+class SessionYear {
+  SessionYear({
     required this.id,
     required this.name,
     required this.defaultValue,
@@ -12,7 +12,7 @@ class AcademicYear {
   late final DateTime startDate;
   late final DateTime endDate;
 
-  AcademicYear.fromJson(Map<String, dynamic> json) {
+  SessionYear.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? 0;
     name = json['name'] ?? "";
     defaultValue = json['default'] ?? -1;

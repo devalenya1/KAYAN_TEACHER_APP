@@ -26,17 +26,17 @@ class HomeScreen extends StatefulWidget {
         builder: (_) => BlocProvider(
               create: (context) => TimeTableCubit(TeacherRepository()),
               child: HomeScreen(),
-            ));
+            ),);
   }
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late AnimationController _animationController =
-      AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+      AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
 
   late Animation<double> _bottomNavAndTopProfileAnimation =
       Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
-          parent: _animationController, curve: Curves.easeInOut));
+          parent: _animationController, curve: Curves.easeInOut,),);
 
   late final List<AnimationController> _bottomNavItemTitlesAnimationController =
       [];
@@ -47,19 +47,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     BottomNavItem(
         activeImageUrl: UiUtils.getImagePath("home_active_icon.svg"),
         disableImageUrl: UiUtils.getImagePath("home_icon.svg"),
-        title: homeKey),
+        title: homeKey,),
     BottomNavItem(
         activeImageUrl: UiUtils.getImagePath("schedule_active.svg"),
         disableImageUrl: UiUtils.getImagePath("schedule.svg"),
-        title: scheduleKey),
+        title: scheduleKey,),
     BottomNavItem(
         activeImageUrl: UiUtils.getImagePath("profile_active.svg"),
         disableImageUrl: UiUtils.getImagePath("profile.svg"),
-        title: profileKey),
+        title: profileKey,),
     BottomNavItem(
         activeImageUrl: UiUtils.getImagePath("setting_active.svg"),
         disableImageUrl: UiUtils.getImagePath("setting.svg"),
-        title: settingKey),
+        title: settingKey,),
   ];
 
   @override
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       _bottomNavItemTitlesAnimationController.add(AnimationController(
           value: i == _currentSelectedBottomNavIndex ? 0.0 : 1.0,
           vsync: this,
-          duration: const Duration(milliseconds: 400)));
+          duration: const Duration(milliseconds: 400),),);
     }
   }
 
@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _changeBottomNavItem(int index) async {
+  Future<void> _changeBottomNavItem(int index) async {
     _bottomNavItemTitlesAnimationController[_currentSelectedBottomNavIndex]
         .forward();
     //change current selected bottom index
@@ -103,12 +103,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       opacity: _bottomNavAndTopProfileAnimation,
       child: SlideTransition(
         position: _bottomNavAndTopProfileAnimation
-            .drive(Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)),
+            .drive(Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)),
         child: Container(
           alignment: Alignment.bottomCenter,
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).size.height * (0.075) * (0.075),
           ),
+          margin: EdgeInsets.only(
+            bottom: UiUtils.bottomNavigationBottomMargin,
+          ),
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: UiUtils.getColorScheme(context)
+                        .secondary
+                        .withOpacity(0.15),
+                    offset: const Offset(2.5, 2.5),
+                    blurRadius: 20,)
+              ],
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.circular(10.0),),
+          width: MediaQuery.of(context).size.width * (0.8),
+          height: MediaQuery.of(context).size.height *
+              UiUtils.bottomNavigationHeightPercentage,
           child: LayoutBuilder(builder: (context, boxConstraints) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -122,28 +139,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     bottomNavItem: _bottomNavItems[index],
                     animationController:
                         _bottomNavItemTitlesAnimationController[index],
-                    index: index);
+                    index: index,);
               }).toList(),
             );
-          }),
-          margin: EdgeInsets.only(
-            bottom: UiUtils.bottomNavigationBottomMargin,
-          ),
-          decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: UiUtils.getColorScheme(context)
-                        .secondary
-                        .withOpacity(0.15),
-                    offset: Offset(2.5, 2.5),
-                    blurRadius: 20,
-                    spreadRadius: 0)
-              ],
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(10.0)),
-          width: MediaQuery.of(context).size.width * (0.8),
-          height: MediaQuery.of(context).size.height *
-              UiUtils.bottomNavigationHeightPercentage,
+          },),
         ),
       ),
     );
@@ -153,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: context.read<AppConfigurationCubit>().appUnderMaintenance()
-          ? AppUnderMaintenanceContainer()
+          ? const AppUnderMaintenanceContainer()
           : Stack(
               children: [
                 IndexedStack(
@@ -162,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     HomeContainer(),
                     TimeTableContainer(),
                     ProfileContainer(),
-                    SettingsContainer(),
+                    const SettingsContainer(),
                   ],
                 ),
                 Align(
@@ -173,17 +172,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ? FutureBuilder<bool>(
                         future: UiUtils.forceUpdate(context
                             .read<AppConfigurationCubit>()
-                            .getAppVersion()),
+                            .getAppVersion(),),
                         builder: (context, snaphsot) {
                           if (snaphsot.hasData) {
                             return (snaphsot.data ?? false)
-                                ? ForceUpdateDialogContainer()
-                                : SizedBox();
+                                ? const ForceUpdateDialogContainer()
+                                : const SizedBox();
                           }
 
-                          return SizedBox();
-                        })
-                    : SizedBox(),
+                          return const SizedBox();
+                        },)
+                    : const SizedBox(),
               ],
             ),
     );

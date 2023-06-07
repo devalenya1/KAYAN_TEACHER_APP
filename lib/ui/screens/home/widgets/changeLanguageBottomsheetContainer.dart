@@ -12,9 +12,9 @@ class ChangeLanguageBottomsheetContainer extends StatelessWidget {
   Widget _buildAppLanguageTile(
       {required AppLanguage appLanguage,
       required BuildContext context,
-      required String currentSelectedLanguageCode}) {
+      required String currentSelectedLanguageCode,}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
         onTap: () {
           context
@@ -22,10 +22,16 @@ class ChangeLanguageBottomsheetContainer extends StatelessWidget {
               .changeLanguage(appLanguage.languageCode);
         },
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.all(2),
+              padding: const EdgeInsets.all(2),
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                    color: Theme.of(context).colorScheme.primary, width: 1.75,),
+              ),
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -34,21 +40,14 @@ class ChangeLanguageBottomsheetContainer extends StatelessWidget {
                       : Theme.of(context).scaffoldBackgroundColor,
                 ),
               ),
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                    color: Theme.of(context).colorScheme.primary, width: 1.75),
-              ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Text(
               appLanguage.languageName,
               style: TextStyle(
-                  fontSize: 14, color: Theme.of(context).colorScheme.secondary),
+                  fontSize: 14, color: Theme.of(context).colorScheme.secondary,),
             )
           ],
         ),
@@ -61,13 +60,13 @@ class ChangeLanguageBottomsheetContainer extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width * (0.075),
-          vertical: MediaQuery.of(context).size.height * (0.05)),
+          vertical: MediaQuery.of(context).size.height * (0.05),),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(UiUtils.bottomSheetTopRadius),
-              topRight: Radius.circular(UiUtils.bottomSheetTopRadius))),
+              topRight: Radius.circular(UiUtils.bottomSheetTopRadius),),),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +76,7 @@ class ChangeLanguageBottomsheetContainer extends StatelessWidget {
             style: TextStyle(
                 fontSize: 16.0,
                 color: Theme.of(context).colorScheme.secondary,
-                fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.bold,),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -93,7 +92,7 @@ class ChangeLanguageBottomsheetContainer extends StatelessWidget {
                         appLanguage: appLanguage,
                         context: context,
                         currentSelectedLanguageCode:
-                            state.language.languageCode))
+                            state.language.languageCode,),)
                     .toList(),
               );
             },

@@ -17,7 +17,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
             ),
             onPressed: () {
               Navigator.of(context).pop(true);
-            }),
+            },),
         CupertinoButton(
             child: Text(
               UiUtils.getTranslatedLabel(context, noKey),
@@ -25,7 +25,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
             ),
             onPressed: () {
               Navigator.of(context).pop();
-            }),
+            },),
       ],
       content: Text(UiUtils.getTranslatedLabel(context, areYouSureToDeleteKey)),
     );

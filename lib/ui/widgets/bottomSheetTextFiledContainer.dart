@@ -31,7 +31,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       this.keyboardType,
       this.margin,
       this.contentAlignment,
-      this.contentPadding})
+      this.contentPadding,})
       : super(key: key);
 
   @override
@@ -39,25 +39,7 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
     return Container(
       margin: margin,
       alignment: contentAlignment ?? Alignment.center,
-      padding: contentPadding ?? EdgeInsetsDirectional.only(start: 20.0),
-      child: TextField(
-        obscureText: hideText ?? false,
-        keyboardType: keyboardType,
-        controller: textEditingController,
-        style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-            fontSize: UiUtils.textFieldFontSize),
-        maxLines: maxLines,
-        inputFormatters: textInputFormatter,
-        decoration: InputDecoration(
-          suffixIcon: suffix,
-          hintText: hintText,
-          hintStyle: TextStyle(
-              color: hintTextColor, fontSize: UiUtils.textFieldFontSize),
-          border: InputBorder.none,
-        ),
-        maxLength: maxlength,
-      ),
+      padding: contentPadding ?? const EdgeInsetsDirectional.only(start: 20.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.circular(10),
@@ -67,6 +49,24 @@ class BottomSheetTextFieldContainer extends StatelessWidget {
       ),
       width: MediaQuery.of(context).size.width,
       height: height,
+      child: TextField(
+        obscureText: hideText ?? false,
+        keyboardType: keyboardType,
+        controller: textEditingController,
+        style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontSize: UiUtils.textFieldFontSize,),
+        maxLines: maxLines,
+        inputFormatters: textInputFormatter,
+        decoration: InputDecoration(
+          suffixIcon: suffix,
+          hintText: hintText,
+          hintStyle: TextStyle(
+              color: hintTextColor, fontSize: UiUtils.textFieldFontSize,),
+          border: InputBorder.none,
+        ),
+        maxLength: maxlength,
+      ),
     );
   }
 }

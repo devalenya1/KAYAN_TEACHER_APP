@@ -21,10 +21,10 @@ class SubmitClassAttendanceCubit extends Cubit<SubmitClassAttendanceState> {
   SubmitClassAttendanceCubit(this._teacherRepository)
       : super(SubmitClassAttendanceInitial());
 
-  void submitAttendance(
+  Future<void> submitAttendance(
       {required DateTime dateTime,
       required int classSectionId,
-      required List<Map<int, bool>> attendanceReport}) async {
+      required List<Map<int, bool>> attendanceReport,}) async {
     emit(SubmitClassAttendanceInProgress());
     try {
       await _teacherRepository.submitClassAttendance(
@@ -37,7 +37,7 @@ class SubmitClassAttendanceCubit extends Cubit<SubmitClassAttendanceState> {
                   "type": attendanceReport[attendanceReport.keys.first]! ? 1 : 0
                 },
               )
-              .toList());
+              .toList(),);
       emit(SubmitClassAttendanceSuccess());
     } catch (e) {
       emit(SubmitClassAttendanceFailure(e.toString()));

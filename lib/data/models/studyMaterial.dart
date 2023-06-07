@@ -24,7 +24,7 @@ class StudyMaterial {
   late final String fileExtension;
 
   StudyMaterial.fromJson(Map<String, dynamic> json) {
-    studyMaterialType = getStudyMaterialType(int.parse((json['type'] ?? "0")));
+    studyMaterialType = getStudyMaterialType(int.parse(json['type'] ?? "0"));
 
     id = json['id'] ?? 0;
     fileName = json['file_name'] ?? "";

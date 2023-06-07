@@ -6,7 +6,7 @@ class ScreenTopBackgroundContainer extends StatelessWidget {
   final double? heightPercentage;
   final EdgeInsets? padding;
   const ScreenTopBackgroundContainer(
-      {Key? key, this.child, this.heightPercentage, this.padding})
+      {Key? key, this.child, this.heightPercentage, this.padding,})
       : super(key: key);
 
   @override
@@ -15,17 +15,17 @@ class ScreenTopBackgroundContainer extends StatelessWidget {
       padding: padding ??
           EdgeInsets.only(
               top: MediaQuery.of(context).padding.top +
-                  UiUtils.screenContentTopPadding),
+                  UiUtils.screenContentTopPadding,),
       alignment: Alignment.topCenter,
-      child: child,
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height *
           (heightPercentage ?? UiUtils.appBarBiggerHeightPercentage),
       decoration: BoxDecoration(
           color: UiUtils.getColorScheme(context).primary,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25))),
+              bottomRight: Radius.circular(25),),),
+      child: child,
     );
   }
 }

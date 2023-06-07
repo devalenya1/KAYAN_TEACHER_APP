@@ -8,12 +8,12 @@ import '../models/exam.dart';
 
 class StudentRepository {
   Future<List<Student>> getStudentsByClassSection(
-      {required int classSectionId}) async {
+      {required int classSectionId,}) async {
     try {
       final result = await Api.get(
           url: Api.getStudentsByClassSection,
           useAuthToken: true,
-          queryParameters: {"class_section_id": classSectionId});
+          queryParameters: {"class_section_id": classSectionId},);
 
       return (result['data'] as List)
           .map((e) => Student.fromJson(Map.from(e)))
@@ -24,12 +24,12 @@ class StudentRepository {
   }
 
   Future<Map<String, dynamic>> getStudentsMoreDetails(
-      {required int studentId}) async {
+      {required int studentId,}) async {
     try {
       final result = await Api.get(
           url: Api.getStudentsMoreDetails,
           useAuthToken: true,
-          queryParameters: {"student_id": studentId});
+          queryParameters: {"student_id": studentId},);
 
       return {
         "fatherDetails": (result['father_data'] as List)
@@ -58,7 +58,7 @@ class StudentRepository {
   //
   //This method is used to fetch exams list
   Future<List<Exam>> fetchExamsList(
-      {required int examStatus, int? studentID, int? publishStatus}) async {
+      {required int examStatus, int? studentID, int? publishStatus,}) async {
     try {
       var queryParameter = {
         'status': examStatus,
@@ -70,7 +70,7 @@ class StudentRepository {
       final result = await Api.get(
           url: Api.examList,
           useAuthToken: true,
-          queryParameters: queryParameter);
+          queryParameters: queryParameter,);
 
       return (result['data'] as List)
           .map((e) => Exam.fromExamJson(Map.from(e)))
@@ -87,7 +87,7 @@ class StudentRepository {
       final result = await Api.get(
           url: Api.examTimeTable,
           useAuthToken: true,
-          queryParameters: {"exam_id": examId});
+          queryParameters: {"exam_id": examId},);
 
       return (result['data'][0]['timetable'] as List)
           .map((e) => ExamTimeTable.fromJson(Map.from(e)))
@@ -100,7 +100,7 @@ class StudentRepository {
   //
   //This method is used to fetch student Exam result list
   Future<Map<String, dynamic>> fetchExamResults(
-      {int? page, required int studentId}) async {
+      {int? page, required int studentId,}) async {
     try {
       Map<String, dynamic> queryParameters = {
         "page": page ?? 0,
@@ -112,7 +112,7 @@ class StudentRepository {
       final result = await Api.get(
           url: Api.examResults,
           useAuthToken: true,
-          queryParameters: queryParameters);
+          queryParameters: queryParameters,);
 
       return {
         "results": ((result['data'] ?? []) as List)
@@ -129,7 +129,7 @@ class StudentRepository {
   Future<Map<String, dynamic>> updateSubjectMarksBySubjectId(
       {required int examId,
       required int subjectId,
-      required Map<String, dynamic> bodyParameter}) async {
+      required Map<String, dynamic> bodyParameter,}) async {
     try {
       Map<String, dynamic> queryParameters = {
         "exam_id": examId,
@@ -139,7 +139,7 @@ class StudentRepository {
           body: bodyParameter,
           url: Api.submitExamMarksBySubjectId,
           useAuthToken: true,
-          queryParameters: queryParameters);
+          queryParameters: queryParameters,);
 
       return {'error': result['error'], 'message': result['message']};
     } catch (e) {
@@ -152,7 +152,7 @@ class StudentRepository {
   Future<Map<String, dynamic>> updateSubjectMarksByStudentId(
       {required int examId,
       required int studentId,
-      required Map<String, dynamic> bodyParameter}) async {
+      required Map<String, dynamic> bodyParameter,}) async {
     try {
       Map<String, dynamic> queryParameters = {
         "exam_id": examId,
@@ -162,7 +162,7 @@ class StudentRepository {
           body: bodyParameter,
           url: Api.submitExamMarksByStudentId,
           useAuthToken: true,
-          queryParameters: queryParameters);
+          queryParameters: queryParameters,);
 
       return {'error': result['error'], 'message': result['message']};
     } catch (e) {
@@ -181,7 +181,7 @@ class StudentRepository {
       final result = await Api.get(
           url: Api.getStudentResultList,
           useAuthToken: true,
-          queryParameters: queryParameters);
+          queryParameters: queryParameters,);
 
       return ((result['data'] ?? []) as List)
           .map((result) => StudentResult.fromJson(Map.from(result)))

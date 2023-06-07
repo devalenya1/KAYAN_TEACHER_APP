@@ -23,7 +23,7 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
   CreateAssignmentCubit(this._assignmentRepository)
       : super(createAssignmentInitial());
 
-  void createAssignment({
+  Future<void> createAssignment({
     required int classsId,
     required int subjectId,
     required String name,
@@ -46,7 +46,7 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
             resubmission: resubmission,
             extraDayForResubmission: int.parse(extraDayForResubmission.isEmpty
                 ? "0"
-                : extraDayForResubmission),
+                : extraDayForResubmission,),
             filePaths: file,
             instruction: instruction,
             points: int.parse(points.isEmpty ? "0" : points),

@@ -37,17 +37,17 @@ class _AcceptAssignmentBottomsheetContainerState
     UiUtils.showBottomToastOverlay(
         context: context,
         errorMessage: errorMessageKey,
-        backgroundColor: Theme.of(context).colorScheme.error);
+        backgroundColor: Theme.of(context).colorScheme.error,);
   }
 
   void updateAssignment() {
     if (_remarkTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterRemarkkey));
+          UiUtils.getTranslatedLabel(context, pleaseEnterRemarkkey),);
     }
     if (_pointsTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterPointskey));
+          UiUtils.getTranslatedLabel(context, pleaseEnterPointskey),);
     }
     if (int.parse(_pointsTextEditingController.text) <=
         widget.assignment.points) {
@@ -58,13 +58,13 @@ class _AcceptAssignmentBottomsheetContainerState
               (widget.assignment.points == 0 && widget.assignment.points == -1)
                   ? "0"
                   : _pointsTextEditingController.text.trim(),
-          reviewAssignmentFeedBack: _remarkTextEditingController.text.trim());
+          reviewAssignmentFeedBack: _remarkTextEditingController.text.trim(),);
     } else {
       UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage:
               UiUtils.getTranslatedLabel(context, pleaseEnterlessPointskey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+          backgroundColor: Theme.of(context).colorScheme.error,);
     }
   }
 
@@ -78,10 +78,10 @@ class _AcceptAssignmentBottomsheetContainerState
                   onTapCloseButton: () {
                     Navigator.of(context).pop();
                   },
-                  title: UiUtils.getTranslatedLabel(context, acceptKey)),
+                  title: UiUtils.getTranslatedLabel(context, acceptKey),),
               Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: UiUtils.bottomSheetHorizontalContentPadding),
+                      horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
                   child: Column(children: [
                     SizedBox(
                       height: MediaQuery.of(context).size.height * (0.0125),
@@ -90,7 +90,7 @@ class _AcceptAssignmentBottomsheetContainerState
                         hintText:
                             UiUtils.getTranslatedLabel(context, addRemarkKey),
                         maxLines: 2,
-                        textEditingController: _remarkTextEditingController),
+                        textEditingController: _remarkTextEditingController,),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * (0.025),
                     ),
@@ -100,7 +100,7 @@ class _AcceptAssignmentBottomsheetContainerState
                           hintText:
                               UiUtils.getTranslatedLabel(context, pointsKey),
                           maxLines: 1,
-                          textEditingController: _pointsTextEditingController),
+                          textEditingController: _pointsTextEditingController,),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * (0.025),
                     ),
@@ -112,9 +112,9 @@ class _AcceptAssignmentBottomsheetContainerState
                             UiUtils.showBottomToastOverlay(
                                 context: context,
                                 errorMessage: UiUtils.getTranslatedLabel(
-                                    context, reviewAssignmentsucessfullukey),
+                                    context, reviewAssignmentsucessfullukey,),
                                 backgroundColor:
-                                    Theme.of(context).colorScheme.onPrimary);
+                                    Theme.of(context).colorScheme.onPrimary,);
                             //TOTO
                             Navigator.of(context).pop(
                               widget.reviewAssignment.copywith(
@@ -122,17 +122,17 @@ class _AcceptAssignmentBottomsheetContainerState
                                   feedback:
                                       _remarkTextEditingController.text.trim(),
                                   points: int.parse(
-                                      _pointsTextEditingController.text.trim()),
-                                  status: 1),
+                                      _pointsTextEditingController.text.trim(),),
+                                  status: 1,),
                             );
                           }
                           if (state is EditReviewAssignmetFailure) {
                             UiUtils.showBottomToastOverlay(
                                 context: context,
                                 errorMessage: UiUtils.getTranslatedLabel(
-                                    context, failureAssignmentReviewkey),
+                                    context, failureAssignmentReviewkey,),
                                 backgroundColor:
-                                    Theme.of(context).colorScheme.error);
+                                    Theme.of(context).colorScheme.error,);
                             Navigator.of(context).pop();
                           }
                         },
@@ -144,10 +144,10 @@ class _AcceptAssignmentBottomsheetContainerState
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
                               buttonTitle: UiUtils.getTranslatedLabel(
-                                  context, submitKey),
+                                  context, submitKey,),
                               showBorder: false,
                               child: state is EditReviewAssignmetInProgress
-                                  ? CustomCircularProgressIndicator(
+                                  ? const CustomCircularProgressIndicator(
                                       strokeWidth: 2,
                                       widthAndHeight: 20,
                                     )
@@ -156,15 +156,15 @@ class _AcceptAssignmentBottomsheetContainerState
                                 FocusScope.of(context).unfocus();
 
                                 updateAssignment();
-                              });
-                        }),
+                              },);
+                        },),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * (0.05),
                     ),
-                  ]))
-            ])),
+                  ],),)
+            ],),),
         onWillPop: () {
           return Future.value(true);
-        });
+        },);
   }
 }

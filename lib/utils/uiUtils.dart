@@ -51,7 +51,7 @@ class UiUtils {
   static double appBarContentTopPadding = 25.0;
   static double bottomSheetTopRadius = 20.0;
   static Duration tabBackgroundContainerAnimationDuration =
-      Duration(milliseconds: 300);
+      const Duration(milliseconds: 300);
   static Curve tabBackgroundContainerAnimationCurve = Curves.easeInOut;
 
   //to give bottom scroll padding in screen where
@@ -65,16 +65,16 @@ class UiUtils {
   static Future<dynamic> showBottomSheet(
       {required Widget child,
       required BuildContext context,
-      bool? enableDrag}) async {
+      bool? enableDrag,}) async {
     final result = await showModalBottomSheet(
         enableDrag: enableDrag ?? false,
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(bottomSheetTopRadius),
-                topRight: Radius.circular(bottomSheetTopRadius))),
+                topRight: Radius.circular(bottomSheetTopRadius),),),
         context: context,
-        builder: (_) => child);
+        builder: (_) => child,);
 
     return result;
   }
@@ -82,7 +82,7 @@ class UiUtils {
   static Future<void> showBottomToastOverlay(
       {required BuildContext context,
       required String errorMessage,
-      required Color backgroundColor}) async {
+      required Color backgroundColor,}) async {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => BottomToastOverlayContainer(
@@ -97,15 +97,15 @@ class UiUtils {
   }
 
   static String getErrorMessageFromErrorCode(
-      BuildContext context, String errorCode) {
+      BuildContext context, String errorCode,) {
     return UiUtils.getTranslatedLabel(
-        context, ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode));
+        context, ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode),);
   }
 
   //to give top scroll padding to screen content
   //
   static double getScrollViewTopPadding(
-      {required BuildContext context, required double appBarHeightPercentage}) {
+      {required BuildContext context, required double appBarHeightPercentage,}) {
     return MediaQuery.of(context).size.height *
         (appBarHeightPercentage + extraScreenContentTopPaddingForScrolling);
   }
@@ -159,11 +159,11 @@ class UiUtils {
   }
 
   static List<String> buildMonthYearsBetweenTwoDates(
-      DateTime startDate, DateTime endDate) {
+      DateTime startDate, DateTime endDate,) {
     List<String> dateTimes = [];
     DateTime current = startDate;
     while (current.difference(endDate).isNegative) {
-      current = current.add(Duration(days: 24));
+      current = current.add(const Duration(days: 24));
       dateTimes.add("${getMonthName(current.month)}, ${current.year}");
     }
     dateTimes = dateTimes.toSet().toList();
@@ -184,7 +184,7 @@ class UiUtils {
         context: context,
         errorMessage:
             UiUtils.getTranslatedLabel(context, featureDisableInDemoVersionKey),
-        backgroundColor: Theme.of(context).colorScheme.error);
+        backgroundColor: Theme.of(context).colorScheme.error,);
   }
 
   static bool isDemoVersionEnable() {
@@ -193,7 +193,7 @@ class UiUtils {
   }
 
   static int getStudyMaterialId(
-      String studyMaterialLabel, BuildContext context) {
+      String studyMaterialLabel, BuildContext context,) {
     if (studyMaterialLabel == getTranslatedLabel(context, fileUploadKey)) {
       return 1;
     }
@@ -207,7 +207,7 @@ class UiUtils {
   }
 
   static int getStudyMaterialIdByEnum(
-      StudyMaterialType studyMaterialType, BuildContext context) {
+      StudyMaterialType studyMaterialType, BuildContext context,) {
     if (studyMaterialType == StudyMaterialType.file) {
       return 1;
     }
@@ -227,7 +227,7 @@ class UiUtils {
   }
 
   static String getStudyMaterialTypeLabelByEnum(
-      StudyMaterialType studyMaterialType, BuildContext context) {
+      StudyMaterialType studyMaterialType, BuildContext context,) {
     if (studyMaterialType == StudyMaterialType.file) {
       return UiUtils.getTranslatedLabel(context, fileUploadKey);
     }
@@ -241,7 +241,7 @@ class UiUtils {
     return "Other";
   }
 
-  static void openFileInBrowser(String fileUrl, BuildContext context) async {
+  static Future<void> openFileInBrowser(String fileUrl, BuildContext context) async {
     try {
       final canLaunch = await canLaunchUrl(Uri.parse(fileUrl));
       if (canLaunch) {
@@ -251,21 +251,21 @@ class UiUtils {
             context: context,
             errorMessage:
                 UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
-            backgroundColor: Theme.of(context).colorScheme.error);
+            backgroundColor: Theme.of(context).colorScheme.error,);
       }
     } catch (e) {
       UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage:
               UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+          backgroundColor: Theme.of(context).colorScheme.error,);
     }
   }
 
   static void openDownloadBottomsheet(
       {required BuildContext context,
       required bool storeInExternalStorage,
-      required StudyMaterial studyMaterial}) {
+      required StudyMaterial studyMaterial,}) {
     showBottomSheet(
             child: BlocProvider<DownloadFileCubit>(
               create: (context) => DownloadFileCubit(StudyMaterialRepository()),
@@ -274,15 +274,15 @@ class UiUtils {
                 studyMaterial: studyMaterial,
               ),
             ),
-            context: context)
+            context: context,)
         .then((result) {
       if (result != null) {
         if (result['error']) {
           showBottomToastOverlay(
               context: context,
               errorMessage: getErrorMessageFromErrorCode(
-                  context, result['message'].toString()),
-              backgroundColor: Theme.of(context).colorScheme.error);
+                  context, result['message'].toString(),),
+              backgroundColor: Theme.of(context).colorScheme.error,);
         } else {
           try {
             OpenFilex.open(result['filePath'].toString());
@@ -293,8 +293,8 @@ class UiUtils {
                     context,
                     storeInExternalStorage
                         ? fileDownloadedSuccessfullyKey
-                        : unableToOpenKey),
-                backgroundColor: Theme.of(context).colorScheme.error);
+                        : unableToOpenKey,),
+                backgroundColor: Theme.of(context).colorScheme.error,);
           }
         }
       }
@@ -309,7 +309,7 @@ class UiUtils {
     }
 
     bool updateBasedOnVersion = _shouldUpdateBasedOnVersion(
-        currentVersion.split("+").first, updatedVersion.split("+").first);
+        currentVersion.split("+").first, updatedVersion.split("+").first,);
 
     if (updatedVersion.split("+").length == 1 ||
         currentVersion.split("+").length == 1) {
@@ -317,13 +317,13 @@ class UiUtils {
     }
 
     bool updateBasedOnBuildNumber = _shouldUpdateBasedOnBuildNumber(
-        currentVersion.split("+").last, updatedVersion.split("+").last);
+        currentVersion.split("+").last, updatedVersion.split("+").last,);
 
-    return (updateBasedOnVersion || updateBasedOnBuildNumber);
+    return updateBasedOnVersion || updateBasedOnBuildNumber;
   }
 
   static bool _shouldUpdateBasedOnVersion(
-      String currentVersion, String updatedVersion) {
+      String currentVersion, String updatedVersion,) {
     List<int> currentVersionList =
         currentVersion.split(".").map((e) => int.parse(e)).toList();
     List<int> updatedVersionList =
@@ -362,7 +362,7 @@ class UiUtils {
   }
 
   static bool _shouldUpdateBasedOnBuildNumber(
-      String currentBuildNumber, String updatedBuildNumber) {
+      String currentBuildNumber, String updatedBuildNumber,) {
     return int.parse(updatedBuildNumber) > int.parse(currentBuildNumber);
   }
 
@@ -376,7 +376,7 @@ class UiUtils {
     return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
   }
 
-  static bool isToadyIsInAcademicYear(DateTime firstDate, DateTime lastDate) {
+  static bool isToadyIsInSessionYear(DateTime firstDate, DateTime lastDate) {
     final currentDate = DateTime.now();
 
     return (currentDate.isAfter(firstDate) && currentDate.isBefore(lastDate)) ||

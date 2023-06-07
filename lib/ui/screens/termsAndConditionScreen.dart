@@ -19,8 +19,8 @@ class TermsAndConditionScreen extends StatefulWidget {
     return CupertinoPageRoute(
         builder: (_) => BlocProvider<AppSettingsCubit>(
               create: (context) => AppSettingsCubit(SystemRepository()),
-              child: TermsAndConditionScreen(),
-            ));
+              child: const TermsAndConditionScreen(),
+            ),);
   }
 }
 
@@ -46,7 +46,7 @@ class _TermsAndConditionScreenState extends State<TermsAndConditionScreen> {
             appSettingsType: termsAndConditionType,
           ),
           CustomAppBar(
-              title: UiUtils.getTranslatedLabel(context, termsAndConditionKey))
+              title: UiUtils.getTranslatedLabel(context, termsAndConditionKey),)
         ],
       ),
     );

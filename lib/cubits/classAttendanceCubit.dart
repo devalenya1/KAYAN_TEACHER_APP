@@ -17,7 +17,7 @@ class ClassAttendanceFetchSuccess extends ClassAttendanceState {
   ClassAttendanceFetchSuccess(
       {required this.attendanceReports,
       required this.isHoliday,
-      required this.holidayDetails});
+      required this.holidayDetails,});
 }
 
 class ClassAttendanceFetchFailure extends ClassAttendanceState {
@@ -32,13 +32,13 @@ class ClassAttendanceCubit extends Cubit<ClassAttendanceState> {
   ClassAttendanceCubit(this._teacherRepository)
       : super(ClassAttendanceInitial());
 
-  void fetchAttendanceReports(
-      {required int classSectionId, required DateTime date}) async {
+  Future<void> fetchAttendanceReports(
+      {required int classSectionId, required DateTime date,}) async {
     emit(ClassAttendanceFetchInProgress());
     try {
       final result = await _teacherRepository.getClassAttendanceReports(
           classSectionId: classSectionId,
-          date: "${date.year}-${date.month}-${date.day}");
+          date: "${date.year}-${date.month}-${date.day}",);
 
       emit(
         ClassAttendanceFetchSuccess(

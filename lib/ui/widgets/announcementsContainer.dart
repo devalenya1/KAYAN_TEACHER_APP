@@ -27,13 +27,13 @@ class AnnouncementsContainer extends StatelessWidget {
   final ClassSectionDetails classSectionDetails;
 
   AnnouncementsContainer(
-      {Key? key, required this.classSectionDetails, required this.subject})
+      {Key? key, required this.classSectionDetails, required this.subject,})
       : super(key: key);
 
   Widget _buildAnnouncementShimmerLoading(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 25.0),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 12.5),
+      margin: const EdgeInsets.only(bottom: 25.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.5),
       width: MediaQuery.of(context).size.width * (0.8),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Column(
@@ -44,16 +44,16 @@ class AnnouncementsContainer extends StatelessWidget {
                 child: CustomShimmerContainer(
               borderRadius: 4.0,
               width: boxConstraints.maxWidth * (0.65),
-            )),
-            SizedBox(
+            ),),
+            const SizedBox(
               height: 10,
             ),
             ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
               borderRadius: 3.0,
               width: boxConstraints.maxWidth * (0.5),
-            )),
-            SizedBox(
+            ),),
+            const SizedBox(
               height: 20,
             ),
             ShimmerLoadingContainer(
@@ -61,10 +61,10 @@ class AnnouncementsContainer extends StatelessWidget {
               borderRadius: 3.0,
               height: UiUtils.shimmerLoadingContainerDefaultHeight - 2,
               width: boxConstraints.maxWidth * (0.3),
-            )),
+            ),),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -75,7 +75,7 @@ class AnnouncementsContainer extends StatelessWidget {
       required int totalAnnouncements,
       required bool hasMoreAnnouncements,
       required bool hasMoreAnnouncementsInProgress,
-      required bool fetchMoreAnnouncementsFailure}) {
+      required bool fetchMoreAnnouncementsFailure,}) {
     //show announcement loading container for last announcement container
     if (index == (totalAnnouncements - 1)) {
       //If has more assignment
@@ -90,8 +90,8 @@ class AnnouncementsContainer extends StatelessWidget {
                 onPressed: () {
                   context.read<AnnouncementsCubit>().fetchMoreAnnouncements(
                       classSectionId: classSectionDetails.id,
-                      subjectId: subject.id);
-                }),
+                      subjectId: subject.id,);
+                },),
           );
         }
       }
@@ -111,14 +111,19 @@ class AnnouncementsContainer extends StatelessWidget {
                   context: context,
                   errorMessage:
                       UiUtils.getTranslatedLabel(context, unableToDeleteKey),
-                  backgroundColor: Theme.of(context).colorScheme.error);
+                  backgroundColor: Theme.of(context).colorScheme.error,);
             }
           },
           builder: (context, state) {
             return Opacity(
               opacity: state is DeleteAnnouncementInProgress ? 0.5 : 1.0,
               child: Container(
-                margin: EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(10.0),),
+                width: MediaQuery.of(context).size.width * (0.85),
                 child: LayoutBuilder(builder: (context, boxConstraints) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +142,7 @@ class AnnouncementsContainer extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           EditButton(onTap: () {
                             if (state is DeleteAnnouncementInProgress) {
                               return;
@@ -148,17 +153,17 @@ class AnnouncementsContainer extends StatelessWidget {
                                   "subject": subject,
                                   "classSectionDetails": classSectionDetails,
                                   "announcement": announcement
-                                }).then((value) {
+                                },).then((value) {
                               if (value != null && value) {
                                 context
                                     .read<AnnouncementsCubit>()
                                     .fetchAnnouncements(
                                         classSectionId: classSectionDetails.id,
-                                        subjectId: subject.id);
+                                        subjectId: subject.id,);
                               }
                             });
-                          }),
-                          SizedBox(
+                          },),
+                          const SizedBox(
                             width: 10,
                           ),
                           DeleteButton(onTap: () {
@@ -167,7 +172,7 @@ class AnnouncementsContainer extends StatelessWidget {
                             }
                             showDialog<bool>(
                                     context: context,
-                                    builder: (_) => ConfirmDeleteDialog())
+                                    builder: (_) => const ConfirmDeleteDialog(),)
                                 .then((value) {
                               if (value != null && value) {
                                 context
@@ -175,11 +180,11 @@ class AnnouncementsContainer extends StatelessWidget {
                                     .deleteAnnouncement(announcement.id);
                               }
                             });
-                          })
+                          },)
                         ],
                       ),
                       announcement.description.isEmpty
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Text(
                               announcement.description,
                               style: TextStyle(
@@ -199,16 +204,16 @@ class AnnouncementsContainer extends StatelessWidget {
                                         fromAnnouncementsContainer: true,
                                         studyMaterials: announcement.files,
                                       ),
-                                      context: context);
+                                      context: context,);
                                 },
                                 child: Text(
                                   "${announcement.files.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                                  style: TextStyle(
-                                      color: assignmentViewButtonColor),
+                                  style: const TextStyle(
+                                      color: assignmentViewButtonColor,),
                                 ),
                               ),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       SizedBox(
                         height: announcement.files.isNotEmpty ? 0 : 5,
                       ),
@@ -219,21 +224,16 @@ class AnnouncementsContainer extends StatelessWidget {
                                   .onBackground
                                   .withOpacity(0.75),
                               fontWeight: FontWeight.w400,
-                              fontSize: 10),
-                          textAlign: TextAlign.start)
+                              fontSize: 10,),
+                          textAlign: TextAlign.start,)
                     ],
                   );
-                }),
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.circular(10.0)),
-                width: MediaQuery.of(context).size.width * (0.85),
+                },),
               ),
             );
           },
         );
-      }),
+      },),
     );
   }
 
@@ -243,10 +243,10 @@ class AnnouncementsContainer extends StatelessWidget {
       builder: (context, state) {
         if (state is AnnouncementsFetchSuccess) {
           return state.announcements.isEmpty
-              ? NoDataContainer(titleKey: noAnnouncementsKey)
+              ? const NoDataContainer(titleKey: noAnnouncementsKey)
               : Column(
                   children: List.generate(
-                          state.announcements.length, (index) => index)
+                          state.announcements.length, (index) => index,)
                       .map((index) => _buildAnnouncementContainer(
                           context: context,
                           announcement: state.announcements[index],
@@ -257,7 +257,7 @@ class AnnouncementsContainer extends StatelessWidget {
                           hasMoreAnnouncementsInProgress:
                               state.fetchMoreAnnouncementsInProgress,
                           fetchMoreAnnouncementsFailure:
-                              state.moreAnnouncementsFetchError))
+                              state.moreAnnouncementsFetchError,),)
                       .toList(),
                 );
         }
@@ -268,7 +268,7 @@ class AnnouncementsContainer extends StatelessWidget {
               onTapRetry: () {
                 context.read<AnnouncementsCubit>().fetchAnnouncements(
                     classSectionId: classSectionDetails.id,
-                    subjectId: subject.id);
+                    subjectId: subject.id,);
               },
             ),
           );
@@ -276,7 +276,7 @@ class AnnouncementsContainer extends StatelessWidget {
 
         return Column(
           children: List.generate(
-                  UiUtils.defaultShimmerLoadingContentCount, (index) => index)
+                  UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
               .map((e) => _buildAnnouncementShimmerLoading(context))
               .toList(),
         );

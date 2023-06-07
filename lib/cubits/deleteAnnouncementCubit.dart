@@ -21,7 +21,7 @@ class DeleteAnnouncementCubit extends Cubit<DeleteAnnouncementState> {
   DeleteAnnouncementCubit(this._announcementRepository)
       : super(DeleteAnnouncementInitial());
 
-  void deleteAnnouncement(int announcementId) async {
+  Future<void> deleteAnnouncement(int announcementId) async {
     emit(DeleteAnnouncementInProgress());
     try {
       await _announcementRepository.deleteAnnouncement(announcementId);

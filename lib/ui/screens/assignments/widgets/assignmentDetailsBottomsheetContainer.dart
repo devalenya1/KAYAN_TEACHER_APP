@@ -25,26 +25,26 @@ class _AssignmentDetailsBottomsheetContainerState
     return TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontSize: 14,
-        fontWeight: FontWeight.w600);
+        fontWeight: FontWeight.w600,);
   }
 
   TextStyle _getAssignmentDetailsLabelTextStyle() {
     return TextStyle(
         color: Theme.of(context).colorScheme.onBackground,
         fontSize: 12,
-        fontWeight: FontWeight.w400);
+        fontWeight: FontWeight.w400,);
   }
 
   Widget _buildAssignmentDetailBackgroundContainer(Widget child) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(bottom: 20.0),
+        margin: const EdgeInsets.only(bottom: 20.0),
         width: MediaQuery.of(context).size.width,
-        child: child,
-        padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.circular(10.0)),
+            borderRadius: BorderRadius.circular(10.0),),
+        child: child,
       ),
     );
   }
@@ -59,7 +59,7 @@ class _AssignmentDetailsBottomsheetContainerState
             UiUtils.getTranslatedLabel(context, subjectNameKey),
             style: _getAssignmentDetailsLabelTextStyle(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
@@ -85,11 +85,11 @@ class _AssignmentDetailsBottomsheetContainerState
             UiUtils.getTranslatedLabel(context, assignedDateKey),
             style: _getAssignmentDetailsLabelTextStyle(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
-            "Due, ${(formatted)}",
+            "Due, $formatted",
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -110,7 +110,7 @@ class _AssignmentDetailsBottomsheetContainerState
             UiUtils.getTranslatedLabel(context, dueDateKey),
             style: _getAssignmentDetailsLabelTextStyle(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
@@ -132,7 +132,7 @@ class _AssignmentDetailsBottomsheetContainerState
             UiUtils.getTranslatedLabel(context, pointsKey),
             style: _getAssignmentDetailsLabelTextStyle(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
@@ -154,7 +154,7 @@ class _AssignmentDetailsBottomsheetContainerState
             UiUtils.getTranslatedLabel(context, instructionsKey),
             style: _getAssignmentDetailsLabelTextStyle(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
@@ -177,25 +177,25 @@ class _AssignmentDetailsBottomsheetContainerState
               UiUtils.getTranslatedLabel(context, referenceMaterialsKey),
               style: _getAssignmentDetailsLabelTextStyle(),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5.0,
             ),
             ...List.generate(
               widget.assignment.studyMaterial.length,
               (index) => Transform.translate(
-                offset: Offset(-15, 0),
+                offset: const Offset(-15, 0),
                 child: AnnouncementAttachmentContainer(
                     backgroundColor: Colors.transparent,
                     showDeleteButton: false,
-                    studyMaterial: widget.assignment.studyMaterial[index]),
+                    studyMaterial: widget.assignment.studyMaterial[index],),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15.0,
             ),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -238,7 +238,7 @@ class _AssignmentDetailsBottomsheetContainerState
               width: boxConstraints.maxWidth * (0.825),
               child: Text(
                 UiUtils.getTranslatedLabel(
-                    context, resubmissionOfRejectedAssignmentKey),
+                    context, resubmissionOfRejectedAssignmentKey,),
                 style: _getAssignmentDetailsLabelValueTextStyle(),
               ),
             ),
@@ -252,12 +252,12 @@ class _AssignmentDetailsBottomsheetContainerState
             child: SizedBox(
               width: 30,
               child: CustomCupertinoSwitch(
-                  onChanged: (_) {}, value: isResubmission),
+                  onChanged: (_) {}, value: isResubmission,),
             ),
           )
         ],
       );
-    }));
+    },),);
   }
 
   Widget _buildExtraDayForRejectedAssignmentContainer() {
@@ -268,10 +268,10 @@ class _AssignmentDetailsBottomsheetContainerState
         children: [
           Text(
             UiUtils.getTranslatedLabel(
-                context, extraDaysForRejectedAssignmentKey),
+                context, extraDaysForRejectedAssignmentKey,),
             style: _getAssignmentDetailsLabelTextStyle(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5.0,
           ),
           Text(
@@ -296,7 +296,7 @@ class _AssignmentDetailsBottomsheetContainerState
       padding:
           EdgeInsets.only(top: UiUtils.bottomSheetHorizontalContentPadding),
       constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * (0.875)),
+          maxHeight: MediaQuery.of(context).size.height * (0.875),),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -309,9 +309,9 @@ class _AssignmentDetailsBottomsheetContainerState
                         color: Theme.of(context)
                             .colorScheme
                             .onBackground
-                            .withOpacity(0.5)))),
+                            .withOpacity(0.5),),),),
             padding: EdgeInsets.symmetric(
-                horizontal: UiUtils.bottomSheetHorizontalContentPadding),
+                horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
             child: LayoutBuilder(builder: (context, boxConstraints) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -325,29 +325,29 @@ class _AssignmentDetailsBottomsheetContainerState
                         style: TextStyle(
                             fontSize: 16,
                             color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w600,),
                       ),
                     ),
                   ),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed(Routes.assignment,
-                            arguments: {"assignment": widget.assignment});
+                            arguments: {"assignment": widget.assignment},);
                       },
                       child: Text(
                         UiUtils.getTranslatedLabel(context, viewKey),
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary),
-                      )),
+                            color: Theme.of(context).colorScheme.primary,),
+                      ),),
                 ],
               );
-            }),
+            },),
           ),
 
           Expanded(
               child: ListView(
             padding: EdgeInsets.symmetric(
-                horizontal: UiUtils.bottomSheetHorizontalContentPadding),
+                horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
             children: [
               SizedBox(
                 height: UiUtils.bottomSheetHorizontalContentPadding,
@@ -372,7 +372,7 @@ class _AssignmentDetailsBottomsheetContainerState
                 height: UiUtils.bottomSheetHorizontalContentPadding,
               ),
             ],
-          ))
+          ),)
         ],
       ),
     );

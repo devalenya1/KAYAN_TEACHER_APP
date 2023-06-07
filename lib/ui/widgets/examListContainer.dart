@@ -37,7 +37,7 @@ class _ExamListContainerState extends State<ExamListContainer> {
       //
       //Exam status: 0- All exam, 1-Upcoming, 2-Ongoing, 3-Completed
       context.read<ExamDetailsCubit>().fetchStudentExamsList(
-          examStatus: 0);
+          examStatus: 0,);
     });
   }
 
@@ -47,7 +47,6 @@ class _ExamListContainerState extends State<ExamListContainer> {
         alignment: Alignment.topCenter,
         child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
                 examList.length,
@@ -62,9 +61,9 @@ class _ExamListContainerState extends State<ExamListContainer> {
                         UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getTranslatedLabel(
-                                context, noExamTimeTableFoundKey),
+                                context, noExamTimeTableFoundKey,),
                             backgroundColor:
-                            Theme.of(context).colorScheme.error);
+                            Theme.of(context).colorScheme.error,);
                         return;
                       }
                       Navigator.of(context)
@@ -72,19 +71,19 @@ class _ExamListContainerState extends State<ExamListContainer> {
                         'examID': examList[index].examID,
                         'examName': examList[index].examName.toString(),
                         'studentId': widget.studentId
-                      });
-                    }))),
+                      },);
+                    },),),),
       ),
     );
   }
 
   Widget _buildExamShimmerLoadingContainer() {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(
           horizontal: UiUtils.screenContentHorizontalPaddingPercentage *
-              MediaQuery.of(context).size.width),
+              MediaQuery.of(context).size.width,),
       child: ShimmerLoadingContainer(
         child: LayoutBuilder(builder: (context, boxConstraints) {
           return Column(
@@ -94,7 +93,7 @@ class _ExamListContainerState extends State<ExamListContainer> {
                   child: CustomShimmerContainer(
                     height: 9,
                     width: boxConstraints.maxWidth * (0.3),
-                  )),
+                  ),),
               SizedBox(
                 height: boxConstraints.maxWidth * (0.02),
               ),
@@ -102,13 +101,13 @@ class _ExamListContainerState extends State<ExamListContainer> {
                   child: CustomShimmerContainer(
                     height: 10,
                     width: boxConstraints.maxWidth * (0.8),
-                  )),
+                  ),),
               SizedBox(
                 height: boxConstraints.maxWidth * (0.1),
               ),
             ],
           );
-        }),
+        },),
       ),
     );
   }
@@ -121,10 +120,9 @@ class _ExamListContainerState extends State<ExamListContainer> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(UiUtils.defaultShimmerLoadingContentCount,
-                    (index) => _buildExamShimmerLoadingContainer()),
+                    (index) => _buildExamShimmerLoadingContainer(),),
           ),
         ),
       ),
@@ -134,12 +132,22 @@ class _ExamListContainerState extends State<ExamListContainer> {
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
+      displacment: UiUtils.getScrollViewTopPadding(
+          context: context,
+          appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage,),
+      onRefreshCallback: () {
+        //
+        //Exam status: 0- All exam, 1-Upcoming, 2-Ongoing, 3-Completed
+        int examStatus = examFilters.indexOf(_currentlySelectedExamFilter);
+        context.read<ExamDetailsCubit>().fetchStudentExamsList(
+            examStatus: examStatus,);
+      },
       child: SingleChildScrollView(
         padding: EdgeInsets.only(
             bottom: UiUtils.getScrollViewBottomPadding(context),
             top: UiUtils.getScrollViewTopPadding(
                 context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),),
         child: Column(
           children: [
             //Filter
@@ -150,7 +158,7 @@ class _ExamListContainerState extends State<ExamListContainer> {
                 context.read<ExamDetailsCubit>().fetchStudentExamsList(
 
                     examStatus:
-                    examFilters.indexOf(examFilters[examFilterIndex]));
+                    examFilters.indexOf(examFilters[examFilterIndex]),);
 
                 setState(() {
                   _currentlySelectedExamFilter = examFilters[examFilterIndex];
@@ -168,8 +176,8 @@ class _ExamListContainerState extends State<ExamListContainer> {
                   return Align(
                       alignment: Alignment.topCenter,
                       child: state.examList.isEmpty
-                          ? NoDataContainer(titleKey: noExamsFoundKey)
-                          : _buildExamList(state.examList));
+                          ? const NoDataContainer(titleKey: noExamsFoundKey)
+                          : _buildExamList(state.examList),);
                 }
                 if (state is ExamDetailsFetchFailure) {
                   return ErrorContainer(
@@ -177,7 +185,7 @@ class _ExamListContainerState extends State<ExamListContainer> {
                     onTapRetry: () {
                       context.read<ExamDetailsCubit>().fetchStudentExamsList(
                           examStatus: examFilters
-                              .indexOf(_currentlySelectedExamFilter));
+                              .indexOf(_currentlySelectedExamFilter),);
                     },
                   );
                 }
@@ -188,16 +196,6 @@ class _ExamListContainerState extends State<ExamListContainer> {
           ],
         ),
       ),
-      displacment: UiUtils.getScrollViewTopPadding(
-          context: context,
-          appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage),
-      onRefreshCallback: () {
-        //
-        //Exam status: 0- All exam, 1-Upcoming, 2-Ongoing, 3-Completed
-        int examStatus = examFilters.indexOf(_currentlySelectedExamFilter);
-        context.read<ExamDetailsCubit>().fetchStudentExamsList(
-            examStatus: examStatus);
-      },
     );
   }
 }

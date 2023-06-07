@@ -22,37 +22,37 @@ class CustomDropDownMenu extends StatelessWidget {
       this.backgroundColor,
       this.height,
       required this.menu,
-      required this.currentSelectedItem})
+      required this.currentSelectedItem,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: (bottomMargin ?? 20)),
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.only(bottom: bottomMargin ?? 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           color: backgroundColor ?? Theme.of(context).colorScheme.background,
           borderRadius: BorderRadius.circular(borderRadius ?? 5),
           border: Border.all(
               color:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5))),
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),),),
       width: width,
-      height: (height ?? 40),
+      height: height ?? 40,
       child: DropdownButton<String>(
           icon: SizedBox(
               height: 15,
               width: 15,
               child: SvgPicture.asset(
-                  UiUtils.getImagePath("arrow_down_icon.svg"))),
-          underline: SizedBox(),
+                  UiUtils.getImagePath("arrow_down_icon.svg"),),),
+          underline: const SizedBox(),
           isExpanded: true,
           value: currentSelectedItem,
           style: TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 13,
               color:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.75)),
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.75),),
           items: menu
               .map((e) => DropdownMenuItem<String>(
                   value: e,
@@ -61,9 +61,9 @@ class CustomDropDownMenu extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: textStyle,
-                  )))
+                  ),),)
               .toList(),
-          onChanged: onChanged),
+          onChanged: onChanged,),
     );
   }
 }

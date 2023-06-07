@@ -49,7 +49,7 @@ class ReviewAssignmentssubmition {
   }
 
   ReviewAssignmentssubmition copywith(
-      {int? status, String? feedback, int? points, int? id}) {
+      {int? status, String? feedback, int? points, int? id,}) {
     return ReviewAssignmentssubmition(
         id: id ?? this.id,
         assignmentId: assignmentId,
@@ -63,7 +63,7 @@ class ReviewAssignmentssubmition {
         deletedAt: deletedAt,
         assignment: assignment,
         student: student,
-        file: file);
+        file: file,);
   }
 }
 

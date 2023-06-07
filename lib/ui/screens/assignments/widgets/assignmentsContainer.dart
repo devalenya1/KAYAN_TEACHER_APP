@@ -25,15 +25,15 @@ class AssignmentsContainer extends StatelessWidget {
   final Subject subject;
 
   AssignmentsContainer(
-      {Key? key, required this.classSectionDetails, required this.subject})
+      {Key? key, required this.classSectionDetails, required this.subject,})
       : super(key: key);
 
   void showAssignmentBottomSheet(
-      {required BuildContext context, required Assignment assignment}) {
+      {required BuildContext context, required Assignment assignment,}) {
     UiUtils.showBottomSheet(
         enableDrag: true,
         child: AssignmentDetailsBottomsheetContainer(assignment: assignment),
-        context: context);
+        context: context,);
   }
 
   Widget asignmentListtile(Assignment assignment) {
@@ -50,26 +50,25 @@ class AssignmentsContainer extends StatelessWidget {
               UiUtils.showBottomToastOverlay(
                   context: context,
                   errorMessage:
-                      "${UiUtils.getTranslatedLabel(context, unableToDeleteAssignmentKey)}",
-                  backgroundColor: Theme.of(context).colorScheme.error);
+                      UiUtils.getTranslatedLabel(context, unableToDeleteAssignmentKey),
+                  backgroundColor: Theme.of(context).colorScheme.error,);
             }
           },
           builder: (context, state) {
             return Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: GestureDetector(
                     onTap: () {
                       if (state is DeleteAssignmentFetchInProgress) {
                         return;
                       }
                       showAssignmentBottomSheet(
-                          context: context, assignment: assignment);
+                          context: context, assignment: assignment,);
                     },
                     child: Opacity(
                       opacity:
                           state is DeleteAssignmentFetchInProgress ? 0.5 : 1.0,
                       child: Container(
-                          clipBehavior: Clip.none,
                           decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
@@ -77,15 +76,14 @@ class AssignmentsContainer extends StatelessWidget {
                                         .colorScheme
                                         .secondary
                                         .withOpacity(0.05),
-                                    offset: Offset(2.5, 2.5),
-                                    blurRadius: 10,
-                                    spreadRadius: 0)
+                                    offset: const Offset(2.5, 2.5),
+                                    blurRadius: 10,)
                               ],
                               color: Theme.of(context).scaffoldBackgroundColor,
-                              borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10),),
                           width: MediaQuery.of(context).size.width * (0.85),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 17.5, vertical: 17.5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 17.5, vertical: 17.5,),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -100,9 +98,9 @@ class AssignmentsContainer extends StatelessWidget {
                                             .colorScheme
                                             .secondary,
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 14.0),
+                                        fontSize: 14.0,),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   EditButton(onTap: () {
                                     Navigator.of(context).pushNamed<bool?>(
                                       Routes.addAssignment,
@@ -121,8 +119,8 @@ class AssignmentsContainer extends StatelessWidget {
                                             );
                                       }
                                     });
-                                  }),
-                                  SizedBox(
+                                  },),
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   DeleteButton(
@@ -134,20 +132,20 @@ class AssignmentsContainer extends StatelessWidget {
                                       showDialog<bool>(
                                               context: context,
                                               builder: (_) =>
-                                                  ConfirmDeleteDialog())
+                                                  const ConfirmDeleteDialog(),)
                                           .then((value) {
                                         if (value != null && value) {
                                           context
                                               .read<DeleteAssignmentCubit>()
                                               .deleteAssignment(
-                                                  assignmentId: assignment.id);
+                                                  assignmentId: assignment.id,);
                                         }
                                       });
                                     },
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10.0,
                               ),
                               Text(
@@ -158,21 +156,23 @@ class AssignmentsContainer extends StatelessWidget {
                                           .onBackground
                                           .withOpacity(0.6),
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 11.0))
+                                      fontSize: 11.0,),)
                             ],
-                          )),
-                    )));
+                          ),),
+                    ),),);
           },
         );
-      }),
+      },),
     );
   }
 
   Widget _buildInformationShimmerLoadingContainer(
-      {required BuildContext context}) {
+      {required BuildContext context,}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15.0),
+        width: MediaQuery.of(context).size.width * (0.85),
         child: LayoutBuilder(builder: (context, boxConstraints) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,37 +180,35 @@ class AssignmentsContainer extends StatelessWidget {
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.7)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.7),),
+              ),),
+              const SizedBox(
                 height: 5,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.5)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.5),),
+              ),),
+              const SizedBox(
                 height: 15,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.7)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.7),),
+              ),),
+              const SizedBox(
                 height: 5,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.5)),
-              )),
+                    end: boxConstraints.maxWidth * (0.5),),
+              ),),
             ],
           );
-        }),
-        padding: EdgeInsets.symmetric(vertical: 15.0),
-        width: MediaQuery.of(context).size.width * (0.85),
+        },),
       ),
     );
   }
@@ -222,11 +220,11 @@ class AssignmentsContainer extends StatelessWidget {
         builder: (context, state) {
           if (state is AssignmentsFetchSuccess) {
             return state.assignment.isEmpty
-                ? NoDataContainer(titleKey: noAssignmentsKey)
+                ? const NoDataContainer(titleKey: noAssignmentsKey)
                 : Column(
                     children: state.assignment
                         .map((assignment) => asignmentListtile(assignment))
-                        .toList());
+                        .toList(),);
           }
           if (state is AssignmentFetchFailure) {
             return Center(
@@ -235,7 +233,7 @@ class AssignmentsContainer extends StatelessWidget {
                 onTapRetry: () {
                   context.read<AssignmentCubit>().fetchassignment(
                       classSectionId: classSectionDetails.id,
-                      subjectId: subject.id);
+                      subjectId: subject.id,);
                 },
               ),
             );
@@ -243,7 +241,7 @@ class AssignmentsContainer extends StatelessWidget {
           return Column(
               children: List.generate(5, (index) {
             return _buildInformationShimmerLoadingContainer(context: context);
-          }));
-        });
+          }),);
+        },);
   }
 }

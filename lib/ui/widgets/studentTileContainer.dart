@@ -21,7 +21,6 @@ class StudentTileContainer extends StatelessWidget {
               .pushNamed(Routes.studentDetails, arguments: student);
         },
         child: Container(
-          clipBehavior: Clip.none,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -29,14 +28,14 @@ class StudentTileContainer extends StatelessWidget {
                         .colorScheme
                         .secondary
                         .withOpacity(0.05),
-                    offset: Offset(2.5, 2.5),
+                    offset: const Offset(2.5, 2.5),
                     blurRadius: 10,
-                    spreadRadius: 2.5)
+                    spreadRadius: 2.5,)
               ],
               color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10),),
           width: MediaQuery.of(context).size.width * (0.85),
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
           child: LayoutBuilder(builder: (context, boxConstraints) {
             return Row(
               children: [
@@ -44,9 +43,9 @@ class StudentTileContainer extends StatelessWidget {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(student.image)),
+                          image: CachedNetworkImageProvider(student.image),),
                       borderRadius: BorderRadius.circular(7.5),
-                      color: Theme.of(context).colorScheme.error),
+                      color: Theme.of(context).colorScheme.error,),
                   height: 50,
                   width: boxConstraints.maxWidth * (0.2),
                 ),
@@ -63,7 +62,7 @@ class StudentTileContainer extends StatelessWidget {
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14.0),
+                            fontSize: 14.0,),
                       ),
                       Text(
                           "${UiUtils.getTranslatedLabel(context, rollNoKey)} - ${student.rollNumber}",
@@ -73,14 +72,14 @@ class StudentTileContainer extends StatelessWidget {
                                   .secondary
                                   .withOpacity(0.75),
                               fontWeight: FontWeight.w400,
-                              fontSize: 12.5),
-                          textAlign: TextAlign.left)
+                              fontSize: 12.5,),
+                          textAlign: TextAlign.left,)
                     ],
                   ),
                 ),
               ],
             );
-          }),
+          },),
         ),
       ),
     );

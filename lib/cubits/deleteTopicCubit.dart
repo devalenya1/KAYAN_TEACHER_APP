@@ -20,7 +20,7 @@ class DeleteTopicCubit extends Cubit<DeleteTopicState> {
 
   DeleteTopicCubit(this._topicRepository) : super(DeleteTopicInitial());
 
-  void deleteTopic({required int topicId}) async {
+  Future<void> deleteTopic({required int topicId}) async {
     emit(DeleteTopicInProgress());
     try {
       await _topicRepository.deleteTopic(topicId: topicId);

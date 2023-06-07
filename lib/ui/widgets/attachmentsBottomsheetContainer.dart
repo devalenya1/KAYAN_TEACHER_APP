@@ -12,7 +12,7 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
   const AttachmentBottomsheetContainer(
       {Key? key,
       required this.studyMaterials,
-      required this.fromAnnouncementsContainer})
+      required this.fromAnnouncementsContainer,})
       : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
       padding:
           EdgeInsets.only(top: UiUtils.bottomSheetHorizontalContentPadding),
       constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * (0.875)),
+          maxHeight: MediaQuery.of(context).size.height * (0.875),),
       child: Stack(
         children: [
           SingleChildScrollView(
@@ -37,7 +37,7 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
                 right: UiUtils.bottomSheetHorizontalContentPadding,
                 left: UiUtils.bottomSheetHorizontalContentPadding,
                 top: MediaQuery.of(context).size.height * (0.05) +
-                    UiUtils.bottomSheetHorizontalContentPadding * (0.5)),
+                    UiUtils.bottomSheetHorizontalContentPadding * (0.5),),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: studyMaterials
@@ -49,8 +49,8 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
                               )
                             : StudyMaterialContainer(
                                 studyMaterial: studyMaterial,
-                                showEditAndDeleteButton: false),
-                      ))
+                                showEditAndDeleteButton: false,),
+                      ),)
                   .toList(),
             ),
           ),
@@ -63,7 +63,7 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .onBackground
-                            .withOpacity(0.5)))),
+                            .withOpacity(0.5),),),),
             padding: EdgeInsets.only(
               right: UiUtils.bottomSheetHorizontalContentPadding,
               bottom: UiUtils.bottomSheetHorizontalContentPadding * (0.5),
@@ -75,7 +75,7 @@ class AttachmentBottomsheetContainer extends StatelessWidget {
               style: TextStyle(
                   fontSize: 16,
                   color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w600),
+                  fontWeight: FontWeight.w600,),
             ),
           ),
         ],

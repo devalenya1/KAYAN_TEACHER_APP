@@ -25,7 +25,7 @@ class SubjectScreen extends StatefulWidget {
   final Subject subject;
   final ClassSectionDetails classSectionDetails;
   SubjectScreen(
-      {Key? key, required this.subject, required this.classSectionDetails})
+      {Key? key, required this.subject, required this.classSectionDetails,})
       : super(key: key);
 
   @override
@@ -48,7 +48,7 @@ class SubjectScreen extends StatefulWidget {
                 classSectionDetails: arguments['classSectionDetails'],
                 subject: arguments['subject'],
               ),
-            ));
+            ),);
   }
 }
 
@@ -64,10 +64,10 @@ class _SubjectScreenState extends State<SubjectScreen> {
     Future.delayed(Duration.zero, () {
       context.read<LessonsCubit>().fetchLessons(
           classSectionId: widget.classSectionDetails.id,
-          subjectId: widget.subject.id);
+          subjectId: widget.subject.id,);
       context.read<AnnouncementsCubit>().fetchAnnouncements(
           classSectionId: widget.classSectionDetails.id,
-          subjectId: widget.subject.id);
+          subjectId: widget.subject.id,);
     });
   }
 
@@ -103,7 +103,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
             : {
                 "subject": widget.subject,
                 "classSectionDetails": widget.classSectionDetails
-              });
+              },);
   }
 
   Widget _buildAppBar() {
@@ -116,21 +116,21 @@ class _SubjectScreenState extends State<SubjectScreen> {
               Align(
                 alignment: AlignmentDirectional.topStart,
                 child: Padding(
+                  padding: EdgeInsets.only(
+                      left: UiUtils.screenContentHorizontalPadding,),
                   child: SvgButton(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      svgIconUrl: UiUtils.getImagePath("back_icon.svg")),
-                  padding: EdgeInsets.only(
-                      left: UiUtils.screenContentHorizontalPadding),
+                      svgIconUrl: UiUtils.getImagePath("back_icon.svg"),),
                 ),
               ),
               AppBarTitleContainer(
-                  boxConstraints: boxConstraints, title: widget.subject.name),
+                  boxConstraints: boxConstraints, title: widget.subject.name,),
               AppBarSubTitleContainer(
                   boxConstraints: boxConstraints,
                   subTitle:
-                      "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSectionDetails.getClassSectionName()}"),
+                      "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSectionDetails.getClassSectionName()}",),
               AnimatedAlign(
                 curve: UiUtils.tabBackgroundContainerAnimationCurve,
                 duration: UiUtils.tabBackgroundContainerAnimationDuration,
@@ -148,7 +148,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       _selectedTabTitle = chaptersKey;
                     });
                   },
-                  titleKey: chaptersKey),
+                  titleKey: chaptersKey,),
               CustomTabBarContainer(
                   boxConstraints: boxConstraints,
                   alignment: AlignmentDirectional.centerEnd,
@@ -158,10 +158,10 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       _selectedTabTitle = announcementKey;
                     });
                   },
-                  titleKey: announcementKey)
+                  titleKey: announcementKey,)
             ],
           );
-        }),
+        },),
       ),
     );
   }
@@ -180,23 +180,23 @@ class _SubjectScreenState extends State<SubjectScreen> {
                 if (_selectedTabTitle == chaptersKey) {
                   context.read<LessonsCubit>().fetchLessons(
                       classSectionId: widget.classSectionDetails.id,
-                      subjectId: widget.subject.id);
+                      subjectId: widget.subject.id,);
                 } else {
                   context.read<AnnouncementsCubit>().fetchAnnouncements(
                       classSectionId: widget.classSectionDetails.id,
-                      subjectId: widget.subject.id);
+                      subjectId: widget.subject.id,);
                 }
               },
               displacment: UiUtils.getScrollViewTopPadding(
                   context: context,
-                  appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage),
+                  appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage,),
               child: ListView(
                 padding: EdgeInsets.only(
                     bottom: UiUtils.getScrollViewBottomPadding(context),
                     top: UiUtils.getScrollViewTopPadding(
                         context: context,
                         appBarHeightPercentage:
-                            UiUtils.appBarBiggerHeightPercentage)),
+                            UiUtils.appBarBiggerHeightPercentage,),),
                 children: [
                   _selectedTabTitle == chaptersKey
                       ? LessonsContainer(
@@ -205,7 +205,7 @@ class _SubjectScreenState extends State<SubjectScreen> {
                         )
                       : AnnouncementsContainer(
                           classSectionDetails: widget.classSectionDetails,
-                          subject: widget.subject)
+                          subject: widget.subject,)
                 ],
               ),
             ),

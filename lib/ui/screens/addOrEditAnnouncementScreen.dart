@@ -31,7 +31,7 @@ class AddOrEditAnnouncementScreen extends StatefulWidget {
   final ClassSectionDetails? classSectionDetails;
   final Subject? subject;
   AddOrEditAnnouncementScreen(
-      {Key? key, this.classSectionDetails, this.announcement, this.subject})
+      {Key? key, this.classSectionDetails, this.announcement, this.subject,})
       : super(key: key);
 
   static Route<bool?> route(RouteSettings routeSettings) {
@@ -57,7 +57,7 @@ class AddOrEditAnnouncementScreen extends StatefulWidget {
                   announcement: arguments['announcement'],
                   subject: arguments['subject'],
                   classSectionDetails: arguments['classSectionDetails'],
-                )));
+                ),),);
   }
 
   @override
@@ -78,12 +78,12 @@ class _AddOrEditAnnouncementScreenState
   late TextEditingController _announcementTitleEditingController =
       TextEditingController(
           text:
-              widget.announcement != null ? widget.announcement!.title : null);
+              widget.announcement != null ? widget.announcement!.title : null,);
   late TextEditingController _announcementDescriptionEditingController =
       TextEditingController(
           text: widget.announcement != null
               ? widget.announcement!.description
-              : null);
+              : null,);
 
   List<PlatformFile> _addedAttatchments = [];
 
@@ -99,7 +99,7 @@ class _AddOrEditAnnouncementScreenState
   void initState() {
     if (widget.classSectionDetails == null) {
       context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
-          context.read<MyClassesCubit>().getAllClasses().first.id);
+          context.read<MyClassesCubit>().getAllClasses().first.id,);
     }
     super.initState();
   }
@@ -119,7 +119,7 @@ class _AddOrEditAnnouncementScreenState
     return permissionGiven;
   }
 
-  void addAttachment() async {
+  Future<void> addAttachment() async {
     final permissionGiven = await _isPermissionGiven();
     if (permissionGiven) {
       final pickedFile = await FilePicker.platform.pickFiles();
@@ -139,13 +139,13 @@ class _AddOrEditAnnouncementScreenState
             context: context,
             errorMessage:
                 UiUtils.getTranslatedLabel(context, permissionToPickFileKey),
-            backgroundColor: Theme.of(context).colorScheme.error);
+            backgroundColor: Theme.of(context).colorScheme.error,);
       } on Error {
         UiUtils.showBottomToastOverlay(
             context: context,
             errorMessage:
                 UiUtils.getTranslatedLabel(context, permissionToPickFileKey),
-            backgroundColor: Theme.of(context).colorScheme.error);
+            backgroundColor: Theme.of(context).colorScheme.error,);
       }
     }
   }
@@ -155,8 +155,8 @@ class _AddOrEditAnnouncementScreenState
       UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage: UiUtils.getTranslatedLabel(
-              context, pleaseAddAnnouncementTitleKey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+              context, pleaseAddAnnouncementTitleKey,),
+          backgroundColor: Theme.of(context).colorScheme.error,);
       return;
     }
     context.read<CreateAnnouncementCubit>().createAnnouncement(
@@ -168,13 +168,13 @@ class _AddOrEditAnnouncementScreenState
             : context
                 .read<MyClassesCubit>()
                 .getClassSectionDetails(
-                    classSectionName: currentSelectedClassSection)
+                    classSectionName: currentSelectedClassSection,)
                 .id,
         subjectId: widget.subject != null
             ? widget.subject!.id
             : context
                 .read<SubjectsOfClassSectionCubit>()
-                .getSubjectIdByName(currentSelectedSubject));
+                .getSubjectIdByName(currentSelectedSubject),);
   }
 
   void editAnnouncement() {
@@ -182,8 +182,8 @@ class _AddOrEditAnnouncementScreenState
       UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage: UiUtils.getTranslatedLabel(
-              context, pleaseAddAnnouncementTitleKey),
-          backgroundColor: Theme.of(context).colorScheme.error);
+              context, pleaseAddAnnouncementTitleKey,),
+          backgroundColor: Theme.of(context).colorScheme.error,);
       return;
     }
     context.read<EditAnnouncementCubit>().editAnnouncement(
@@ -192,7 +192,7 @@ class _AddOrEditAnnouncementScreenState
         description: _announcementDescriptionEditingController.text.trim(),
         attachments: _addedAttatchments,
         classSectionId: widget.classSectionDetails!.id,
-        subjectId: widget.subject!.id);
+        subjectId: widget.subject!.id,);
   }
 
   Widget _buildClassAndSubjectDropDowns() {
@@ -207,10 +207,10 @@ class _AddOrEditAnnouncementScreenState
                     setState(() {
                       currentSelectedClassSection = result;
                     });
-                  })
+                  },)
               : DefaultDropDownLabelContainer(
                   titleLabelKey: currentSelectedClassSection,
-                  width: boxConstraints.maxWidth),
+                  width: boxConstraints.maxWidth,),
 
           //
           widget.subject == null
@@ -221,13 +221,13 @@ class _AddOrEditAnnouncementScreenState
                     });
                   },
                   currentSelectedItem: currentSelectedSubject,
-                  width: boxConstraints.maxWidth)
+                  width: boxConstraints.maxWidth,)
               : DefaultDropDownLabelContainer(
                   titleLabelKey: currentSelectedSubject,
-                  width: boxConstraints.maxWidth),
+                  width: boxConstraints.maxWidth,),
         ],
       );
-    });
+    },);
   }
 
   Widget _buildAnnouncementForm() {
@@ -240,42 +240,42 @@ class _AddOrEditAnnouncementScreenState
                 MediaQuery.of(context).size.width,
             top: UiUtils.getScrollViewTopPadding(
                 context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),),
         child: Column(
           children: [
             _buildClassAndSubjectDropDowns(),
             BottomSheetTextFieldContainer(
                 hintText:
                     UiUtils.getTranslatedLabel(context, announcementTitleKey),
-                margin: EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 20),
                 maxLines: 1,
-                contentPadding: EdgeInsetsDirectional.only(start: 15),
-                textEditingController: _announcementTitleEditingController),
+                contentPadding: const EdgeInsetsDirectional.only(start: 15),
+                textEditingController: _announcementTitleEditingController,),
             BottomSheetTextFieldContainer(
-                margin: EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 20),
                 hintText: UiUtils.getTranslatedLabel(
-                    context, announcementDescriptionKey),
+                    context, announcementDescriptionKey,),
                 maxLines: 3,
-                contentPadding: EdgeInsetsDirectional.only(start: 15),
+                contentPadding: const EdgeInsetsDirectional.only(start: 15),
                 textEditingController:
-                    _announcementDescriptionEditingController),
+                    _announcementDescriptionEditingController,),
             widget.announcement != null
                 ? Column(
                     children: attatchments
                         .map((file) => AnnouncementAttachmentContainer(
                             onDeleteCallback: deleteAttachment,
                             showDeleteButton: true,
-                            studyMaterial: file))
+                            studyMaterial: file,),)
                         .toList(),
                   )
-                : SizedBox(),
+                : const SizedBox(),
             BottomsheetAddFilesDottedBorderContainer(
                 onTap: () async {
                   FocusScope.of(context).unfocus();
                   addAttachment();
                 },
-                title: UiUtils.getTranslatedLabel(context, attachmentsKey)),
-            SizedBox(
+                title: UiUtils.getTranslatedLabel(context, attachmentsKey),),
+            const SizedBox(
               height: 20,
             ),
             ...List.generate(_addedAttatchments.length, (index) => index)
@@ -286,8 +286,8 @@ class _AddOrEditAnnouncementScreenState
                             _addedAttatchments.removeAt(index);
                             setState(() {});
                           },
-                          platformFile: _addedAttatchments[index]),
-                    ))
+                          platformFile: _addedAttatchments[index],),
+                    ),)
                 .toList(),
             widget.announcement != null
                 ? BlocConsumer<EditAnnouncementCubit, EditAnnouncementState>(
@@ -298,16 +298,16 @@ class _AddOrEditAnnouncementScreenState
                         UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                                context, state.errorMessage),
+                                context, state.errorMessage,),
                             backgroundColor:
-                                Theme.of(context).colorScheme.error);
+                                Theme.of(context).colorScheme.error,);
                       }
                     },
                     builder: (context, state) {
                       return LayoutBuilder(builder: (context, boxConstraints) {
                         return Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: boxConstraints.maxWidth * (0.15)),
+                              horizontal: boxConstraints.maxWidth * (0.15),),
                           child: CustomRoundedButton(
                               onTap: () {
                                 if (state is EditAnnouncementInProgress) {
@@ -315,21 +315,21 @@ class _AddOrEditAnnouncementScreenState
                                 }
                                 editAnnouncement();
                               },
-                              child: state is EditAnnouncementInProgress
-                                  ? CustomCircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      widthAndHeight: 20,
-                                    )
-                                  : null,
                               height: 45,
                               widthPercentage: 1.0,
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
                               buttonTitle: UiUtils.getTranslatedLabel(
-                                  context, editAnnouncementKey),
-                              showBorder: false),
+                                  context, editAnnouncementKey,),
+                              showBorder: false,
+                              child: state is EditAnnouncementInProgress
+                                  ? const CustomCircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      widthAndHeight: 20,
+                                    )
+                                  : null,),
                         );
-                      });
+                      },);
                     },
                   )
                 : BlocConsumer<CreateAnnouncementCubit,
@@ -343,23 +343,23 @@ class _AddOrEditAnnouncementScreenState
                         UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getTranslatedLabel(
-                                context, announcementAddedKey),
+                                context, announcementAddedKey,),
                             backgroundColor:
-                                Theme.of(context).colorScheme.onPrimary);
+                                Theme.of(context).colorScheme.onPrimary,);
                       } else if (state is CreateAnnouncementFailure) {
                         UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                                context, state.errorMessage),
+                                context, state.errorMessage,),
                             backgroundColor:
-                                Theme.of(context).colorScheme.error);
+                                Theme.of(context).colorScheme.error,);
                       }
                     },
                     builder: (context, state) {
                       return LayoutBuilder(builder: (context, boxConstraints) {
                         return Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: boxConstraints.maxWidth * (0.125)),
+                              horizontal: boxConstraints.maxWidth * (0.125),),
                           child: CustomRoundedButton(
                               onTap: () {
                                 //
@@ -368,25 +368,25 @@ class _AddOrEditAnnouncementScreenState
                                 }
                                 createAnnouncement();
                               },
-                              child: state is CreateAnnouncementInProgress
-                                  ? CustomCircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      widthAndHeight: 20,
-                                    )
-                                  : null,
                               height: 45,
                               widthPercentage: boxConstraints.maxWidth * (0.45),
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
                               buttonTitle: UiUtils.getTranslatedLabel(
-                                  context, addAnnouncementKey),
-                              showBorder: false),
+                                  context, addAnnouncementKey,),
+                              showBorder: false,
+                              child: state is CreateAnnouncementInProgress
+                                  ? const CustomCircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      widthAndHeight: 20,
+                                    )
+                                  : null,),
                         );
-                      });
+                      },);
                     },
                   ),
           ],
-        ));
+        ),);
   }
 
   @override
@@ -429,7 +429,7 @@ class _AddOrEditAnnouncementScreenState
                     context,
                     widget.announcement != null
                         ? editAnnouncementKey
-                        : addAnnouncementKey),
+                        : addAnnouncementKey,),
               ),
             ),
           ],

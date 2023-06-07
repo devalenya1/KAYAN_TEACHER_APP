@@ -14,7 +14,7 @@ class Teacher {
       required this.status,
       required this.resetRequest,
       required this.qualification,
-      required this.teacherId});
+      required this.teacherId,});
   late final int id;
   late final String firstName;
   late final String lastName;

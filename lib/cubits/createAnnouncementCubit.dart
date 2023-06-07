@@ -22,12 +22,12 @@ class CreateAnnouncementCubit extends Cubit<CreateAnnouncementState> {
   CreateAnnouncementCubit(this._announcementRepository)
       : super(CreateAnnouncementInitial());
 
-  void createAnnouncement(
+  Future<void> createAnnouncement(
       {required String title,
       required String description,
       required List<PlatformFile> attachments,
       required int classSectionId,
-      required int subjectId}) async {
+      required int subjectId,}) async {
     emit(CreateAnnouncementInProgress());
     try {
       await _announcementRepository.createAnnouncement(
@@ -35,7 +35,7 @@ class CreateAnnouncementCubit extends Cubit<CreateAnnouncementState> {
           description: description,
           attachments: attachments,
           classSectionId: classSectionId,
-          subjectId: subjectId);
+          subjectId: subjectId,);
       emit(CreateAnnouncementSuccess());
     } catch (e) {
       emit(CreateAnnouncementFailure(e.toString()));

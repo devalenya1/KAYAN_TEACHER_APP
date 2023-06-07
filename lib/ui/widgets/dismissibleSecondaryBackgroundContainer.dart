@@ -8,9 +8,12 @@ class DismissibleSecondaryBackgroundContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 20,
       ),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).colorScheme.error,),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -18,7 +21,7 @@ class DismissibleSecondaryBackgroundContainer extends StatelessWidget {
             Icons.delete,
             color: Theme.of(context).scaffoldBackgroundColor,
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Text(
@@ -27,9 +30,6 @@ class DismissibleSecondaryBackgroundContainer extends StatelessWidget {
           ),
         ],
       ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).colorScheme.error),
     );
   }
 }

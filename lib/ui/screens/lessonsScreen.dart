@@ -31,8 +31,8 @@ class LessonsScreen extends StatefulWidget {
                       SubjectsOfClassSectionCubit(TeacherRepository()),
                 ),
               ],
-              child: LessonsScreen(),
-            ));
+              child: const LessonsScreen(),
+            ),);
   }
 
   @override
@@ -51,7 +51,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
     context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
         .read<MyClassesCubit>()
         .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-        .id);
+        .id,);
     super.initState();
   }
 
@@ -64,9 +64,9 @@ class _LessonsScreenState extends State<LessonsScreen> {
           classSectionId: context
               .read<MyClassesCubit>()
               .getClassSectionDetails(
-                  classSectionName: currentSelectedClassSection)
+                  classSectionName: currentSelectedClassSection,)
               .id,
-          subjectId: subjectId);
+          subjectId: subjectId,);
     }
   }
 
@@ -90,7 +90,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                   currentSelectedClassSection = result;
                 });
                 context.read<LessonsCubit>().updateState(LessonsInitial());
-              }),
+              },),
 
           //
           ClassSubjectsDropDownMenu(
@@ -101,10 +101,10 @@ class _LessonsScreenState extends State<LessonsScreen> {
                 fetchLessons();
               },
               currentSelectedItem: currentSelectedSubject,
-              width: boxConstraints.maxWidth),
+              width: boxConstraints.maxWidth,),
         ],
       );
-    });
+    },);
   }
 
   @override
@@ -112,14 +112,14 @@ class _LessonsScreenState extends State<LessonsScreen> {
     return Scaffold(
         floatingActionButton: FloatingActionAddButton(onTap: () {
           Navigator.of(context).pushNamed(Routes.addOrEditLesson);
-        }),
+        },),
         body: Stack(
           children: [
             CustomRefreshIndicator(
               displacment: UiUtils.getScrollViewTopPadding(
                   context: context,
                   appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage),
+                      UiUtils.appBarSmallerHeightPercentage,),
               onRefreshCallback: () {
                 fetchLessons();
               },
@@ -132,7 +132,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                     top: UiUtils.getScrollViewTopPadding(
                         context: context,
                         appBarHeightPercentage:
-                            UiUtils.appBarSmallerHeightPercentage)),
+                            UiUtils.appBarSmallerHeightPercentage,),),
                 children: [
                   _buildClassAndSubjectDropDowns(),
                   SizedBox(
@@ -142,7 +142,7 @@ class _LessonsScreenState extends State<LessonsScreen> {
                     classSectionDetails: context
                         .read<MyClassesCubit>()
                         .getClassSectionDetails(
-                            classSectionName: currentSelectedClassSection),
+                            classSectionName: currentSelectedClassSection,),
                     subject: context
                         .read<SubjectsOfClassSectionCubit>()
                         .getSubjectDetailsByName(currentSelectedSubject),
@@ -152,6 +152,6 @@ class _LessonsScreenState extends State<LessonsScreen> {
             ),
             _buildAppbar()
           ],
-        ));
+        ),);
   }
 }

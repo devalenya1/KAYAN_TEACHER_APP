@@ -20,14 +20,14 @@ class AnnouncementsFetchSuccess extends AnnouncementsState {
       required this.fetchMoreAnnouncementsInProgress,
       required this.moreAnnouncementsFetchError,
       required this.currentPage,
-      required this.totalPage});
+      required this.totalPage,});
 
   AnnouncementsFetchSuccess copyWith(
       {List<Announcement>? newAnnouncements,
       bool? newFetchMoreAnnouncementsInProgress,
       bool? newMoreAnnouncementsFetchError,
       int? newCurrentPage,
-      int? newTotalPage}) {
+      int? newTotalPage,}) {
     return AnnouncementsFetchSuccess(
         announcements: newAnnouncements ?? announcements,
         fetchMoreAnnouncementsInProgress: newFetchMoreAnnouncementsInProgress ??
@@ -35,7 +35,7 @@ class AnnouncementsFetchSuccess extends AnnouncementsState {
         moreAnnouncementsFetchError:
             newMoreAnnouncementsFetchError ?? moreAnnouncementsFetchError,
         currentPage: newCurrentPage ?? currentPage,
-        totalPage: newTotalPage ?? totalPage);
+        totalPage: newTotalPage ?? totalPage,);
   }
 }
 
@@ -57,12 +57,12 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
           (state as AnnouncementsFetchSuccess).announcements;
       announcements.removeWhere((element) => element.id == announcementId);
       emit((state as AnnouncementsFetchSuccess)
-          .copyWith(newAnnouncements: announcements));
+          .copyWith(newAnnouncements: announcements),);
     }
   }
 
-  void fetchAnnouncements(
-      {required int classSectionId, required int subjectId}) async {
+  Future<void> fetchAnnouncements(
+      {required int classSectionId, required int subjectId,}) async {
     try {
       emit(AnnouncementsFetchInProgress());
       final result = await _announcementRepository.fetchAnnouncements(
@@ -74,7 +74,7 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
           fetchMoreAnnouncementsInProgress: false,
           moreAnnouncementsFetchError: false,
           currentPage: result['currentPage'],
-          totalPage: result['totalPage']));
+          totalPage: result['totalPage'],),);
     } catch (e) {
       emit(AnnouncementsFetchFailure(errorMessage: e.toString()));
     }
@@ -92,8 +92,8 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
     return false;
   }
 
-  void fetchMoreAnnouncements(
-      {required int classSectionId, required int subjectId}) async {
+  Future<void> fetchMoreAnnouncements(
+      {required int classSectionId, required int subjectId,}) async {
     if (state is AnnouncementsFetchSuccess) {
       if ((state as AnnouncementsFetchSuccess)
           .fetchMoreAnnouncementsInProgress) {
@@ -101,7 +101,7 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
       }
       try {
         emit((state as AnnouncementsFetchSuccess)
-            .copyWith(newFetchMoreAnnouncementsInProgress: true));
+            .copyWith(newFetchMoreAnnouncementsInProgress: true),);
         //fetch more announcements
         //more announcements result
         final moreAssignmentsResult =
@@ -111,7 +111,7 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
           page: (state as AnnouncementsFetchSuccess).currentPage + 1,
         );
 
-        final currentState = (state as AnnouncementsFetchSuccess);
+        final currentState = state as AnnouncementsFetchSuccess;
         List<Announcement> announcements = currentState.announcements;
 
         //add more announcements into original announcements list
@@ -122,11 +122,11 @@ class AnnouncementsCubit extends Cubit<AnnouncementsState> {
             announcements: announcements,
             moreAnnouncementsFetchError: false,
             currentPage: moreAssignmentsResult['currentPage'],
-            totalPage: moreAssignmentsResult['totalPage']));
+            totalPage: moreAssignmentsResult['totalPage'],),);
       } catch (e) {
         emit((state as AnnouncementsFetchSuccess).copyWith(
             newFetchMoreAnnouncementsInProgress: false,
-            newMoreAnnouncementsFetchError: true));
+            newMoreAnnouncementsFetchError: true,),);
       }
     }
   }

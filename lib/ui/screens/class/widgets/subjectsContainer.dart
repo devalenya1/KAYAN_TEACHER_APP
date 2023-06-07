@@ -17,19 +17,18 @@ class SubjectsContainer extends StatelessWidget {
       : super(key: key);
 
   Widget _buildSubjectContainer(
-      {required Subject subject, required BuildContext context}) {
+      {required Subject subject, required BuildContext context,}) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
           Navigator.of(context).pushNamed(Routes.subject, arguments: {
             "subject": subject,
             "classSectionDetails": classSectionDetails
-          });
+          },);
         },
         child: Container(
-          clipBehavior: Clip.none,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -37,15 +36,14 @@ class SubjectsContainer extends StatelessWidget {
                         .colorScheme
                         .secondary
                         .withOpacity(0.05),
-                    offset: Offset(2.5, 2.5),
-                    blurRadius: 10,
-                    spreadRadius: 0)
+                    offset: const Offset(2.5, 2.5),
+                    blurRadius: 10,)
               ],
               color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10),),
           height: 80,
           width: MediaQuery.of(context).size.width * (0.85),
-          padding: EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
           child: LayoutBuilder(builder: (context, boxConstraints) {
             return Row(
               children: [
@@ -54,7 +52,7 @@ class SubjectsContainer extends StatelessWidget {
                     height: 60,
                     radius: 7.5,
                     subject: subject,
-                    width: boxConstraints.maxWidth * (0.2)),
+                    width: boxConstraints.maxWidth * (0.2),),
                 SizedBox(
                   width: boxConstraints.maxWidth * (0.05),
                 ),
@@ -63,11 +61,11 @@ class SubjectsContainer extends StatelessWidget {
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14.0),
+                      fontSize: 14.0,),
                 )
               ],
             );
-          }),
+          },),
         ),
       ),
     );
@@ -75,26 +73,25 @@ class SubjectsContainer extends StatelessWidget {
 
   Widget _buildSubjectShimmerLoading(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width * (0.85),
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
-              margin: EdgeInsetsDirectional.only(start: 10),
+              margin: const EdgeInsetsDirectional.only(start: 10),
               height: 60,
               width: boxConstraints.maxWidth * (0.2),
-            )),
+            ),),
             ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
-              margin: EdgeInsetsDirectional.only(start: 20),
+              margin: const EdgeInsetsDirectional.only(start: 20),
               width: boxConstraints.maxWidth * (0.3),
-            )),
+            ),),
           ],
         );
-      }),
+      },),
     );
   }
 
@@ -116,7 +113,7 @@ class SubjectsContainer extends StatelessWidget {
             return Column(
               children: state.subjects
                   .map((subject) => _buildSubjectContainer(
-                      subject: subject, context: context))
+                      subject: subject, context: context,),)
                   .toList(),
             );
           }
@@ -135,7 +132,7 @@ class SubjectsContainer extends StatelessWidget {
 
           return Column(
             children: List.generate(
-                    UiUtils.defaultShimmerLoadingContentCount, (index) => index)
+                    UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
                 .map((e) => _buildSubjectShimmerLoading(context))
                 .toList(),
           );

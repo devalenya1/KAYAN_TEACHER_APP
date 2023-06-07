@@ -19,7 +19,7 @@ class SubjectMark {
     required this.subjectType,
     // required this.subject,
     // required this.passingMarks,
-    required this.totalMarks
+    required this.totalMarks,
   });
 
   static SubjectMark fromJson(Map<String, dynamic> json) {

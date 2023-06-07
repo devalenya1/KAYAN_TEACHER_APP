@@ -16,7 +16,7 @@ class AuthRepository {
 
   Teacher getTeacherDetails() {
     return Teacher.fromJson(
-        Map.from((Hive.box(authBoxKey).get(teacherDetailsKey) ?? {})));
+        Map.from(Hive.box(authBoxKey).get(teacherDetailsKey) ?? {}),);
   }
 
   Future<void> setTeacherDetails(Teacher teacher) async {
@@ -42,7 +42,7 @@ class AuthRepository {
 
   //RemoteDataSource
   Future<Map<String, dynamic>> signInTeacher(
-      {required String email, required String password}) async {
+      {required String email, required String password,}) async {
     try {
       final fcmToken = await FirebaseMessaging.instance.getToken();
       final body = {"password": password, "email": email, "fcm_id": fcmToken};
@@ -63,7 +63,7 @@ class AuthRepository {
   Future<void> changePassword(
       {required String currentPassword,
       required String newPassword,
-      required String newConfirmedPassword}) async {
+      required String newConfirmedPassword,}) async {
     try {
       final body = {
         "current_password": currentPassword,

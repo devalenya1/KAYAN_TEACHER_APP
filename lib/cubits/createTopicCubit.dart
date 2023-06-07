@@ -21,13 +21,13 @@ class CreateTopicCubit extends Cubit<CreateTopicState> {
 
   CreateTopicCubit(this._topicRepository) : super(CreateTopicInitial());
 
-  void createTopic(
+  Future<void> createTopic(
       {required String topicName,
       required int lessonId,
       required int classSectionId,
       required int subjectId,
       required String topicDescription,
-      required List<PickedStudyMaterial> files}) async {
+      required List<PickedStudyMaterial> files,}) async {
     emit(CreateTopicInProgress());
     try {
       List<Map<String, dynamic>> filesJosn = [];
@@ -40,7 +40,7 @@ class CreateTopicCubit extends Cubit<CreateTopicState> {
           subjectId: subjectId,
           topicDescription: topicDescription,
           lessonId: lessonId,
-          files: filesJosn);
+          files: filesJosn,);
       emit(CreateTopicSuccess());
     } catch (e) {
       emit(CreateTopicFailure(e.toString()));

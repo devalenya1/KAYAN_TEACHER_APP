@@ -42,24 +42,27 @@ class AddAssignmentScreen extends StatefulWidget {
 
   static Route<bool?> Routes(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
-    return CupertinoPageRoute(builder: (context) {
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider<SubjectsOfClassSectionCubit>(
-            create: (_) => SubjectsOfClassSectionCubit(TeacherRepository()),
+    return CupertinoPageRoute(
+      builder: (context) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<SubjectsOfClassSectionCubit>(
+              create: (_) => SubjectsOfClassSectionCubit(TeacherRepository()),
+            ),
+            BlocProvider<CreateAssignmentCubit>(
+              create: (_) => CreateAssignmentCubit(AssignmentRepository()),
+            ),
+            BlocProvider<editAssignmentCubit>(
+              create: (context) => editAssignmentCubit(AssignmentRepository()),
+            )
+          ],
+          child: AddAssignmentScreen(
+            editassignment: arguments["editAssignment"],
+            assignment: arguments["assignment"],
           ),
-          BlocProvider<CreateAssignmentCubit>(
-            create: (_) => CreateAssignmentCubit(AssignmentRepository()),
-          ),
-          BlocProvider<editAssignmentCubit>(
-              create: (context) => editAssignmentCubit(AssignmentRepository()))
-        ],
-        child: AddAssignmentScreen(
-          editassignment: arguments["editAssignment"],
-          assignment: arguments["assignment"],
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   @override
@@ -83,23 +86,25 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
 
   late TextEditingController _assignmentNameTextEditingController =
       TextEditingController(
-          text: widget.editassignment ? widget.assignment!.name : null);
+    text: widget.editassignment ? widget.assignment!.name : null,
+  );
 
   late TextEditingController _assignmentInstructionTextEditingController =
       TextEditingController(
-          text: widget.editassignment ? widget.assignment!.instructions : null);
+    text: widget.editassignment ? widget.assignment!.instructions : null,
+  );
 
   late TextEditingController _assignmentPointsTextEditingController =
       TextEditingController(
-          text: widget.editassignment
-              ? widget.assignment!.points.toString()
-              : null);
+    text: widget.editassignment ? widget.assignment!.points.toString() : null,
+  );
 
   late TextEditingController _extraResubmissionDaysTextEditingController =
       TextEditingController(
-          text: widget.editassignment
-              ? widget.assignment!.extraDaysForResubmission.toString()
-              : null);
+    text: widget.editassignment
+        ? widget.assignment!.extraDaysForResubmission.toString()
+        : null,
+  );
 
   final double _textFieldBottomPadding = 25;
 
@@ -112,13 +117,17 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   @override
   void initState() {
     if (!widget.editassignment) {
-      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
-          .read<MyClassesCubit>()
-          .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-          .id);
+      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
+            context
+                .read<MyClassesCubit>()
+                .getClassSectionDetails(
+                    classSectionName: currentSelectedClassSection,)
+                .id,
+          );
     } else {
       dueDate = DateFormat('dd-MM-yyyy').parse(
-          UiUtils.formatStringDate(widget.assignment!.dueDate.toString()));
+        UiUtils.formatStringDate(widget.assignment!.dueDate.toString()),
+      );
 
       dueTime = TimeOfDay.fromDateTime(widget.assignment!.dueDate);
     }
@@ -136,7 +145,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   late List<StudyMaterial> assignmentattatchments =
       widget.editassignment ? widget.assignment!.studyMaterial : [];
 
-  void _pickFiles() async {
+  Future<void> _pickFiles() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
 
@@ -146,7 +155,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     }
   }
 
-  void _addFiles() async {
+  Future<void> _addFiles() async {
     //upload files
     bool permissionGiven = (await Permission.storage.status).isGranted;
     if (permissionGiven) {
@@ -155,6 +164,14 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
       permissionGiven = (await Permission.storage.request()).isGranted;
       if (permissionGiven) {
         _pickFiles();
+      } else {
+        try {
+          _pickFiles();
+        } on Exception {
+          null;
+        } on Error {
+          null;
+        }
       }
     }
   }
@@ -163,29 +180,31 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     return LayoutBuilder(
       builder: (context, boxConstraints) {
         return Padding(
-          padding: EdgeInsetsDirectional.only(bottom: 15),
+          padding: const EdgeInsetsDirectional.only(bottom: 15),
           child: DottedBorder(
             borderType: BorderType.RRect,
-            dashPattern: [10, 10],
-            radius: Radius.circular(10.0),
+            dashPattern: const [10, 10],
+            radius: const Radius.circular(10.0),
             color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
-            child: LayoutBuilder(builder: (context, boxConstraints) {
-              return Padding(
-                padding: EdgeInsetsDirectional.only(start: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: boxConstraints.maxWidth * (0.75),
-                      child: Text(uploadedFiles[fileIndex].name,
+            child: LayoutBuilder(
+              builder: (context, boxConstraints) {
+                return Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 20),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: boxConstraints.maxWidth * (0.75),
+                        child: Text(
+                          uploadedFiles[fileIndex].name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
-                          )),
-                    ),
-                    Spacer(),
-                    IconButton(
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      IconButton(
                         onPressed: () {
                           if (context.read<CreateAssignmentCubit>().state
                               is createAssignmentInProcess) {
@@ -194,11 +213,13 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                           uploadedFiles.removeAt(fileIndex);
                           setState(() {});
                         },
-                        icon: Icon(Icons.close)),
-                  ],
-                ),
-              );
-            }),
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         );
       },
@@ -206,57 +227,65 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   }
 
   Widget assignmentassignmentattatchments(int fileIndex) {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Padding(
-        padding: EdgeInsetsDirectional.only(bottom: 15),
-        child: DottedBorder(
-          borderType: BorderType.RRect,
-          dashPattern: [10, 10],
-          radius: Radius.circular(10.0),
-          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
-          child: LayoutBuilder(builder: (context, boxConstraints) {
-            return Padding(
-              padding: EdgeInsetsDirectional.only(start: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: boxConstraints.maxWidth * (0.75),
-                    child: Text(assignmentattatchments[fileIndex].fileName,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                        )),
-                  ),
-                  Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        if (context.read<CreateAssignmentCubit>().state
-                            is createAssignmentInProcess) {
-                          return;
-                        }
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Padding(
+          padding: const EdgeInsetsDirectional.only(bottom: 15),
+          child: DottedBorder(
+            borderType: BorderType.RRect,
+            dashPattern: const [10, 10],
+            radius: const Radius.circular(10.0),
+            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
+            child: LayoutBuilder(
+              builder: (context, boxConstraints) {
+                return Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 20),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: boxConstraints.maxWidth * (0.75),
+                        child: Text(
+                          assignmentattatchments[fileIndex].fileName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          if (context.read<CreateAssignmentCubit>().state
+                              is createAssignmentInProcess) {
+                            return;
+                          }
 
-                        assignmentattatchments.removeAt(fileIndex);
-                        setState(() {});
-                      },
-                      icon: Icon(Icons.close)),
-                ],
-              ),
-            );
-          }),
-        ),
-      );
-    });
+                          assignmentattatchments.removeAt(fileIndex);
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 
-  void openDatePicker() async {
+  Future<void> openDatePicker() async {
     dueDate = await showDatePicker(
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-              colorScheme: Theme.of(context).colorScheme.copyWith(
-                  onPrimary: Theme.of(context).scaffoldBackgroundColor)),
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+                  onPrimary: Theme.of(context).scaffoldBackgroundColor,
+                ),
+          ),
           child: child!,
         );
       },
@@ -264,39 +293,44 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(
-        Duration(days: 30),
+        const Duration(days: 30),
       ),
     );
 
     setState(() {});
   }
 
-  void openTimePicker() async {
+  Future<void> openTimePicker() async {
     dueTime = await showTimePicker(
-        builder: (context, child) {
-          return Theme(
-            data: Theme.of(context).copyWith(
-                colorScheme: Theme.of(context).colorScheme.copyWith(
-                    onPrimary: Theme.of(context).scaffoldBackgroundColor)),
-            child: child!,
-          );
-        },
-        context: context,
-        initialTime: TimeOfDay.now());
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+                  onPrimary: Theme.of(context).scaffoldBackgroundColor,
+                ),
+          ),
+          child: child!,
+        );
+      },
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
     setState(() {});
   }
 
   void showErrorMessage(String errorMessageKey) {
     UiUtils.showBottomToastOverlay(
-        context: context,
-        errorMessage: errorMessageKey,
-        backgroundColor: Theme.of(context).colorScheme.error);
+      context: context,
+      errorMessage: errorMessageKey,
+      backgroundColor: Theme.of(context).colorScheme.error,
+    );
   }
 
   void createAssignment() {
     if (_assignmentNameTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey));
+        UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey),
+      );
       return;
     }
     if (_assignmentPointsTextEditingController.text.length >= 10) {
@@ -305,12 +339,14 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     }
     if (dueDate == null) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+        UiUtils.getTranslatedLabel(context, pleaseSelectDateKey),
+      );
       return;
     }
     if (dueTime == null) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+        UiUtils.getTranslatedLabel(context, pleaseSelectDateKey),
+      );
       return;
     }
     print("uploadedFiles create $uploadedFiles");
@@ -318,7 +354,8 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           classsId: context
               .read<MyClassesCubit>()
               .getClassSectionDetails(
-                  classSectionName: currentSelectedClassSection)
+                classSectionName: currentSelectedClassSection,
+              )
               .id,
           subjectId: context
               .read<SubjectsOfClassSectionCubit>()
@@ -338,11 +375,13 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   void editAssignment() {
     if (_assignmentNameTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey));
+        UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey),
+      );
     }
     if (dueDate == null) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+        UiUtils.getTranslatedLabel(context, pleaseSelectDateKey),
+      );
     }
     if (_assignmentPointsTextEditingController.text.length >= 10) {
       showErrorMessage(UiUtils.getTranslatedLabel(context, pointsLengthKey));
@@ -350,7 +389,8 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     }
     if (dueTime == null) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseSelectDateKey));
+        UiUtils.getTranslatedLabel(context, pleaseSelectDateKey),
+      );
     }
 
     print("uploadedFiles upload $uploadedFiles");
@@ -374,182 +414,203 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
-          title: UiUtils.getTranslatedLabel(context,
-              widget.editassignment ? editAssignmentKey : createAssignmentKey),
-          onPressBackButton: () {
-            if (context.read<CreateAssignmentCubit>().state
-                is createAssignmentInProcess) {
-              return;
-            }
-            if (context.read<editAssignmentCubit>().state
-                is editAssignmentInProgress) {
-              return;
-            }
-            Navigator.of(context).pop();
-          }),
+        title: UiUtils.getTranslatedLabel(
+          context,
+          widget.editassignment ? editAssignmentKey : createAssignmentKey,
+        ),
+        onPressBackButton: () {
+          if (context.read<CreateAssignmentCubit>().state
+              is createAssignmentInProcess) {
+            return;
+          }
+          if (context.read<editAssignmentCubit>().state
+              is editAssignmentInProgress) {
+            return;
+          }
+          Navigator.of(context).pop();
+        },
+      ),
     );
   }
 
   Widget _buildAssignmentClassDropdownButtons() {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Column(
-        children: [
-          widget.editassignment
-              ? DefaultDropDownLabelContainer(
-                  titleLabelKey: currentSelectedClassSection,
-                  width: boxConstraints.maxWidth)
-              : MyClassesDropDownMenu(
-                  currentSelectedItem: currentSelectedClassSection,
-                  width: boxConstraints.maxWidth,
-                  changeSelectedItem: (result) {
-                    setState(() {
-                      currentSelectedClassSection = result;
-                    });
-                  }),
-          widget.editassignment
-              ? DefaultDropDownLabelContainer(
-                  titleLabelKey: widget.assignment!.subject.name.toString(),
-                  width: boxConstraints.maxWidth)
-              : ClassSubjectsDropDownMenu(
-                  changeSelectedItem: (result) {
-                    setState(() {
-                      currentSelectedSubject = result;
-                    });
-                  },
-                  currentSelectedItem: currentSelectedSubject,
-                  width: boxConstraints.maxWidth),
-        ],
-      );
-    });
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Column(
+          children: [
+            widget.editassignment
+                ? DefaultDropDownLabelContainer(
+                    titleLabelKey: currentSelectedClassSection,
+                    width: boxConstraints.maxWidth,
+                  )
+                : MyClassesDropDownMenu(
+                    currentSelectedItem: currentSelectedClassSection,
+                    width: boxConstraints.maxWidth,
+                    changeSelectedItem: (result) {
+                      setState(() {
+                        currentSelectedClassSection = result;
+                      });
+                    },
+                  ),
+            widget.editassignment
+                ? DefaultDropDownLabelContainer(
+                    titleLabelKey: widget.assignment!.subject.name.toString(),
+                    width: boxConstraints.maxWidth,
+                  )
+                : ClassSubjectsDropDownMenu(
+                    changeSelectedItem: (result) {
+                      setState(() {
+                        currentSelectedSubject = result;
+                      });
+                    },
+                    currentSelectedItem: currentSelectedSubject,
+                    width: boxConstraints.maxWidth,
+                  ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildAddDueDateAndTimeContainer() {
     return Padding(
       padding: EdgeInsets.only(bottom: _textFieldBottomPadding),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Row(
-          children: [
-            InkWell(
-              borderRadius: BorderRadius.circular(10),
-              onTap: () {
-                openDatePicker();
-              },
-              child: Container(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(
-                  dueDate == null
-                      ? UiUtils.getTranslatedLabel(context, dueDateKey)
-                      : DateFormat('dd-MM-yyyy').format(dueDate!).toString(),
-                  style: TextStyle(
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Row(
+            children: [
+              InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () {
+                  openDatePicker();
+                },
+                child: Container(
+                  alignment: AlignmentDirectional.centerStart,
+                  padding: const EdgeInsetsDirectional.only(start: 20.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(0.5),
+                    ),
+                  ),
+                  width: boxConstraints.maxWidth * (0.475),
+                  height: 50,
+                  child: Text(
+                    dueDate == null
+                        ? UiUtils.getTranslatedLabel(context, dueDateKey)
+                        : DateFormat('dd-MM-yyyy').format(dueDate!).toString(),
+                    style: TextStyle(
                       color: hintTextColor,
-                      fontSize: UiUtils.textFieldFontSize),
-                ),
-                padding: EdgeInsetsDirectional.only(start: 20.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.5),
+                      fontSize: UiUtils.textFieldFontSize,
+                    ),
                   ),
                 ),
-                width: boxConstraints.maxWidth * (0.475),
-                height: 50,
               ),
-            ),
-            Spacer(),
-            InkWell(
-              onTap: () {
-                openTimePicker();
-              },
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(
-                  dueTime == null
-                      ? UiUtils.getTranslatedLabel(context, dueTimeKey)
-                      : "${dueTime!.hour}:${dueTime!.minute}",
-                  style: TextStyle(
+              const Spacer(),
+              InkWell(
+                onTap: () {
+                  openTimePicker();
+                },
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  alignment: AlignmentDirectional.centerStart,
+                  padding: const EdgeInsetsDirectional.only(start: 20.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(0.5),
+                    ),
+                  ),
+                  width: boxConstraints.maxWidth * (0.475),
+                  height: 50,
+                  child: Text(
+                    dueTime == null
+                        ? UiUtils.getTranslatedLabel(context, dueTimeKey)
+                        : "${dueTime!.hour}:${dueTime!.minute}",
+                    style: TextStyle(
                       color: hintTextColor,
-                      fontSize: UiUtils.textFieldFontSize),
-                ),
-                padding: EdgeInsetsDirectional.only(start: 20.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onBackground
-                        .withOpacity(0.5),
+                      fontSize: UiUtils.textFieldFontSize,
+                    ),
                   ),
                 ),
-                width: boxConstraints.maxWidth * (0.475),
-                height: 50,
               ),
-            ),
-          ],
-        );
-      }),
+            ],
+          );
+        },
+      ),
     );
   }
 
   Widget _buildReSubmissionOfRejectedAssignmentToggleContainer() {
     return Padding(
       padding: EdgeInsets.only(bottom: _textFieldBottomPadding),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Container(
-          height: 70,
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Container(
+            height: 70,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Flexible(
-                child: SizedBox(
-                  width: boxConstraints.maxWidth * (0.85),
-                  child: Text(
-                    UiUtils.getTranslatedLabel(
-                        context, resubmissionOfRejectedAssignmentKey),
-                    style: TextStyle(
+            child: Row(
+              children: [
+                Flexible(
+                  child: SizedBox(
+                    width: boxConstraints.maxWidth * (0.85),
+                    child: Text(
+                      UiUtils.getTranslatedLabel(
+                        context,
+                        resubmissionOfRejectedAssignmentKey,
+                      ),
+                      style: TextStyle(
                         color: hintTextColor,
-                        fontSize: UiUtils.textFieldFontSize),
+                        fontSize: UiUtils.textFieldFontSize,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: boxConstraints.maxWidth * (0.075),
-              ),
-              Container(
-                alignment: Alignment.centerRight,
-                width: boxConstraints.maxWidth * (0.1),
-                child: CustomCupertinoSwitch(
+                SizedBox(
+                  width: boxConstraints.maxWidth * (0.075),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  width: boxConstraints.maxWidth * (0.1),
+                  child: CustomCupertinoSwitch(
                     onChanged: changeAllowedReSubmissionOfRejectedAssignment,
-                    value: _allowedReSubmissionOfRejectedAssignment),
-              )
-            ],
-          ),
-        );
-      }),
+                    value: _allowedReSubmissionOfRejectedAssignment,
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
   Widget _buildAssignmentDetailsFormContaienr() {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * (0.075),
-          right: MediaQuery.of(context).size.width * (0.075),
-          top: UiUtils.getScrollViewTopPadding(
-              context: context,
-              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
+        left: MediaQuery.of(context).size.width * (0.075),
+        right: MediaQuery.of(context).size.width * (0.075),
+        top: UiUtils.getScrollViewTopPadding(
+          context: context,
+          appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+        ),
+      ),
       child: Column(
         children: [
           //
@@ -586,39 +647,45 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
           _allowedReSubmissionOfRejectedAssignment
               ? BottomSheetTextFieldContainer(
                   margin: EdgeInsetsDirectional.only(
-                      bottom: _textFieldBottomPadding),
+                    bottom: _textFieldBottomPadding,
+                  ),
                   hintText: UiUtils.getTranslatedLabel(
-                      context, extraDaysForRejectedAssignmentKey),
+                    context,
+                    extraDaysForRejectedAssignmentKey,
+                  ),
                   maxLines: 2,
                   textEditingController:
                       _extraResubmissionDaysTextEditingController,
                   keyboardType: TextInputType.number,
                   textInputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 )
-              : SizedBox(),
+              : const SizedBox(),
           assignmentattatchments.isNotEmpty
               ? Column(
                   children: assignmentattatchments
-                      .map((studyMaterial) => AssignmentAttachmentContainer(
+                      .map(
+                        (studyMaterial) => AssignmentAttachmentContainer(
                           onDeleteCallback: (fileId) {
                             assignmentattatchments
                                 .removeWhere((element) => element.id == fileId);
                             setState(() {});
                           },
                           showDeleteButton: true,
-                          studyMaterial: studyMaterial))
+                          studyMaterial: studyMaterial,
+                        ),
+                      )
                       .toList(),
                 )
-              : SizedBox(),
+              : const SizedBox(),
 
           Padding(
             padding: EdgeInsets.only(bottom: _textFieldBottomPadding),
             child: BottomsheetAddFilesDottedBorderContainer(
-                onTap: () async {
-                  _addFiles();
-                },
-                title:
-                    UiUtils.getTranslatedLabel(context, referenceMaterialsKey)),
+              onTap: () async {
+                _addFiles();
+              },
+              title: UiUtils.getTranslatedLabel(context, referenceMaterialsKey),
+            ),
           ),
 
           ...List.generate(uploadedFiles.length, (index) => index)
@@ -630,39 +697,49 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   listener: (context, state) {
                     if (state is editAssignmentSuccess) {
                       UiUtils.showBottomToastOverlay(
-                          context: context,
-                          errorMessage: UiUtils.getTranslatedLabel(
-                              context, editsucessfullyassignmentkey),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onPrimary);
+                        context: context,
+                        errorMessage: UiUtils.getTranslatedLabel(
+                          context,
+                          editsucessfullyassignmentkey,
+                        ),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                      );
                       Navigator.of(context).pop(true);
                     }
                     if (state is editAssignmentFailure) {
                       UiUtils.showBottomToastOverlay(
-                          context: context,
-                          errorMessage: UiUtils.getTranslatedLabel(
-                              context, state.errorMessage),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onPrimary);
+                        context: context,
+                        errorMessage: UiUtils.getTranslatedLabel(
+                          context,
+                          state.errorMessage,
+                        ),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                      );
                       Navigator.of(context).pop();
                     }
                   },
                   builder: (context, state) {
-                    return LayoutBuilder(builder: (context, boxConstraints) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: boxConstraints.maxWidth * (0.125)),
-                        child: CustomRoundedButton(
+                    return LayoutBuilder(
+                      builder: (context, boxConstraints) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: boxConstraints.maxWidth * (0.125),
+                          ),
+                          child: CustomRoundedButton(
                             height: 45,
                             radius: 10,
                             widthPercentage: boxConstraints.maxWidth * (0.45),
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             buttonTitle: UiUtils.getTranslatedLabel(
-                                context, editassignmentkey),
+                              context,
+                              editassignmentkey,
+                            ),
                             showBorder: false,
                             child: state is editAssignmentInProgress
-                                ? CustomCircularProgressIndicator(
+                                ? const CustomCircularProgressIndicator(
                                     strokeWidth: 2,
                                     widthAndHeight: 20,
                                   )
@@ -672,28 +749,36 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                                 return;
                               }
                               editAssignment();
-                            }),
-                      );
-                    });
+                            },
+                          ),
+                        );
+                      },
+                    );
                   },
                 )
               : BlocConsumer<CreateAssignmentCubit, createAssignmentState>(
                   listener: (context, state) {
                     if (state is createAssignmentSuccess) {
                       UiUtils.showBottomToastOverlay(
-                          context: context,
-                          errorMessage: UiUtils.getTranslatedLabel(
-                              context, sucessfullycreateassignmentkey),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.onPrimary);
+                        context: context,
+                        errorMessage: UiUtils.getTranslatedLabel(
+                          context,
+                          sucessfullycreateassignmentkey,
+                        ),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                      );
                       Navigator.of(context).pop();
                     }
                     if (state is createAssignmentFailure) {
                       UiUtils.showBottomToastOverlay(
-                          context: context,
-                          errorMessage: UiUtils.getTranslatedLabel(
-                              context, state.errormessage),
-                          backgroundColor: Theme.of(context).colorScheme.error);
+                        context: context,
+                        errorMessage: UiUtils.getTranslatedLabel(
+                          context,
+                          state.errormessage,
+                        ),
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                      );
                     }
                   },
                   builder: (context, state) {
@@ -703,10 +788,12 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       widthPercentage: 0.65,
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       buttonTitle: UiUtils.getTranslatedLabel(
-                          context, createAssignmentKey),
+                        context,
+                        createAssignmentKey,
+                      ),
                       showBorder: false,
                       child: state is createAssignmentInProcess
-                          ? CustomCircularProgressIndicator(
+                          ? const CustomCircularProgressIndicator(
                               strokeWidth: 2,
                               widthAndHeight: 20,
                             )
@@ -731,26 +818,27 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () {
-          if (context.read<CreateAssignmentCubit>().state
-              is createAssignmentInProcess) {
-            return Future.value(false);
-          }
-          if (context.read<editAssignmentCubit>().state
-              is editAssignmentInProgress) {
-            return Future.value(false);
-          }
-          Navigator.of(context).pop();
-          return Future.value(true);
-        },
-        child: Scaffold(
-          body: Stack(
-            children: [
-              _buildAssignmentDetailsFormContaienr(),
-              _buildAppBar(),
-            ],
-          ),
-        ));
+      onWillPop: () {
+        if (context.read<CreateAssignmentCubit>().state
+            is createAssignmentInProcess) {
+          return Future.value(false);
+        }
+        if (context.read<editAssignmentCubit>().state
+            is editAssignmentInProgress) {
+          return Future.value(false);
+        }
+        Navigator.of(context).pop();
+        return Future.value(true);
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            _buildAssignmentDetailsFormContaienr(),
+            _buildAppBar(),
+          ],
+        ),
+      ),
+    );
   }
 }
 /*context.read<editAssignmentCubit>().editAssignment(

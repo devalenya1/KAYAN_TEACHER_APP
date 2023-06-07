@@ -12,7 +12,7 @@ class StudentAttendanceTileContainer extends StatelessWidget {
       {Key? key,
       required this.isPresent,
       required this.student,
-      required this.updateAttendance})
+      required this.updateAttendance,})
       : super(key: key);
 
   @override
@@ -25,7 +25,6 @@ class StudentAttendanceTileContainer extends StatelessWidget {
           updateAttendance(student.id);
         },
         child: Container(
-          clipBehavior: Clip.none,
           decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -33,14 +32,14 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                         .colorScheme
                         .secondary
                         .withOpacity(0.075),
-                    offset: Offset(2.5, 2.5),
+                    offset: const Offset(2.5, 2.5),
                     blurRadius: 10,
-                    spreadRadius: 0.5)
+                    spreadRadius: 0.5,)
               ],
               color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10),),
           width: MediaQuery.of(context).size.width * (0.88),
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12.5),
           child: LayoutBuilder(builder: (context, boxConstraints) {
             return Row(
               children: [
@@ -58,12 +57,8 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                       width: boxConstraints.maxWidth * (0.175),
                     ),
                     isPresent
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Container(
-                            child: Icon(
-                              Icons.close,
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                            ),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: Theme.of(context)
@@ -74,6 +69,10 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                             ),
                             height: 50,
                             width: boxConstraints.maxWidth * (0.175),
+                            child: Icon(
+                              Icons.close,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
                           ),
                   ],
                 ),
@@ -90,7 +89,7 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w600,
-                            fontSize: 13.0),
+                            fontSize: 13.0,),
                       ),
                       Text(
                           "${UiUtils.getTranslatedLabel(context, rollNoKey)} - ${student.rollNumber}",
@@ -100,32 +99,32 @@ class StudentAttendanceTileContainer extends StatelessWidget {
                                   .secondary
                                   .withOpacity(0.75),
                               fontWeight: FontWeight.w400,
-                              fontSize: 10.5),
-                          textAlign: TextAlign.left)
+                              fontSize: 10.5,),
+                          textAlign: TextAlign.left,)
                     ],
                   ),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
-                  child: Text(
-                    UiUtils.getTranslatedLabel(
-                        context, isPresent ? presentKey : absentKey),
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: Theme.of(context).scaffoldBackgroundColor),
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.transparent),
                       color: isPresent
                           ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.error),
+                          : Theme.of(context).colorScheme.error,),
                   width: boxConstraints.maxWidth * (0.22),
+                  child: Text(
+                    UiUtils.getTranslatedLabel(
+                        context, isPresent ? presentKey : absentKey,),
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: Theme.of(context).scaffoldBackgroundColor,),
+                  ),
                 )
               ],
             );
-          }),
+          },),
         ),
       ),
     );

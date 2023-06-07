@@ -38,8 +38,8 @@ class AttendanceScreen extends StatefulWidget {
                 ),
               ],
               child: AttendanceScreen(
-                  students: routeSettings.arguments as List<Student>),
-            ));
+                  students: routeSettings.arguments as List<Student>,),
+            ),);
   }
 }
 
@@ -59,7 +59,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   void fetchClassAttendanceReports() {
     context.read<ClassAttendanceCubit>().fetchAttendanceReports(
         classSectionId: widget.students.first.classSectionId,
-        date: _selectedAttendanceDate);
+        date: _selectedAttendanceDate,);
   }
 
   void _updateAttendance(int studentId) {
@@ -77,14 +77,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     return "${_selectedAttendanceDate.day.toString().padLeft(2, '0')}-${_selectedAttendanceDate.month.toString().padLeft(2, '0')}-${_selectedAttendanceDate.year}";
   }
 
-  void _changeAttendanceDate() async {
+  Future<void> _changeAttendanceDate() async {
     final pickedDate = await showDatePicker(
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
               colorScheme: Theme.of(context).colorScheme.copyWith(
-                  onPrimary: Theme.of(context).scaffoldBackgroundColor)),
+                  onPrimary: Theme.of(context).scaffoldBackgroundColor,),),
           child: child!,
         );
       },
@@ -93,7 +93,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       firstDate: context
           .read<AppConfigurationCubit>()
           .getAppConfiguration()
-          .academicYear
+          .sessionYear
           .startDate,
     );
 
@@ -110,7 +110,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   Widget _buildAppbar() {
     return ScreenTopBackgroundContainer(
-      padding: EdgeInsets.all(0),
+      padding: const EdgeInsets.all(0),
+      heightPercentage: UiUtils.appBarSmallerHeightPercentage,
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Stack(
           children: [
@@ -130,7 +131,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 builder: (context, state) {
                   if (state is ClassAttendanceFetchSuccess) {
                     if (state.isHoliday) {
-                      return SizedBox();
+                      return const SizedBox();
                     }
                     return SearchButton(onTap: () {
                       if (context.read<SubmitClassAttendanceCubit>().state
@@ -143,21 +144,20 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                             "fromAttendanceScreen": true,
                             "students": widget.students,
                             "listOfAttendanceReport": _listOfAttendance
-                          }).then((value) {
+                          },).then((value) {
                         if (value != null) {
                           _listOfAttendance = value;
                           setState(() {});
                         }
                       });
-                    });
+                    },);
                   }
 
-                  return SizedBox();
+                  return const SizedBox();
                 },
               ),
             ),
             Align(
-              alignment: Alignment.center,
               child: Container(
                 alignment: Alignment.center,
                 width: boxConstraints.maxWidth * (0.6),
@@ -168,28 +168,26 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: UiUtils.screenTitleFontSize,
-                      color: Theme.of(context).scaffoldBackgroundColor),
+                      color: Theme.of(context).scaffoldBackgroundColor,),
                 ),
               ),
             ),
             Align(
-              alignment: Alignment.center,
               child: Container(
                 alignment: Alignment.center,
                 width: boxConstraints.maxWidth * (0.6),
                 margin: EdgeInsets.only(
                     top: boxConstraints.maxHeight * (0.25) +
-                        UiUtils.screenTitleFontSize),
+                        UiUtils.screenTitleFontSize,),
                 child: GestureDetector(
                   onTap: () {
                     _changeAttendanceDate();
                   },
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Transform.translate(
-                        offset: Offset(0.0, -0.75),
+                        offset: const Offset(0.0, -0.75),
                         child: Icon(
                           Icons.calendar_month,
                           size: 14,
@@ -205,7 +203,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: UiUtils.screenSubTitleFontSize,
-                            color: Theme.of(context).scaffoldBackgroundColor),
+                            color: Theme.of(context).scaffoldBackgroundColor,),
                       ),
                     ],
                   ),
@@ -214,8 +212,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ),
           ],
         );
-      }),
-      heightPercentage: UiUtils.appBarSmallerHeightPercentage,
+      },),
     );
   }
 
@@ -224,7 +221,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       builder: (context, state) {
         if (state is ClassAttendanceFetchSuccess) {
           if (state.isHoliday) {
-            return SizedBox();
+            return const SizedBox();
           }
           return BlocConsumer<SubmitClassAttendanceCubit,
               SubmitClassAttendanceState>(
@@ -233,15 +230,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 UiUtils.showBottomToastOverlay(
                     context: context,
                     errorMessage: UiUtils.getTranslatedLabel(
-                        context, attendanceSubmittedSuccessfullyKey),
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary);
+                        context, attendanceSubmittedSuccessfullyKey,),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,);
               } else if (submitAttendanceState
                   is SubmitClassAttendanceFailure) {
                 UiUtils.showBottomToastOverlay(
                     context: context,
                     errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                        context, submitAttendanceState.errorMessage),
-                    backgroundColor: Theme.of(context).colorScheme.error);
+                        context, submitAttendanceState.errorMessage,),
+                    backgroundColor: Theme.of(context).colorScheme.error,);
               }
             },
             builder: (context, submitAttendanceState) {
@@ -250,13 +247,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
                   child: CustomRoundedButton(
-                      child: submitAttendanceState
-                              is SubmitClassAttendanceInProgress
-                          ? CustomCircularProgressIndicator(
-                              strokeWidth: 2,
-                              widthAndHeight: 20,
-                            )
-                          : null,
                       onTap: () {
                         if (submitAttendanceState
                             is SubmitClassAttendanceInProgress) {
@@ -268,7 +258,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 dateTime: _selectedAttendanceDate,
                                 classSectionId:
                                     widget.students.first.classSectionId,
-                                attendanceReport: _listOfAttendance);
+                                attendanceReport: _listOfAttendance,);
                       },
                       elevation: 10.0,
                       height: UiUtils.bottomSheetButtonHeight,
@@ -276,13 +266,20 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       buttonTitle:
                           UiUtils.getTranslatedLabel(context, submitKey),
-                      showBorder: false),
+                      showBorder: false,
+                      child: submitAttendanceState
+                              is SubmitClassAttendanceInProgress
+                          ? const CustomCircularProgressIndicator(
+                              strokeWidth: 2,
+                              widthAndHeight: 20,
+                            )
+                          : null,),
                 ),
               );
             },
           );
         }
-        return SizedBox();
+        return const SizedBox();
       },
     );
   }
@@ -295,7 +292,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             bottom: UiUtils.bottomSheetButtonHeight + 40.0,
             top: UiUtils.getScrollViewTopPadding(
                 context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),),
         child: BlocConsumer<ClassAttendanceCubit, ClassAttendanceState>(
           listener: (context, state) {
             if (state is ClassAttendanceFetchSuccess) {
@@ -339,21 +336,21 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     children: [
                       Text(
                         "${UiUtils.getTranslatedLabel(context, holidayKey)} : ${state.holidayDetails.title}",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600,),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5.0,
                       ),
                       Text(UiUtils.getTranslatedLabel(
-                          context, attendanceNotViewEditKey)),
+                          context, attendanceNotViewEditKey,),),
                     ],
                   ),
                 );
               }
 
               if (_listOfAttendance.isEmpty) {
-                return SizedBox();
+                return const SizedBox();
               }
 
               return Column(
@@ -365,7 +362,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   return StudentAttendanceTileContainer(
                       isPresent: isPresent,
                       student: student,
-                      updateAttendance: _updateAttendance);
+                      updateAttendance: _updateAttendance,);
                 }).toList(),
               );
             }
@@ -380,7 +377,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             }
             return Padding(
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * (0.25)),
+                  top: MediaQuery.of(context).size.height * (0.25),),
               child: CustomCircularProgressIndicator(
                 indicatorColor: Theme.of(context).colorScheme.primary,
               ),

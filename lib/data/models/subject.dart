@@ -18,7 +18,7 @@ class Subject {
   late final bool isSubjectImageSvg;
 
   String getSubjectName() {
-    return "${this.name}";
+    return name;
   }
 
   Subject.fromJson(Map<String, dynamic> json) {

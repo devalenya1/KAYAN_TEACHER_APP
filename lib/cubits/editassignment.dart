@@ -22,7 +22,7 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
   editAssignmentCubit(this._assignmentRepository)
       : super(editAssignmentInitial());
 
-  void editAssignment({
+  Future<void> editAssignment({
     required int assignmentId,
     required int classSelectionId,
     required int subjectId,
@@ -43,7 +43,7 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
         name: name,
         subjectId: subjectId,
         extraDayForResubmission: int.parse(
-            extraDayForResubmission.isEmpty ? "0" : extraDayForResubmission),
+            extraDayForResubmission.isEmpty ? "0" : extraDayForResubmission,),
         instruction: instruction,
         points: int.parse(points.isEmpty ? "0" : points),
         resubmission: resubmission,

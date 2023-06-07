@@ -27,11 +27,11 @@ class SubjectsOfClassSectionCubit extends Cubit<SubjectsOfClassSectionState> {
   SubjectsOfClassSectionCubit(this._teacherRepository)
       : super(SubjectsOfClassSectionInitial());
 
-  void fetchSubjects(int classSectionId) async {
+  Future<void> fetchSubjects(int classSectionId) async {
     emit(SubjectsOfClassSectionFetchInProgress());
     try {
       emit(SubjectsOfClassSectionFetchSuccess(
-          await _teacherRepository.subjectsByClassSection(classSectionId)));
+          await _teacherRepository.subjectsByClassSection(classSectionId),),);
     } catch (e) {
       emit(SubjectsOfClassSectionFetchFailure(e.toString()));
     }

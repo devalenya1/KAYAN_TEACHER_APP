@@ -15,7 +15,7 @@ class InternetListenerWidget extends StatelessWidget {
       required this.onInternetConnectionBack,
       this.addOverlay,
       this.removeOverlay,
-      this.showOverlay})
+      this.showOverlay,})
       : super(key: key);
 
   @override

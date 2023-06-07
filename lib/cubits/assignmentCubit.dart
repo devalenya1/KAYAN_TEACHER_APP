@@ -30,13 +30,14 @@ class AssignmentsFetchSuccess extends AssignmentState {
     final bool? NewFetchMoreAssignmentsInProgress,
   }) {
     return AssignmentsFetchSuccess(
-        assignment: newAssignment ?? assignment,
-        totalPage: newTotalPage ?? totalPage,
-        currentPage: newCurrentPage ?? currentPage,
-        moreAssignmentsFetchError:
-            newMoreAssignmentsFetchError ?? moreAssignmentsFetchError,
-        fetchMoreAssignmentsInProgress: NewFetchMoreAssignmentsInProgress ??
-            fetchMoreAssignmentsInProgress);
+      assignment: newAssignment ?? assignment,
+      totalPage: newTotalPage ?? totalPage,
+      currentPage: newCurrentPage ?? currentPage,
+      moreAssignmentsFetchError:
+          newMoreAssignmentsFetchError ?? moreAssignmentsFetchError,
+      fetchMoreAssignmentsInProgress:
+          NewFetchMoreAssignmentsInProgress ?? fetchMoreAssignmentsInProgress,
+    );
   }
 }
 
@@ -50,13 +51,13 @@ class AssignmentCubit extends Cubit<AssignmentState> {
 
   AssignmentCubit(this._assignmentRepository) : super(AssignmentInitial());
 
-  void fetchassignment({
+  Future<void> fetchassignment({
     required int classSectionId,
     required int subjectId,
     int? page,
   }) async {
     try {
-      print("asssignemtclassandsubjectid  ${classSectionId}  ${subjectId}");
+      print("asssignemtclassandsubjectid  $classSectionId  $subjectId");
       emit(AssignmentFetchInProgress());
       await _assignmentRepository
           .fetchassignment(
@@ -64,21 +65,23 @@ class AssignmentCubit extends Cubit<AssignmentState> {
             subjectId: subjectId,
             page: page,
           )
-          .then((result) => emit(
-                AssignmentsFetchSuccess(
-                    assignment: result['assignment'],
-                    currentPage: result["currentPage"],
-                    totalPage: result["lastPage"],
-                    moreAssignmentsFetchError: false,
-                    fetchMoreAssignmentsInProgress: false),
-              ))
+          .then(
+            (result) => emit(
+              AssignmentsFetchSuccess(
+                assignment: result['assignment'],
+                currentPage: result["currentPage"],
+                totalPage: result["lastPage"],
+                moreAssignmentsFetchError: false,
+                fetchMoreAssignmentsInProgress: false,
+              ),
+            ),
+          )
           .catchError((e) {});
     } catch (e) {
       return emit(
         AssignmentFetchFailure(e.toString()),
       );
     }
-    ;
   }
 
   void updateState(AssignmentState updatedState) {
@@ -93,13 +96,15 @@ class AssignmentCubit extends Cubit<AssignmentState> {
     return false;
   }
 
-  void fetchMoreAssignment({
+  Future<void> fetchMoreAssignment({
     required int classSectionId,
     required int subjectId,
   }) async {
     try {
-      emit((state as AssignmentsFetchSuccess)
-          .copywith(NewFetchMoreAssignmentsInProgress: true));
+      emit(
+        (state as AssignmentsFetchSuccess)
+            .copywith(NewFetchMoreAssignmentsInProgress: true),
+      );
 
       final fetchMoreAssignment = await _assignmentRepository.fetchassignment(
         classSectionId: classSectionId,
@@ -107,27 +112,33 @@ class AssignmentCubit extends Cubit<AssignmentState> {
         page: (state as AssignmentsFetchSuccess).currentPage + 1,
       );
 
-      final currentState = (state as AssignmentsFetchSuccess);
+      final currentState = state as AssignmentsFetchSuccess;
 
       List<Assignment> assignments = currentState.assignment;
 
       assignments.addAll(fetchMoreAssignment['assignment']);
 
-      emit(AssignmentsFetchSuccess(
+      emit(
+        AssignmentsFetchSuccess(
           assignment: assignments,
           totalPage: fetchMoreAssignment['lastPage'],
           currentPage: fetchMoreAssignment["currentPage"],
           moreAssignmentsFetchError: false,
-          fetchMoreAssignmentsInProgress: false));
+          fetchMoreAssignmentsInProgress: false,
+        ),
+      );
     } catch (e) {
-      emit((state as AssignmentsFetchSuccess).copywith(
+      emit(
+        (state as AssignmentsFetchSuccess).copywith(
           newMoreAssignmentsFetchError: true,
-          NewFetchMoreAssignmentsInProgress: false));
+          NewFetchMoreAssignmentsInProgress: false,
+        ),
+      );
       // throw ApiException(e.toString());
     }
   }
 
-  void deleteAssignment(
+  Future<void> deleteAssignment(
     int assignmentId,
   ) async {
     if (state is AssignmentsFetchSuccess) {
@@ -136,14 +147,17 @@ class AssignmentCubit extends Cubit<AssignmentState> {
       print("listOfAssignments${listOfAssignments.length}");
       listOfAssignments.removeWhere((element) => element.id == assignmentId);
       print("afte remove assignmwnt ${listOfAssignments.length}");
-      emit(AssignmentsFetchSuccess(
+      emit(
+        AssignmentsFetchSuccess(
           assignment: listOfAssignments,
           currentPage: (state as AssignmentsFetchSuccess).currentPage,
           fetchMoreAssignmentsInProgress:
               (state as AssignmentsFetchSuccess).fetchMoreAssignmentsInProgress,
           moreAssignmentsFetchError:
               (state as AssignmentsFetchSuccess).moreAssignmentsFetchError,
-          totalPage: (state as AssignmentsFetchSuccess).totalPage));
+          totalPage: (state as AssignmentsFetchSuccess).totalPage,
+        ),
+      );
     }
   }
 }

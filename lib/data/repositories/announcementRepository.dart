@@ -5,7 +5,7 @@ import 'package:file_picker/file_picker.dart';
 
 class AnnouncementRepository {
   Future<Map<String, dynamic>> fetchAnnouncements(
-      {int? page, required int subjectId, required int classSectionId}) async {
+      {int? page, required int subjectId, required int classSectionId,}) async {
     try {
       Map<String, dynamic> queryParameters = {
         "page": page ?? 0,
@@ -19,7 +19,7 @@ class AnnouncementRepository {
       final result = await Api.get(
           url: Api.getAnnouncement,
           useAuthToken: true,
-          queryParameters: queryParameters);
+          queryParameters: queryParameters,);
 
       return {
         "announcements": (result['data']['data'] as List)
@@ -38,7 +38,7 @@ class AnnouncementRepository {
       required String description,
       required List<PlatformFile> attachments,
       required int classSectionId,
-      required int subjectId}) async {
+      required int subjectId,}) async {
     try {
       List<MultipartFile> files = [];
       for (var file in attachments) {
@@ -59,7 +59,7 @@ class AnnouncementRepository {
       }
 
       await Api.post(
-          body: body, url: Api.createAnnouncement, useAuthToken: true);
+          body: body, url: Api.createAnnouncement, useAuthToken: true,);
     } catch (e) {
       throw ApiException(e.toString());
     }
@@ -71,7 +71,7 @@ class AnnouncementRepository {
       required List<PlatformFile> attachments,
       required int classSectionId,
       required int subjectId,
-      required int announcementId}) async {
+      required int announcementId,}) async {
     try {
       List<MultipartFile> files = [];
       for (var file in attachments) {
@@ -93,7 +93,7 @@ class AnnouncementRepository {
       }
 
       await Api.post(
-          body: body, url: Api.updateAnnouncement, useAuthToken: true);
+          body: body, url: Api.updateAnnouncement, useAuthToken: true,);
     } catch (e) {
       throw ApiException(e.toString());
     }
@@ -104,7 +104,7 @@ class AnnouncementRepository {
       await Api.post(
           body: {"announcement_id": announcementId},
           url: Api.deleteAnnouncement,
-          useAuthToken: true);
+          useAuthToken: true,);
     } catch (e) {
       throw ApiException(e.toString());
     }

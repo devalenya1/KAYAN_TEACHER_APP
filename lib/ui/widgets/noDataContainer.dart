@@ -30,7 +30,7 @@ class NoDataContainer extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: textColor ?? Theme.of(context).colorScheme.secondary,
-                  fontSize: 16),
+                  fontSize: 16,),
             ),
           ),
         ],

@@ -23,13 +23,13 @@ class EditAnnouncementCubit extends Cubit<EditAnnouncementState> {
   EditAnnouncementCubit(this._announcementRepository)
       : super(EditAnnouncementInitial());
 
-  void editAnnouncement(
+  Future<void> editAnnouncement(
       {required String title,
       required String description,
       required List<PlatformFile> attachments,
       required int classSectionId,
       required int subjectId,
-      required int announcementId}) async {
+      required int announcementId,}) async {
     emit(EditAnnouncementInProgress());
     try {
       await _announcementRepository.updateAnnouncement(
@@ -38,7 +38,7 @@ class EditAnnouncementCubit extends Cubit<EditAnnouncementState> {
           attachments: attachments,
           classSectionId: classSectionId,
           subjectId: subjectId,
-          announcementId: announcementId);
+          announcementId: announcementId,);
       emit(EditAnnouncementSuccess());
     } catch (e) {
       emit(EditAnnouncementFailure(e.toString()));

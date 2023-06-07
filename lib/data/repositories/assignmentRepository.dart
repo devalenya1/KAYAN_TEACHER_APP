@@ -23,14 +23,14 @@ class AssignmentRepository {
             "class_section_id": classSectionId,
             "subject_id": subjectId,
             "page": page ?? 0,
-          });
+          },);
 
       return {
         "assignment": (result['data']['data'] as List)
             .map((e) => Assignment.fromJson(e))
             .toList(),
-        "currentPage": (result["data"]["current_page"] as int),
-        "lastPage": (result["data"]["last_page"] as int)
+        "currentPage": result["data"]["current_page"] as int,
+        "lastPage": result["data"]["last_page"] as int
       };
     } catch (e) {
       throw ApiException(e.toString());
@@ -161,5 +161,4 @@ class AssignmentRepository {
   //complete assignment
 
   //
-
 }

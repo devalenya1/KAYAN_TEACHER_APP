@@ -19,7 +19,7 @@ class ForceUpdateDialogContainer extends StatelessWidget {
           if (await canLaunchUrl(Uri.parse(appUrl))) {
             launchUrl(Uri.parse(appUrl));
           }
-        });
+        },);
   }
 
   @override
@@ -32,12 +32,12 @@ class ForceUpdateDialogContainer extends StatelessWidget {
         child: Platform.isIOS
             ? CupertinoAlertDialog(
                 title: Text(
-                    UiUtils.getTranslatedLabel(context, newUpdateAvailableKey)),
+                    UiUtils.getTranslatedLabel(context, newUpdateAvailableKey),),
                 actions: [_buildUpdateButton(context)],
               )
             : AlertDialog(
                 title: Text(
-                    UiUtils.getTranslatedLabel(context, newUpdateAvailableKey)),
+                    UiUtils.getTranslatedLabel(context, newUpdateAvailableKey),),
                 actions: [_buildUpdateButton(context)],
               ),
       ),

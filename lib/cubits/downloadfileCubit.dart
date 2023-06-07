@@ -45,7 +45,7 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
 
   Future<bool> _hasGivenManageDownloadFilePermissions() async {
     //If platfomr is ios or android with < 30 sdk version
-    Permission storagePermission = await Permission.storage;
+    Permission storagePermission = Permission.storage;
     bool permissionsGiven = (await storagePermission.status).isGranted;
     if (permissionsGiven) {
       return permissionsGiven;
@@ -54,19 +54,24 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
     return permissionsGiven;
   }
 
-  Future<void> writeFileFromTempStorage(
-      {required String sourcePath, required String destinationPath}) async {
+  Future<void> writeFileFromTempStorage({
+    required String sourcePath,
+    required String destinationPath,
+  }) async {
     final tempFile = File(sourcePath);
     final byteData = await tempFile.readAsBytes();
     final downloadedFile = File(destinationPath);
     //write into downloaded file
-    await downloadedFile.writeAsBytes(byteData.buffer
-        .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+    await downloadedFile.writeAsBytes(
+      byteData.buffer
+          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
+    );
   }
 
-  void downloadFile(
-      {required StudyMaterial studyMaterial,
-      required bool storeInExternalStorage}) async {
+  Future<void> downloadFile({
+    required StudyMaterial studyMaterial,
+    required bool storeInExternalStorage,
+  }) async {
     emit(DownloadFileInProgress(0.0));
     try {
       //if wants to download the file then
@@ -79,28 +84,35 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
               "${tempDir.path}/${studyMaterial.fileName}.${studyMaterial.fileExtension}";
 
           await _studyMaterialRepository.downloadStudyMaterialFile(
-              cancelToken: _cancelToken,
-              savePath: tempFileSavePath,
-              updateDownloadedPercentage: _downloadedFilePercentage,
-              url: studyMaterial.fileUrl);
+            cancelToken: _cancelToken,
+            savePath: tempFileSavePath,
+            updateDownloadedPercentage: _downloadedFilePercentage,
+            url: studyMaterial.fileUrl,
+          );
 
           //download file
           String downloadFilePath = Platform.isAndroid
               ? (await ExternalPath.getExternalStoragePublicDirectory(
-                  ExternalPath.DIRECTORY_DOWNLOADS))
+                  ExternalPath.DIRECTORY_DOWNLOADS,
+                ))
               : (await getApplicationDocumentsDirectory()).path;
 
           downloadFilePath =
-              "${downloadFilePath}/${studyMaterial.fileName}.${studyMaterial.fileExtension}";
+              "$downloadFilePath/${studyMaterial.fileName}.${studyMaterial.fileExtension}";
 
           await writeFileFromTempStorage(
-              sourcePath: tempFileSavePath, destinationPath: downloadFilePath);
+            sourcePath: tempFileSavePath,
+            destinationPath: downloadFilePath,
+          );
 
           emit(DownloadFileSuccess(downloadFilePath));
         } else {
           //if user does not give permission to store files in download directory
-          emit(DownloadFileFailure(
-              ErrorMessageKeysAndCode.permissionNotGivenCode));
+          emit(
+            DownloadFileFailure(
+              ErrorMessageKeysAndCode.permissionNotGivenCode,
+            ),
+          );
         }
       } else {
         //download file for just to see
@@ -109,10 +121,11 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
             "${tempDir.path}/${studyMaterial.fileName}.${studyMaterial.fileExtension}";
 
         await _studyMaterialRepository.downloadStudyMaterialFile(
-            cancelToken: _cancelToken,
-            savePath: savePath,
-            updateDownloadedPercentage: _downloadedFilePercentage,
-            url: studyMaterial.fileUrl);
+          cancelToken: _cancelToken,
+          savePath: savePath,
+          updateDownloadedPercentage: _downloadedFilePercentage,
+          url: studyMaterial.fileUrl,
+        );
 
         emit(DownloadFileSuccess(savePath));
       }

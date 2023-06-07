@@ -46,9 +46,9 @@ class AddResultForAllStudents extends StatefulWidget {
               ),
               BlocProvider(
                 create: (context) => SubjectMarksBySubjectIdCubit(
-                    studentRepository: StudentRepository()),
+                    studentRepository: StudentRepository(),),
               ),
-            ], child: AddResultForAllStudents()));
+            ], child: const AddResultForAllStudents(),),);
   }
 }
 
@@ -92,7 +92,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
   //
   void fetchStudentList() {
     context.read<StudentsByClassSectionCubit>().fetchStudents(
-        classSectionId: context.read<MyClassesCubit>().primaryClass()!.id);
+        classSectionId: context.read<MyClassesCubit>().primaryClass()!.id,);
   }
 
   //
@@ -101,7 +101,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
         examID: context
             .read<ExamDetailsCubit>()
             .getExamDetailsByExamName(examName: examName)
-            .examID!);
+            .examID!,);
   }
 
   //
@@ -113,7 +113,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               ? DefaultDropDownLabelContainer(
                   titleLabelKey:
                       UiUtils.getTranslatedLabel(context, noExamsKey),
-                  width: width)
+                  width: width,)
               : CustomDropDownMenu(
                   width: width,
                   onChanged: (result) {
@@ -124,7 +124,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                       // we will change currentSelectedSubject value to fetchingSubjectsKey label,
                       // because we are using this value to validate subject currentSelectedItem value
                       currentSelectedSubject = UiUtils.getTranslatedLabel(
-                          context, fetchingSubjectsKey);
+                          context, fetchingSubjectsKey,);
                     });
 
                     //
@@ -136,9 +136,9 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                     fetchStudentExamTimeTableOfExam(examName: result!);
                   },
                   menu: context.read<ExamDetailsCubit>().getExamName(),
-                  currentSelectedItem: currentSelectedExamName)
+                  currentSelectedItem: currentSelectedExamName,)
           : DefaultDropDownLabelContainer(
-              titleLabelKey: fetchingExamsKey, width: width);
+              titleLabelKey: fetchingExamsKey, width: width,);
     }, listener: (context, state) {
       if (state is ExamDetailsFetchSuccess) {
         if (state.examList.isNotEmpty) {
@@ -157,7 +157,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               .updateState(StudentsByClassSectionFetchSuccess(students: []));
         }
       }
-    });
+    },);
   }
 
   //
@@ -169,7 +169,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               ? DefaultDropDownLabelContainer(
                   titleLabelKey:
                       UiUtils.getTranslatedLabel(context, noSubjectsKey),
-                  width: width)
+                  width: width,)
               : CustomDropDownMenu(
                   width: width,
                   onChanged: (result) {
@@ -185,14 +185,14 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   menu: context.read<ExamTimeTableCubit>().getSubjectName(),
                   currentSelectedItem: currentSelectedSubject ==
                           UiUtils.getTranslatedLabel(
-                              context, fetchingSubjectsKey)
+                              context, fetchingSubjectsKey,)
                       ? context
                           .read<ExamTimeTableCubit>()
                           .getSubjectName()
                           .first
-                      : currentSelectedSubject)
+                      : currentSelectedSubject,)
           : DefaultDropDownLabelContainer(
-              titleLabelKey: fetchingSubjectsKey, width: width);
+              titleLabelKey: fetchingSubjectsKey, width: width,);
     }, listener: (context, state) {
       if (state is ExamTimeTableFetchSuccess) {
         if (state.examTimeTableList.isNotEmpty) {
@@ -202,16 +202,16 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   subjectName: context
                       .read<ExamTimeTableCubit>()
                       .getSubjectName()
-                      .first);
+                      .first,);
           fetchStudentList();
         }
       } else if (state is ExamTimeTableFetchFailure) {
         UiUtils.showBottomToastOverlay(
             context: context,
             backgroundColor: Theme.of(context).colorScheme.error,
-            errorMessage: state.errorMessage);
+            errorMessage: state.errorMessage,);
       }
-    });
+    },);
   }
 
   Widget _buildResultFilters() {
@@ -225,20 +225,32 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           _buildSubjectListDropdown(width: boxConstraints.maxWidth),
         ],
       );
-    });
+    },);
   }
 
   TextStyle _getResultTitleTextStyle() {
     return TextStyle(
         color: Theme.of(context).colorScheme.onBackground,
         fontWeight: FontWeight.w600,
-        fontSize: 12.0);
+        fontSize: 12.0,);
   }
 
   Widget _buildResultTitleDetails() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       height: 50,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.075),
+                offset: const Offset(2.5, 2.5),
+                blurRadius: 5,
+                spreadRadius: 1,)
+          ],
+          color: Theme.of(context).scaffoldBackgroundColor,),
+      width: MediaQuery.of(context).size.width,
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,24 +289,12 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
             ),
           ],
         );
-      }),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.075),
-                offset: Offset(2.5, 2.5),
-                blurRadius: 5,
-                spreadRadius: 1)
-          ],
-          color: Theme.of(context).scaffoldBackgroundColor),
-      width: MediaQuery.of(context).size.width,
+      },),
     );
   }
 
   Widget _buildSubmitButton(
-      {required String totalMarks, required List<Student> studentList}) {
+      {required String totalMarks, required List<Student> studentList,}) {
     return BlocConsumer<SubjectMarksBySubjectIdCubit,
         SubjectMarksBySubjectIdState>(
       listener: (context, state) {
@@ -302,8 +302,8 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           UiUtils.showBottomToastOverlay(
               context: context,
               errorMessage: UiUtils.getTranslatedLabel(
-                  context, marksAddedSuccessfullyKey),
-              backgroundColor: Theme.of(context).colorScheme.onPrimary);
+                  context, marksAddedSuccessfullyKey,),
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,);
 
           obtainedMarksTextEditingController.forEach((element) {
             element.clear();
@@ -313,8 +313,8 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           UiUtils.showBottomToastOverlay(
               context: context,
               errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                  context, state.errorMessage),
-              backgroundColor: Theme.of(context).colorScheme.error);
+                  context, state.errorMessage,),
+              backgroundColor: Theme.of(context).colorScheme.error,);
         }
       },
       builder: (context, state) {
@@ -335,8 +335,8 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   UiUtils.showBottomToastOverlay(
                       context: context,
                       errorMessage: UiUtils.getTranslatedLabel(
-                          context, marksMoreThanTotalMarksKey),
-                      backgroundColor: Theme.of(context).colorScheme.error);
+                          context, marksMoreThanTotalMarksKey,),
+                      backgroundColor: Theme.of(context).colorScheme.error,);
 
                   hasError = true;
                   break;
@@ -355,8 +355,8 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               UiUtils.showBottomToastOverlay(
                   context: context,
                   errorMessage: UiUtils.getTranslatedLabel(
-                      context, pleaseEnterAllMarksKey),
-                  backgroundColor: Theme.of(context).colorScheme.error);
+                      context, pleaseEnterAllMarksKey,),
+                  backgroundColor: Theme.of(context).colorScheme.error,);
               return;
             }
             //if marks list is empty and doesn't show any error message before then this will be shown
@@ -365,7 +365,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   context: context,
                   backgroundColor: Theme.of(context).colorScheme.error,
                   errorMessage: UiUtils.getTranslatedLabel(
-                      context, pleaseEnterSomeDataKey));
+                      context, pleaseEnterSomeDataKey,),);
 
               return;
             }
@@ -378,10 +378,10 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                     examId: context
                         .read<ExamDetailsCubit>()
                         .getExamDetailsByExamName(
-                            examName: currentSelectedExamName)
+                            examName: currentSelectedExamName,)
                         .examID!,
                     subjectId: selectedSubjectDetails!.id,
-                    bodyParameter: studentsMarksList);
+                    bodyParameter: studentsMarksList,);
           },
           height: UiUtils.bottomSheetButtonHeight,
           widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
@@ -389,7 +389,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           buttonTitle: UiUtils.getTranslatedLabel(context, submitResultKey),
           showBorder: false,
           child: state is SubjectMarksBySubjectIdSubmitInProgress
-              ? CustomCircularProgressIndicator(
+              ? const CustomCircularProgressIndicator(
                   strokeWidth: 2,
                   widthAndHeight: 20,
                 )
@@ -420,7 +420,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           //
           if (state.students.isEmpty) {
             return NoDataContainer(
-                titleKey: UiUtils.getTranslatedLabel(context, noDataFoundKey));
+                titleKey: UiUtils.getTranslatedLabel(context, noDataFoundKey),);
           }
           //
           return Column(
@@ -442,7 +442,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   totalMarks: totalMarksOfSelectedSubject,
                 );
                 //
-              })),
+              }),),
               //
               SizedBox(
                 height: MediaQuery.of(context).size.height * (0.09),
@@ -477,11 +477,11 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               top: UiUtils.getScrollViewTopPadding(
                   context: context,
                   appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage),
+                      UiUtils.appBarSmallerHeightPercentage,),
             ),
             children: [
               _buildResultFilters(),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               _buildStudentContainer()
@@ -505,7 +505,7 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
       builder: (context, state) {
         if (state is StudentsByClassSectionFetchSuccess) {
           return state.students.isEmpty
-              ? SizedBox()
+              ? const SizedBox()
               : Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
@@ -516,14 +516,14 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                         totalMarks: context
                             .read<ExamTimeTableCubit>()
                             .getTotalMarksOfSubject(
-                                subjectId: selectedSubjectDetails!.id),
+                                subjectId: selectedSubjectDetails!.id,),
                         studentList: (context
                                 .read<StudentsByClassSectionCubit>()
                                 .state as StudentsByClassSectionFetchSuccess)
-                            .students),
-                  ));
+                            .students,),
+                  ),);
         }
-        return SizedBox();
+        return const SizedBox();
       },
     );
   }
@@ -535,6 +535,8 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 15.0),
+            width: MediaQuery.of(context).size.width * (0.85),
             child: LayoutBuilder(builder: (context, boxConstraints) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -542,16 +544,14 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                   ShimmerLoadingContainer(
                       child: CustomShimmerContainer(
                     margin: EdgeInsetsDirectional.only(
-                        end: boxConstraints.maxWidth * (0.3)),
-                  )),
-                  SizedBox(
+                        end: boxConstraints.maxWidth * (0.3),),
+                  ),),
+                  const SizedBox(
                     height: 5,
                   ),
                 ],
               );
-            }),
-            padding: EdgeInsets.symmetric(vertical: 15.0),
-            width: MediaQuery.of(context).size.width * (0.85),
+            },),
           ),
         );
       }),

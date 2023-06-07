@@ -25,7 +25,7 @@ class AppSettingsCubit extends Cubit<AppSettingsState> {
 
   AppSettingsCubit(this._systemRepository) : super(AppSettingsInitial());
 
-  void fetchAppSettings({required String type}) async {
+  Future<void> fetchAppSettings({required String type}) async {
     emit(AppSettingsFetchInProgress());
 
     try {

@@ -27,11 +27,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
-  late AnimationController _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
+  late AnimationController _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
 
-  late Animation<double> _patterntAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.0, 0.5, curve: Curves.easeInOut)));
+  late Animation<double> _patterntAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: const Interval(0.0, 0.5, curve: Curves.easeInOut)));
 
-  late Animation<double> _formAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0, curve: Curves.easeInOut)));
+  late Animation<double> _formAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _animationController, curve: const Interval(0.5, 1.0, curve: Curves.easeInOut)));
 
   bool _hidePassword = true;
   TextEditingController _emailTextEditingController = TextEditingController();
@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       alignment: Alignment.topRight,
       child: FadeTransition(
         opacity: _patterntAnimation,
-        child: SlideTransition(position: _patterntAnimation.drive(Tween<Offset>(begin: Offset(0.0, -1.0), end: Offset.zero)), child: Image.asset(UiUtils.getImagePath("upper_pattern.png"))),
+        child: SlideTransition(position: _patterntAnimation.drive(Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero)), child: Image.asset(UiUtils.getImagePath("upper_pattern.png"))),
       ),
     );
   }
@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       alignment: Alignment.bottomLeft,
       child: FadeTransition(
         opacity: _patterntAnimation,
-        child: SlideTransition(position: _patterntAnimation.drive(Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)), child: Image.asset(UiUtils.getImagePath("lower_pattern.png"))),
+        child: SlideTransition(position: _patterntAnimation.drive(Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)), child: Image.asset(UiUtils.getImagePath("lower_pattern.png"))),
       ),
     );
   }
@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             ).then((value) {
               if (value != null && !value['error']) {
                 UiUtils.showBottomToastOverlay(
-                    context: context, errorMessage: UiUtils.getTranslatedLabel(context, passwordUpdateLinkSentKey) + " ${value['email']}", backgroundColor: Theme.of(context).colorScheme.onPrimary);
+                    context: context, errorMessage: UiUtils.getTranslatedLabel(context, passwordUpdateLinkSentKey) + " ${value['email']}", backgroundColor: Theme.of(context).colorScheme.onPrimary,);
               }
             });
           },
@@ -140,18 +140,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   UiUtils.getTranslatedLabel(context, letsSignInKey),
                   style: TextStyle(fontSize: 34.0, fontWeight: FontWeight.bold, color: UiUtils.getColorScheme(context).secondary),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10.0,
                 ),
                 Text(
                   "${UiUtils.getTranslatedLabel(context, welcomeBackKey)}, \n${UiUtils.getTranslatedLabel(context, youHaveBeenMissedKey)}",
                   style: TextStyle(fontSize: 24.0, height: 1.5, color: UiUtils.getColorScheme(context).secondary),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30.0,
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: UiUtils.getColorScheme(context).secondary)),
                   child: TextFormField(
                     controller: _emailTextEditingController,
@@ -166,14 +166,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         ),
                         hintStyle: TextStyle(color: UiUtils.getColorScheme(context).secondary),
                         hintText: UiUtils.getTranslatedLabel(context, emailKey),
-                        border: InputBorder.none),
+                        border: InputBorder.none,),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30.0,
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20.0),
+                  padding: const EdgeInsets.only(left: 20.0),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: UiUtils.getColorScheme(context).secondary)),
                   child: TextFormField(
                     controller: _passwordTextEditingController,
@@ -186,14 +186,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               setState(() {
                                 _hidePassword = !_hidePassword;
                               });
-                            }),
+                            },),
                         hintStyle: TextStyle(color: UiUtils.getColorScheme(context).secondary),
                         hintText: UiUtils.getTranslatedLabel(context, passwordKey),
-                        border: InputBorder.none),
+                        border: InputBorder.none,),
                   ),
                 ),
                 _buildForgotPassword(),
-                SizedBox(
+                const SizedBox(
                   height: 20.0,
                 ),
                 Center(
@@ -204,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         Navigator.of(context).pushReplacementNamed(Routes.home);
                       } else if (state is SignInFailure) {
                         UiUtils.showBottomToastOverlay(
-                            context: context, errorMessage: UiUtils.getErrorMessageFromErrorCode(context, state.errorMessage), backgroundColor: Theme.of(context).colorScheme.error);
+                            context: context, errorMessage: UiUtils.getErrorMessageFromErrorCode(context, state.errorMessage), backgroundColor: Theme.of(context).colorScheme.error,);
                       }
                     },
                     builder: (context, state) {
@@ -220,20 +220,20 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         },
                         widthPercentage: 0.8,
                         backgroundColor: UiUtils.getColorScheme(context).primary,
+                        buttonTitle: UiUtils.getTranslatedLabel(context, signInKey),
+                        titleColor: Theme.of(context).scaffoldBackgroundColor,
+                        showBorder: false,
                         child: state is SignInInProgress
-                            ? CustomCircularProgressIndicator(
+                            ? const CustomCircularProgressIndicator(
                                 strokeWidth: 2,
                                 widthAndHeight: 20,
                               )
                             : null,
-                        buttonTitle: UiUtils.getTranslatedLabel(context, signInKey),
-                        titleColor: Theme.of(context).scaffoldBackgroundColor,
-                        showBorder: false,
                       );
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TermsAndConditionAndPrivacyPolicyContainer(),

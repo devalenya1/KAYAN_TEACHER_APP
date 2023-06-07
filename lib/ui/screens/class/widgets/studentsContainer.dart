@@ -27,7 +27,7 @@ class StudentsContainer extends StatelessWidget {
               height: 50,
               width: boxConstraints.maxWidth * (0.2),
               borderRadius: 10,
-            )),
+            ),),
             SizedBox(
               width: boxConstraints.maxWidth * (0.05),
             ),
@@ -38,21 +38,21 @@ class StudentsContainer extends StatelessWidget {
                     child: CustomShimmerContainer(
                   width: boxConstraints.maxWidth * (0.5),
                   borderRadius: 10,
-                )),
-                SizedBox(
+                ),),
+                const SizedBox(
                   height: 10,
                 ),
                 ShimmerLoadingContainer(
                     child: CustomShimmerContainer(
                   width: boxConstraints.maxWidth * (0.35),
                   borderRadius: 10,
-                )),
+                ),),
               ],
             ),
           ],
         ),
       );
-    });
+    },);
   }
 
   @override
@@ -80,7 +80,7 @@ class StudentsContainer extends StatelessWidget {
 
         return Column(
           children: List.generate(UiUtils.defaultShimmerLoadingContentCount,
-              (index) => _buildStudentShimmerLoadContainer()).toList(),
+              (index) => _buildStudentShimmerLoadContainer(),).toList(),
         );
       },
     );

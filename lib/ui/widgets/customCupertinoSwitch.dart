@@ -6,7 +6,7 @@ class CustomCupertinoSwitch extends StatelessWidget {
   final bool value;
 
   const CustomCupertinoSwitch(
-      {Key? key, required this.onChanged, required this.value})
+      {Key? key, required this.onChanged, required this.value,})
       : super(key: key);
 
   @override
@@ -18,6 +18,6 @@ class CustomCupertinoSwitch extends StatelessWidget {
             value: value,
             onChanged: (value) {
               onChanged(value);
-            }));
+            },),);
   }
 }

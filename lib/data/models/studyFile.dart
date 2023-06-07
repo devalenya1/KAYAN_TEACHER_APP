@@ -10,7 +10,7 @@ class StudyFile {
       required this.url,
       required this.chapterId,
       required this.classDivisonId,
-      required this.subjectId});
+      required this.subjectId,});
 
   StudyFile copyWith({
     String? newName,
@@ -24,6 +24,6 @@ class StudyFile {
         url: newUrl ?? url,
         chapterId: newchapterId ?? chapterId,
         classDivisonId: newClassDivisionId ?? classDivisonId,
-        subjectId: newSubjectID ?? subjectId);
+        subjectId: newSubjectID ?? subjectId,);
   }
 }

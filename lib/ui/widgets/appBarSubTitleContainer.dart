@@ -10,7 +10,7 @@ class AppBarSubTitleContainer extends StatelessWidget {
       {Key? key,
       required this.boxConstraints,
       required this.subTitle,
-      this.topPaddingPercentage})
+      this.topPaddingPercentage,})
       : super(key: key);
 
   @override
@@ -20,12 +20,12 @@ class AppBarSubTitleContainer extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(
             top: boxConstraints.maxHeight * ((topPaddingPercentage ?? 0.085)) +
-                UiUtils.screenSubTitleFontSize),
+                UiUtils.screenSubTitleFontSize,),
         child: Text(
           subTitle,
           style: TextStyle(
               fontSize: UiUtils.screenSubTitleFontSize,
-              color: Theme.of(context).scaffoldBackgroundColor),
+              color: Theme.of(context).scaffoldBackgroundColor,),
         ),
       ),
     );

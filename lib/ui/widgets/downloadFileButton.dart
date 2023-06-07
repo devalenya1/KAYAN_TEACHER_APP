@@ -16,16 +16,16 @@ class DownloadFileButton extends StatelessWidget {
         UiUtils.openDownloadBottomsheet(
             context: context,
             storeInExternalStorage: true,
-            studyMaterial: studyMaterial);
+            studyMaterial: studyMaterial,);
       },
       child: Container(
         width: 30,
         height: 30,
-        padding: EdgeInsets.all(8.0),
-        child: SvgPicture.asset(UiUtils.getImagePath("download_icon.svg")),
+        padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
-            shape: BoxShape.circle),
+            shape: BoxShape.circle,),
+        child: SvgPicture.asset(UiUtils.getImagePath("download_icon.svg")),
       ),
     );
   }

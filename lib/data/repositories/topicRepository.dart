@@ -7,7 +7,7 @@ class TopicRepository {
       final result = await Api.get(
           url: Api.getTopics,
           useAuthToken: true,
-          queryParameters: {"lesson_id": lessonId});
+          queryParameters: {"lesson_id": lessonId},);
 
       return (result['data'] as List)
           .map((topic) => Topic.fromJson(Map.from(topic)))
@@ -22,7 +22,7 @@ class TopicRepository {
       await Api.post(
           url: Api.deleteTopic,
           useAuthToken: true,
-          body: {"topic_id": topicId});
+          body: {"topic_id": topicId},);
     } catch (e) {
       throw ApiException(e.toString());
     }
@@ -34,7 +34,7 @@ class TopicRepository {
       required int subjectId,
       required String topicDescription,
       required int lessonId,
-      required List<Map<String, dynamic>> files}) async {
+      required List<Map<String, dynamic>> files,}) async {
     try {
       Map<String, dynamic> body = {
         "class_section_id": classSectionId,
@@ -61,7 +61,7 @@ class TopicRepository {
       required String topicDescription,
       required int lessonId,
       required int topicId,
-      required List<Map<String, dynamic>> files}) async {
+      required List<Map<String, dynamic>> files,}) async {
     try {
       Map<String, dynamic> body = {
         "class_section_id": classSectionId,

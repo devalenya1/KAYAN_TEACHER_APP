@@ -1,4 +1,6 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 import 'package:eschool_teacher/data/repositories/reviewAssignmentRepository.dart';
 
@@ -24,7 +26,7 @@ class EditReviewAssignmetCubit extends Cubit<EditReviewAssignmetState> {
     this._reviewAssignmentRepository,
   ) : super(EditReviewAssignmetInitial());
 
-  void updateReviewAssignmet({
+  Future<void> updateReviewAssignmet({
     required int reviewAssignmetId,
     required int reviewAssignmentStatus,
     String? reviewAssignmentPoints,
@@ -34,15 +36,16 @@ class EditReviewAssignmetCubit extends Cubit<EditReviewAssignmetState> {
     try {
       emit(EditReviewAssignmetInProgress());
       await _reviewAssignmentRepository.updateReviewAssignment(
-          reviewAssignmetId: reviewAssignmetId,
-          reviewAssignmentStatus: reviewAssignmentStatus,
-          reviewAssignmentPoints: reviewAssignmentPoints!.isNotEmpty
-              ? int.parse(reviewAssignmentPoints)
-              : 0,
-          reviewAssignmentFeedBack: reviewAssignmentFeedBack!);
+        reviewAssignmetId: reviewAssignmetId,
+        reviewAssignmentStatus: reviewAssignmentStatus,
+        reviewAssignmentPoints: reviewAssignmentPoints!.isNotEmpty
+            ? int.parse(reviewAssignmentPoints)
+            : 0,
+        reviewAssignmentFeedBack: reviewAssignmentFeedBack!,
+      );
       emit(EditReviewAssignmetSuccess());
     } catch (e) {
-      print(e.toString());
+      print(e);
       emit(EditReviewAssignmetFailure(errorMessage: e.toString()));
     }
   }

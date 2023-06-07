@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:eschool_teacher/data/models/exam.dart';
 import 'package:eschool_teacher/data/repositories/studentRepository.dart';
@@ -25,14 +26,18 @@ class ExamDetailsCubit extends Cubit<ExamDetailsState> {
 
   ExamDetailsCubit(this._studentRepository) : super(ExamDetailsInitial());
 
-  void fetchStudentExamsList(
-      {required int examStatus, int? studentId, int? publishStatus}) {
+  void fetchStudentExamsList({
+    required int examStatus,
+    int? studentId,
+    int? publishStatus,
+  }) {
     emit(ExamDetailsFetchInProgress());
     _studentRepository
         .fetchExamsList(
-            examStatus: examStatus,
-            studentID: studentId,
-            publishStatus: publishStatus)
+          examStatus: examStatus,
+          studentID: studentId,
+          publishStatus: publishStatus,
+        )
         .then((value) => emit(ExamDetailsFetchSuccess(examList: value)))
         .catchError((e) => emit(ExamDetailsFetchFailure(e.toString())));
   }

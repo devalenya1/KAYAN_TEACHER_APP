@@ -7,7 +7,7 @@ class SystemRepository {
       final result = await Api.get(
           queryParameters: {"type": type},
           url: Api.settings,
-          useAuthToken: false);
+          useAuthToken: false,);
 
       return result['data'];
     } catch (e) {

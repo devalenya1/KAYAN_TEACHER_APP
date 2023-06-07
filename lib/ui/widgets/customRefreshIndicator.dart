@@ -8,16 +8,16 @@ class CustomRefreshIndicator extends StatelessWidget {
       {Key? key,
       required this.child,
       required this.displacment,
-      required this.onRefreshCallback})
+      required this.onRefreshCallback,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        child: child,
         displacement: displacment,
         onRefresh: () async {
           onRefreshCallback();
-        });
+        },
+        child: child,);
   }
 }

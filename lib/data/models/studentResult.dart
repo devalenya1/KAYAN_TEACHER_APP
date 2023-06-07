@@ -6,7 +6,7 @@ class StudentResult {
   ResultData? result;
 
   StudentResult(
-      {this.examId, this.examName, this.marksData, this.result, this.examDate});
+      {this.examId, this.examName, this.marksData, this.result, this.examDate,});
 
   StudentResult.fromJson(Map<String, dynamic> json) {
     examId = json['exam_id'] ?? 0;
@@ -37,7 +37,7 @@ class MarksData {
       this.marks,
       this.totalMarks,
       this.subjectType,
-      this.subjectCode});
+      this.subjectCode,});
 
   MarksData.fromJson(Map<String, dynamic> json) {
     subjectId = json['subject_id'] ?? 0;
@@ -63,7 +63,7 @@ class Marks {
       this.subjectType,
       this.totalMarks,
       this.obtainedMarks,
-      this.grade});
+      this.grade,});
 
   Marks.fromJson(Map<String, dynamic> json) {
     marksId = json['marks_id'] ?? 0;
@@ -99,7 +99,7 @@ class ResultData {
       this.obtainedMarks,
       this.percentage,
       this.grade,
-      this.sessionYear});
+      this.sessionYear,});
 
   ResultData.fromJson(Map<String, dynamic> json) {
     resultId = json['result_id'] ?? 0;

@@ -15,7 +15,7 @@ class CustomCloseButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
-            border: Border.all(color: Theme.of(context).colorScheme.secondary)),
+            border: Border.all(color: Theme.of(context).colorScheme.secondary),),
         width: 25,
         height: 25,
         child: Icon(

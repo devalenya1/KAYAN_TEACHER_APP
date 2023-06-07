@@ -21,14 +21,14 @@ class EditTopicCubit extends Cubit<EditTopicState> {
 
   EditTopicCubit(this._topicRepository) : super(EditTopicInitial());
 
-  void editTopic(
+  Future<void> editTopic(
       {required String topicName,
       required int lessonId,
       required int classSectionId,
       required int subjectId,
       required String topicDescription,
       required int topicId,
-      required List<PickedStudyMaterial> files}) async {
+      required List<PickedStudyMaterial> files,}) async {
     emit(EditTopicInProgress());
     try {
       List<Map<String, dynamic>> filesJosn = [];
@@ -42,7 +42,7 @@ class EditTopicCubit extends Cubit<EditTopicState> {
           subjectId: subjectId,
           topicDescription: topicDescription,
           lessonId: lessonId,
-          files: filesJosn);
+          files: filesJosn,);
 
       emit(EditTopicSuccess());
     } catch (e) {

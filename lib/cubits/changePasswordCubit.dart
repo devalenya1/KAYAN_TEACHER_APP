@@ -20,16 +20,16 @@ class ChangePasswordCubit extends Cubit<ChangePasswordState> {
 
   ChangePasswordCubit(this._authRepository) : super(ChangePasswordInitial());
 
-  void changePassword(
+  Future<void> changePassword(
       {required String currentPassword,
       required String newPassword,
-      required String newConfirmedPassword}) async {
+      required String newConfirmedPassword,}) async {
     emit(ChangePasswordInProgress());
     try {
       await _authRepository.changePassword(
           currentPassword: currentPassword,
           newPassword: newPassword,
-          newConfirmedPassword: newConfirmedPassword);
+          newConfirmedPassword: newConfirmedPassword,);
       emit(ChangePasswordSuccess());
     } catch (e) {
       emit(ChangePasswordFailure(e.toString()));

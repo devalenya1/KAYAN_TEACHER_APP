@@ -8,7 +8,7 @@ class TimeTableSlot {
       required this.day,
       required this.dayName,
       required this.subject,
-      required this.classSectionDetails});
+      required this.classSectionDetails,});
   late final String startTime;
   late final String endTime;
   late final int day;

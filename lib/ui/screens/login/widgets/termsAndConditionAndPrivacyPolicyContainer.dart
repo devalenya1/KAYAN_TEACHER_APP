@@ -18,7 +18,7 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
           ),
         ],
       ),
-      SizedBox(
+      const SizedBox(
         height: 4,
       ),
       Row(
@@ -31,12 +31,12 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
               child: Text(
                 UiUtils.getTranslatedLabel(context, termsAndConditionKey),
                 style: TextStyle(color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.underline, fontWeight: FontWeight.bold, fontSize: 13),
-              )),
-          SizedBox(
+              ),),
+          const SizedBox(
             width: 5.0,
           ),
           Text("&", style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold)),
-          SizedBox(
+          const SizedBox(
             width: 5.0,
           ),
           InkWell(
@@ -46,9 +46,9 @@ class TermsAndConditionAndPrivacyPolicyContainer extends StatelessWidget {
               child: Text(
                 UiUtils.getTranslatedLabel(context, privacyPolicyKey),
                 style: TextStyle(color: Theme.of(context).colorScheme.primary, decoration: TextDecoration.underline, fontWeight: FontWeight.bold, fontSize: 13),
-              )),
+              ),),
         ],
       ),
-    ]));
+    ],),);
   }
 }

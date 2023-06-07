@@ -26,13 +26,13 @@ class ResultListScreen extends StatelessWidget {
                   ),
                   BlocProvider<StudentCompletedExamWithResultCubit>(
                     create: (context) => StudentCompletedExamWithResultCubit(
-                        StudentRepository()),
+                        StudentRepository(),),
                   ),
                 ],
                 child: ResultListScreen(
                   studentId: studentData['studentId'],
                   studentName: studentData['studentName'],
-                )));
+                ),),);
   }
 
   @override

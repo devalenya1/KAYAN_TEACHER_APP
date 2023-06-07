@@ -27,14 +27,14 @@ class UpdateStudyMaterialCubit extends Cubit<UpdateStudyMaterialState> {
   UpdateStudyMaterialCubit(this._studyMaterialRepository)
       : super(UpdateStudyMaterialInitial());
 
-  void updateStudyMaterial(
+  Future<void> updateStudyMaterial(
       {required int fileId,
-      required PickedStudyMaterial pickedStudyMaterial}) async {
+      required PickedStudyMaterial pickedStudyMaterial,}) async {
     emit(UpdateStudyMaterialInProgress());
     try {
       final fileDetails = await pickedStudyMaterial.toJson();
       final result = await _studyMaterialRepository.updateStudyMaterial(
-          fileId: fileId, fileDetails: fileDetails);
+          fileId: fileId, fileDetails: fileDetails,);
 
       emit(UpdateStudyMaterialSuccess(result));
     } catch (e) {

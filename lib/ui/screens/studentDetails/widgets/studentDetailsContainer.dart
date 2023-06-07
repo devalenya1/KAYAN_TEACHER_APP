@@ -28,26 +28,26 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
     return TextStyle(
         color: Theme.of(context).colorScheme.secondary,
         fontSize: 14,
-        fontWeight: FontWeight.w600);
+        fontWeight: FontWeight.w600,);
   }
 
   TextStyle _getLabelTextStyle() {
     return TextStyle(
         color: Theme.of(context).colorScheme.onBackground,
         fontSize: 11,
-        fontWeight: FontWeight.w400);
+        fontWeight: FontWeight.w400,);
   }
 
   Widget _buildDetailBackgroundContainer(Widget child) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(bottom: 20.0),
+        margin: const EdgeInsets.only(bottom: 20.0),
         width: MediaQuery.of(context).size.width,
-        child: child,
-        padding: EdgeInsets.symmetric(horizontal: 12.50, vertical: 15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.50, vertical: 15.0),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.circular(10.0)),
+            borderRadius: BorderRadius.circular(10.0),),
+        child: child,
       ),
     );
   }
@@ -57,7 +57,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
       required String value,
       required double titleWidthPercentage,
       required double width,
-      required valueWidthPercentage}) {
+      required valueWidthPercentage,}) {
     return Row(
       children: [
         SizedBox(
@@ -92,7 +92,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
           radius: 25,
           backgroundColor: Theme.of(context).colorScheme.primary,
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         Flexible(
@@ -118,21 +118,21 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
-                                1.0 - leftSideTitleWidthPercentage),
+                                1.0 - leftSideTitleWidthPercentage,),
                         _buildValueWithTitle(
                             title: classKey,
                             value: widget.student.classSectionName,
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
-                                1.0 - leftSideTitleWidthPercentage),
+                                1.0 - leftSideTitleWidthPercentage,),
                         _buildValueWithTitle(
                             width: widthOfDetialsContainer,
                             title: dobKey,
                             value: UiUtils.formatStringDate(widget.student.dob),
                             titleWidthPercentage: leftSideTitleWidthPercentage,
                             valueWidthPercentage:
-                                1.0 - leftSideTitleWidthPercentage),
+                                1.0 - leftSideTitleWidthPercentage,),
                       ],
                     ),
                     Column(
@@ -143,21 +143,21 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: rightSideTitleWidthPercentage,
                             valueWidthPercentage:
-                                1.0 - rightSideTitleWidthPercentage),
+                                1.0 - rightSideTitleWidthPercentage,),
                         _buildValueWithTitle(
                             title: bloodGrpKey,
                             value: widget.student.bloodGroup,
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: rightSideTitleWidthPercentage,
                             valueWidthPercentage:
-                                1.0 - rightSideTitleWidthPercentage),
+                                1.0 - rightSideTitleWidthPercentage,),
                         _buildValueWithTitle(
                             title: grNoKey,
                             value: widget.student.admissionNo,
                             width: widthOfDetialsContainer,
                             titleWidthPercentage: rightSideTitleWidthPercentage,
                             valueWidthPercentage:
-                                1.0 - rightSideTitleWidthPercentage),
+                                1.0 - rightSideTitleWidthPercentage,),
                       ],
                     ),
                   ],
@@ -180,15 +180,15 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                 ),
               ],
             );
-          }),
+          },),
         ),
       ],
-    ));
+    ),);
   }
 
   Widget _buildGuardianDetailsContainer(
       {required String guardianRole,
-      required GuardianDetails guardianDetails}) {
+      required GuardianDetails guardianDetails,}) {
     return _buildDetailBackgroundContainer(
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,7 +198,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
             backgroundColor: Theme.of(context).colorScheme.primary,
             backgroundImage: CachedNetworkImageProvider(guardianDetails.image),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Flexible(
@@ -220,23 +220,23 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                       value: guardianDetails.occupation,
                       titleWidthPercentage: titleWidthPercentage,
                       width: boxConstraints.maxWidth,
-                      valueWidthPercentage: 1.0 - titleWidthPercentage),
+                      valueWidthPercentage: 1.0 - titleWidthPercentage,),
                   _buildValueWithTitle(
                       title: UiUtils.getTranslatedLabel(context,
-                          UiUtils.getTranslatedLabel(context, phoneKey)),
+                          UiUtils.getTranslatedLabel(context, phoneKey),),
                       value: guardianDetails.mobile,
                       titleWidthPercentage: titleWidthPercentage,
                       width: boxConstraints.maxWidth,
-                      valueWidthPercentage: 1.0 - titleWidthPercentage),
+                      valueWidthPercentage: 1.0 - titleWidthPercentage,),
                   _buildValueWithTitle(
                       title: UiUtils.getTranslatedLabel(context, emailKey),
                       value: guardianDetails.email,
                       titleWidthPercentage: titleWidthPercentage,
                       width: boxConstraints.maxWidth,
-                      valueWidthPercentage: 1.0 - titleWidthPercentage),
+                      valueWidthPercentage: 1.0 - titleWidthPercentage,),
                 ],
               );
-            }),
+            },),
           ),
         ],
       ),
@@ -246,7 +246,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
   Widget _buildAttendanceSummaryContainer(
       {required int totalPresent,
       required int totalAbsent,
-      required String todayAttendance}) {
+      required String todayAttendance,}) {
     return _buildDetailBackgroundContainer(
         LayoutBuilder(builder: (context, boxConstraints) {
       return Column(
@@ -254,7 +254,6 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 UiUtils.getTranslatedLabel(context, todayAttendanceKey),
@@ -262,7 +261,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: boxConstraints.maxWidth * (0.02)),
+                    horizontal: boxConstraints.maxWidth * (0.02),),
                 child: CircleAvatar(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   radius: 2.5,
@@ -273,7 +272,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 14,
-                    fontWeight: FontWeight.w500),
+                    fontWeight: FontWeight.w500,),
               ),
             ],
           ),
@@ -284,42 +283,40 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       width: 2,
                       color: Theme.of(context).colorScheme.primary,
-                    )),
+                    ),),
                 width: boxConstraints.maxWidth * (0.47),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(UiUtils.getTranslatedLabel(context, totalPresentKey),
-                        style: _getLabelTextStyle()),
+                        style: _getLabelTextStyle(),),
                     Text(totalPresent.toString(),
-                        style: _getLabelValueTextStyle()),
+                        style: _getLabelValueTextStyle(),),
                   ],
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 4.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       width: 2,
                       color: Theme.of(context).colorScheme.primary,
-                    )),
+                    ),),
                 width: boxConstraints.maxWidth * (0.47),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(UiUtils.getTranslatedLabel(context, totalAbsentKey),
-                        style: _getLabelTextStyle()),
+                        style: _getLabelTextStyle(),),
                     Text(totalAbsent.toString(),
-                        style: _getLabelValueTextStyle()),
+                        style: _getLabelValueTextStyle(),),
                   ],
                 ),
               ),
@@ -327,7 +324,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
           ),
         ],
       );
-    }));
+    },),);
   }
 
   _buildViewResultContainer() {
@@ -337,17 +334,17 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
           'studentId': widget.student.id,
           'studentName':
               '${widget.student.firstName} ${widget.student.lastName}'
-        });
+        },);
       },
       child: Container(
-        margin: EdgeInsets.only(bottom: 20.0),
-        padding: EdgeInsets.all(2.5),
+        margin: const EdgeInsets.only(bottom: 20.0),
+        padding: const EdgeInsets.all(2.5),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               width: 2,
               color: Theme.of(context).colorScheme.primary,
-            )),
+            ),),
         alignment: AlignmentDirectional.center,
         width: MediaQuery.of(context).size.width * (0.85),
         height: MediaQuery.of(context).size.width * (0.15),
@@ -355,7 +352,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
             style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.w600,
-                fontSize: 14.0)),
+                fontSize: 14.0,),),
       ),
     );
   }
@@ -365,6 +362,12 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
     return Align(
       alignment: Alignment.topCenter,
       child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+            left: MediaQuery.of(context).size.width * (0.075),
+            right: MediaQuery.of(context).size.width * (0.075),
+            top: UiUtils.getScrollViewTopPadding(
+                context: context,
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),),
         child: Column(
           children: [
             //
@@ -378,44 +381,44 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                       _buildGuardianDetailsContainer(
                           guardianDetails: state.fatherDetails,
                           guardianRole:
-                              UiUtils.getTranslatedLabel(context, fatherKey)),
+                              UiUtils.getTranslatedLabel(context, fatherKey),),
                       _buildGuardianDetailsContainer(
                           guardianDetails: state.motherDetails,
                           guardianRole:
-                              UiUtils.getTranslatedLabel(context, motherKey)),
+                              UiUtils.getTranslatedLabel(context, motherKey),),
                       state.guardianDetails.id != 0
                           ? _buildGuardianDetailsContainer(
                               guardianRole: UiUtils.getTranslatedLabel(
-                                  context, guardianKey),
-                              guardianDetails: state.guardianDetails)
-                          : SizedBox(),
+                                  context, guardianKey,),
+                              guardianDetails: state.guardianDetails,)
+                          : const SizedBox(),
                       _buildAttendanceSummaryContainer(
                           todayAttendance: state.todayAttendance,
                           totalAbsent: state.totalAbsent,
-                          totalPresent: state.totalPresent),
+                          totalPresent: state.totalPresent,),
                     ],
                   );
                 }
                 if (state is StudentMoreDetailsFetchFailure) {
                   return Padding(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * (0.1)),
+                        top: MediaQuery.of(context).size.height * (0.1),),
                     child: Center(
                       child: ErrorContainer(
                           onTapRetry: () {
                             context
                                 .read<StudentMoreDetailsCubit>()
                                 .fetchStudentMoreDetails(
-                                    studentId: widget.student.id);
+                                    studentId: widget.student.id,);
                           },
-                          errorMessageCode: state.errorMessage),
+                          errorMessageCode: state.errorMessage,),
                     ),
                   );
                 }
                 return Padding(
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * (0.125),
-                      bottom: MediaQuery.of(context).size.height * (0.125)),
+                      bottom: MediaQuery.of(context).size.height * (0.125),),
                   child: Center(
                     child: CustomCircularProgressIndicator(
                       indicatorColor: Theme.of(context).colorScheme.primary,
@@ -428,12 +431,6 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
             _buildViewResultContainer(),
           ],
         ),
-        padding: EdgeInsets.only(
-            left: MediaQuery.of(context).size.width * (0.075),
-            right: MediaQuery.of(context).size.width * (0.075),
-            top: UiUtils.getScrollViewTopPadding(
-                context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage)),
       ),
     );
   }

@@ -23,7 +23,7 @@ class TopcisByLessonScreen extends StatefulWidget {
       {Key? key,
       required this.lesson,
       required this.classSectionDetails,
-      required this.subject})
+      required this.subject,})
       : super(key: key);
 
   @override
@@ -35,14 +35,14 @@ class TopcisByLessonScreen extends StatefulWidget {
         builder: (_) => MultiBlocProvider(
               providers: [
                 BlocProvider<TopicsCubit>(
-                    create: (_) => TopicsCubit(TopicRepository()))
+                    create: (_) => TopicsCubit(TopicRepository()),)
               ],
               child: TopcisByLessonScreen(
                 classSectionDetails: arguments['classSectionDetails'],
                 lesson: arguments['lesson'],
                 subject: arguments['subject'],
               ),
-            ));
+            ),);
   }
 }
 
@@ -68,12 +68,12 @@ class _TopcisByLessonScreenState extends State<TopcisByLessonScreen> {
           "classSectionDetails": widget.classSectionDetails,
           "subject": widget.subject,
           "lesson": widget.lesson
-        }).then((value) {
+        },).then((value) {
           if (value != null && value) {
             fetchTopics();
           }
         });
-      }),
+      },),
       body: Stack(
         children: [
           Align(
@@ -85,7 +85,7 @@ class _TopcisByLessonScreenState extends State<TopcisByLessonScreen> {
               displacment: UiUtils.getScrollViewTopPadding(
                   context: context,
                   appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage),
+                      UiUtils.appBarSmallerHeightPercentage,),
               child: ListView(
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width *
@@ -95,12 +95,12 @@ class _TopcisByLessonScreenState extends State<TopcisByLessonScreen> {
                     top: UiUtils.getScrollViewTopPadding(
                         context: context,
                         appBarHeightPercentage:
-                            UiUtils.appBarSmallerHeightPercentage)),
+                            UiUtils.appBarSmallerHeightPercentage,),),
                 children: [
                   TopicsContainer(
                       classSectionDetails: widget.classSectionDetails,
                       lesson: widget.lesson,
-                      subject: widget.subject)
+                      subject: widget.subject,)
                 ],
               ),
             ),

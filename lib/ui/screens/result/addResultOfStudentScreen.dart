@@ -21,7 +21,7 @@ class AddResultScreen extends StatefulWidget {
       {Key? key,
       required this.studentResultData,
       required this.studentName,
-      required this.studentId})
+      required this.studentId,})
       : super(key: key);
 
   static Route route(RouteSettings routeSettings) {
@@ -29,13 +29,13 @@ class AddResultScreen extends StatefulWidget {
     return CupertinoPageRoute(
         builder: (_) => BlocProvider(
               create: (context) => SubjectMarksByStudentIdCubit(
-                  studentRepository: StudentRepository()),
+                  studentRepository: StudentRepository(),),
               child: AddResultScreen(
                 studentResultData: studentData['studentResultData'],
                 studentName: studentData['studentName'],
                 studentId: studentData['studentId'],
               ),
-            ));
+            ),);
   }
 
   @override
@@ -76,7 +76,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
     return TextStyle(
         color: Theme.of(context).colorScheme.onBackground,
         fontWeight: FontWeight.w600,
-        fontSize: 12.0);
+        fontSize: 12.0,);
   }
 
   Widget _buildAppbar() {
@@ -91,8 +91,20 @@ class _AddResultScreenState extends State<AddResultScreen> {
 
   Widget _buildResultTitleDetails() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       height: 50,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.075),
+                offset: const Offset(2.5, 2.5),
+                blurRadius: 5,
+                spreadRadius: 1,)
+          ],
+          color: Theme.of(context).scaffoldBackgroundColor,),
+      width: MediaQuery.of(context).size.width,
       child: LayoutBuilder(builder: (context, boxConstraints) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,19 +146,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
             ),
           ],
         );
-      }),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.075),
-                offset: Offset(2.5, 2.5),
-                blurRadius: 5,
-                spreadRadius: 1)
-          ],
-          color: Theme.of(context).scaffoldBackgroundColor),
-      width: MediaQuery.of(context).size.width,
+      },),
     );
   }
 
@@ -161,7 +161,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
               obtainedMarksTextEditingController[i],
           totalMarks: data.totalMarks!,
           isReadOnly:
-              widget.studentResultData.result!.resultId == 0 ? false : true));
+              widget.studentResultData.result!.resultId == 0 ? false : true,),);
     }
     return Column(
       children: children,
@@ -176,16 +176,16 @@ class _AddResultScreenState extends State<AddResultScreen> {
           UiUtils.showBottomToastOverlay(
               context: context,
               errorMessage: UiUtils.getTranslatedLabel(
-                  context, marksAddedSuccessfullyKey),
-              backgroundColor: Theme.of(context).colorScheme.onPrimary);
+                  context, marksAddedSuccessfullyKey,),
+              backgroundColor: Theme.of(context).colorScheme.onPrimary,);
 
           Navigator.of(context).pop("true");
         } else if (state is SubjectMarksByStudentIdSubmitFailure) {
           UiUtils.showBottomToastOverlay(
               context: context,
               errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                  context, state.errorMessage),
-              backgroundColor: Theme.of(context).colorScheme.error);
+                  context, state.errorMessage,),
+              backgroundColor: Theme.of(context).colorScheme.error,);
         }
       },
       builder: (context, state) {
@@ -196,7 +196,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
           buttonTitle: UiUtils.getTranslatedLabel(context, submitResultKey),
           showBorder: false,
           child: state is SubjectMarksByStudentIdSubmitInProgress
-              ? CustomCircularProgressIndicator(
+              ? const CustomCircularProgressIndicator(
                   strokeWidth: 2,
                   widthAndHeight: 20,
                 )
@@ -215,12 +215,12 @@ class _AddResultScreenState extends State<AddResultScreen> {
               if (inputMarks != '') {
                 if (double.parse(inputMarks) >
                     double.parse(widget
-                        .studentResultData.marksData![index].totalMarks!)) {
+                        .studentResultData.marksData![index].totalMarks!,)) {
                   UiUtils.showBottomToastOverlay(
                       context: context,
                       errorMessage: UiUtils.getTranslatedLabel(
-                          context, marksMoreThanTotalMarksKey),
-                      backgroundColor: Theme.of(context).colorScheme.error);
+                          context, marksMoreThanTotalMarksKey,),
+                      backgroundColor: Theme.of(context).colorScheme.error,);
 
                   hasError = true;
                   break;
@@ -239,7 +239,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
                   context: context,
                   backgroundColor: Theme.of(context).colorScheme.error,
                   errorMessage: UiUtils.getTranslatedLabel(
-                      context, pleaseEnterSomeDataKey));
+                      context, pleaseEnterSomeDataKey,),);
 
               return;
             }
@@ -251,7 +251,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
                 .submitSubjectMarksByStudentId(
                     examId: widget.studentResultData.examId!,
                     studentId: widget.studentId,
-                    bodyParameter: studentsMarksList);
+                    bodyParameter: studentsMarksList,);
           },
         );
       },
@@ -262,11 +262,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
     ResultData studentResultData = widget.studentResultData.result!;
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      child: Text(
-          "${UiUtils.getTranslatedLabel(context, obtainedMarksKey)}  :  ${studentResultData.obtainedMarks}/${studentResultData.totalMarks}",
-          style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary, fontSize: 15)),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
       height: 60,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -274,19 +270,22 @@ class _AddResultScreenState extends State<AddResultScreen> {
             BoxShadow(
                 color:
                     Theme.of(context).colorScheme.secondary.withOpacity(0.075),
-                offset: Offset(2.5, 2.5),
-                blurRadius: 5,
-                spreadRadius: 0)
+                offset: const Offset(2.5, 2.5),
+                blurRadius: 5,)
           ],
-          color: Theme.of(context).scaffoldBackgroundColor),
+          color: Theme.of(context).scaffoldBackgroundColor,),
       width: MediaQuery.of(context).size.width * (0.85),
+      child: Text(
+          "${UiUtils.getTranslatedLabel(context, obtainedMarksKey)}  :  ${studentResultData.obtainedMarks}/${studentResultData.totalMarks}",
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary, fontSize: 15,),),
     );
   }
 
   Widget _buildPercentageAndGradeTitleAndValueContainer(
       {required BuildContext context,
       required String title,
-      required String value}) {
+      required String value,}) {
     return Column(
       children: [
         Text(title,
@@ -296,9 +295,9 @@ class _AddResultScreenState extends State<AddResultScreen> {
                     .onBackground
                     .withOpacity(0.75),
                 fontWeight: FontWeight.w400,
-                fontSize: 13.0),
-            textAlign: TextAlign.left),
-        SizedBox(
+                fontSize: 13.0,),
+            textAlign: TextAlign.left,),
+        const SizedBox(
           height: 5.0,
         ),
         Text(
@@ -306,7 +305,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
           style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
               fontWeight: FontWeight.w500,
-              fontSize: 15.0),
+              fontSize: 15.0,),
         )
       ],
     );
@@ -315,24 +314,24 @@ class _AddResultScreenState extends State<AddResultScreen> {
   Widget _buildPercentageAndGradeContainer(BuildContext context) {
     ResultData studentResultData = widget.studentResultData.result!;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).colorScheme.background,),
+      width: MediaQuery.of(context).size.width * (0.85),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildPercentageAndGradeTitleAndValueContainer(
               context: context,
               title: UiUtils.getTranslatedLabel(context, gradeKey),
-              value: studentResultData.grade!),
+              value: studentResultData.grade!,),
           _buildPercentageAndGradeTitleAndValueContainer(
               context: context,
               title: UiUtils.getTranslatedLabel(context, percentageKey),
-              value: studentResultData.percentage!.toString()),
+              value: studentResultData.percentage!.toString(),),
         ],
       ),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).colorScheme.background),
-      width: MediaQuery.of(context).size.width * (0.85),
     );
   }
 
@@ -342,12 +341,13 @@ class _AddResultScreenState extends State<AddResultScreen> {
       body: Stack(
         children: [
           Align(
+            alignment: Alignment.topCenter,
             child: SingleChildScrollView(
               padding: EdgeInsets.only(
                 top: UiUtils.getScrollViewTopPadding(
                     context: context,
                     appBarHeightPercentage:
-                        UiUtils.appBarSmallerHeightPercentage),
+                        UiUtils.appBarSmallerHeightPercentage,),
                 left: MediaQuery.of(context).size.width * (0.075),
                 right: MediaQuery.of(context).size.width * (0.075),
               ),
@@ -367,11 +367,11 @@ class _AddResultScreenState extends State<AddResultScreen> {
                     Column(
                       children: [
                         _buildObtainedMarksContainer(context),
-                        SizedBox(
+                        const SizedBox(
                           height: 35,
                         ),
                         _buildPercentageAndGradeContainer(context),
-                        SizedBox(
+                        const SizedBox(
                           height: 35,
                         ),
                       ],
@@ -379,7 +379,6 @@ class _AddResultScreenState extends State<AddResultScreen> {
                 ],
               ),
             ),
-            alignment: Alignment.topCenter,
           ),
           //
           //If result is not declared and teacher is class teacher
@@ -394,7 +393,7 @@ class _AddResultScreenState extends State<AddResultScreen> {
                     bottom: MediaQuery.of(context).size.height * 0.02,
                   ),
                   child: _buildSubmitButton(),
-                )),
+                ),),
           _buildAppbar(),
         ],
       ),

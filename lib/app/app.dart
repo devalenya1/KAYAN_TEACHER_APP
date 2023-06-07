@@ -31,17 +31,20 @@ Future<void> initializeApp() async {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
-      statusBarBrightness: Brightness.dark));
+      statusBarBrightness: Brightness.dark,
+    ),
+  );
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp();
   await Hive.initFlutter();
   await Hive.openBox(authBoxKey);
   await Hive.openBox(settingsBoxKey);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class GlobalScrollBehavior extends ScrollBehavior {
@@ -58,27 +61,36 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //preloading some of the imaegs
     precacheImage(
-        AssetImage(UiUtils.getImagePath("upper_pattern.png")), context);
+      AssetImage(UiUtils.getImagePath("upper_pattern.png")),
+      context,
+    );
 
     precacheImage(
-        AssetImage(UiUtils.getImagePath("lower_pattern.png")), context);
+      AssetImage(UiUtils.getImagePath("lower_pattern.png")),
+      context,
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<AppConfigurationCubit>(
-            create: (_) => AppConfigurationCubit(SystemRepository())),
+          create: (_) => AppConfigurationCubit(SystemRepository()),
+        ),
         BlocProvider<AppLocalizationCubit>(
-            create: (_) => AppLocalizationCubit(SettingsRepository())),
+          create: (_) => AppLocalizationCubit(SettingsRepository()),
+        ),
         BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
         BlocProvider<MyClassesCubit>(
-            create: (_) => MyClassesCubit(TeacherRepository())),
+          create: (_) => MyClassesCubit(TeacherRepository()),
+        ),
         BlocProvider<InternetConnectivityCubit>(
-            create: (_) => InternetConnectivityCubit()),
+          create: (_) => InternetConnectivityCubit(),
+        ),
       ],
-      child: Builder(builder: (context) {
-        final currentLanguage =
-            context.watch<AppLocalizationCubit>().state.language;
-        return MaterialApp(
-          theme: Theme.of(context).copyWith(
+      child: Builder(
+        builder: (context) {
+          final currentLanguage =
+              context.watch<AppLocalizationCubit>().state.language;
+          return MaterialApp(
+            theme: Theme.of(context).copyWith(
               textTheme:
                   GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
               scaffoldBackgroundColor: pageBackgroundColor,
@@ -90,26 +102,30 @@ class MyApp extends StatelessWidget {
                     error: errorColor,
                     onSecondary: onSecondaryColor,
                     onBackground: onBackgroundColor,
-                  )),
-          builder: (context, widget) {
-            return ScrollConfiguration(
-                behavior: GlobalScrollBehavior(), child: widget!);
-          },
-          locale: currentLanguage,
-          localizationsDelegates: [
-            AppLocalization.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: appLanguages.map((language) {
-            return UiUtils.getLocaleFromLanguageCode(language.languageCode);
-          }).toList(),
-          debugShowCheckedModeBanner: false,
-          initialRoute: Routes.splash,
-          onGenerateRoute: Routes.onGenerateRouted,
-        );
-      }),
+                  ),
+            ),
+            builder: (context, widget) {
+              return ScrollConfiguration(
+                behavior: GlobalScrollBehavior(),
+                child: widget!,
+              );
+            },
+            locale: currentLanguage,
+            localizationsDelegates: const [
+              AppLocalization.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: appLanguages.map((language) {
+              return UiUtils.getLocaleFromLanguageCode(language.languageCode);
+            }).toList(),
+            debugShowCheckedModeBanner: false,
+            initialRoute: Routes.splash,
+            onGenerateRoute: Routes.onGenerateRouted,
+          );
+        },
+      ),
     );
   }
 }

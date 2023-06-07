@@ -25,7 +25,7 @@ class TimeTableCubit extends Cubit<TimeTableState> {
 
   TimeTableCubit(this._teacherRepository) : super(TimeTableInitial());
 
-  void fetchTimeTable() async {
+  Future<void> fetchTimeTable() async {
     emit(TimeTableFetchInProgress());
     try {
       emit(TimeTableFetchSuccess(await _teacherRepository.fetchTimeTable()));

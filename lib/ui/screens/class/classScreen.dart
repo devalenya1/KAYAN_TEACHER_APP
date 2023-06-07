@@ -44,7 +44,7 @@ class ClassScreen extends StatefulWidget {
                 classSection: arguments['classSection'],
                 isClassTeacher: arguments['isClassTeacher'],
               ),
-            ));
+            ),);
   }
 }
 
@@ -69,9 +69,9 @@ class _ClassScreenState extends State<ClassScreen> {
               child: LayoutBuilder(builder: (context, boxConstraints) {
                 return Stack(
                   children: [
-                    CustomBackButton(),
+                    const CustomBackButton(),
                     _selectedTabTitle == subjectsKey
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Align(
                             alignment: AlignmentDirectional.topEnd,
                             child: BlocBuilder<StudentsByClassSectionCubit, StudentsByClassSectionState>(
@@ -84,13 +84,13 @@ class _ClassScreenState extends State<ClassScreen> {
                                     },
                                   );
                                 }
-                                return SizedBox();
+                                return const SizedBox();
                               },
                             ),
                           ),
                     AppBarTitleContainer(
                         boxConstraints: boxConstraints,
-                        title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}"),
+                        title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}",),
                     AnimatedAlign(
                       curve: UiUtils.tabBackgroundContainerAnimationCurve,
                       duration: UiUtils.tabBackgroundContainerAnimationDuration,
@@ -106,7 +106,7 @@ class _ClassScreenState extends State<ClassScreen> {
                             _selectedTabTitle = studentsKey;
                           });
                         },
-                        titleKey: studentsKey),
+                        titleKey: studentsKey,),
                     CustomTabBarContainer(
                         boxConstraints: boxConstraints,
                         alignment: AlignmentDirectional.centerEnd,
@@ -116,17 +116,17 @@ class _ClassScreenState extends State<ClassScreen> {
                             _selectedTabTitle = subjectsKey;
                           });
                         },
-                        titleKey: subjectsKey),
+                        titleKey: subjectsKey,),
                   ],
                 );
-              }),
+              },),
             ),
           )
         : Align(
             alignment: Alignment.topCenter,
             child: CustomAppBar(
                 subTitle: UiUtils.getTranslatedLabel(context, subjectsKey),
-                title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}"),
+                title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}",),
           );
   }
 
@@ -138,6 +138,10 @@ class _ClassScreenState extends State<ClassScreen> {
               builder: (context, state) {
                 if (state is StudentsByClassSectionFetchSuccess) {
                   return FloatingActionButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(Routes.attendance, arguments: state.students);
+                    },
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: SvgPicture.asset(
@@ -146,17 +150,13 @@ class _ClassScreenState extends State<ClassScreen> {
                         // color: Theme.of(context).scaffoldBackgroundColor,
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.attendance, arguments: state.students);
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.primary,
                   );
                 }
 
-                return SizedBox();
+                return const SizedBox();
               },
             )
-          : SizedBox(),
+          : const SizedBox(),
       body: Stack(
         children: [
           Align(
@@ -165,7 +165,7 @@ class _ClassScreenState extends State<ClassScreen> {
               padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width * (0.075),
                   right: MediaQuery.of(context).size.width * (0.075),
-                  top: UiUtils.getScrollViewTopPadding(context: context, appBarHeightPercentage: widget.isClassTeacher ? UiUtils.appBarBiggerHeightPercentage : UiUtils.appBarSmallerHeightPercentage)),
+                  top: UiUtils.getScrollViewTopPadding(context: context, appBarHeightPercentage: widget.isClassTeacher ? UiUtils.appBarBiggerHeightPercentage : UiUtils.appBarSmallerHeightPercentage),),
               child: widget.isClassTeacher
                   ? _selectedTabTitle == subjectsKey
                       ? SubjectsContainer(

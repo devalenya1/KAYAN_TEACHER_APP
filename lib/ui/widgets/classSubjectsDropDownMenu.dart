@@ -15,7 +15,7 @@ class ClassSubjectsDropDownMenu extends StatelessWidget {
       {Key? key,
       required this.changeSelectedItem,
       required this.currentSelectedItem,
-      required this.width})
+      required this.width,})
       : super(key: key);
 
   @override
@@ -35,9 +35,9 @@ class ClassSubjectsDropDownMenu extends StatelessWidget {
                   changeSelectedItem(result!);
                 },
                 menu: state.subjects.map((e) => e.name).toList(),
-                currentSelectedItem: currentSelectedItem)
+                currentSelectedItem: currentSelectedItem,)
             : DefaultDropDownLabelContainer(
-                titleLabelKey: fetchingSubjectsKey, width: width);
+                titleLabelKey: fetchingSubjectsKey, width: width,);
       },
     );
   }

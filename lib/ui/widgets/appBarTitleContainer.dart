@@ -6,14 +6,14 @@ class AppBarTitleContainer extends StatelessWidget {
   final BoxConstraints boxConstraints;
   final String title;
   const AppBarTitleContainer(
-      {Key? key, required this.boxConstraints, required this.title})
+      {Key? key, required this.boxConstraints, required this.title,})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
-      child: Container(
+      child: SizedBox(
         width: boxConstraints.maxWidth * (0.6),
         child: Text(
           title,
@@ -22,7 +22,7 @@ class AppBarTitleContainer extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Theme.of(context).scaffoldBackgroundColor,
-              fontSize: UiUtils.screenTitleFontSize),
+              fontSize: UiUtils.screenTitleFontSize,),
         ),
       ),
     );

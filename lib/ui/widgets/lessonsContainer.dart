@@ -24,13 +24,15 @@ class LessonsContainer extends StatelessWidget {
   final Subject subject;
 
   const LessonsContainer(
-      {Key? key, required this.classSectionDetails, required this.subject})
+      {Key? key, required this.classSectionDetails, required this.subject,})
       : super(key: key);
 
   Widget _buildLessonDetailsShimmerContainer(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15.0),
+        width: MediaQuery.of(context).size.width * (0.85),
         child: LayoutBuilder(builder: (context, boxConstraints) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,48 +40,46 @@ class LessonsContainer extends StatelessWidget {
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.7)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.7),),
+              ),),
+              const SizedBox(
                 height: 5,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.5)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.5),),
+              ),),
+              const SizedBox(
                 height: 15,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.7)),
-              )),
-              SizedBox(
+                    end: boxConstraints.maxWidth * (0.7),),
+              ),),
+              const SizedBox(
                 height: 5,
               ),
               ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
                 margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.5)),
-              )),
+                    end: boxConstraints.maxWidth * (0.5),),
+              ),),
             ],
           );
-        }),
-        padding: EdgeInsets.symmetric(vertical: 15.0),
-        width: MediaQuery.of(context).size.width * (0.85),
+        },),
       ),
     );
   }
 
   Widget _buildLessonDetailsContainer(
-      {required Lesson lesson, required BuildContext context}) {
+      {required Lesson lesson, required BuildContext context,}) {
     return BlocProvider<LessonDeleteCubit>(
       create: (context) => LessonDeleteCubit(LessonRepository()),
       child: Builder(builder: (context) {
         return BlocConsumer<LessonDeleteCubit, LessonDeleteState>(
-          listener: ((context, state) {
+          listener: (context, state) {
             if (state is LessonDeleteSuccess) {
               context.read<LessonsCubit>().deleteLesson(lesson.id);
             } else if (state is LessonDeleteFailure) {
@@ -87,15 +87,21 @@ class LessonsContainer extends StatelessWidget {
                   context: context,
                   errorMessage:
                       "${UiUtils.getTranslatedLabel(context, unableToDeleteLessonKey)} ${lesson.name}",
-                  backgroundColor: Theme.of(context).colorScheme.error);
+                  backgroundColor: Theme.of(context).colorScheme.error,);
             }
-          }),
+          },
           builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Opacity(
                 opacity: state is LessonDeleteInProgress ? 0.5 : 1.0,
                 child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: BorderRadius.circular(10.0),),
+                  width: MediaQuery.of(context).size.width * (0.85),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -103,15 +109,15 @@ class LessonsContainer extends StatelessWidget {
                         children: [
                           Text(
                               UiUtils.getTranslatedLabel(
-                                  context, chapterNameKey),
+                                  context, chapterNameKey,),
                               style: TextStyle(
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onBackground,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 12.0),
-                              textAlign: TextAlign.left),
-                          Spacer(),
+                                  fontSize: 12.0,),
+                              textAlign: TextAlign.left,),
+                          const Spacer(),
                           EditButton(onTap: () {
                             if (state is LessonDeleteInProgress) {
                               return;
@@ -122,15 +128,15 @@ class LessonsContainer extends StatelessWidget {
                                   "lesson": lesson,
                                   "subject": subject,
                                   "classSectionDetails": classSectionDetails
-                                }).then((value) {
+                                },).then((value) {
                               if (value != null && value) {
                                 context.read<LessonsCubit>().fetchLessons(
                                     classSectionId: classSectionDetails.id,
-                                    subjectId: subject.id);
+                                    subjectId: subject.id,);
                               }
                             });
-                          }),
-                          SizedBox(
+                          },),
+                          const SizedBox(
                             width: 10,
                           ),
                           DeleteButton(onTap: () {
@@ -139,7 +145,7 @@ class LessonsContainer extends StatelessWidget {
                             }
                             showDialog<bool>(
                                     context: context,
-                                    builder: (_) => ConfirmDeleteDialog())
+                                    builder: (_) => const ConfirmDeleteDialog(),)
                                 .then((value) {
                               if (value != null && value) {
                                 context
@@ -147,38 +153,38 @@ class LessonsContainer extends StatelessWidget {
                                     .deleteLesson(lesson.id);
                               }
                             });
-                          })
+                          },)
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 2.5,
                       ),
                       Text(lesson.name,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14.0),
-                          textAlign: TextAlign.left),
-                      SizedBox(
+                              fontSize: 14.0,),
+                          textAlign: TextAlign.left,),
+                      const SizedBox(
                         height: 15,
                       ),
                       Text(
                           UiUtils.getTranslatedLabel(
-                              context, chapterDescriptionKey),
+                              context, chapterDescriptionKey,),
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.onBackground,
                               fontWeight: FontWeight.w400,
-                              fontSize: 12.0),
-                          textAlign: TextAlign.left),
-                      SizedBox(
+                              fontSize: 12.0,),
+                          textAlign: TextAlign.left,),
+                      const SizedBox(
                         height: 2.5,
                       ),
                       Text(lesson.description,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
                               fontWeight: FontWeight.w600,
-                              fontSize: 14.0),
-                          textAlign: TextAlign.left),
+                              fontSize: 14.0,),
+                          textAlign: TextAlign.left,),
                       lesson.studyMaterials.isNotEmpty
                           ? Padding(
                               padding: const EdgeInsets.only(top: 5.0),
@@ -188,17 +194,17 @@ class LessonsContainer extends StatelessWidget {
                                       child: AttachmentBottomsheetContainer(
                                           fromAnnouncementsContainer: false,
                                           studyMaterials:
-                                              lesson.studyMaterials),
-                                      context: context);
+                                              lesson.studyMaterials,),
+                                      context: context,);
                                 },
                                 child: Text(
                                   "${lesson.studyMaterials.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                                  style: TextStyle(
-                                      color: assignmentViewButtonColor),
+                                  style: const TextStyle(
+                                      color: assignmentViewButtonColor,),
                                 ),
                               ),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       lesson.topicsCount != 0
                           ? Padding(
                               padding: const EdgeInsets.only(top: 2.50),
@@ -211,30 +217,24 @@ class LessonsContainer extends StatelessWidget {
                                             classSectionDetails,
                                         "subject": subject,
                                         "lesson": lesson
-                                      });
+                                      },);
                                 },
                                 child: Text(
                                   "${lesson.topicsCount} ${UiUtils.getTranslatedLabel(context, topicKey)}",
-                                  style: TextStyle(
-                                      color: assignmentViewButtonColor),
+                                  style: const TextStyle(
+                                      color: assignmentViewButtonColor,),
                                 ),
                               ),
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                     ],
                   ),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      borderRadius: BorderRadius.circular(10.0)),
-                  width: MediaQuery.of(context).size.width * (0.85),
                 ),
               ),
             );
           },
         );
-      }),
+      },),
     );
   }
 
@@ -244,11 +244,11 @@ class LessonsContainer extends StatelessWidget {
       builder: (context, state) {
         if (state is LessonsFetchSuccess) {
           return state.lessons.isEmpty
-              ? NoDataContainer(titleKey: noLessonsKey)
+              ? const NoDataContainer(titleKey: noLessonsKey)
               : Column(
                   children: state.lessons
                       .map((lesson) => _buildLessonDetailsContainer(
-                          lesson: lesson, context: context))
+                          lesson: lesson, context: context,),)
                       .toList(),
                 );
         }
@@ -259,14 +259,14 @@ class LessonsContainer extends StatelessWidget {
               onTapRetry: () {
                 context.read<LessonsCubit>().fetchLessons(
                     classSectionId: classSectionDetails.id,
-                    subjectId: subject.id);
+                    subjectId: subject.id,);
               },
             ),
           );
         }
         return Column(
           children: List.generate(
-                  UiUtils.defaultShimmerLoadingContentCount, (index) => index)
+                  UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
               .map((e) => _buildLessonDetailsShimmerContainer(context))
               .toList(),
         );

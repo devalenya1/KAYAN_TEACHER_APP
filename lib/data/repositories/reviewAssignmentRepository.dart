@@ -13,12 +13,12 @@ class ReviewAssignmentRepository {
       final result = await Api.get(
           url: Api.getReviewAssignment,
           useAuthToken: true,
-          queryParameters: body);
+          queryParameters: body,);
 
       print("fetchdata$result");
       return (result['data'] as List)
           .map((reviewAssignment) =>
-              ReviewAssignmentssubmition.fromJson(Map.from(reviewAssignment)))
+              ReviewAssignmentssubmition.fromJson(Map.from(reviewAssignment)),)
           .toList();
     } catch (e) {
       throw ApiException(e.toString());
@@ -45,7 +45,7 @@ class ReviewAssignmentRepository {
         body.remove("feedback");
       }
       await Api.post(
-          body: body, url: Api.updateReviewAssignmet, useAuthToken: true);
+          body: body, url: Api.updateReviewAssignmet, useAuthToken: true,);
     } catch (e) {
       throw ApiException(e.toString());
     }

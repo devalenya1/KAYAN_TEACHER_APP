@@ -27,13 +27,13 @@ class MyClassesCubit extends Cubit<MyClassesState> {
 
   MyClassesCubit(this._teacherRepository) : super(MyClassesInitial());
 
-  void fetchMyClasses() async {
+  Future<void> fetchMyClasses() async {
     emit(MyClassesFetchInProgress());
     try {
       final result = await _teacherRepository.myClasses();
 
       emit(MyClassesFetchSuccess(
-          classes: result['classes'], primaryClass: result['primaryClass']));
+          classes: result['classes'], primaryClass: result['primaryClass'],),);
     } catch (e) {
       emit(MyClassesFetchFailure(e.toString()));
     }
@@ -71,13 +71,21 @@ class MyClassesCubit extends Cubit<MyClassesState> {
   }
 
   ClassSectionDetails getClassSectionDetails(
-      {required String classSectionName}) {
+      {required String classSectionName,}) {
     final classAndSection = classSectionName.split("-");
-
+    try {
+      print(getAllClasses()
+          .where((element) =>
+              element.classDetails.name == classAndSection.first.trim() &&
+              element.sectionDetails.name == classAndSection.last.trim(),)
+          .first,);
+    } catch (e) {
+      print('error: $e');
+    }
     return getAllClasses()
         .where((element) =>
             element.classDetails.name == classAndSection.first.trim() &&
-            element.sectionDetails.name == classAndSection.last.trim())
+            element.sectionDetails.name == classAndSection.last.trim(),)
         .first;
   }
 

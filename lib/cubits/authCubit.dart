@@ -45,7 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(Authenticated(
       teacher: teacher,
       jwtToken: jwtToken,
-    ));
+    ),);
   }
 
   Teacher getTeacherDetails() {

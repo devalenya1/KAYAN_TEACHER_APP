@@ -7,14 +7,14 @@ class StudyMaterialRepository {
     try {
       await Api.post(body: {
         "file_id": fileId,
-      }, url: Api.deleteStudyMaterial, useAuthToken: true);
+      }, url: Api.deleteStudyMaterial, useAuthToken: true,);
     } catch (e) {
       throw ApiException(e.toString());
     }
   }
 
   Future<StudyMaterial> updateStudyMaterial(
-      {required int fileId, required Map<String, dynamic> fileDetails}) async {
+      {required int fileId, required Map<String, dynamic> fileDetails,}) async {
     try {
       Map<String, dynamic> body = {
         "file_id": fileId,
@@ -22,7 +22,7 @@ class StudyMaterialRepository {
       body.addAll(fileDetails);
 
       final result = await Api.post(
-          body: body, url: Api.updateStudyMaterial, useAuthToken: true);
+          body: body, url: Api.updateStudyMaterial, useAuthToken: true,);
 
       return StudyMaterial.fromJson(Map.from(result['data']));
     } catch (e) {
@@ -34,13 +34,13 @@ class StudyMaterialRepository {
       {required String url,
       required String savePath,
       required CancelToken cancelToken,
-      required Function updateDownloadedPercentage}) async {
+      required Function updateDownloadedPercentage,}) async {
     try {
       await Api.download(
           cancelToken: cancelToken,
           url: url,
           savePath: savePath,
-          updateDownloadedPercentage: updateDownloadedPercentage);
+          updateDownloadedPercentage: updateDownloadedPercentage,);
     } catch (e) {
       throw ApiException(e.toString());
     }

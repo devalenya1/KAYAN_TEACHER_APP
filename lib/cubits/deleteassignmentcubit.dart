@@ -20,7 +20,7 @@ class DeleteAssignmentCubit extends Cubit<DeleteAssignmentState> {
   DeleteAssignmentCubit(this._assignmentRepository)
       : super(DeleteAssignmentInitial());
 
-  void deleteAssignment({
+  Future<void> deleteAssignment({
     required int assignmentId,
   }) async {
     try {

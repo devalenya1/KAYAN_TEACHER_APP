@@ -14,7 +14,7 @@ class PickedStudyMaterial {
       required this.pickedStudyMaterialTypeId,
       this.studyMaterialFile,
       this.videoThumbnailFile,
-      this.youTubeLink});
+      this.youTubeLink,});
 
   Future<Map<String, dynamic>> toJson() async {
     Map<String, dynamic> json = {};

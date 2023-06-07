@@ -22,8 +22,8 @@ class HolidaysScreen extends StatefulWidget {
     return CupertinoPageRoute(
         builder: (_) => BlocProvider<HolidaysCubit>(
               create: (context) => HolidaysCubit(SystemRepository()),
-              child: HolidaysScreen(),
-            ));
+              child: const HolidaysScreen(),
+            ),);
   }
 
   @override
@@ -71,9 +71,12 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
     return Column(
       children: holidays
           .map((holiday) => Container(
-                margin: EdgeInsets.only(bottom: 15),
-                padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 7.5),
+                margin: const EdgeInsets.only(bottom: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 7.5),
                 width: MediaQuery.of(context).size.width * (0.85),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.circular(10.0),),
                 child: LayoutBuilder(builder: (context, boxConstraints) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,10 +91,10 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                                   color:
                                       Theme.of(context).colorScheme.secondary,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 14.0),
+                                  fontSize: 14.0,),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           SizedBox(
                             width: boxConstraints.maxWidth * (0.275),
                             child: Text(
@@ -100,7 +103,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onBackground,
-                                  fontSize: 12.0),
+                                  fontSize: 12.0,),
                             ),
                           ),
                         ],
@@ -109,43 +112,38 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                         height: holiday.description.isEmpty ? 0 : 2.5,
                       ),
                       holiday.description.isEmpty
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Text(
                               holiday.description,
                               style: TextStyle(
                                   color: Theme.of(context)
                                       .colorScheme
                                       .onBackground,
-                                  fontSize: 11.5),
+                                  fontSize: 11.5,),
                             )
                     ],
                   );
-                }),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.circular(10.0)),
-              ))
+                },),
+              ),)
           .toList(),
     );
   }
 
   Widget _buildCalendarContainer() {
     return Container(
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
                 color:
                     Theme.of(context).colorScheme.secondary.withOpacity(0.075),
-                offset: Offset(5.0, 5),
-                blurRadius: 10,
-                spreadRadius: 0)
+                offset: const Offset(5.0, 5),
+                blurRadius: 10,)
           ],
-          borderRadius: BorderRadius.circular(15.0)),
-      margin: EdgeInsets.only(top: 20),
+          borderRadius: BorderRadius.circular(15.0),),
+      margin: const EdgeInsets.only(top: 20),
       child: TableCalendar(
-        calendarFormat: CalendarFormat.month,
         headerVisible: false,
         daysOfWeekHeight: 40,
         onPageChanged: (DateTime dateTime) {
@@ -163,7 +161,7 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
         holidayPredicate: (dateTime) {
           return holidays.indexWhere((element) =>
                   UiUtils.formatDate(dateTime) ==
-                  UiUtils.formatDate(element.date)) !=
+                  UiUtils.formatDate(element.date),) !=
               -1;
         },
 
@@ -174,17 +172,17 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
               TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
           holidayDecoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Theme.of(context).colorScheme.primary),
+              color: Theme.of(context).colorScheme.primary,),
         ),
         daysOfWeekStyle: DaysOfWeekStyle(
             weekendStyle: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold),
+                fontWeight: FontWeight.bold,),
             weekdayStyle: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold)),
+                fontWeight: FontWeight.bold,),),
         headerStyle:
-            HeaderStyle(titleCentered: true, formatButtonVisible: false),
+            const HeaderStyle(titleCentered: true, formatButtonVisible: false),
         firstDay: firstDay, //start education year
         lastDay: lastDay, //end education year
         focusedDay: focusedDay,
@@ -203,37 +201,37 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                 UiUtils.screenContentHorizontalPaddingPercentage,
             top: UiUtils.getScrollViewTopPadding(
                 context: context,
-                appBarHeightPercentage: UiUtils.appBarMediumtHeightPercentage)),
+                appBarHeightPercentage: UiUtils.appBarMediumtHeightPercentage,),),
         child: BlocConsumer<HolidaysCubit, HolidaysState>(
-          listener: ((context, state) {
+          listener: (context, state) {
             if (state is HolidaysFetchSuccess) {
-              if (UiUtils.isToadyIsInAcademicYear(
+              if (UiUtils.isToadyIsInSessionYear(
                   context
                       .read<AppConfigurationCubit>()
                       .getAppConfiguration()
-                      .academicYear
+                      .sessionYear
                       .startDate,
                   context
                       .read<AppConfigurationCubit>()
                       .getAppConfiguration()
-                      .academicYear
-                      .endDate)) {
+                      .sessionYear
+                      .endDate,)) {
                 firstDay = context
                     .read<AppConfigurationCubit>()
                     .getAppConfiguration()
-                    .academicYear
+                    .sessionYear
                     .startDate;
                 lastDay = context
                     .read<AppConfigurationCubit>()
                     .getAppConfiguration()
-                    .academicYear
+                    .sessionYear
                     .endDate;
 
                 setState(() {});
                 updateMonthViceHolidays();
               }
             }
-          }),
+          },
           builder: (context, state) {
             if (state is HolidaysFetchSuccess) {
               return Column(
@@ -259,13 +257,13 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
             }
             return Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 ShimmerLoadingContainer(
                     child: CustomShimmerContainer(
                   height: MediaQuery.of(context).size.height * (0.425),
-                )),
+                ),),
               ],
             );
           },
@@ -280,29 +278,42 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          CustomBackButton(),
+          const CustomBackButton(),
           Align(
             alignment: Alignment.topCenter,
             child: Text(
               UiUtils.getTranslatedLabel(context, holidayKey),
               style: TextStyle(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  fontSize: UiUtils.screenTitleFontSize),
+                  fontSize: UiUtils.screenTitleFontSize,),
             ),
           ),
           PositionedDirectional(
               bottom: -20,
               start: MediaQuery.of(context).size.width * (0.075),
               child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withOpacity(0.075),
+                          offset: const Offset(2.5, 2.5),
+                          blurRadius: 5,)
+                    ],
+                    color: Theme.of(context).scaffoldBackgroundColor,),
+                width: MediaQuery.of(context).size.width * (0.85),
                 child: Stack(
                   children: [
                     Align(
-                      alignment: Alignment.center,
                       child: Text(
                         "${UiUtils.getMonthName(focusedDay.month)} ${focusedDay.year}",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w600,),
                       ),
                     ),
                     Align(
@@ -315,11 +326,11 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                               }
 
                               calendarPageController?.previousPage(
-                                  duration: Duration(milliseconds: 400),
-                                  curve: Curves.easeInOut);
+                                  duration: const Duration(milliseconds: 400),
+                                  curve: Curves.easeInOut,);
                             },
                             isDisable: false,
-                            isNextButton: false)),
+                            isNextButton: false,),),
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: ChangeCalendarMonthButton(
@@ -330,30 +341,15 @@ class _HolidaysScreenState extends State<HolidaysScreen> {
                             }
 
                             calendarPageController?.nextPage(
-                                duration: Duration(milliseconds: 400),
-                                curve: Curves.easeInOut);
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,);
                           },
                           isDisable: false,
-                          isNextButton: true),
+                          isNextButton: true,),
                     ),
                   ],
                 ),
-                height: 50,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withOpacity(0.075),
-                          offset: Offset(2.5, 2.5),
-                          blurRadius: 5,
-                          spreadRadius: 0)
-                    ],
-                    color: Theme.of(context).scaffoldBackgroundColor),
-                width: MediaQuery.of(context).size.width * (0.85),
-              )),
+              ),),
         ],
       ),
     );

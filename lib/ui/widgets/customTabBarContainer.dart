@@ -13,7 +13,7 @@ class CustomTabBarContainer extends StatelessWidget {
       required this.alignment,
       required this.isSelected,
       required this.onTap,
-      required this.titleKey})
+      required this.titleKey,})
       : super(key: key);
 
   @override
@@ -28,9 +28,15 @@ class CustomTabBarContainer extends StatelessWidget {
           decoration:
               BoxDecoration(border: Border.all(color: Colors.transparent)),
           alignment: Alignment.center,
+          margin: EdgeInsets.only(
+              left: boxConstraints.maxWidth * (0.1),
+              right: boxConstraints.maxWidth * (0.1),
+              top: boxConstraints.maxHeight * (0.3),),
+          height: boxConstraints.maxHeight * (0.325),
+          width: boxConstraints.maxWidth * (0.375),
           child: AnimatedDefaultTextStyle(
             curve: Curves.easeInOut,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             style: TextStyle(
               fontSize: 15.0,
               fontWeight: FontWeight.w600,
@@ -44,12 +50,6 @@ class CustomTabBarContainer extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          margin: EdgeInsets.only(
-              left: boxConstraints.maxWidth * (0.1),
-              right: boxConstraints.maxWidth * (0.1),
-              top: boxConstraints.maxHeight * (0.3)),
-          height: boxConstraints.maxHeight * (0.325),
-          width: boxConstraints.maxWidth * (0.375),
         ),
       ),
     );
