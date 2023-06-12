@@ -36,13 +36,13 @@ class AddOrEditTopicScreen extends StatefulWidget {
   final Topic? topic;
   final ClassSectionDetails? classSectionDetails;
 
-  AddOrEditTopicScreen(
-      {Key? key,
-      this.lesson,
-      required this.subject,
-      this.topic,
-      this.classSectionDetails,})
-      : super(key: key);
+  const AddOrEditTopicScreen({
+    Key? key,
+    this.lesson,
+    required this.subject,
+    this.topic,
+    this.classSectionDetails,
+  }) : super(key: key);
 
   static Route<bool?> route(RouteSettings routeSettings) {
     final arguments = (routeSettings.arguments ?? Map<String, dynamic>.from({}))
@@ -94,10 +94,12 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
 
   late TextEditingController _topicNameTextEditingController =
       TextEditingController(
-          text: widget.topic != null ? widget.topic!.name : null,);
+    text: widget.topic != null ? widget.topic!.name : null,
+  );
   late TextEditingController _topicDescriptionTextEditingController =
       TextEditingController(
-          text: widget.topic != null ? widget.topic!.description : null,);
+    text: widget.topic != null ? widget.topic!.description : null,
+  );
 
   List<PickedStudyMaterial> _addedStudyMaterials = [];
 
@@ -113,7 +115,8 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
   void initState() {
     if (widget.classSectionDetails == null) {
       context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
-          context.read<MyClassesCubit>().getAllClasses().first.id,);
+            context.read<MyClassesCubit>().getAllClasses().first.id,
+          );
     }
 
     super.initState();
@@ -141,45 +144,51 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
 
   void showErrorMessage(String errorMessageKey) {
     UiUtils.showBottomToastOverlay(
-        context: context,
-        errorMessage: errorMessageKey,
-        backgroundColor: Theme.of(context).colorScheme.error,);
+      context: context,
+      errorMessage: errorMessageKey,
+      backgroundColor: Theme.of(context).colorScheme.error,
+    );
   }
 
   void editTopic() {
     if (_topicNameTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey),);
+        UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey),
+      );
       return;
     }
 
     if (_topicDescriptionTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey),);
+        UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey),
+      );
       return;
     }
 
     context.read<EditTopicCubit>().editTopic(
-        topicDescription: _topicDescriptionTextEditingController.text.trim(),
-        topicName: _topicNameTextEditingController.text.trim(),
-        lessonId: widget.lesson!.id,
-        classSectionId: widget.classSectionDetails!.id,
-        subjectId: widget.subject!.id,
-        topicId: widget.topic!.id,
-        files: _addedStudyMaterials,);
+          topicDescription: _topicDescriptionTextEditingController.text.trim(),
+          topicName: _topicNameTextEditingController.text.trim(),
+          lessonId: widget.lesson!.id,
+          classSectionId: widget.classSectionDetails!.id,
+          subjectId: widget.subject!.id,
+          topicId: widget.topic!.id,
+          files: _addedStudyMaterials,
+        );
   }
 
   void createTopic() {
     //
     if (_topicNameTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey),);
+        UiUtils.getTranslatedLabel(context, pleaseEnterTopicNameKey),
+      );
       return;
     }
 
     if (_topicDescriptionTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey),);
+        UiUtils.getTranslatedLabel(context, pleaseEnterTopicDescriptionKey),
+      );
       return;
     }
     final selectedSubjectId = widget.subject != null
@@ -191,7 +200,8 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
     //
     if (selectedSubjectId == -1) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleasefetchingSubjectsKey),);
+        UiUtils.getTranslatedLabel(context, pleasefetchingSubjectsKey),
+      );
       return;
     }
 
@@ -203,209 +213,252 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
             .id;
     if (lessonId == 0) {
       showErrorMessage(
-          UiUtils.getTranslatedLabel(context, pleaseSelectLessonKey),);
+        UiUtils.getTranslatedLabel(context, pleaseSelectLessonKey),
+      );
       return;
     }
 
     //
     context.read<CreateTopicCubit>().createTopic(
-        topicName: _topicNameTextEditingController.text.trim(),
-        lessonId: lessonId,
-        classSectionId: widget.classSectionDetails != null
-            ? widget.classSectionDetails!.id
-            : context
-                .read<MyClassesCubit>()
-                .getClassSectionDetails(
-                    classSectionName: currentSelectedClassSection,)
-                .id,
-        subjectId: selectedSubjectId,
-        topicDescription: _topicDescriptionTextEditingController.text.trim(),
-        files: _addedStudyMaterials,);
+          topicName: _topicNameTextEditingController.text.trim(),
+          lessonId: lessonId,
+          classSectionId: widget.classSectionDetails != null
+              ? widget.classSectionDetails!.id
+              : context
+                  .read<MyClassesCubit>()
+                  .getClassSectionDetails(
+                    classSectionName: currentSelectedClassSection,
+                  )
+                  .id,
+          subjectId: selectedSubjectId,
+          topicDescription: _topicDescriptionTextEditingController.text.trim(),
+          files: _addedStudyMaterials,
+        );
   }
 
   Widget _buildClassSubjectAndLessonDropDowns() {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Column(
-        children: [
-          widget.classSectionDetails != null
-              ? DefaultDropDownLabelContainer(
-                  titleLabelKey: currentSelectedClassSection,
-                  width: boxConstraints.maxWidth,)
-              : MyClassesDropDownMenu(
-                  currentSelectedItem: currentSelectedClassSection,
-                  width: boxConstraints.maxWidth,
-                  changeSelectedItem: (value) {
-                    currentSelectedClassSection = value;
-                    context.read<LessonsCubit>().updateState(LessonsInitial());
-                    setState(() {});
-                  },),
-          widget.subject != null
-              ? DefaultDropDownLabelContainer(
-                  titleLabelKey: widget.subject!.name,
-                  width: boxConstraints.maxWidth,)
-              : ClassSubjectsDropDownMenu(
-                  changeSelectedItem: (result) {
-                    setState(() {
-                      currentSelectedSubject = result;
-                    });
-                    final subjectId = context
-                        .read<SubjectsOfClassSectionCubit>()
-                        .getSubjectIdByName(currentSelectedSubject);
-                    if (subjectId != -1) {
-                      context.read<LessonsCubit>().fetchLessons(
-                          classSectionId: context
-                              .read<MyClassesCubit>()
-                              .getClassSectionDetails(
-                                  classSectionName: currentSelectedClassSection,)
-                              .id,
-                          subjectId: subjectId,);
-                    }
-                  },
-                  currentSelectedItem: currentSelectedSubject,
-                  width: boxConstraints.maxWidth,),
-          //
-
-          widget.lesson != null
-              ? DefaultDropDownLabelContainer(
-                  titleLabelKey: widget.lesson!.name,
-                  width: boxConstraints.maxWidth,)
-              : BlocConsumer<LessonsCubit, LessonsState>(
-                  builder: (context, state) {
-                  return state is LessonsFetchSuccess
-                      ? state.lessons.isEmpty
-                          ? DefaultDropDownLabelContainer(
-                              titleLabelKey: UiUtils.getTranslatedLabel(
-                                  context, noLessonsKey,),
-                              width: boxConstraints.maxWidth,)
-                          : CustomDropDownMenu(
-                              width: boxConstraints.maxWidth,
-                              onChanged: (value) {
-                                currentSelectedLesson = value!;
-                                setState(() {});
-                              },
-                              menu: state.lessons.map((e) => e.name).toList(),
-                              currentSelectedItem: currentSelectedLesson,)
-                      : DefaultDropDownLabelContainer(
-                          titleLabelKey: fetchingLessonsKey,
-                          width: boxConstraints.maxWidth,);
-                }, listener: (context, state) {
-                  if (state is LessonsFetchSuccess) {
-                    if (state.lessons.isNotEmpty) {
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Column(
+          children: [
+            widget.classSectionDetails != null
+                ? DefaultDropDownLabelContainer(
+                    titleLabelKey: currentSelectedClassSection,
+                    width: boxConstraints.maxWidth,
+                  )
+                : MyClassesDropDownMenu(
+                    currentSelectedItem: currentSelectedClassSection,
+                    width: boxConstraints.maxWidth,
+                    changeSelectedItem: (value) {
+                      currentSelectedClassSection = value;
+                      context
+                          .read<LessonsCubit>()
+                          .updateState(LessonsInitial());
+                      setState(() {});
+                    },
+                  ),
+            widget.subject != null
+                ? DefaultDropDownLabelContainer(
+                    titleLabelKey: widget.subject!.name,
+                    width: boxConstraints.maxWidth,
+                  )
+                : ClassSubjectsDropDownMenu(
+                    changeSelectedItem: (result) {
                       setState(() {
-                        currentSelectedLesson = state.lessons.first.name;
+                        currentSelectedSubject = result;
                       });
-                    }
-                  }
-                },),
-        ],
-      );
-    },);
+                      final subjectId = context
+                          .read<SubjectsOfClassSectionCubit>()
+                          .getSubjectIdByName(currentSelectedSubject);
+                      if (subjectId != -1) {
+                        context.read<LessonsCubit>().fetchLessons(
+                              classSectionId: context
+                                  .read<MyClassesCubit>()
+                                  .getClassSectionDetails(
+                                    classSectionName:
+                                        currentSelectedClassSection,
+                                  )
+                                  .id,
+                              subjectId: subjectId,
+                            );
+                      }
+                    },
+                    currentSelectedItem: currentSelectedSubject,
+                    width: boxConstraints.maxWidth,
+                  ),
+            //
+
+            widget.lesson != null
+                ? DefaultDropDownLabelContainer(
+                    titleLabelKey: widget.lesson!.name,
+                    width: boxConstraints.maxWidth,
+                  )
+                : BlocConsumer<LessonsCubit, LessonsState>(
+                    builder: (context, state) {
+                      return state is LessonsFetchSuccess
+                          ? state.lessons.isEmpty
+                              ? DefaultDropDownLabelContainer(
+                                  titleLabelKey: UiUtils.getTranslatedLabel(
+                                    context,
+                                    noLessonsKey,
+                                  ),
+                                  width: boxConstraints.maxWidth,
+                                )
+                              : CustomDropDownMenu(
+                                  width: boxConstraints.maxWidth,
+                                  onChanged: (value) {
+                                    currentSelectedLesson = value!;
+                                    setState(() {});
+                                  },
+                                  menu:
+                                      state.lessons.map((e) => e.name).toList(),
+                                  currentSelectedItem: currentSelectedLesson,
+                                )
+                          : DefaultDropDownLabelContainer(
+                              titleLabelKey: fetchingLessonsKey,
+                              width: boxConstraints.maxWidth,
+                            );
+                    },
+                    listener: (context, state) {
+                      if (state is LessonsFetchSuccess) {
+                        if (state.lessons.isNotEmpty) {
+                          setState(() {
+                            currentSelectedLesson = state.lessons.first.name;
+                          });
+                        }
+                      }
+                    },
+                  ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildAppbar() {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
-          onPressBackButton: () {
-            if (context.read<CreateTopicCubit>().state
-                is CreateTopicInProgress) {
-              return;
-            }
+        onPressBackButton: () {
+          if (context.read<CreateTopicCubit>().state is CreateTopicInProgress) {
+            return;
+          }
 
-            if (context.read<EditTopicCubit>().state is EditTopicInProgress) {
-              return;
-            }
-            Navigator.of(context).pop(refreshTopicsInPreviousPage);
-          },
-          title: UiUtils.getTranslatedLabel(
-              context, widget.topic != null ? editTopicKey : addTopicKey,),),
+          if (context.read<EditTopicCubit>().state is EditTopicInProgress) {
+            return;
+          }
+          Navigator.of(context).pop(refreshTopicsInPreviousPage);
+        },
+        title: UiUtils.getTranslatedLabel(
+          context,
+          widget.topic != null ? editTopicKey : addTopicKey,
+        ),
+      ),
     );
   }
 
   Widget _buildAddOrEditTopicForm() {
     return SingleChildScrollView(
       padding: EdgeInsets.only(
-          bottom: 25,
-          right: UiUtils.screenContentHorizontalPaddingPercentage *
-              MediaQuery.of(context).size.width,
-          left: UiUtils.screenContentHorizontalPaddingPercentage *
-              MediaQuery.of(context).size.width,
-          top: UiUtils.getScrollViewTopPadding(
-              context: context,
-              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Column(
-          children: [
-            _buildClassSubjectAndLessonDropDowns(),
-            BottomSheetTextFieldContainer(
+        bottom: 25,
+        right: UiUtils.screenContentHorizontalPaddingPercentage *
+            MediaQuery.of(context).size.width,
+        left: UiUtils.screenContentHorizontalPaddingPercentage *
+            MediaQuery.of(context).size.width,
+        top: UiUtils.getScrollViewTopPadding(
+          context: context,
+          appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+        ),
+      ),
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Column(
+            children: [
+              _buildClassSubjectAndLessonDropDowns(),
+              BottomSheetTextFieldContainer(
                 hintText: UiUtils.getTranslatedLabel(context, topicNameKey),
                 margin: const EdgeInsets.only(bottom: 20),
                 maxLines: 1,
                 contentPadding: const EdgeInsetsDirectional.only(start: 15),
-                textEditingController: _topicNameTextEditingController,),
-            BottomSheetTextFieldContainer(
+                textEditingController: _topicNameTextEditingController,
+              ),
+              BottomSheetTextFieldContainer(
                 margin: const EdgeInsets.only(bottom: 20),
                 hintText:
                     UiUtils.getTranslatedLabel(context, topicDescriptionKey),
                 maxLines: 3,
                 contentPadding: const EdgeInsetsDirectional.only(start: 15),
-                textEditingController: _topicDescriptionTextEditingController,),
-            widget.topic != null
-                ? Column(
-                    children: studyMaterials
-                        .map((studyMaterial) => StudyMaterialContainer(
-                            onDeleteStudyMaterial: deleteStudyMaterial,
-                            onEditStudyMaterial: updateStudyMaterials,
-                            showEditAndDeleteButton: true,
-                            studyMaterial: studyMaterial,),)
-                        .toList(),
-                  )
-                : const SizedBox(),
-            BottomsheetAddFilesDottedBorderContainer(
+                textEditingController: _topicDescriptionTextEditingController,
+              ),
+              widget.topic != null
+                  ? Column(
+                      children: studyMaterials
+                          .map(
+                            (studyMaterial) => StudyMaterialContainer(
+                              onDeleteStudyMaterial: deleteStudyMaterial,
+                              onEditStudyMaterial: updateStudyMaterials,
+                              showEditAndDeleteButton: true,
+                              studyMaterial: studyMaterial,
+                            ),
+                          )
+                          .toList(),
+                    )
+                  : const SizedBox(),
+              BottomsheetAddFilesDottedBorderContainer(
                 onTap: () async {
                   FocusScope.of(context).unfocus();
                   UiUtils.showBottomSheet(
-                      child: AddStudyMaterialBottomsheet(
-                          editFileDetails: false,
-                          onTapSubmit: _addStudyMaterial,),
-                      context: context,);
+                    child: AddStudyMaterialBottomsheet(
+                      editFileDetails: false,
+                      onTapSubmit: _addStudyMaterial,
+                    ),
+                    context: context,
+                  );
                 },
-                title: UiUtils.getTranslatedLabel(context, studyMaterialsKey),),
-            const SizedBox(
-              height: 20,
-            ),
-            ...List.generate(_addedStudyMaterials.length, (index) => index)
-                .map((index) => AddedStudyMaterialContainer(
-                    onDelete: (index) {
-                      _addedStudyMaterials.removeAt(index);
-                      setState(() {});
-                    },
-                    onEdit: (index, file) {
-                      _addedStudyMaterials[index] = file;
-                      setState(() {});
-                    },
-                    file: _addedStudyMaterials[index],
-                    fileIndex: index,),)
-                .toList(),
-            widget.topic != null
-                ? BlocConsumer<EditTopicCubit, EditTopicState>(
-                    listener: (context, state) {
-                      if (state is EditTopicSuccess) {
-                        Navigator.of(context).pop(true);
-                      } else if (state is EditTopicFailure) {
-                        UiUtils.showBottomToastOverlay(
+                title: UiUtils.getTranslatedLabel(context, studyMaterialsKey),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ...List.generate(_addedStudyMaterials.length, (index) => index)
+                  .map(
+                    (index) => AddedStudyMaterialContainer(
+                      onDelete: (index) {
+                        _addedStudyMaterials.removeAt(index);
+                        setState(() {});
+                      },
+                      onEdit: (index, file) {
+                        _addedStudyMaterials[index] = file;
+                        setState(() {});
+                      },
+                      file: _addedStudyMaterials[index],
+                      fileIndex: index,
+                    ),
+                  )
+                  .toList(),
+              widget.topic != null
+                  ? BlocConsumer<EditTopicCubit, EditTopicState>(
+                      listener: (context, state) {
+                        if (state is EditTopicSuccess) {
+                          Navigator.of(context).pop(true);
+                        } else if (state is EditTopicFailure) {
+                          UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                                context, state.errorMessage,),
+                              context,
+                              state.errorMessage,
+                            ),
                             backgroundColor:
-                                Theme.of(context).colorScheme.error,);
-                      }
-                    },
-                    builder: (context, state) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: boxConstraints.maxWidth * (0.25),),
-                        child: CustomRoundedButton(
+                                Theme.of(context).colorScheme.error,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: boxConstraints.maxWidth * (0.25),
+                          ),
+                          child: CustomRoundedButton(
                             onTap: () {
                               if (state is EditTopicInProgress) {
                                 return;
@@ -418,46 +471,57 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             buttonTitle: UiUtils.getTranslatedLabel(
-                                context, editTopicKey,),
+                              context,
+                              editTopicKey,
+                            ),
                             showBorder: false,
                             child: state is EditTopicInProgress
                                 ? const CustomCircularProgressIndicator(
                                     strokeWidth: 2,
                                     widthAndHeight: 20,
                                   )
-                                : null,),
-                      );
-                    },
-                  )
-                : BlocConsumer<CreateTopicCubit, CreateTopicState>(
-                    listener: (context, state) {
-                      if (state is CreateTopicSuccess) {
-                        _topicNameTextEditingController.text = "";
-                        _topicDescriptionTextEditingController.text = "";
-                        _addedStudyMaterials = [];
-                        setState(() {});
-                        UiUtils.showBottomToastOverlay(
+                                : null,
+                          ),
+                        );
+                      },
+                    )
+                  : BlocConsumer<CreateTopicCubit, CreateTopicState>(
+                      listener: (context, state) {
+                        if (state is CreateTopicSuccess) {
+                          _topicNameTextEditingController.text = "";
+                          _topicDescriptionTextEditingController.text = "";
+                          _addedStudyMaterials = [];
+                          setState(() {});
+                          UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getTranslatedLabel(
+                              context,
+                              UiUtils.getTranslatedLabel(
                                 context,
-                                UiUtils.getTranslatedLabel(
-                                    context, topicAddedSuccessfullyKey,),),
+                                topicAddedSuccessfullyKey,
+                              ),
+                            ),
                             backgroundColor:
-                                Theme.of(context).colorScheme.onPrimary,);
-                      } else if (state is CreateTopicFailure) {
-                        UiUtils.showBottomToastOverlay(
+                                Theme.of(context).colorScheme.onPrimary,
+                          );
+                        } else if (state is CreateTopicFailure) {
+                          UiUtils.showBottomToastOverlay(
                             context: context,
                             errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                                context, state.errorMessage,),
+                              context,
+                              state.errorMessage,
+                            ),
                             backgroundColor:
-                                Theme.of(context).colorScheme.error,);
-                      }
-                    },
-                    builder: (context, state) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: boxConstraints.maxWidth * (0.25),),
-                        child: CustomRoundedButton(
+                                Theme.of(context).colorScheme.error,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: boxConstraints.maxWidth * (0.25),
+                          ),
+                          child: CustomRoundedButton(
                             onTap: () {
                               if (state is CreateTopicInProgress) {
                                 return;
@@ -469,20 +533,24 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
                             backgroundColor:
                                 Theme.of(context).colorScheme.primary,
                             buttonTitle: UiUtils.getTranslatedLabel(
-                                context, addTopicKey,),
+                              context,
+                              addTopicKey,
+                            ),
                             showBorder: false,
                             child: state is CreateTopicInProgress
                                 ? const CustomCircularProgressIndicator(
                                     strokeWidth: 2,
                                     widthAndHeight: 20,
                                   )
-                                : null,),
-                      );
-                    },
-                  )
-          ],
-        );
-      },),
+                                : null,
+                          ),
+                        );
+                      },
+                    )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -501,12 +569,13 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
         return Future.value(false);
       },
       child: Scaffold(
-          body: Stack(
-        children: [
-          _buildAddOrEditTopicForm(),
-          _buildAppbar(),
-        ],
-      ),),
+        body: Stack(
+          children: [
+            _buildAddOrEditTopicForm(),
+            _buildAppbar(),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -16,56 +16,67 @@ class SubjectsContainer extends StatelessWidget {
   const SubjectsContainer({Key? key, required this.classSectionDetails})
       : super(key: key);
 
-  Widget _buildSubjectContainer(
-      {required Subject subject, required BuildContext context,}) {
+  Widget _buildSubjectContainer({
+    required Subject subject,
+    required BuildContext context,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: () {
-          Navigator.of(context).pushNamed(Routes.subject, arguments: {
-            "subject": subject,
-            "classSectionDetails": classSectionDetails
-          },);
+          Navigator.of(context).pushNamed(
+            Routes.subject,
+            arguments: {
+              "subject": subject,
+              "classSectionDetails": classSectionDetails
+            },
+          );
         },
         child: Container(
           decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .secondary
-                        .withOpacity(0.05),
-                    offset: const Offset(2.5, 2.5),
-                    blurRadius: 10,)
-              ],
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(10),),
+            boxShadow: [
+              BoxShadow(
+                color:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.05),
+                offset: const Offset(2.5, 2.5),
+                blurRadius: 10,
+              )
+            ],
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
           height: 80,
           width: MediaQuery.of(context).size.width * (0.85),
           padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
-          child: LayoutBuilder(builder: (context, boxConstraints) {
-            return Row(
-              children: [
-                SubjectImageContainer(
+          child: LayoutBuilder(
+            builder: (context, boxConstraints) {
+              return Row(
+                children: [
+                  SubjectImageContainer(
                     showShadow: false,
                     height: 60,
                     radius: 7.5,
                     subject: subject,
-                    width: boxConstraints.maxWidth * (0.2),),
-                SizedBox(
-                  width: boxConstraints.maxWidth * (0.05),
-                ),
-                Text(
-                  subject.name,
-                  style: TextStyle(
+                    width: boxConstraints.maxWidth * (0.2),
+                  ),
+                  SizedBox(
+                    width: boxConstraints.maxWidth * (0.05),
+                  ),
+                  Text(
+                    subject.showType
+                        ? subject.subjectNameWithType
+                        : subject.name,
+                    style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14.0,),
-                )
-              ],
-            );
-          },),
+                      fontSize: 14.0,
+                    ),
+                  )
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -75,23 +86,27 @@ class SubjectsContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width * (0.85),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Row(
-          children: [
-            ShimmerLoadingContainer(
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Row(
+            children: [
+              ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
-              margin: const EdgeInsetsDirectional.only(start: 10),
-              height: 60,
-              width: boxConstraints.maxWidth * (0.2),
-            ),),
-            ShimmerLoadingContainer(
+                  margin: const EdgeInsetsDirectional.only(start: 10),
+                  height: 60,
+                  width: boxConstraints.maxWidth * (0.2),
+                ),
+              ),
+              ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
-              margin: const EdgeInsetsDirectional.only(start: 20),
-              width: boxConstraints.maxWidth * (0.3),
-            ),),
-          ],
-        );
-      },),
+                  margin: const EdgeInsetsDirectional.only(start: 20),
+                  width: boxConstraints.maxWidth * (0.3),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -112,8 +127,12 @@ class SubjectsContainer extends StatelessWidget {
           if (state is SubjectsOfClassSectionFetchSuccess) {
             return Column(
               children: state.subjects
-                  .map((subject) => _buildSubjectContainer(
-                      subject: subject, context: context,),)
+                  .map(
+                    (subject) => _buildSubjectContainer(
+                      subject: subject,
+                      context: context,
+                    ),
+                  )
                   .toList(),
             );
           }
@@ -132,9 +151,9 @@ class SubjectsContainer extends StatelessWidget {
 
           return Column(
             children: List.generate(
-                    UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
-                .map((e) => _buildSubjectShimmerLoading(context))
-                .toList(),
+              UiUtils.defaultShimmerLoadingContentCount,
+              (index) => index,
+            ).map((e) => _buildSubjectShimmerLoading(context)).toList(),
           );
         },
       ),

@@ -43,7 +43,7 @@ const String addressKey = "address";
 
 const String currentAddressKey = "currentAddress";
 
-const String permantantAddressKey = "permantantAddress";
+const String permanentAddressKey = "permanentAddress";
 const String phoneNumberKey = "phoneNumber";
 const String logoutKey = "logout";
 const String appVersionKey = "appVersion";
@@ -78,6 +78,7 @@ const String editKey = "edit";
 const String viewKey = "view";
 const String allKey = "all";
 const String submittedKey = "submitted";
+const String reSubmittedKey = "reSubmitted";
 const String acceptedKey = "accepted";
 const String rejectedKey = "rejected";
 const String pendingKey = "pending";
@@ -117,6 +118,7 @@ const String subjectsKey = "subjects";
 const String subjectCodeKey = "subjectCode";
 
 const String searchStudentKey = "searchStudent";
+const String noStudentsFoundKey = "noStudentsFound";
 const String takeAttendanceKey = "takeAttendance";
 const String presentKey = "present";
 const String absentKey = "absent";
@@ -181,6 +183,8 @@ const String pleasefetchingSubjectsKey = "pleaseSelectSubject";
 const String pleaseSelectLessonKey = "pleaseSelectLesson";
 
 const String pleaseEnterAssignmentnameKey = "pleseEnterAssignmentName";
+const String pleaseEnterExtraDaysForResubmissionKey =
+    "pleaseEnterExtraDaysForResubmission";
 //const String pleaseEnterAssignmentInstructions =
 //  "pleaseEnterAssignmetInstructions";
 const String pleaseSelectDateKey = "pleaseSelectDate";

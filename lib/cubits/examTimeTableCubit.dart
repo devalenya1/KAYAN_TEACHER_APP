@@ -33,15 +33,16 @@ class ExamTimeTableCubit extends Cubit<ExamTimeTableState> {
         .fetchExamTimeTable(
           examId: examID,
         )
-        .then((value) =>
-            emit(ExamTimeTableFetchSuccess(examTimeTableList: value)),)
+        .then(
+          (value) => emit(ExamTimeTableFetchSuccess(examTimeTableList: value)),
+        )
         .catchError((e) => emit(ExamTimeTableFetchFailure(e.toString())));
   }
-
 
   void updateState(ExamTimeTableState updateState) {
     emit(updateState);
   }
+
   List<ExamTimeTable> getAllSubjectOfExamTimeTable() {
     if (state is ExamTimeTableFetchSuccess) {
       return (state as ExamTimeTableFetchSuccess).examTimeTableList;
@@ -50,8 +51,9 @@ class ExamTimeTableCubit extends Cubit<ExamTimeTableState> {
   }
 
   List<Subject> getAllSubjects() {
-    var list = List<Subject>.from(
-        getAllSubjectOfExamTimeTable().map((e) => e.subject),);
+    final list = List<Subject>.from(
+      getAllSubjectOfExamTimeTable().map((e) => e.subject),
+    );
 
     return list;
   }
@@ -59,8 +61,8 @@ class ExamTimeTableCubit extends Cubit<ExamTimeTableState> {
   String getTotalMarksOfSubject({required int subjectId}) {
     String totalMarks = '';
     getAllSubjectOfExamTimeTable().forEach((element) {
-      if(element.subject!.id == subjectId){
-        totalMarks= element.totalMarks.toString();
+      if (element.subject!.id == subjectId) {
+        totalMarks = element.totalMarks.toString();
       }
     });
 
@@ -68,7 +70,7 @@ class ExamTimeTableCubit extends Cubit<ExamTimeTableState> {
   }
 
   List<String> getSubjectName() {
-    return getAllSubjects().map((exams) => exams.getSubjectName()).toList();
+    return getAllSubjects().map<String>((exams) => exams.name).toList();
   }
 
   Subject getSubjectDetailsBySubjectName({required String subjectName}) {

@@ -1,20 +1,21 @@
 class Teacher {
-  Teacher(
-      {required this.id,
-      required this.firstName,
-      required this.lastName,
-      required this.gender,
-      required this.email,
-      required this.fcmId,
-      required this.mobile,
-      required this.image,
-      required this.dob,
-      required this.currentAddress,
-      required this.permanentAddress,
-      required this.status,
-      required this.resetRequest,
-      required this.qualification,
-      required this.teacherId,});
+  Teacher({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.gender,
+    required this.email,
+    required this.fcmId,
+    required this.mobile,
+    required this.image,
+    required this.dob,
+    required this.currentAddress,
+    required this.permanentAddress,
+    required this.status,
+    required this.resetRequest,
+    required this.qualification,
+    required this.teacherId,
+  });
   late final int id;
   late final String firstName;
   late final String lastName;
@@ -55,21 +56,21 @@ class Teacher {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['first_name'] = firstName;
-    _data['last_name'] = lastName;
-    _data['gender'] = gender;
-    _data['email'] = email;
-    _data['fcm_id'] = fcmId;
-    _data['mobile'] = mobile;
-    _data['image'] = image;
-    _data['dob'] = dob;
-    _data['current_address'] = currentAddress;
-    _data['permanent_address'] = permanentAddress;
-    _data['status'] = status;
-    _data['reset_request'] = resetRequest;
-    _data['teacher'] = {"id": teacherId, "qualification": qualification};
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['first_name'] = firstName;
+    data['last_name'] = lastName;
+    data['gender'] = gender;
+    data['email'] = email;
+    data['fcm_id'] = fcmId;
+    data['mobile'] = mobile;
+    data['image'] = image;
+    data['dob'] = dob;
+    data['current_address'] = currentAddress;
+    data['permanent_address'] = permanentAddress;
+    data['status'] = status;
+    data['reset_request'] = resetRequest;
+    data['teacher'] = {"id": teacherId, "qualification": qualification};
+    return data;
   }
 }

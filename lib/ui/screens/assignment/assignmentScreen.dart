@@ -23,7 +23,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AssignmentScreen extends StatefulWidget {
   final Assignment assignment;
 
-  AssignmentScreen({
+  const AssignmentScreen({
     Key? key,
     required this.assignment,
   }) : super(key: key);
@@ -31,16 +31,18 @@ class AssignmentScreen extends StatefulWidget {
   static Route<dynamic> route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider<ReviewAssignmentCubit>(
-                    create: (context) =>
-                        ReviewAssignmentCubit(ReviewAssignmentRepository()),)
-              ],
-              child: AssignmentScreen(
-                assignment: arguments['assignment'],
-              ),
-            ),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider<ReviewAssignmentCubit>(
+            create: (context) =>
+                ReviewAssignmentCubit(ReviewAssignmentRepository()),
+          )
+        ],
+        child: AssignmentScreen(
+          assignment: arguments['assignment'],
+        ),
+      ),
+    );
   }
 
   @override
@@ -53,6 +55,7 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   final List<String> _assignmentFilters = [
     allKey,
     submittedKey,
+    reSubmittedKey,
     acceptedKey,
     rejectedKey,
     //  pendingKey
@@ -72,17 +75,19 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   void openRejectAssignmentBottomsheet(
-      ReviewAssignmentssubmition reviewAssignment,) {
+    ReviewAssignmentssubmition reviewAssignment,
+  ) {
     UiUtils.showBottomSheet(
-            child: BlocProvider<EditReviewAssignmetCubit>(
-              create: (context) =>
-                  EditReviewAssignmetCubit(ReviewAssignmentRepository()),
-              child: RejectAssignmentBottomsheetContainer(
-                  assignment: widget.assignment,
-                  reviewAssignment: reviewAssignment,),
-            ),
-            context: context,)
-        .then((value) {
+      child: BlocProvider<EditReviewAssignmetCubit>(
+        create: (context) =>
+            EditReviewAssignmetCubit(ReviewAssignmentRepository()),
+        child: RejectAssignmentBottomsheetContainer(
+          assignment: widget.assignment,
+          reviewAssignment: reviewAssignment,
+        ),
+      ),
+      context: context,
+    ).then((value) {
       if (value != null) {
         context
             .read<ReviewAssignmentCubit>()
@@ -92,18 +97,19 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   void openAcceptAssignmentBottomsheet(
-      ReviewAssignmentssubmition reviewAssignmet,) {
+    ReviewAssignmentssubmition reviewAssignmet,
+  ) {
     UiUtils.showBottomSheet(
-            child: BlocProvider<EditReviewAssignmetCubit>(
-              create: (context) =>
-                  EditReviewAssignmetCubit(ReviewAssignmentRepository()),
-              child: AcceptAssignmentBottomsheetContainer(
-                assignment: widget.assignment,
-                reviewAssignment: reviewAssignmet,
-              ),
-            ),
-            context: context,)
-        .then((value) {
+      child: BlocProvider<EditReviewAssignmetCubit>(
+        create: (context) =>
+            EditReviewAssignmetCubit(ReviewAssignmentRepository()),
+        child: AcceptAssignmentBottomsheetContainer(
+          assignment: widget.assignment,
+          reviewAssignment: reviewAssignmet,
+        ),
+      ),
+      context: context,
+    ).then((value) {
       if (value != null) {
         context
             .read<ReviewAssignmentCubit>()
@@ -125,54 +131,65 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 15.0),
         width: MediaQuery.of(context).size.width * (0.8),
-        child: LayoutBuilder(builder: (context, boxConstraints) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ShimmerLoadingContainer(
+        child: LayoutBuilder(
+          builder: (context, boxConstraints) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
-                margin: EdgeInsetsDirectional.only(
-                  end: boxConstraints.maxWidth * (0.5),
+                    margin: EdgeInsetsDirectional.only(
+                      end: boxConstraints.maxWidth * (0.5),
+                    ),
+                    width: boxConstraints.maxWidth,
+                  ),
                 ),
-                width: boxConstraints.maxWidth,
-              ),),
-              const SizedBox(
-                height: 5,
-              ),
-              ShimmerLoadingContainer(
+                const SizedBox(
+                  height: 5,
+                ),
+                ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
-                width: boxConstraints.maxWidth,
-                margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.1),),
-              ),),
-              const SizedBox(
-                height: 15,
-              ),
-              ShimmerLoadingContainer(
+                    width: boxConstraints.maxWidth,
+                    margin: EdgeInsetsDirectional.only(
+                      end: boxConstraints.maxWidth * (0.1),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
-                width: boxConstraints.maxWidth,
-                margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.5),),
-              ),),
-              const SizedBox(
-                height: 5,
-              ),
-              ShimmerLoadingContainer(
+                    width: boxConstraints.maxWidth,
+                    margin: EdgeInsetsDirectional.only(
+                      end: boxConstraints.maxWidth * (0.5),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                ShimmerLoadingContainer(
                   child: CustomShimmerContainer(
-                width: boxConstraints.maxWidth,
-                margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.1),),
-              ),),
-            ],
-          );
-        },),
+                    width: boxConstraints.maxWidth,
+                    margin: EdgeInsetsDirectional.only(
+                      end: boxConstraints.maxWidth * (0.1),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
   Widget _buildAssignmentFilterContainer(
-      String title, List<ReviewAssignmentssubmition> reviewAssignment,) {
-    int totalNumberAssignment = title == allKey
+    String title,
+    List<ReviewAssignmentssubmition> reviewAssignment,
+  ) {
+    final int totalNumberAssignment = title == allKey
         ? reviewAssignment.length
         : title == submittedKey
             ? reviewAssignment.where((element) => element.status == 0).length
@@ -184,7 +201,11 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                     ? reviewAssignment
                         .where((element) => element.status == 2)
                         .length
-                    : 0;
+                    : title == reSubmittedKey
+                        ? reviewAssignment
+                            .where((element) => element.status == 3)
+                            .length
+                        : 0;
     return InkWell(
       onTap: () {
         setState(() {
@@ -196,10 +217,11 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         margin: const EdgeInsets.only(right: 5.0),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0),
-            color: _currentlySelectedAssignmentFilter == title
-                ? Theme.of(context).colorScheme.primary
-                : Colors.transparent,),
+          borderRadius: BorderRadius.circular(5.0),
+          color: _currentlySelectedAssignmentFilter == title
+              ? Theme.of(context).colorScheme.primary
+              : Colors.transparent,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -207,11 +229,12 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             Text(
               UiUtils.getTranslatedLabel(context, title),
               style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
-                  color: _currentlySelectedAssignmentFilter == title
-                      ? Theme.of(context).scaffoldBackgroundColor
-                      : Theme.of(context).colorScheme.primary,),
+                fontSize: 12.0,
+                fontWeight: FontWeight.w600,
+                color: _currentlySelectedAssignmentFilter == title
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Theme.of(context).colorScheme.primary,
+              ),
             ),
             const SizedBox(
               width: 2.5,
@@ -219,10 +242,11 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             Text(
               "($totalNumberAssignment)",
               style: TextStyle(
-                  fontSize: 11.5,
-                  color: _currentlySelectedAssignmentFilter == title
-                      ? Theme.of(context).scaffoldBackgroundColor
-                      : Theme.of(context).colorScheme.primary,),
+                fontSize: 11.5,
+                color: _currentlySelectedAssignmentFilter == title
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Theme.of(context).colorScheme.primary,
+              ),
             ),
           ],
         ),
@@ -231,7 +255,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   Widget _buildAssignmentSubmissionFilters(
-      List<ReviewAssignmentssubmition> reviewAssignment,) {
+    List<ReviewAssignmentssubmition> reviewAssignment,
+  ) {
     return Transform.translate(
       offset: const Offset(0, -5),
       child: SizedBox(
@@ -242,7 +267,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           itemCount: _assignmentFilters.length,
           itemBuilder: (context, index) {
             return _buildAssignmentFilterContainer(
-                _assignmentFilters[index], reviewAssignment,);
+              _assignmentFilters[index],
+              reviewAssignment,
+            );
           },
           scrollDirection: Axis.horizontal,
         ),
@@ -251,12 +278,13 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
   }
 
   //to display rejected, accepted,view and download
-  Widget _buildStudentAssignmentActionButton(
-      {required String title,
-      required double rightMargin,
-      required double width,
-      required Function onTap,
-      required Color backgroundColor,}) {
+  Widget _buildStudentAssignmentActionButton({
+    required String title,
+    required double rightMargin,
+    required double width,
+    required Function onTap,
+    required Color backgroundColor,
+  }) {
     return InkWell(
       onTap: () {
         onTap();
@@ -267,82 +295,92 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         alignment: Alignment.center,
         width: width,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0), color: backgroundColor,),
+          borderRadius: BorderRadius.circular(5.0),
+          color: backgroundColor,
+        ),
         padding: const EdgeInsets.symmetric(vertical: 5.0),
         child: Text(
           UiUtils.getTranslatedLabel(context, title),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              fontSize: 10.75,
-              color: Theme.of(context).scaffoldBackgroundColor,),
+            fontSize: 10.75,
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildStudentAssignmentDetailsContainer(
-      {required String assignmentFilterType,
-      required bool isAssignmentFilterTypeAll,
-      required ReviewAssignmentssubmition reviewAssignment,}) {
+  Widget _buildStudentAssignmentDetailsContainer({
+    required String assignmentFilterType,
+    required bool isAssignmentFilterTypeAll,
+    required ReviewAssignmentssubmition reviewAssignment,
+  }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width * (0.85),
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
       decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          borderRadius: BorderRadius.circular(15),),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                        reviewAssignment.student.user.image,
+        color: Theme.of(context).colorScheme.background,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(
+                          reviewAssignment.student.user.image,
+                        ),
+                        fit: BoxFit.cover,
                       ),
-                      fit: BoxFit.cover,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.75),
                     ),
-                    color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.75),
+                    height: boxConstraints.maxWidth * (0.175),
+                    width: boxConstraints.maxWidth * (0.175),
                   ),
-                  height: boxConstraints.maxWidth * (0.175),
-                  width: boxConstraints.maxWidth * (0.175),
-                ),
-                SizedBox(
-                  width: boxConstraints.maxWidth * (0.05),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: boxConstraints.maxWidth * 0.5,
-                          child: Text(
+                  SizedBox(
+                    width: boxConstraints.maxWidth * (0.05),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: boxConstraints.maxWidth * 0.5,
+                            child: Text(
                               "${reviewAssignment.student.user.firstName}${reviewAssignment.student.user.lastName}",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 13.0,),
-                              textAlign: TextAlign.left,),
-                        ),
-                        isAssignmentFilterTypeAll == true
-                            ? reviewAssignment.status == 0
-                                ? Container()
-                                : Container(
-                                    alignment: Alignment.center,
-                                    width: boxConstraints.maxWidth * (0.27),
-                                    decoration: BoxDecoration(
-                                        color: reviewAssignment.status == 1
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13.0,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          isAssignmentFilterTypeAll == true
+                              ? reviewAssignment.status == 0
+                                  ? Container()
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      width: boxConstraints.maxWidth * (0.27),
+                                      decoration: BoxDecoration(
+                                        color: reviewAssignment.status == 1 ||
+                                                reviewAssignment.status == 3
                                             ? Theme.of(context)
                                                 .colorScheme
                                                 .onPrimary
@@ -350,217 +388,229 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                                                 .colorScheme
                                                 .error,
                                         borderRadius:
-                                            BorderRadius.circular(2.5),),
-                                    padding: const EdgeInsets.symmetric(vertical: 2),
-                                    child: Text(
-                                      UiUtils.getTranslatedLabel(
+                                            BorderRadius.circular(2.5),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2),
+                                      child: Text(
+                                        UiUtils.getTranslatedLabel(
                                           context,
                                           reviewAssignment.status == 1
                                               ? "accepted"
-                                              : "rejected",), //
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                              : reviewAssignment.status == 3
+                                                  ? reSubmittedKey
+                                                  : "rejected",
+                                        ), //
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
                                           fontSize: 10.75,
                                           color: Theme.of(context)
-                                              .scaffoldBackgroundColor,),
-                                    ),
-                                  )
-                            : const SizedBox(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 2.5,
-                    ),
-                    Text(
-                      "Submitted on ${reviewAssignment.assignment.dueDate}",
-                      style: TextStyle(
+                                              .scaffoldBackgroundColor,
+                                        ),
+                                      ),
+                                    )
+                              : const SizedBox(),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 2.5,
+                      ),
+                      Text(
+                        "Submitted on ${reviewAssignment.assignment.dueDate}",
+                        style: TextStyle(
                           color: Theme.of(context)
                               .colorScheme
                               .secondary
                               .withOpacity(0.7),
                           fontWeight: FontWeight.w400,
-                          fontSize: 11.0,),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            assignmentFilterType == rejectedKey
-                ? Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(
-                      left: boxConstraints.maxWidth * (0.225),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(reviewAssignment.feedback,
+                          fontSize: 11.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              assignmentFilterType == rejectedKey
+                  ? Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(
+                        left: boxConstraints.maxWidth * (0.225),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            reviewAssignment.feedback,
                             style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.0,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              UiUtils.showBottomSheet(
+                                child: AttachmentBottomsheetContainer(
+                                  fromAnnouncementsContainer: false,
+                                  studyMaterials: reviewAssignment.file,
+                                ),
+                                context: context,
+                              );
+                            },
+                            child: Text(
+                              "${reviewAssignment.file.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
+                              style: const TextStyle(
+                                  color: assignmentViewButtonColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              assignmentFilterType == submitKey ||
+                      assignmentFilterType == reSubmittedKey
+                  ? Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(
+                        left: boxConstraints.maxWidth * (0.225),
+                      ),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              UiUtils.showBottomSheet(
+                                child: AttachmentBottomsheetContainer(
+                                  fromAnnouncementsContainer: false,
+                                  studyMaterials: reviewAssignment.file,
+                                ),
+                                context: context,
+                              );
+                            },
+                            child: Text(
+                              "${reviewAssignment.file.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
+                              style: const TextStyle(
+                                color: assignmentViewButtonColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(),
+              assignmentFilterType == acceptedKey
+                  ? Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(
+                        left: boxConstraints.maxWidth * (0.225),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (reviewAssignment.feedback.isNotEmpty)
+                            Text(
+                              reviewAssignment.feedback,
+                              style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 12.0,),
-                            textAlign: TextAlign.left,),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            UiUtils.showBottomSheet(
-                                child: AttachmentBottomsheetContainer(
-                                    fromAnnouncementsContainer: false,
-                                    studyMaterials: reviewAssignment.file,),
-                                context: context,);
-                          },
-                          child: Text(
-                            "${reviewAssignment.file.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                            style: const TextStyle(color: assignmentViewButtonColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : const SizedBox(),
-            assignmentFilterType == submitKey
-                ? Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(
-                      left: boxConstraints.maxWidth * (0.225),
-                    ),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            UiUtils.showBottomSheet(
-                                child: AttachmentBottomsheetContainer(
-                                    fromAnnouncementsContainer: false,
-                                    studyMaterials: reviewAssignment.file,),
-                                context: context,);
-                          },
-                          child: Text(
-                            "${reviewAssignment.file.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                            style: const TextStyle(color: assignmentViewButtonColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(),
-            assignmentFilterType == acceptedKey
-                ? Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(
-                      left: boxConstraints.maxWidth * (0.225),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (reviewAssignment.feedback.isNotEmpty)
-                          Text(reviewAssignment.feedback,
+                                fontSize: 12.0,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          if (reviewAssignment.assignment.points != 0 &&
+                              reviewAssignment.assignment.points != -1)
+                            const SizedBox(
+                              height: 7,
+                            ),
+                          if (reviewAssignment.assignment.points != 0 &&
+                              reviewAssignment.assignment.points != -1)
+                            Text(
+                              UiUtils.getTranslatedLabel(context, pointsKey),
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.0,),
-                              textAlign: TextAlign.left,),
-                        if (reviewAssignment.assignment.points != 0 &&
-                            reviewAssignment.assignment.points != -1)
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondary
+                                    .withOpacity(0.7),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12.0,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          if (reviewAssignment.assignment.points != 0 &&
+                              reviewAssignment.assignment.points != -1)
+                            Text(
+                              "${reviewAssignment.points} / ${widget.assignment.points}",
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.0,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
                           const SizedBox(
                             height: 7,
                           ),
-                        if (reviewAssignment.assignment.points != 0 &&
-                            reviewAssignment.assignment.points != -1)
-                          Text(UiUtils.getTranslatedLabel(context, pointsKey),
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(0.7),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12.0,),
-                              textAlign: TextAlign.left,),
-                        if (reviewAssignment.assignment.points != 0 &&
-                            reviewAssignment.assignment.points != -1)
-                          Text(
-                              "${reviewAssignment.points} / ${widget.assignment.points}",
-                              style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.0,),
-                              textAlign: TextAlign.left,),
-                        const SizedBox(
-                          height: 7,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            UiUtils.showBottomSheet(
+                          GestureDetector(
+                            onTap: () {
+                              UiUtils.showBottomSheet(
                                 child: AttachmentBottomsheetContainer(
-                                    fromAnnouncementsContainer: false,
-                                    studyMaterials: reviewAssignment.file,),
-                                context: context,);
-                          },
-                          child: Text(
-                            "${reviewAssignment.file.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                            style: const TextStyle(color: assignmentViewButtonColor),
+                                  fromAnnouncementsContainer: false,
+                                  studyMaterials: reviewAssignment.file,
+                                ),
+                                context: context,
+                              );
+                            },
+                            child: Text(
+                              "${reviewAssignment.file.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
+                              style: const TextStyle(
+                                  color: assignmentViewButtonColor),
+                            ),
                           ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  assignmentFilterType == acceptedKey ||
+                          assignmentFilterType == rejectedKey
+                      ? const SizedBox()
+                      : _buildStudentAssignmentActionButton(
+                          rightMargin: boxConstraints.maxWidth * (0.05),
+                          width: boxConstraints.maxWidth * (0.2),
+                          title: UiUtils.getTranslatedLabel(context, acceptKey),
+                          onTap: () {
+                            openAcceptAssignmentBottomsheet(reviewAssignment);
+                          },
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
                         ),
-                      ],
-                    ),
-                  )
-                : const SizedBox(),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: assignmentFilterType == acceptedKey
-                  ? MainAxisAlignment.center
-                  : MainAxisAlignment.center,
-              children: [
-                assignmentFilterType == acceptedKey ||
-                        assignmentFilterType == rejectedKey
-                    ? const SizedBox()
-                    : _buildStudentAssignmentActionButton(
-                        rightMargin: boxConstraints.maxWidth * (0.05),
-                        width: boxConstraints.maxWidth * (0.2),
-                        title: UiUtils.getTranslatedLabel(context, acceptKey),
-                        onTap: () {
-                          openAcceptAssignmentBottomsheet(reviewAssignment);
-                        },
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onPrimary,),
-                assignmentFilterType == acceptedKey ||
-                        assignmentFilterType == rejectedKey
-                    ? const SizedBox()
-                    : _buildStudentAssignmentActionButton(
-                        rightMargin: boxConstraints.maxWidth * (0.05),
-                        width: boxConstraints.maxWidth * (0.2),
-                        title: UiUtils.getTranslatedLabel(context, rejectKey),
-                        onTap: () {
-                          openRejectAssignmentBottomsheet(reviewAssignment);
-                        },
-                        backgroundColor: Theme.of(context).colorScheme.error,),
-                // _buildStudentAssignmentActionButton(
-                //     rightMargin: boxConstraints.maxWidth * (0.05),
-                //     width: boxConstraints.maxWidth * (0.2),
-                //     title: UiUtils.getTranslatedLabel(context, viewKey),
-                //     onTap: () {
-                //       openViewAssignmentBottomsheet();
-                //     },
-                //     backgroundColor: assignmentViewButtonColor),
-                // _buildStudentAssignmentActionButton(
-                //     rightMargin: boxConstraints.maxWidth * (0.05),
-                //     width: boxConstraints.maxWidth * (0.2),
-                //     title: UiUtils.getTranslatedLabel(context, downloadKey),
-                //     onTap: () {
-                //       openDownloadAssignmentBottomsheet();
-                //     },
-                //     backgroundColor: assignmentDownloadButtonColor),
-              ],
-            )
-          ],
-        );
-      },),
+                  assignmentFilterType == acceptedKey ||
+                          assignmentFilterType == rejectedKey
+                      ? const SizedBox()
+                      : _buildStudentAssignmentActionButton(
+                          rightMargin: boxConstraints.maxWidth * (0.05),
+                          width: boxConstraints.maxWidth * (0.2),
+                          title: UiUtils.getTranslatedLabel(context, rejectKey),
+                          onTap: () {
+                            openRejectAssignmentBottomsheet(reviewAssignment);
+                          },
+                          backgroundColor: Theme.of(context).colorScheme.error,
+                        ),
+                ],
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -576,58 +626,87 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           reviewAssignment.where((e) => e.status == 2).toList();
       final List<ReviewAssignmentssubmition> submited_assignment =
           reviewAssignment.where((e) => e.status == 0).toList();
+      final List<ReviewAssignmentssubmition> resubmitted_assignment =
+          reviewAssignment.where((e) => e.status == 3).toList();
 
       return Column(
         children: [
+          ...resubmitted_assignment
+              .map(
+                (reviewAssignment) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: true,
+                  assignmentFilterType: submitKey,
+                  reviewAssignment: reviewAssignment,
+                ),
+              )
+              .toList(),
           ...submited_assignment
-              .map((reviewAssignment) =>
-                  _buildStudentAssignmentDetailsContainer(
-                      isAssignmentFilterTypeAll: true,
-                      assignmentFilterType: submitKey,
-                      reviewAssignment: reviewAssignment,),)
+              .map(
+                (reviewAssignment) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: true,
+                  assignmentFilterType: submitKey,
+                  reviewAssignment: reviewAssignment,
+                ),
+              )
               .toList(),
           ...accept_assignment
-              .map((reviewAssignment) =>
-                  _buildStudentAssignmentDetailsContainer(
-                      isAssignmentFilterTypeAll: true,
-                      reviewAssignment: reviewAssignment,
-                      assignmentFilterType: acceptedKey,),)
+              .map(
+                (reviewAssignment) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: true,
+                  reviewAssignment: reviewAssignment,
+                  assignmentFilterType: acceptedKey,
+                ),
+              )
               .toList(),
           ...reject_assignment
-              .map((reviewAssignment) =>
-                  _buildStudentAssignmentDetailsContainer(
-                      isAssignmentFilterTypeAll: true,
-                      assignmentFilterType: rejectedKey,
-                      reviewAssignment: reviewAssignment,),)
+              .map(
+                (reviewAssignment) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: true,
+                  assignmentFilterType: rejectedKey,
+                  reviewAssignment: reviewAssignment,
+                ),
+              )
               .toList(),
         ],
       );
     }
     if (_currentlySelectedAssignmentFilter == acceptedKey) {
       //status 1 is Accept Assignment
-      final List<ReviewAssignmentssubmition> submitted_assignment =
+      final List<ReviewAssignmentssubmition> accepted_assignment =
           reviewAssignment.where((e) => e.status == 1).toList();
       //
-      return Column(children: [
-        ...submitted_assignment
-            .map((e) => _buildStudentAssignmentDetailsContainer(
-                isAssignmentFilterTypeAll: false,
-                reviewAssignment: e,
-                assignmentFilterType: acceptedKey,),)
-            .toList()
-      ],);
+      return Column(
+        children: [
+          ...accepted_assignment
+              .map(
+                (e) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: false,
+                  reviewAssignment: e,
+                  assignmentFilterType: acceptedKey,
+                ),
+              )
+              .toList()
+        ],
+      );
     }
     if (_currentlySelectedAssignmentFilter == rejectedKey) {
       //Status 2 is Reject Assigment
-      final List<ReviewAssignmentssubmition> Reject_assignment =
+      final List<ReviewAssignmentssubmition> reject_assignment =
           reviewAssignment.where((e) => e.status == 2).toList();
       //
-      return Column(children: [
-        ...Reject_assignment.map((e) => _buildStudentAssignmentDetailsContainer(
-            isAssignmentFilterTypeAll: false,
-            reviewAssignment: e,
-            assignmentFilterType: rejectedKey,),).toList()
-      ],);
+      return Column(
+        children: [
+          ...reject_assignment
+              .map(
+                (e) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: false,
+                  reviewAssignment: e,
+                  assignmentFilterType: rejectedKey,
+                ),
+              )
+              .toList()
+        ],
+      );
     }
     if (_currentlySelectedAssignmentFilter == submittedKey) {
       // Status 0 is show Assignment Which one is not Accepted of Rejected
@@ -635,28 +714,54 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
           reviewAssignment.where((e) => e.status == 0).toList();
 
       //
-      return Column(children: [
-        ...submited_assignment
-            .map((e) => _buildStudentAssignmentDetailsContainer(
-                isAssignmentFilterTypeAll: false,
-                reviewAssignment: e,
-                assignmentFilterType: submitKey,),)
-            .toList()
-      ],);
+      return Column(
+        children: [
+          ...submited_assignment
+              .map(
+                (e) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: false,
+                  reviewAssignment: e,
+                  assignmentFilterType: submitKey,
+                ),
+              )
+              .toList()
+        ],
+      );
     }
 
-    return const Column(
-      
-    );
+    if (_currentlySelectedAssignmentFilter == reSubmittedKey) {
+      //Status 2 is Reject Assigment
+      final List<ReviewAssignmentssubmition> resubmitted_assignment =
+          reviewAssignment.where((e) => e.status == 3).toList();
+      //
+      return Column(
+        children: [
+          ...resubmitted_assignment
+              .map(
+                (e) => _buildStudentAssignmentDetailsContainer(
+                  isAssignmentFilterTypeAll: false,
+                  reviewAssignment: e,
+                  assignmentFilterType: reSubmittedKey,
+                ),
+              )
+              .toList()
+        ],
+      );
+    }
+
+    return const Column();
   }
 
   Widget _buildAssignmentListWithFiltersContainer(
-      List<ReviewAssignmentssubmition> reviewAssignment,) {
+    List<ReviewAssignmentssubmition> reviewAssignment,
+  ) {
     return ListView(
       padding: EdgeInsets.only(
-          top: UiUtils.getScrollViewTopPadding(
-              context: context,
-              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),),
+        top: UiUtils.getScrollViewTopPadding(
+          context: context,
+          appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+        ),
+      ),
       children: [
         _buildAssignmentSubmissionFilters(reviewAssignment),
         const SizedBox(
@@ -674,8 +779,9 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
         children: [
           CustomRefreshIndicator(
             displacment: UiUtils.getScrollViewTopPadding(
-                context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),
+              context: context,
+              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+            ),
             onRefreshCallback: () {
               fetchReviewAssignment();
             },
@@ -684,7 +790,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               builder: (context, state) {
                 if (state is ReviewAssignmentSuccess) {
                   return _buildAssignmentListWithFiltersContainer(
-                      state.reviewAssignment,);
+                    state.reviewAssignment,
+                  );
                 }
                 if (state is ReviewAssignmentFailure) {
                   return Center(
@@ -697,13 +804,16 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                   );
                 }
                 return ListView(
-                    padding: EdgeInsets.only(
-                        top: UiUtils.getScrollViewTopPadding(
-                            context: context,
-                            appBarHeightPercentage:
-                                UiUtils.appBarSmallerHeightPercentage,),),
-                    children: [
-                      LayoutBuilder(builder: (context, boxConstraints) {
+                  padding: EdgeInsets.only(
+                    top: UiUtils.getScrollViewTopPadding(
+                      context: context,
+                      appBarHeightPercentage:
+                          UiUtils.appBarSmallerHeightPercentage,
+                    ),
+                  ),
+                  children: [
+                    LayoutBuilder(
+                      builder: (context, boxConstraints) {
                         return Column(
                           children: [
                             Row(
@@ -723,15 +833,17 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                             ),
                           ],
                         );
-                      },),
-                      ...List.generate(
-                          10,
-                          (index) => Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child:
-                                    _buildInformationShimmerLoadingContainer(),
-                              ),),
-                    ],);
+                      },
+                    ),
+                    ...List.generate(
+                      10,
+                      (index) => Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: _buildInformationShimmerLoadingContainer(),
+                      ),
+                    ),
+                  ],
+                );
               },
             ),
           ),

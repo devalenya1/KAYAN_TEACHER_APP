@@ -84,22 +84,22 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
 
   TimeOfDay? dueTime;
 
-  late TextEditingController _assignmentNameTextEditingController =
+  late final TextEditingController _assignmentNameTextEditingController =
       TextEditingController(
     text: widget.editassignment ? widget.assignment!.name : null,
   );
 
-  late TextEditingController _assignmentInstructionTextEditingController =
+  late final TextEditingController _assignmentInstructionTextEditingController =
       TextEditingController(
     text: widget.editassignment ? widget.assignment!.instructions : null,
   );
 
-  late TextEditingController _assignmentPointsTextEditingController =
+  late final TextEditingController _assignmentPointsTextEditingController =
       TextEditingController(
     text: widget.editassignment ? widget.assignment!.points.toString() : null,
   );
 
-  late TextEditingController _extraResubmissionDaysTextEditingController =
+  late final TextEditingController _extraResubmissionDaysTextEditingController =
       TextEditingController(
     text: widget.editassignment
         ? widget.assignment!.extraDaysForResubmission.toString()
@@ -121,7 +121,8 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
             context
                 .read<MyClassesCubit>()
                 .getClassSectionDetails(
-                    classSectionName: currentSelectedClassSection,)
+                  classSectionName: currentSelectedClassSection,
+                )
                 .id,
           );
     } else {
@@ -278,7 +279,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   }
 
   Future<void> openDatePicker() async {
-    dueDate = await showDatePicker(
+    final temp = await showDatePicker(
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -296,12 +297,14 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
         const Duration(days: 30),
       ),
     );
-
-    setState(() {});
+    if (temp != null) {
+      dueDate = temp;
+      setState(() {});
+    }
   }
 
   Future<void> openTimePicker() async {
-    dueTime = await showTimePicker(
+    final temp = await showTimePicker(
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -315,7 +318,10 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    setState(() {});
+    if (temp != null) {
+      dueTime = temp;
+      setState(() {});
+    }
   }
 
   void showErrorMessage(String errorMessageKey) {
@@ -327,6 +333,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
   }
 
   void createAssignment() {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (_assignmentNameTextEditingController.text.trim().isEmpty) {
       showErrorMessage(
         UiUtils.getTranslatedLabel(context, pleaseEnterAssignmentnameKey),
@@ -345,7 +352,16 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     }
     if (dueTime == null) {
       showErrorMessage(
-        UiUtils.getTranslatedLabel(context, pleaseSelectDateKey),
+        UiUtils.getTranslatedLabel(context, pleaseSelectTimeKey),
+      );
+      return;
+    }
+    if (_extraResubmissionDaysTextEditingController.text.trim().isEmpty) {
+      showErrorMessage(
+        UiUtils.getTranslatedLabel(
+          context,
+          pleaseEnterExtraDaysForResubmissionKey,
+        ),
       );
       return;
     }
@@ -454,7 +470,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                   ),
             widget.editassignment
                 ? DefaultDropDownLabelContainer(
-                    titleLabelKey: widget.assignment!.subject.name.toString(),
+                    titleLabelKey: widget.assignment!.subject.name,
                     width: boxConstraints.maxWidth,
                   )
                 : ClassSubjectsDropDownMenu(

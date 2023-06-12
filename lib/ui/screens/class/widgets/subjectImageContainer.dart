@@ -12,49 +12,56 @@ class SubjectImageContainer extends StatelessWidget {
   final double radius;
   final BoxBorder? border;
   final bool showShadow;
-  const SubjectImageContainer(
-      {Key? key,
-      this.border,
-      required this.showShadow,
-      required this.height,
-      required this.radius,
-      required this.subject,
-      required this.width,})
-      : super(key: key);
+  const SubjectImageContainer({
+    Key? key,
+    this.border,
+    required this.showShadow,
+    required this.height,
+    required this.radius,
+    required this.subject,
+    required this.width,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-            border: border,
-            image: subject.image.isEmpty || subject.isSubjectImageSvg
-                ? null
-                : DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(subject.image),),
-            boxShadow: showShadow
-                ? [
-                    BoxShadow(
-                        color: UiUtils.getColorFromHexValue(subject.bgColor)
-                            .withOpacity(0.2),
-                        offset: const Offset(0, 4),
-                        blurRadius: 10,)
-                  ]
-                : null,
-            color: UiUtils.getColorFromHexValue(subject.bgColor),
-            borderRadius: BorderRadius.circular(radius),),
-        height: height,
-        width: width,
-        child: subject.image.isEmpty
-            ? SubjectFirstLetterContainer(
-                subjectName: subject.name,
-              )
-            : subject.isSubjectImageSvg
-                ? Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: width * (0.25), vertical: height * 0.25,),
-                    child: SvgPicture.network(subject.image),
-                  )
-                : const SizedBox(),);
+      decoration: BoxDecoration(
+        border: border,
+        image: subject.image.isEmpty || subject.isSubjectImageSvg
+            ? null
+            : DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(subject.image),
+              ),
+        boxShadow: showShadow
+            ? [
+                BoxShadow(
+                  color: UiUtils.getColorFromHexValue(subject.bgColor)
+                      .withOpacity(0.2),
+                  offset: const Offset(0, 4),
+                  blurRadius: 10,
+                )
+              ]
+            : null,
+        color: UiUtils.getColorFromHexValue(subject.bgColor),
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      height: height,
+      width: width,
+      child: subject.image.isEmpty
+          ? SubjectFirstLetterContainer(
+              subjectName:
+                  subject.showType ? subject.subjectNameWithType : subject.name,
+            )
+          : subject.isSubjectImageSvg
+              ? Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: width * (0.25),
+                    vertical: height * 0.25,
+                  ),
+                  child: SvgPicture.network(subject.image),
+                )
+              : const SizedBox(),
+    );
   }
 }

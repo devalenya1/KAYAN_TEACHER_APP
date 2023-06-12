@@ -17,7 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class EditStudyMaterialBottomSheet extends StatefulWidget {
   final StudyMaterial studyMaterial;
-  EditStudyMaterialBottomSheet({Key? key, required this.studyMaterial})
+  const EditStudyMaterialBottomSheet({Key? key, required this.studyMaterial})
       : super(key: key);
 
   @override
@@ -27,15 +27,16 @@ class EditStudyMaterialBottomSheet extends StatefulWidget {
 
 class _EditStudyMaterialBottomSheetState
     extends State<EditStudyMaterialBottomSheet> {
-  late TextEditingController _studyMaterialNameEditingController =
+  late final TextEditingController _studyMaterialNameEditingController =
       TextEditingController(text: widget.studyMaterial.fileName);
 
-  late TextEditingController _youtubeLinkEditingController =
+  late final TextEditingController _youtubeLinkEditingController =
       TextEditingController(
-          text: widget.studyMaterial.studyMaterialType ==
-                  StudyMaterialType.youtubeVideo
-              ? widget.studyMaterial.fileUrl
-              : null,);
+    text:
+        widget.studyMaterial.studyMaterialType == StudyMaterialType.youtubeVideo
+            ? widget.studyMaterial.fileUrl
+            : null,
+  );
 
   PlatformFile? addedFile; //if studymaterial type is fileUpload
   PlatformFile?
@@ -52,12 +53,14 @@ class _EditStudyMaterialBottomSheetState
 
   void showErrorMessage(String messageKey) {
     UiUtils.showBottomToastOverlay(
-        context: context,
-        errorMessage: UiUtils.getTranslatedLabel(context, messageKey),
-        backgroundColor: Theme.of(context).colorScheme.error,);
+      context: context,
+      errorMessage: UiUtils.getTranslatedLabel(context, messageKey),
+      backgroundColor: Theme.of(context).colorScheme.error,
+    );
   }
 
   Future<void> editStudyMaterial() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (_studyMaterialNameEditingController.text.trim().isEmpty) {
       showErrorMessage(pleaseEnterStudyMaterialNameKey);
       return;
@@ -65,281 +68,310 @@ class _EditStudyMaterialBottomSheetState
 
     if (widget.studyMaterial.studyMaterialType ==
             StudyMaterialType.youtubeVideo &&
-        _youtubeLinkEditingController.text.trim().isEmpty) {
+        (_youtubeLinkEditingController.text.trim().isEmpty ||
+            !Uri.parse(_youtubeLinkEditingController.text.trim()).isAbsolute)) {
       showErrorMessage(pleaseEnterYoutubeLinkKey);
       return;
     }
 
     final pickedStudyMaterialTypeId = UiUtils.getStudyMaterialIdByEnum(
-        widget.studyMaterial.studyMaterialType, context,);
+      widget.studyMaterial.studyMaterialType,
+      context,
+    );
 
     final pickedStudyMaterial = PickedStudyMaterial(
-        fileName: _studyMaterialNameEditingController.text.trim(),
-        pickedStudyMaterialTypeId: pickedStudyMaterialTypeId,
-        studyMaterialFile:
-            pickedStudyMaterialTypeId == 1 ? addedFile : addedVideoFile,
-        videoThumbnailFile: addedVideoThumbnailFile,
-        youTubeLink: _youtubeLinkEditingController.text.trim(),);
+      fileName: _studyMaterialNameEditingController.text.trim(),
+      pickedStudyMaterialTypeId: pickedStudyMaterialTypeId,
+      studyMaterialFile:
+          pickedStudyMaterialTypeId == 1 ? addedFile : addedVideoFile,
+      videoThumbnailFile: addedVideoThumbnailFile,
+      youTubeLink: _youtubeLinkEditingController.text.trim(),
+    );
 
     context.read<UpdateStudyMaterialCubit>().updateStudyMaterial(
-        fileId: widget.studyMaterial.id,
-        pickedStudyMaterial: pickedStudyMaterial,);
+          fileId: widget.studyMaterial.id,
+          pickedStudyMaterial: pickedStudyMaterial,
+        );
   }
 
   Widget _buildAddedFileContainer(PlatformFile file, Function onTap) {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return DottedBorder(
-        borderType: BorderType.RRect,
-        dashPattern: const [10, 10],
-        radius: const Radius.circular(10.0),
-        color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.only(start: 10),
-          child: Row(
-            children: [
-              SizedBox(
-                width: boxConstraints.maxWidth * (0.75),
-                child: Text(
-                  file.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return DottedBorder(
+          borderType: BorderType.RRect,
+          dashPattern: const [10, 10],
+          radius: const Radius.circular(10.0),
+          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.3),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(start: 10),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: boxConstraints.maxWidth * (0.75),
+                  child: Text(
+                    file.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-              const Spacer(),
-              IconButton(
+                const Spacer(),
+                IconButton(
                   onPressed: () {
                     onTap();
                   },
-                  icon: const Icon(Icons.close),),
-            ],
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
-    },);
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BottomSheetTopBarMenu(
-                    onTapCloseButton: () {
-                      Navigator.of(context).pop();
-                    },
-                    title: UiUtils.getTranslatedLabel(
-                        context, editStudyMaterialKey,),),
-                Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal:
-                            UiUtils.bottomSheetHorizontalContentPadding,),
-                    child: Column(
-                      children: [
-                        Transform.translate(
-                          offset: const Offset(0, -15),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 2.5,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                UiUtils.getTranslatedLabel(context,
-                                    oldFilesWillBeReplacedWithLatestOneKey,),
-                                style: const TextStyle(fontSize: 13),
-                              )
-                            ],
+      child: Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BottomSheetTopBarMenu(
+                onTapCloseButton: () {
+                  Navigator.of(context).pop();
+                },
+                title: UiUtils.getTranslatedLabel(
+                  context,
+                  editStudyMaterialKey,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: UiUtils.bottomSheetHorizontalContentPadding,
+                ),
+                child: Column(
+                  children: [
+                    Transform.translate(
+                      offset: const Offset(0, -15),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 2.5,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onBackground,
                           ),
-                        ),
-                        LayoutBuilder(builder: (context, boxConstraints) {
-                          //Study material type dropdown list
-                          return DefaultDropDownLabelContainer(
-                              titleLabelKey:
-                                  UiUtils.getStudyMaterialTypeLabelByEnum(
-                                      widget.studyMaterial.studyMaterialType,
-                                      context,),
-                              width: boxConstraints.maxWidth,);
-                        },),
-                        BottomSheetTextFieldContainer(
-                            margin: const EdgeInsets.only(bottom: 25),
-                            hintText: UiUtils.getTranslatedLabel(
-                                context, studyMaterialNameKey,),
-                            maxLines: 1,
-                            textEditingController:
-                                _studyMaterialNameEditingController,),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            UiUtils.getTranslatedLabel(
+                              context,
+                              oldFilesWillBeReplacedWithLatestOneKey,
+                            ),
+                            style: const TextStyle(fontSize: 13),
+                          )
+                        ],
+                      ),
+                    ),
+                    LayoutBuilder(
+                      builder: (context, boxConstraints) {
+                        //Study material type dropdown list
+                        return DefaultDropDownLabelContainer(
+                          titleLabelKey:
+                              UiUtils.getStudyMaterialTypeLabelByEnum(
+                            widget.studyMaterial.studyMaterialType,
+                            context,
+                          ),
+                          width: boxConstraints.maxWidth,
+                        );
+                      },
+                    ),
+                    BottomSheetTextFieldContainer(
+                      margin: const EdgeInsets.only(bottom: 25),
+                      hintText: UiUtils.getTranslatedLabel(
+                        context,
+                        studyMaterialNameKey,
+                      ),
+                      maxLines: 1,
+                      textEditingController:
+                          _studyMaterialNameEditingController,
+                    ),
 
-                        //
-                        //if file or images has been picked then show the pickedFile name and remove button
-                        //else show file picker option
-                        //
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 25),
-                          child: addedFile != null
-                              ? _buildAddedFileContainer(addedFile!, () {
-                                  addedFile = null;
+                    //
+                    //if file or images has been picked then show the pickedFile name and remove button
+                    //else show file picker option
+                    //
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: addedFile != null
+                          ? _buildAddedFileContainer(addedFile!, () {
+                              addedFile = null;
+                              setState(() {});
+                            })
+                          : addedVideoThumbnailFile != null
+                              ? _buildAddedFileContainer(
+                                  addedVideoThumbnailFile!, () {
+                                  addedVideoThumbnailFile = null;
                                   setState(() {});
                                 })
-                              : addedVideoThumbnailFile != null
-                                  ? _buildAddedFileContainer(
-                                      addedVideoThumbnailFile!, () {
-                                      addedVideoThumbnailFile = null;
-                                      setState(() {});
-                                    })
-                                  : BottomsheetAddFilesDottedBorderContainer(
+                              : BottomsheetAddFilesDottedBorderContainer(
+                                  onTap: () async {
+                                    try {
+                                      final pickedFile =
+                                          await FilePicker.platform.pickFiles(
+                                        type: widget.studyMaterial
+                                                    .studyMaterialType ==
+                                                StudyMaterialType.file
+                                            ? FileType.any
+                                            : FileType.image,
+                                      );
+                                      //
+                                      //
+                                      if (pickedFile != null) {
+                                        //if current selected study material type is file
+                                        if (widget.studyMaterial
+                                                .studyMaterialType ==
+                                            StudyMaterialType.file) {
+                                          addedFile = pickedFile.files.first;
+                                        } else {
+                                          addedVideoThumbnailFile =
+                                              pickedFile.files.first;
+                                        }
+
+                                        setState(() {});
+                                      }
+                                    } on Error {
+                                      showErrorMessage(
+                                        permissionToPickFileKey,
+                                      );
+                                    }
+                                  },
+                                  title:
+                                      widget.studyMaterial.studyMaterialType ==
+                                              StudyMaterialType.file
+                                          ? UiUtils.getTranslatedLabel(
+                                              context,
+                                              selectFileKey,
+                                            )
+                                          : UiUtils.getTranslatedLabel(
+                                              context,
+                                              selectThumbnailKey,
+                                            ),
+                                ),
+                    ),
+
+                    widget.studyMaterial.studyMaterialType ==
+                            StudyMaterialType.youtubeVideo
+                        ? BottomSheetTextFieldContainer(
+                            margin: const EdgeInsets.only(bottom: 25),
+                            hintText: UiUtils.getTranslatedLabel(
+                              context,
+                              youtubeLinkKey,
+                            ),
+                            maxLines: 2,
+                            textEditingController:
+                                _youtubeLinkEditingController,
+                          )
+                        : widget.studyMaterial.studyMaterialType ==
+                                StudyMaterialType.uploadedVideoUrl
+                            ? addedVideoFile != null
+                                ? _buildAddedFileContainer(addedVideoFile!, () {
+                                    addedVideoFile = null;
+                                    setState(() {});
+                                  })
+                                : Padding(
+                                    padding: const EdgeInsets.only(bottom: 25),
+                                    child:
+                                        BottomsheetAddFilesDottedBorderContainer(
                                       onTap: () async {
                                         try {
                                           final pickedFile = await FilePicker
                                               .platform
                                               .pickFiles(
-                                                  type: widget.studyMaterial
-                                                              .studyMaterialType ==
-                                                          StudyMaterialType.file
-                                                      ? FileType.any
-                                                      : FileType.image,);
-                                          //
-                                          //
-                                          if (pickedFile != null) {
-                                            //if current selected study material type is file
-                                            if (widget.studyMaterial
-                                                    .studyMaterialType ==
-                                                StudyMaterialType.file) {
-                                              addedFile =
-                                                  pickedFile.files.first;
-                                            } else {
-                                              addedVideoThumbnailFile =
-                                                  pickedFile.files.first;
-                                            }
+                                            type: FileType.video,
+                                          );
 
+                                          if (pickedFile != null) {
+                                            addedVideoFile =
+                                                pickedFile.files.first;
                                             setState(() {});
                                           }
-                                        } on Error {
+                                        } on Exception {
                                           showErrorMessage(
-                                              permissionToPickFileKey,);
+                                            permissionToPickFileKey,
+                                          );
                                         }
                                       },
                                       title: widget.studyMaterial
                                                   .studyMaterialType ==
                                               StudyMaterialType.file
                                           ? UiUtils.getTranslatedLabel(
-                                              context, selectFileKey,)
+                                              context,
+                                              selectFileKey,
+                                            )
                                           : UiUtils.getTranslatedLabel(
-                                              context, selectThumbnailKey,),),
-                        ),
-
-                        widget.studyMaterial.studyMaterialType ==
-                                StudyMaterialType.youtubeVideo
-                            ? BottomSheetTextFieldContainer(
-                                margin: const EdgeInsets.only(bottom: 25),
-                                hintText: UiUtils.getTranslatedLabel(
-                                    context, youtubeLinkKey,),
-                                maxLines: 2,
-                                textEditingController:
-                                    _youtubeLinkEditingController,)
-                            : widget.studyMaterial.studyMaterialType ==
-                                    StudyMaterialType.uploadedVideoUrl
-                                ? addedVideoFile != null
-                                    ? _buildAddedFileContainer(addedVideoFile!,
-                                        () {
-                                        addedVideoFile = null;
-                                        setState(() {});
-                                      })
-                                    : Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 25),
-                                        child:
-                                            BottomsheetAddFilesDottedBorderContainer(
-                                                onTap: () async {
-                                                  try {
-                                                    final pickedFile =
-                                                        await FilePicker
-                                                            .platform
-                                                            .pickFiles(
-                                                                type: FileType
-                                                                    .video,);
-
-                                                    if (pickedFile != null) {
-                                                      addedVideoFile =
-                                                          pickedFile
-                                                              .files.first;
-                                                      setState(() {});
-                                                    }
-                                                  } on Exception {
-                                                    showErrorMessage(
-                                                        permissionToPickFileKey,);
-                                                  }
-                                                },
-                                                title: widget.studyMaterial
-                                                            .studyMaterialType ==
-                                                        StudyMaterialType.file
-                                                    ? UiUtils
-                                                        .getTranslatedLabel(
-                                                            context,
-                                                            selectFileKey,)
-                                                    : UiUtils
-                                                        .getTranslatedLabel(
-                                                            context,
-                                                            selectVideoKey,),),
-                                      )
-                                : const SizedBox(),
-                      ],
-                    ),),
-                BlocConsumer<UpdateStudyMaterialCubit,
-                    UpdateStudyMaterialState>(
-                  listener: (context, state) {
-                    if (state is UpdateStudyMaterialSuccess) {
-                      Navigator.of(context).pop(state.studyMaterial);
-                    } else if (state is UpdateStudyMaterialFailure) {
-                      UiUtils.showBottomToastOverlay(
-                          context: context,
-                          errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                              context, state.errorMessage,),
-                          backgroundColor: Theme.of(context).colorScheme.error,);
-                    }
-                  },
-                  builder: (context, state) {
-                    return CustomRoundedButton(
-                        onTap: () {
-                          if (state is UpdateStudyMaterialInProgress) {
-                            return;
-                          }
-                          editStudyMaterial();
-                        },
-                        height: UiUtils.bottomSheetButtonHeight,
-                        widthPercentage:
-                            UiUtils.bottomSheetButtonWidthPercentage,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        buttonTitle:
-                            UiUtils.getTranslatedLabel(context, submitKey),
-                        showBorder: false,
-                        child: state is UpdateStudyMaterialInProgress
-                            ? const CustomCircularProgressIndicator(
-                                strokeWidth: 2,
-                                widthAndHeight: 20,
-                              )
-                            : null,);
-                  },
+                                              context,
+                                              selectVideoKey,
+                                            ),
+                                    ),
+                                  )
+                            : const SizedBox(),
+                  ],
                 ),
-                const SizedBox(
-                  height: 25,
-                ),
-              ],
-            ),
+              ),
+              BlocConsumer<UpdateStudyMaterialCubit, UpdateStudyMaterialState>(
+                listener: (context, state) {
+                  if (state is UpdateStudyMaterialSuccess) {
+                    Navigator.of(context).pop(state.studyMaterial);
+                  } else if (state is UpdateStudyMaterialFailure) {
+                    UiUtils.showBottomToastOverlay(
+                      context: context,
+                      errorMessage: UiUtils.getErrorMessageFromErrorCode(
+                        context,
+                        state.errorMessage,
+                      ),
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return CustomRoundedButton(
+                    onTap: () {
+                      if (state is UpdateStudyMaterialInProgress) {
+                        return;
+                      }
+                      editStudyMaterial();
+                    },
+                    height: UiUtils.bottomSheetButtonHeight,
+                    widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    buttonTitle: UiUtils.getTranslatedLabel(context, submitKey),
+                    showBorder: false,
+                    child: state is UpdateStudyMaterialInProgress
+                        ? const CustomCircularProgressIndicator(
+                            strokeWidth: 2,
+                            widthAndHeight: 20,
+                          )
+                        : null,
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+            ],
           ),
         ),
-        onWillPop: () {
-          if (context.read<UpdateStudyMaterialCubit>().state
-              is UpdateStudyMaterialInProgress) {
-            return Future.value(false);
-          }
-          return Future.value(true);
-        },);
+      ),
+      onWillPop: () {
+        if (context.read<UpdateStudyMaterialCubit>().state
+            is UpdateStudyMaterialInProgress) {
+          return Future.value(false);
+        }
+        return Future.value(true);
+      },
+    );
   }
 }

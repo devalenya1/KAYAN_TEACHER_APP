@@ -32,7 +32,8 @@ class InternetConnectivityCubit extends Cubit<InternetConnectivityState> {
   ) async {
     //
     if (result != ConnectivityResult.none) {
-      bool hasConnection = await InternetConnectionChecker().hasConnection;
+      final bool hasConnection =
+          await InternetConnectionChecker().hasConnection;
 
       if (state is InternetConnectivityInitial) {
         emit(InternetConnectivityEstablished(isUserOnline: hasConnection));

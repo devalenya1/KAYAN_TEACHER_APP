@@ -19,12 +19,12 @@ class TopcisByLessonScreen extends StatefulWidget {
   final Subject subject;
   final ClassSectionDetails classSectionDetails;
 
-  TopcisByLessonScreen(
-      {Key? key,
-      required this.lesson,
-      required this.classSectionDetails,
-      required this.subject,})
-      : super(key: key);
+  const TopcisByLessonScreen({
+    Key? key,
+    required this.lesson,
+    required this.classSectionDetails,
+    required this.subject,
+  }) : super(key: key);
 
   @override
   State<TopcisByLessonScreen> createState() => _TopcisByLessonScreenState();
@@ -32,17 +32,19 @@ class TopcisByLessonScreen extends StatefulWidget {
   static Route<dynamic> route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider<TopicsCubit>(
-                    create: (_) => TopicsCubit(TopicRepository()),)
-              ],
-              child: TopcisByLessonScreen(
-                classSectionDetails: arguments['classSectionDetails'],
-                lesson: arguments['lesson'],
-                subject: arguments['subject'],
-              ),
-            ),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider<TopicsCubit>(
+            create: (_) => TopicsCubit(TopicRepository()),
+          )
+        ],
+        child: TopcisByLessonScreen(
+          classSectionDetails: arguments['classSectionDetails'],
+          lesson: arguments['lesson'],
+          subject: arguments['subject'],
+        ),
+      ),
+    );
   }
 }
 
@@ -62,18 +64,22 @@ class _TopcisByLessonScreenState extends State<TopcisByLessonScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {
-        Navigator.of(context)
-            .pushNamed<bool?>(Routes.addOrEditTopic, arguments: {
-          "classSectionDetails": widget.classSectionDetails,
-          "subject": widget.subject,
-          "lesson": widget.lesson
-        },).then((value) {
-          if (value != null && value) {
-            fetchTopics();
-          }
-        });
-      },),
+      floatingActionButton: FloatingActionAddButton(
+        onTap: () {
+          Navigator.of(context).pushNamed<bool?>(
+            Routes.addOrEditTopic,
+            arguments: {
+              "classSectionDetails": widget.classSectionDetails,
+              "subject": widget.subject,
+              "lesson": widget.lesson
+            },
+          ).then((value) {
+            if (value != null && value) {
+              fetchTopics();
+            }
+          });
+        },
+      ),
       body: Stack(
         children: [
           Align(
@@ -83,24 +89,27 @@ class _TopcisByLessonScreenState extends State<TopcisByLessonScreen> {
                 fetchTopics();
               },
               displacment: UiUtils.getScrollViewTopPadding(
-                  context: context,
-                  appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage,),
+                context: context,
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+              ),
               child: ListView(
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width *
-                        UiUtils.screenContentHorizontalPaddingPercentage,
-                    right: MediaQuery.of(context).size.width *
-                        UiUtils.screenContentHorizontalPaddingPercentage,
-                    top: UiUtils.getScrollViewTopPadding(
-                        context: context,
-                        appBarHeightPercentage:
-                            UiUtils.appBarSmallerHeightPercentage,),),
+                  left: MediaQuery.of(context).size.width *
+                      UiUtils.screenContentHorizontalPaddingPercentage,
+                  right: MediaQuery.of(context).size.width *
+                      UiUtils.screenContentHorizontalPaddingPercentage,
+                  top: UiUtils.getScrollViewTopPadding(
+                    context: context,
+                    appBarHeightPercentage:
+                        UiUtils.appBarSmallerHeightPercentage,
+                  ),
+                ),
                 children: [
                   TopicsContainer(
-                      classSectionDetails: widget.classSectionDetails,
-                      lesson: widget.lesson,
-                      subject: widget.subject,)
+                    classSectionDetails: widget.classSectionDetails,
+                    lesson: widget.lesson,
+                    subject: widget.subject,
+                  )
                 ],
               ),
             ),

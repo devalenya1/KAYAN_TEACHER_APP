@@ -5,13 +5,14 @@ class SystemRepository {
   Future<dynamic> fetchSettings({required String type}) async {
     try {
       final result = await Api.get(
-          queryParameters: {"type": type},
-          url: Api.settings,
-          useAuthToken: false,);
+        queryParameters: {"type": type},
+        url: Api.settings,
+        useAuthToken: false,
+      );
 
       return result['data'];
     } catch (e) {
-      print(e.toString());
+      print(e);
       throw ApiException(e.toString());
     }
   }

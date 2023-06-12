@@ -26,19 +26,24 @@ class SignInCubit extends Cubit<SignInState> {
 
   SignInCubit(this._authRepository) : super(SignInInitial());
 
-  Future<void> signInUser({required String email, required String password}) async {
+  Future<void> signInUser({
+    required String email,
+    required String password,
+  }) async {
     emit(SignInInProgress());
 
     try {
       Map<String, dynamic> result =
           await _authRepository.signInTeacher(email: email, password: password);
 
-      emit(SignInSuccess(
-        jwtToken: result['jwtToken'],
-        teacher: result['teacher'] as Teacher,
-      ),);
+      emit(
+        SignInSuccess(
+          jwtToken: result['jwtToken'],
+          teacher: result['teacher'] as Teacher,
+        ),
+      );
     } catch (e) {
-      print(e.toString());
+      print(e);
       emit(SignInFailure(e.toString()));
     }
   }

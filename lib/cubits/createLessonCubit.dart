@@ -21,12 +21,13 @@ class CreateLessonCubit extends Cubit<CreateLessonState> {
 
   CreateLessonCubit(this._lessonRepository) : super(CreateLessonInitial());
 
-  Future<void> createLesson(
-      {required String lessonName,
-      required int classSectionId,
-      required int subjectId,
-      required String lessonDescription,
-      required List<PickedStudyMaterial> files,}) async {
+  Future<void> createLesson({
+    required String lessonName,
+    required int classSectionId,
+    required int subjectId,
+    required String lessonDescription,
+    required List<PickedStudyMaterial> files,
+  }) async {
     emit(CreateLessonInProgress());
     try {
       List<Map<String, dynamic>> filesJosn = [];
@@ -35,14 +36,15 @@ class CreateLessonCubit extends Cubit<CreateLessonState> {
       }
 
       await _lessonRepository.createLesson(
-          lessonName: lessonName,
-          classSectionId: classSectionId,
-          subjectId: subjectId,
-          lessonDescription: lessonDescription,
-          files: filesJosn,);
+        lessonName: lessonName,
+        classSectionId: classSectionId,
+        subjectId: subjectId,
+        lessonDescription: lessonDescription,
+        files: filesJosn,
+      );
       emit(CreateLessonSuccess());
     } catch (e) {
-      print(e.toString());
+      print(e);
       emit(CreateLessonFailure(e.toString()));
     }
   }

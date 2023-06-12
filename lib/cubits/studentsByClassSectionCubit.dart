@@ -37,7 +37,8 @@ class StudentsByClassSectionCubit extends Cubit<StudentsByClassSectionState> {
       emit(
         StudentsByClassSectionFetchSuccess(
           students: await _studentRepository.getStudentsByClassSection(
-              classSectionId: classSectionId,),
+            classSectionId: classSectionId,
+          ),
         ),
       );
     } catch (e) {

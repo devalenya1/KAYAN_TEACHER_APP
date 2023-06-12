@@ -45,13 +45,12 @@ class DownloadFileCubit extends Cubit<DownloadFileState> {
 
   Future<bool> _hasGivenManageDownloadFilePermissions() async {
     //If platfomr is ios or android with < 30 sdk version
-    Permission storagePermission = Permission.storage;
-    bool permissionsGiven = (await storagePermission.status).isGranted;
+    const Permission storagePermission = Permission.storage;
+    final bool permissionsGiven = (await storagePermission.status).isGranted;
     if (permissionsGiven) {
       return permissionsGiven;
     }
-    permissionsGiven = (await storagePermission.request()).isGranted;
-    return permissionsGiven;
+    return (await storagePermission.request()).isGranted;
   }
 
   Future<void> writeFileFromTempStorage({

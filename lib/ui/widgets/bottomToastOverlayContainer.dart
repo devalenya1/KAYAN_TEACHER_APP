@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class BottomToastOverlayContainer extends StatefulWidget {
   final String errorMessage;
   final Color backgroundColor;
-  BottomToastOverlayContainer(
-      {Key? key, required this.errorMessage, required this.backgroundColor,})
-      : super(key: key);
+  const BottomToastOverlayContainer({
+    Key? key,
+    required this.errorMessage,
+    required this.backgroundColor,
+  }) : super(key: key);
 
   @override
   _BottomToastOverlayContainerState createState() =>
@@ -16,21 +18,25 @@ class BottomToastOverlayContainer extends StatefulWidget {
 class _BottomToastOverlayContainerState
     extends State<BottomToastOverlayContainer>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 500))
-        ..forward();
+  late AnimationController animationController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 500))
+    ..forward();
 
-  late Animation<double> slideAnimation = Tween<double>(begin: -0.5, end: 1.0)
-      .animate(CurvedAnimation(
-          parent: animationController, curve: Curves.easeInOutCirc,),);
+  late Animation<double> slideAnimation =
+      Tween<double>(begin: -0.5, end: 1.0).animate(
+    CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOutCirc,
+    ),
+  );
 
   @override
   void initState() {
     super.initState();
     Future.delayed(
         Duration(
-            milliseconds: errorMessageDisplayDuration.inMilliseconds - 500,),
-        () {
+          milliseconds: errorMessageDisplayDuration.inMilliseconds - 500,
+        ), () {
       animationController.reverse();
     });
   }
@@ -58,15 +64,18 @@ class _BottomToastOverlayContainerState
               child: Container(
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width * (0.8),
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
                 decoration: BoxDecoration(
-                    color: widget.backgroundColor,
-                    borderRadius: BorderRadius.circular(10.0),),
+                  color: widget.backgroundColor,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
                 child: Text(
                   widget.errorMessage,
                   style: TextStyle(
-                      fontSize: 13.5,
-                      color: Theme.of(context).scaffoldBackgroundColor,),
+                    fontSize: 13.5,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
                 ),
               ),
             ),

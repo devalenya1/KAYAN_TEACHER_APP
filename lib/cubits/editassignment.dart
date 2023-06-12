@@ -43,7 +43,8 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
         name: name,
         subjectId: subjectId,
         extraDayForResubmission: int.parse(
-            extraDayForResubmission.isEmpty ? "0" : extraDayForResubmission,),
+          extraDayForResubmission.isEmpty ? "0" : extraDayForResubmission,
+        ),
         instruction: instruction,
         points: int.parse(points.isEmpty ? "0" : points),
         resubmission: resubmission,
@@ -51,7 +52,7 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
       );
       emit(editAssignmentSuccess());
     } catch (e) {
-      print(e.toString());
+      print(e);
       emit(editAssignmentFailure(e.toString()));
     }
   }

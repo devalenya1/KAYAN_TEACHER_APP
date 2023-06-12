@@ -17,13 +17,14 @@ class AssignmentRepository {
   }) async {
     try {
       final result = await Api.get(
-          url: Api.getassignment,
-          useAuthToken: true,
-          queryParameters: {
-            "class_section_id": classSectionId,
-            "subject_id": subjectId,
-            "page": page ?? 0,
-          },);
+        url: Api.getassignment,
+        useAuthToken: true,
+        queryParameters: {
+          "class_section_id": classSectionId,
+          "subject_id": subjectId,
+          "page": page ?? 0,
+        },
+      );
 
       return {
         "assignment": (result['data']['data'] as List)
@@ -49,7 +50,7 @@ class AssignmentRepository {
         body: body,
       );
     } catch (e) {
-      print(e.toString());
+      print(e);
       throw ApiException(e.toString());
     }
   }

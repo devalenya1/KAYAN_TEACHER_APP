@@ -17,21 +17,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AssignmentsScreen extends StatefulWidget {
-  AssignmentsScreen({Key? key}) : super(key: key);
+  const AssignmentsScreen({Key? key}) : super(key: key);
 
   static Route<dynamic> route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(providers: [
-              BlocProvider<SubjectsOfClassSectionCubit>(
-                create: (context) => SubjectsOfClassSectionCubit(
-                  TeacherRepository(),
-                ),
-              ),
-              BlocProvider<AssignmentCubit>(
-                  create: (context) => AssignmentCubit(
-                        AssignmentRepository(),
-                      ),),
-            ], child: AssignmentsScreen(),),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider<SubjectsOfClassSectionCubit>(
+            create: (context) => SubjectsOfClassSectionCubit(
+              TeacherRepository(),
+            ),
+          ),
+          BlocProvider<AssignmentCubit>(
+            create: (context) => AssignmentCubit(
+              AssignmentRepository(),
+            ),
+          ),
+        ],
+        child: const AssignmentsScreen(),
+      ),
+    );
   }
 
   @override
@@ -39,7 +44,7 @@ class AssignmentsScreen extends StatefulWidget {
 }
 
 class _AssignmentsScreenState extends State<AssignmentsScreen> {
-  late ScrollController _scrollController = ScrollController()
+  late final ScrollController _scrollController = ScrollController()
     ..addListener(_announcementsScrollListener);
 
   void _announcementsScrollListener() {
@@ -54,7 +59,8 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               classSectionId: context
                   .read<MyClassesCubit>()
                   .getClassSectionDetails(
-                      classSectionName: currentSelectedClassSection,)
+                    classSectionName: currentSelectedClassSection,
+                  )
                   .id,
             );
       }
@@ -68,21 +74,26 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
         .id;
     if (subjectId != -1) {
       context.read<AssignmentCubit>().fetchassignment(
-          classSectionId: context
-              .read<MyClassesCubit>()
-              .getClassSectionDetails(
-                  classSectionName: currentSelectedClassSection,)
-              .id,
-          subjectId: subjectId,);
+            classSectionId: context
+                .read<MyClassesCubit>()
+                .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection,
+                )
+                .id,
+            subjectId: subjectId,
+          );
     }
   }
 
   @override
   void initState() {
-    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
-        .read<MyClassesCubit>()
-        .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-        .id,);
+    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
+          context
+              .read<MyClassesCubit>()
+              .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection)
+              .id,
+        );
     super.initState();
   }
 
@@ -96,15 +107,17 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
-          title: UiUtils.getTranslatedLabel(context, assignmentsKey),),
+        title: UiUtils.getTranslatedLabel(context, assignmentsKey),
+      ),
     );
   }
 
   Widget _buildAssignmentFilters() {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Column(
-        children: [
-          MyClassesDropDownMenu(
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Column(
+          children: [
+            MyClassesDropDownMenu(
               currentSelectedItem: currentSelectedClassSection,
               width: boxConstraints.maxWidth,
               changeSelectedItem: (result) {
@@ -115,10 +128,11 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                 context
                     .read<AssignmentCubit>()
                     .updateState(AssignmentInitial());
-              },),
+              },
+            ),
 
-          //
-          ClassSubjectsDropDownMenu(
+            //
+            ClassSubjectsDropDownMenu(
               changeSelectedItem: (result) {
                 setState(() {
                   currentSelectedSubject = result;
@@ -126,25 +140,32 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                 fetchAssignment();
               },
               currentSelectedItem: currentSelectedSubject,
-              width: boxConstraints.maxWidth,),
-        ],
-      );
-    },);
+              width: boxConstraints.maxWidth,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {
-        Navigator.of(context).pushNamed(Routes.addAssignment,
-            arguments: {"editAssignment": false},);
-      },),
+      floatingActionButton: FloatingActionAddButton(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            Routes.addAssignment,
+            arguments: {"editAssignment": false},
+          );
+        },
+      ),
       body: Stack(
         children: [
           CustomRefreshIndicator(
             displacment: UiUtils.getScrollViewTopPadding(
-                context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),
+              context: context,
+              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+            ),
             onRefreshCallback: () {
               fetchAssignment();
             },
@@ -152,24 +173,25 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               controller: _scrollController,
               padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  right: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  top: UiUtils.getScrollViewTopPadding(
-                      context: context,
-                      appBarHeightPercentage:
-                          UiUtils.appBarSmallerHeightPercentage,),),
+                left: MediaQuery.of(context).size.width *
+                    UiUtils.screenContentHorizontalPaddingPercentage,
+                right: MediaQuery.of(context).size.width *
+                    UiUtils.screenContentHorizontalPaddingPercentage,
+                top: UiUtils.getScrollViewTopPadding(
+                  context: context,
+                  appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+                ),
+              ),
               children: [
                 _buildAssignmentFilters(),
                 const SizedBox(
                   height: 10,
                 ),
                 AssignmentsContainer(
-                  classSectionDetails: context
-                      .read<MyClassesCubit>()
-                      .getClassSectionDetails(
-                          classSectionName: currentSelectedClassSection,),
+                  classSectionDetails:
+                      context.read<MyClassesCubit>().getClassSectionDetails(
+                            classSectionName: currentSelectedClassSection,
+                          ),
                   subject: context
                       .read<SubjectsOfClassSectionCubit>()
                       .getSubjectDetailsByName(currentSelectedSubject),

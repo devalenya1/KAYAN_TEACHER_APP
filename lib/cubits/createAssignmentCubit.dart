@@ -44,16 +44,16 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
             name: name,
             datetime: datetime,
             resubmission: resubmission,
-            extraDayForResubmission: int.parse(extraDayForResubmission.isEmpty
-                ? "0"
-                : extraDayForResubmission,),
+            extraDayForResubmission: int.parse(
+              extraDayForResubmission.isEmpty ? "0" : extraDayForResubmission,
+            ),
             filePaths: file,
             instruction: instruction,
             points: int.parse(points.isEmpty ? "0" : points),
           )
           .then((value) => emit(createAssignmentSuccess()));
     } catch (e) {
-      print(e.toString());
+      print(e);
       emit(createAssignmentFailure(errormessage: e.toString()));
     }
   }

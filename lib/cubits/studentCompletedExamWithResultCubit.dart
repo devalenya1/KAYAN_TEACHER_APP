@@ -14,8 +14,9 @@ class StudentCompletedExamWithResultFetchSuccess
     extends StudentCompletedExamWithResultState {
   final List<StudentResult> studentCompletedExamWithResultList;
 
-  StudentCompletedExamWithResultFetchSuccess(
-      {required this.studentCompletedExamWithResultList,});
+  StudentCompletedExamWithResultFetchSuccess({
+    required this.studentCompletedExamWithResultList,
+  });
 }
 
 class StudentCompletedExamWithResultFetchFailure
@@ -32,16 +33,19 @@ class StudentCompletedExamWithResultCubit
   StudentCompletedExamWithResultCubit(this._studentRepository)
       : super(StudentCompletedExamWithResultInitial());
 
-  Future<void> fetchStudentCompletedExamWithResult({required int studentId}) async {
+  Future<void> fetchStudentCompletedExamWithResult({
+    required int studentId,
+  }) async {
     try {
-      print('calling');
       emit(StudentCompletedExamWithResultFetchInProgress());
-      var result = await _studentRepository
+      final result = await _studentRepository
           .fetchStudentCompletedExamListWithResult(studentId: studentId);
 
-      emit(StudentCompletedExamWithResultFetchSuccess(
-          studentCompletedExamWithResultList:
-              result,),);
+      emit(
+        StudentCompletedExamWithResultFetchSuccess(
+          studentCompletedExamWithResultList: result,
+        ),
+      );
     } catch (e) {
       emit(StudentCompletedExamWithResultFetchFailure(e.toString()));
     }

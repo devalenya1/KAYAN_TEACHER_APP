@@ -352,7 +352,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                   ? BlocConsumer<EditLessonCubit, EditLessonState>(
                       listener: (context, state) {
                         if (state is EditLessonSuccess) {
-                          Navigator.of(context).pop({});
+                          Navigator.of(context).pop();
                         } else if (state is EditLessonFailure) {
                           UiUtils.showBottomToastOverlay(
                             context: context,
@@ -372,6 +372,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                           ),
                           child: CustomRoundedButton(
                             onTap: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               if (state is EditLessonInProgress) {
                                 return;
                               }
@@ -431,7 +432,7 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
                           ),
                           child: CustomRoundedButton(
                             onTap: () {
-                              //
+                              FocusManager.instance.primaryFocus?.unfocus();
                               if (state is CreateLessonInProgress) {
                                 return;
                               }

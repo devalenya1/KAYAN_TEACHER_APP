@@ -33,22 +33,27 @@ class AddResultForAllStudents extends StatefulWidget {
 
   static Route route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(providers: [
-              BlocProvider<ExamDetailsCubit>(
-                create: (context) => ExamDetailsCubit(StudentRepository()),
-              ),
-              BlocProvider<ExamTimeTableCubit>(
-                create: (context) => ExamTimeTableCubit(StudentRepository()),
-              ),
-              BlocProvider(
-                create: (context) =>
-                    StudentsByClassSectionCubit(StudentRepository()),
-              ),
-              BlocProvider(
-                create: (context) => SubjectMarksBySubjectIdCubit(
-                    studentRepository: StudentRepository(),),
-              ),
-            ], child: const AddResultForAllStudents(),),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider<ExamDetailsCubit>(
+            create: (context) => ExamDetailsCubit(StudentRepository()),
+          ),
+          BlocProvider<ExamTimeTableCubit>(
+            create: (context) => ExamTimeTableCubit(StudentRepository()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                StudentsByClassSectionCubit(StudentRepository()),
+          ),
+          BlocProvider(
+            create: (context) => SubjectMarksBySubjectIdCubit(
+              studentRepository: StudentRepository(),
+            ),
+          ),
+        ],
+        child: const AddResultForAllStudents(),
+      ),
+    );
   }
 }
 
@@ -92,147 +97,168 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
   //
   void fetchStudentList() {
     context.read<StudentsByClassSectionCubit>().fetchStudents(
-        classSectionId: context.read<MyClassesCubit>().primaryClass()!.id,);
+          classSectionId: context.read<MyClassesCubit>().primaryClass()!.id,
+        );
   }
 
   //
   void fetchStudentExamTimeTableOfExam({required String examName}) {
     context.read<ExamTimeTableCubit>().fetchStudentExamTimeTable(
-        examID: context
-            .read<ExamDetailsCubit>()
-            .getExamDetailsByExamName(examName: examName)
-            .examID!,);
+          examID: context
+              .read<ExamDetailsCubit>()
+              .getExamDetailsByExamName(examName: examName)
+              .examID!,
+        );
   }
 
   //
   Widget _buildExamListDropdown({required double width}) {
     return BlocConsumer<ExamDetailsCubit, ExamDetailsState>(
-        builder: (context, state) {
-      return state is ExamDetailsFetchSuccess
-          ? state.examList.isEmpty
-              ? DefaultDropDownLabelContainer(
-                  titleLabelKey:
-                      UiUtils.getTranslatedLabel(context, noExamsKey),
-                  width: width,)
-              : CustomDropDownMenu(
-                  width: width,
-                  onChanged: (result) {
-                    //
-                    setState(() {
-                      currentSelectedExamName = result!;
+      builder: (context, state) {
+        return state is ExamDetailsFetchSuccess
+            ? state.examList.isEmpty
+                ? DefaultDropDownLabelContainer(
+                    titleLabelKey:
+                        UiUtils.getTranslatedLabel(context, noExamsKey),
+                    width: width,
+                  )
+                : CustomDropDownMenu(
+                    width: width,
+                    onChanged: (result) {
+                      //
+                      setState(() {
+                        currentSelectedExamName = result!;
 
-                      // we will change currentSelectedSubject value to fetchingSubjectsKey label,
-                      // because we are using this value to validate subject currentSelectedItem value
-                      currentSelectedSubject = UiUtils.getTranslatedLabel(
-                          context, fetchingSubjectsKey,);
-                    });
+                        // we will change currentSelectedSubject value to fetchingSubjectsKey label,
+                        // because we are using this value to validate subject currentSelectedItem value
+                        currentSelectedSubject = UiUtils.getTranslatedLabel(
+                          context,
+                          fetchingSubjectsKey,
+                        );
+                      });
 
-                    //
-                    context
-                        .read<StudentsByClassSectionCubit>()
-                        .updateState(StudentsByClassSectionFetchInProgress());
+                      //
+                      context
+                          .read<StudentsByClassSectionCubit>()
+                          .updateState(StudentsByClassSectionFetchInProgress());
 
-                    //
-                    fetchStudentExamTimeTableOfExam(examName: result!);
-                  },
-                  menu: context.read<ExamDetailsCubit>().getExamName(),
-                  currentSelectedItem: currentSelectedExamName,)
-          : DefaultDropDownLabelContainer(
-              titleLabelKey: fetchingExamsKey, width: width,);
-    }, listener: (context, state) {
-      if (state is ExamDetailsFetchSuccess) {
-        if (state.examList.isNotEmpty) {
-          setState(() {
-            currentSelectedExamName =
-                context.read<ExamDetailsCubit>().getExamName().first;
-          });
+                      //
+                      fetchStudentExamTimeTableOfExam(examName: result!);
+                    },
+                    menu: context.read<ExamDetailsCubit>().getExamName(),
+                    currentSelectedItem: currentSelectedExamName,
+                  )
+            : DefaultDropDownLabelContainer(
+                titleLabelKey: fetchingExamsKey,
+                width: width,
+              );
+      },
+      listener: (context, state) {
+        if (state is ExamDetailsFetchSuccess) {
+          if (state.examList.isNotEmpty) {
+            setState(() {
+              currentSelectedExamName =
+                  context.read<ExamDetailsCubit>().getExamName().first;
+            });
 
-          fetchStudentExamTimeTableOfExam(examName: currentSelectedExamName);
-        } else {
-          context
-              .read<ExamTimeTableCubit>()
-              .updateState(ExamTimeTableFetchSuccess(examTimeTableList: []));
-          context
-              .read<StudentsByClassSectionCubit>()
-              .updateState(StudentsByClassSectionFetchSuccess(students: []));
+            fetchStudentExamTimeTableOfExam(examName: currentSelectedExamName);
+          } else {
+            context
+                .read<ExamTimeTableCubit>()
+                .updateState(ExamTimeTableFetchSuccess(examTimeTableList: []));
+            context
+                .read<StudentsByClassSectionCubit>()
+                .updateState(StudentsByClassSectionFetchSuccess(students: []));
+          }
         }
-      }
-    },);
+      },
+    );
   }
 
   //
   Widget _buildSubjectListDropdown({required double width}) {
     return BlocConsumer<ExamTimeTableCubit, ExamTimeTableState>(
-        builder: (context, state) {
-      return state is ExamTimeTableFetchSuccess
-          ? state.examTimeTableList.isEmpty
-              ? DefaultDropDownLabelContainer(
-                  titleLabelKey:
-                      UiUtils.getTranslatedLabel(context, noSubjectsKey),
-                  width: width,)
-              : CustomDropDownMenu(
-                  width: width,
-                  onChanged: (result) {
-                    //fetch selected subject details
-                    selectedSubjectDetails = context
-                        .read<ExamTimeTableCubit>()
-                        .getSubjectDetailsBySubjectName(subjectName: result!);
-                    //
-                    setState(() {
-                      currentSelectedSubject = result;
-                    });
-                  },
-                  menu: context.read<ExamTimeTableCubit>().getSubjectName(),
-                  currentSelectedItem: currentSelectedSubject ==
-                          UiUtils.getTranslatedLabel(
-                              context, fetchingSubjectsKey,)
-                      ? context
+      builder: (context, state) {
+        return state is ExamTimeTableFetchSuccess
+            ? state.examTimeTableList.isEmpty
+                ? DefaultDropDownLabelContainer(
+                    titleLabelKey:
+                        UiUtils.getTranslatedLabel(context, noSubjectsKey),
+                    width: width,
+                  )
+                : CustomDropDownMenu(
+                    width: width,
+                    onChanged: (result) {
+                      //fetch selected subject details
+                      selectedSubjectDetails = context
                           .read<ExamTimeTableCubit>()
-                          .getSubjectName()
-                          .first
-                      : currentSelectedSubject,)
-          : DefaultDropDownLabelContainer(
-              titleLabelKey: fetchingSubjectsKey, width: width,);
-    }, listener: (context, state) {
-      if (state is ExamTimeTableFetchSuccess) {
-        if (state.examTimeTableList.isNotEmpty) {
-          selectedSubjectDetails = context
-              .read<ExamTimeTableCubit>()
-              .getSubjectDetailsBySubjectName(
-                  subjectName: context
-                      .read<ExamTimeTableCubit>()
-                      .getSubjectName()
-                      .first,);
-          fetchStudentList();
-        }
-      } else if (state is ExamTimeTableFetchFailure) {
-        UiUtils.showBottomToastOverlay(
+                          .getSubjectDetailsBySubjectName(subjectName: result!);
+                      //
+                      setState(() {
+                        currentSelectedSubject = result;
+                      });
+                    },
+                    menu: context.read<ExamTimeTableCubit>().getSubjectName(),
+                    currentSelectedItem: currentSelectedSubject ==
+                            UiUtils.getTranslatedLabel(
+                              context,
+                              fetchingSubjectsKey,
+                            )
+                        ? context
+                            .read<ExamTimeTableCubit>()
+                            .getSubjectName()
+                            .first
+                        : currentSelectedSubject,
+                  )
+            : DefaultDropDownLabelContainer(
+                titleLabelKey: fetchingSubjectsKey,
+                width: width,
+              );
+      },
+      listener: (context, state) {
+        if (state is ExamTimeTableFetchSuccess) {
+          if (state.examTimeTableList.isNotEmpty) {
+            selectedSubjectDetails = context
+                .read<ExamTimeTableCubit>()
+                .getSubjectDetailsBySubjectName(
+                  subjectName:
+                      context.read<ExamTimeTableCubit>().getSubjectName().first,
+                );
+            fetchStudentList();
+          }
+        } else if (state is ExamTimeTableFetchFailure) {
+          UiUtils.showBottomToastOverlay(
             context: context,
             backgroundColor: Theme.of(context).colorScheme.error,
-            errorMessage: state.errorMessage,);
-      }
-    },);
+            errorMessage: state.errorMessage,
+          );
+        }
+      },
+    );
   }
 
   Widget _buildResultFilters() {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Column(
-        children: [
-          //Exam List
-          _buildExamListDropdown(width: boxConstraints.maxWidth),
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Column(
+          children: [
+            //Exam List
+            _buildExamListDropdown(width: boxConstraints.maxWidth),
 
-          //Subject List
-          _buildSubjectListDropdown(width: boxConstraints.maxWidth),
-        ],
-      );
-    },);
+            //Subject List
+            _buildSubjectListDropdown(width: boxConstraints.maxWidth),
+          ],
+        );
+      },
+    );
   }
 
   TextStyle _getResultTitleTextStyle() {
     return TextStyle(
-        color: Theme.of(context).colorScheme.onBackground,
-        fontWeight: FontWeight.w600,
-        fontSize: 12.0,);
+      color: Theme.of(context).colorScheme.onBackground,
+      fontWeight: FontWeight.w600,
+      fontSize: 12.0,
+    );
   }
 
   Widget _buildResultTitleDetails() {
@@ -240,70 +266,78 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       height: 50,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.075),
-                offset: const Offset(2.5, 2.5),
-                blurRadius: 5,
-                spreadRadius: 1,)
-          ],
-          color: Theme.of(context).scaffoldBackgroundColor,),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.secondary.withOpacity(0.075),
+            offset: const Offset(2.5, 2.5),
+            blurRadius: 5,
+            spreadRadius: 1,
+          )
+        ],
+        color: Theme.of(context).scaffoldBackgroundColor,
+      ),
       width: MediaQuery.of(context).size.width,
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              alignment: AlignmentDirectional.centerStart,
-              width: boxConstraints.maxWidth * (0.1),
-              child: Text(
-                UiUtils.getTranslatedLabel(context, rollNoKey),
-                style: _getResultTitleTextStyle(),
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                alignment: AlignmentDirectional.centerStart,
+                width: boxConstraints.maxWidth * (0.1),
+                child: Text(
+                  UiUtils.getTranslatedLabel(context, rollNoKey),
+                  style: _getResultTitleTextStyle(),
+                ),
               ),
-            ),
-            Container(
-              alignment: AlignmentDirectional.centerStart,
-              width: boxConstraints.maxWidth * (0.4),
-              child: Text(
-                UiUtils.getTranslatedLabel(context, studentsKey),
-                style: _getResultTitleTextStyle(),
+              Container(
+                alignment: AlignmentDirectional.centerStart,
+                width: boxConstraints.maxWidth * (0.4),
+                child: Text(
+                  UiUtils.getTranslatedLabel(context, studentsKey),
+                  style: _getResultTitleTextStyle(),
+                ),
               ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              width: boxConstraints.maxWidth * (0.2),
-              child: Text(
-                UiUtils.getTranslatedLabel(context, obtainedKey),
-                style: _getResultTitleTextStyle(),
+              Container(
+                alignment: Alignment.center,
+                width: boxConstraints.maxWidth * (0.2),
+                child: Text(
+                  UiUtils.getTranslatedLabel(context, obtainedKey),
+                  style: _getResultTitleTextStyle(),
+                ),
               ),
-            ),
-            Container(
-              alignment: AlignmentDirectional.centerEnd,
-              width: boxConstraints.maxWidth * (0.2),
-              child: Text(
-                UiUtils.getTranslatedLabel(context, totalKey),
-                style: _getResultTitleTextStyle(),
+              Container(
+                alignment: AlignmentDirectional.centerEnd,
+                width: boxConstraints.maxWidth * (0.2),
+                child: Text(
+                  UiUtils.getTranslatedLabel(context, totalKey),
+                  style: _getResultTitleTextStyle(),
+                ),
               ),
-            ),
-          ],
-        );
-      },),
+            ],
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildSubmitButton(
-      {required String totalMarks, required List<Student> studentList,}) {
+  Widget _buildSubmitButton({
+    required String totalMarks,
+    required List<Student> studentList,
+  }) {
     return BlocConsumer<SubjectMarksBySubjectIdCubit,
         SubjectMarksBySubjectIdState>(
       listener: (context, state) {
         if (state is SubjectMarksBySubjectIdSubmitSuccess) {
           UiUtils.showBottomToastOverlay(
-              context: context,
-              errorMessage: UiUtils.getTranslatedLabel(
-                  context, marksAddedSuccessfullyKey,),
-              backgroundColor: Theme.of(context).colorScheme.onPrimary,);
+            context: context,
+            errorMessage: UiUtils.getTranslatedLabel(
+              context,
+              marksAddedSuccessfullyKey,
+            ),
+            backgroundColor: Theme.of(context).colorScheme.onPrimary,
+          );
 
           obtainedMarksTextEditingController.forEach((element) {
             element.clear();
@@ -311,10 +345,13 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           //Navigator.of(context).pop();
         } else if (state is SubjectMarksBySubjectIdSubmitFailure) {
           UiUtils.showBottomToastOverlay(
-              context: context,
-              errorMessage: UiUtils.getErrorMessageFromErrorCode(
-                  context, state.errorMessage,),
-              backgroundColor: Theme.of(context).colorScheme.error,);
+            context: context,
+            errorMessage: UiUtils.getErrorMessageFromErrorCode(
+              context,
+              state.errorMessage,
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          );
         }
       },
       builder: (context, state) {
@@ -333,10 +370,13 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               if (inputMarks != '') {
                 if (double.parse(inputMarks) > double.parse(totalMarks)) {
                   UiUtils.showBottomToastOverlay(
-                      context: context,
-                      errorMessage: UiUtils.getTranslatedLabel(
-                          context, marksMoreThanTotalMarksKey,),
-                      backgroundColor: Theme.of(context).colorScheme.error,);
+                    context: context,
+                    errorMessage: UiUtils.getTranslatedLabel(
+                      context,
+                      marksMoreThanTotalMarksKey,
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                  );
 
                   hasError = true;
                   break;
@@ -353,19 +393,25 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               //if marks of all students are not inserted then error message will be shown
 
               UiUtils.showBottomToastOverlay(
-                  context: context,
-                  errorMessage: UiUtils.getTranslatedLabel(
-                      context, pleaseEnterAllMarksKey,),
-                  backgroundColor: Theme.of(context).colorScheme.error,);
+                context: context,
+                errorMessage: UiUtils.getTranslatedLabel(
+                  context,
+                  pleaseEnterAllMarksKey,
+                ),
+                backgroundColor: Theme.of(context).colorScheme.error,
+              );
               return;
             }
             //if marks list is empty and doesn't show any error message before then this will be shown
             if (studentsMarksList.isEmpty && !hasError) {
               UiUtils.showBottomToastOverlay(
-                  context: context,
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  errorMessage: UiUtils.getTranslatedLabel(
-                      context, pleaseEnterSomeDataKey,),);
+                context: context,
+                backgroundColor: Theme.of(context).colorScheme.error,
+                errorMessage: UiUtils.getTranslatedLabel(
+                  context,
+                  pleaseEnterSomeDataKey,
+                ),
+              );
 
               return;
             }
@@ -375,13 +421,15 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
             context
                 .read<SubjectMarksBySubjectIdCubit>()
                 .submitSubjectMarksBySubjectId(
-                    examId: context
-                        .read<ExamDetailsCubit>()
-                        .getExamDetailsByExamName(
-                            examName: currentSelectedExamName,)
-                        .examID!,
-                    subjectId: selectedSubjectDetails!.id,
-                    bodyParameter: studentsMarksList,);
+                  examId: context
+                      .read<ExamDetailsCubit>()
+                      .getExamDetailsByExamName(
+                        examName: currentSelectedExamName,
+                      )
+                      .examID!,
+                  subjectId: selectedSubjectDetails!.id,
+                  bodyParameter: studentsMarksList,
+                );
           },
           height: UiUtils.bottomSheetButtonHeight,
           widthPercentage: UiUtils.bottomSheetButtonWidthPercentage,
@@ -408,10 +456,11 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           for (var i = 0; i < state.students.length; i++) {
             obtainedMarksTextEditingController.add(TextEditingController());
           }
-          //
-          totalMarksOfSelectedSubject = context
-              .read<ExamTimeTableCubit>()
-              .getTotalMarksOfSubject(subjectId: selectedSubjectDetails!.id);
+          if (selectedSubjectDetails != null) {
+            totalMarksOfSelectedSubject = context
+                .read<ExamTimeTableCubit>()
+                .getTotalMarksOfSubject(subjectId: selectedSubjectDetails!.id);
+          }
         }
       },
       builder: (context, state) {
@@ -420,7 +469,8 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           //
           if (state.students.isEmpty) {
             return NoDataContainer(
-                titleKey: UiUtils.getTranslatedLabel(context, noDataFoundKey),);
+              titleKey: UiUtils.getTranslatedLabel(context, noDataFoundKey),
+            );
           }
           //
           return Column(
@@ -431,18 +481,19 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                 height: MediaQuery.of(context).size.height * (0.04),
               ),
               Column(
-                  children: List.generate(state.students.length, (index) {
-                //
-                return AddMarksContainer(
-                  alias: state.students[index].rollNumber.toString(),
-                  obtainedMarksTextEditingController:
-                      obtainedMarksTextEditingController[index],
-                  title:
-                      '${state.students[index].firstName} ${state.students[index].lastName}',
-                  totalMarks: totalMarksOfSelectedSubject,
-                );
-                //
-              }),),
+                children: List.generate(state.students.length, (index) {
+                  //
+                  return AddMarksContainer(
+                    alias: state.students[index].rollNumber.toString(),
+                    obtainedMarksTextEditingController:
+                        obtainedMarksTextEditingController[index],
+                    title:
+                        '${state.students[index].firstName} ${state.students[index].lastName}',
+                    totalMarks: totalMarksOfSelectedSubject,
+                  );
+                  //
+                }),
+              ),
               //
               SizedBox(
                 height: MediaQuery.of(context).size.height * (0.09),
@@ -475,9 +526,9 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
               right: MediaQuery.of(context).size.width *
                   UiUtils.screenContentHorizontalPaddingPercentage,
               top: UiUtils.getScrollViewTopPadding(
-                  context: context,
-                  appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage,),
+                context: context,
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+              ),
             ),
             children: [
               _buildResultFilters(),
@@ -513,15 +564,18 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
                       bottom: MediaQuery.of(context).size.height * 0.02,
                     ),
                     child: _buildSubmitButton(
-                        totalMarks: context
-                            .read<ExamTimeTableCubit>()
-                            .getTotalMarksOfSubject(
-                                subjectId: selectedSubjectDetails!.id,),
-                        studentList: (context
-                                .read<StudentsByClassSectionCubit>()
-                                .state as StudentsByClassSectionFetchSuccess)
-                            .students,),
-                  ),);
+                      totalMarks: context
+                          .read<ExamTimeTableCubit>()
+                          .getTotalMarksOfSubject(
+                            subjectId: selectedSubjectDetails!.id,
+                          ),
+                      studentList: (context
+                              .read<StudentsByClassSectionCubit>()
+                              .state as StudentsByClassSectionFetchSuccess)
+                          .students,
+                    ),
+                  ),
+                );
         }
         return const SizedBox();
       },
@@ -537,21 +591,25 @@ class _AddResultForAllStudentsState extends State<AddResultForAllStudents> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 15.0),
             width: MediaQuery.of(context).size.width * (0.85),
-            child: LayoutBuilder(builder: (context, boxConstraints) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ShimmerLoadingContainer(
+            child: LayoutBuilder(
+              builder: (context, boxConstraints) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShimmerLoadingContainer(
                       child: CustomShimmerContainer(
-                    margin: EdgeInsetsDirectional.only(
-                        end: boxConstraints.maxWidth * (0.3),),
-                  ),),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                ],
-              );
-            },),
+                        margin: EdgeInsetsDirectional.only(
+                          end: boxConstraints.maxWidth * (0.3),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         );
       }),

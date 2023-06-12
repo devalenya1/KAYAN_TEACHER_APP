@@ -12,19 +12,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StudentDetailsScreen extends StatefulWidget {
   final Student student;
-  StudentDetailsScreen({Key? key, required this.student}) : super(key: key);
+  const StudentDetailsScreen({Key? key, required this.student})
+      : super(key: key);
 
   @override
   State<StudentDetailsScreen> createState() => _StudentDetailsScreenState();
 
   static Route<StudentDetailsScreen> route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => BlocProvider(
-              create: (context) => StudentMoreDetailsCubit(StudentRepository()),
-              child: StudentDetailsScreen(
-                student: routeSettings.arguments as Student,
-              ),
-            ),);
+      builder: (_) => BlocProvider(
+        create: (context) => StudentMoreDetailsCubit(StudentRepository()),
+        child: StudentDetailsScreen(
+          student: routeSettings.arguments as Student,
+        ),
+      ),
+    );
   }
 }
 
@@ -43,7 +45,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     return Align(
       alignment: Alignment.topCenter,
       child: CustomAppBar(
-          title: UiUtils.getTranslatedLabel(context, studentDetailsKey),),
+        title: UiUtils.getTranslatedLabel(context, studentDetailsKey),
+      ),
     );
   }
 

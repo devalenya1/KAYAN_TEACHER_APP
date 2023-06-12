@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 
 import '../ui/screens/result/resultScreen.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class Routes {
   static const String splash = "splash";
   static const String home = "/";
@@ -54,7 +55,6 @@ class Routes {
   static const String searchStudent = "/searchStudent";
 
   static const String studentDetails = "/studentDetails";
-
 
   static const String resultList = "/resultList";
 
@@ -143,7 +143,7 @@ class Routes {
         {
           return AddResultScreen.route(routeSettings);
         }
-        case addResultForAllStudents:
+      case addResultForAllStudents:
         {
           return AddResultForAllStudents.route(routeSettings);
         }
@@ -202,7 +202,7 @@ class Routes {
           return ExamScreen.route(routeSettings);
         }
 
-        case examTimeTable:
+      case examTimeTable:
         {
           return ExamTimeTableScreen.route(routeSettings);
         }

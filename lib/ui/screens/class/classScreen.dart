@@ -23,7 +23,9 @@ import 'package:flutter_svg/svg.dart';
 class ClassScreen extends StatefulWidget {
   final bool isClassTeacher;
   final ClassSectionDetails classSection;
-  ClassScreen({Key? key, required this.isClassTeacher, required this.classSection}) : super(key: key);
+  const ClassScreen(
+      {Key? key, required this.isClassTeacher, required this.classSection})
+      : super(key: key);
 
   @override
   State<ClassScreen> createState() => _ClassScreenState();
@@ -31,20 +33,23 @@ class ClassScreen extends StatefulWidget {
   static Route route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => SubjectsOfClassSectionCubit(TeacherRepository()),
-                ),
-                BlocProvider(
-                  create: (context) => StudentsByClassSectionCubit(StudentRepository()),
-                ),
-              ],
-              child: ClassScreen(
-                classSection: arguments['classSection'],
-                isClassTeacher: arguments['isClassTeacher'],
-              ),
-            ),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                SubjectsOfClassSectionCubit(TeacherRepository()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                StudentsByClassSectionCubit(StudentRepository()),
+          ),
+        ],
+        child: ClassScreen(
+          classSection: arguments['classSection'],
+          isClassTeacher: arguments['isClassTeacher'],
+        ),
+      ),
+    );
   }
 }
 
@@ -52,9 +57,13 @@ class _ClassScreenState extends State<ClassScreen> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
-      context.read<SubjectsOfClassSectionCubit>().fetchSubjects(widget.classSection.id);
+      context
+          .read<SubjectsOfClassSectionCubit>()
+          .fetchSubjects(widget.classSection.id);
       if (widget.isClassTeacher) {
-        context.read<StudentsByClassSectionCubit>().fetchStudents(classSectionId: widget.classSection.id);
+        context
+            .read<StudentsByClassSectionCubit>()
+            .fetchStudents(classSectionId: widget.classSection.id);
       }
     });
     super.initState();
@@ -66,38 +75,54 @@ class _ClassScreenState extends State<ClassScreen> {
         ? Align(
             alignment: Alignment.topCenter,
             child: ScreenTopBackgroundContainer(
-              child: LayoutBuilder(builder: (context, boxConstraints) {
-                return Stack(
-                  children: [
-                    const CustomBackButton(),
-                    _selectedTabTitle == subjectsKey
-                        ? const SizedBox()
-                        : Align(
-                            alignment: AlignmentDirectional.topEnd,
-                            child: BlocBuilder<StudentsByClassSectionCubit, StudentsByClassSectionState>(
-                              builder: (context, state) {
-                                if (state is StudentsByClassSectionFetchSuccess) {
-                                  return SearchButton(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .pushNamed(Routes.searchStudent, arguments: {"students": context.read<StudentsByClassSectionCubit>().getStudents(), "fromAttendanceScreen": false});
-                                    },
-                                  );
-                                }
-                                return const SizedBox();
-                              },
+              child: LayoutBuilder(
+                builder: (context, boxConstraints) {
+                  return Stack(
+                    children: [
+                      const CustomBackButton(),
+                      _selectedTabTitle == subjectsKey
+                          ? const SizedBox()
+                          : Align(
+                              alignment: AlignmentDirectional.topEnd,
+                              child: BlocBuilder<StudentsByClassSectionCubit,
+                                  StudentsByClassSectionState>(
+                                builder: (context, state) {
+                                  if (state
+                                      is StudentsByClassSectionFetchSuccess) {
+                                    return SearchButton(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                            Routes.searchStudent,
+                                            arguments: {
+                                              "students": context
+                                                  .read<
+                                                      StudentsByClassSectionCubit>()
+                                                  .getStudents(),
+                                              "fromAttendanceScreen": false
+                                            });
+                                      },
+                                    );
+                                  }
+                                  return const SizedBox();
+                                },
+                              ),
                             ),
-                          ),
-                    AppBarTitleContainer(
+                      AppBarTitleContainer(
                         boxConstraints: boxConstraints,
-                        title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}",),
-                    AnimatedAlign(
-                      curve: UiUtils.tabBackgroundContainerAnimationCurve,
-                      duration: UiUtils.tabBackgroundContainerAnimationDuration,
-                      alignment: _selectedTabTitle == studentsKey ? AlignmentDirectional.centerStart : AlignmentDirectional.centerEnd,
-                      child: TabBackgroundContainer(boxConstraints: boxConstraints),
-                    ),
-                    CustomTabBarContainer(
+                        title:
+                            "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}",
+                      ),
+                      AnimatedAlign(
+                        curve: UiUtils.tabBackgroundContainerAnimationCurve,
+                        duration:
+                            UiUtils.tabBackgroundContainerAnimationDuration,
+                        alignment: _selectedTabTitle == studentsKey
+                            ? AlignmentDirectional.centerStart
+                            : AlignmentDirectional.centerEnd,
+                        child: TabBackgroundContainer(
+                            boxConstraints: boxConstraints),
+                      ),
+                      CustomTabBarContainer(
                         boxConstraints: boxConstraints,
                         alignment: AlignmentDirectional.centerStart,
                         isSelected: _selectedTabTitle == studentsKey,
@@ -106,8 +131,9 @@ class _ClassScreenState extends State<ClassScreen> {
                             _selectedTabTitle = studentsKey;
                           });
                         },
-                        titleKey: studentsKey,),
-                    CustomTabBarContainer(
+                        titleKey: studentsKey,
+                      ),
+                      CustomTabBarContainer(
                         boxConstraints: boxConstraints,
                         alignment: AlignmentDirectional.centerEnd,
                         isSelected: _selectedTabTitle == subjectsKey,
@@ -116,56 +142,71 @@ class _ClassScreenState extends State<ClassScreen> {
                             _selectedTabTitle = subjectsKey;
                           });
                         },
-                        titleKey: subjectsKey,),
-                  ],
-                );
-              },),
+                        titleKey: subjectsKey,
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
           )
         : Align(
             alignment: Alignment.topCenter,
             child: CustomAppBar(
-                subTitle: UiUtils.getTranslatedLabel(context, subjectsKey),
-                title: "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}",),
+              subTitle: UiUtils.getTranslatedLabel(context, subjectsKey),
+              title:
+                  "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSection.classDetails.name} - ${widget.classSection.sectionDetails.name}",
+            ),
           );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: widget.isClassTeacher
-          ? BlocBuilder<StudentsByClassSectionCubit, StudentsByClassSectionState>(
-              builder: (context, state) {
-                if (state is StudentsByClassSectionFetchSuccess) {
-                  return FloatingActionButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.attendance, arguments: state.students);
-                    },
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SvgPicture.asset(
-                        UiUtils.getImagePath("take_attendance.svg"),
-                        colorFilter: ColorFilter.mode(Theme.of(context).scaffoldBackgroundColor, BlendMode.srcIn),
-                        // color: Theme.of(context).scaffoldBackgroundColor,
-                      ),
-                    ),
-                  );
-                }
+      floatingActionButton:
+          widget.isClassTeacher && _selectedTabTitle == studentsKey
+              ? BlocBuilder<StudentsByClassSectionCubit,
+                  StudentsByClassSectionState>(
+                  builder: (context, state) {
+                    if (state is StudentsByClassSectionFetchSuccess) {
+                      return FloatingActionButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(Routes.attendance,
+                              arguments: state.students);
+                        },
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SvgPicture.asset(
+                            UiUtils.getImagePath("take_attendance.svg"),
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).scaffoldBackgroundColor,
+                              BlendMode.srcIn,
+                            ),
+                            // color: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                        ),
+                      );
+                    }
 
-                return const SizedBox();
-              },
-            )
-          : const SizedBox(),
+                    return const SizedBox();
+                  },
+                )
+              : const SizedBox(),
       body: Stack(
         children: [
           Align(
             alignment: Alignment.topCenter,
             child: SingleChildScrollView(
               padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * (0.075),
-                  right: MediaQuery.of(context).size.width * (0.075),
-                  top: UiUtils.getScrollViewTopPadding(context: context, appBarHeightPercentage: widget.isClassTeacher ? UiUtils.appBarBiggerHeightPercentage : UiUtils.appBarSmallerHeightPercentage),),
+                left: MediaQuery.of(context).size.width * (0.075),
+                right: MediaQuery.of(context).size.width * (0.075),
+                top: UiUtils.getScrollViewTopPadding(
+                    context: context,
+                    appBarHeightPercentage: widget.isClassTeacher
+                        ? UiUtils.appBarBiggerHeightPercentage
+                        : UiUtils.appBarSmallerHeightPercentage),
+              ),
               child: widget.isClassTeacher
                   ? _selectedTabTitle == subjectsKey
                       ? SubjectsContainer(

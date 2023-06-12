@@ -23,16 +23,18 @@ class _AssignmentDetailsBottomsheetContainerState
     extends State<AssignmentDetailsBottomsheetContainer> {
   TextStyle _getAssignmentDetailsLabelValueTextStyle() {
     return TextStyle(
-        color: Theme.of(context).colorScheme.secondary,
-        fontSize: 14,
-        fontWeight: FontWeight.w600,);
+      color: Theme.of(context).colorScheme.secondary,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+    );
   }
 
   TextStyle _getAssignmentDetailsLabelTextStyle() {
     return TextStyle(
-        color: Theme.of(context).colorScheme.onBackground,
-        fontSize: 12,
-        fontWeight: FontWeight.w400,);
+      color: Theme.of(context).colorScheme.onBackground,
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+    );
   }
 
   Widget _buildAssignmentDetailBackgroundContainer(Widget child) {
@@ -42,8 +44,9 @@ class _AssignmentDetailsBottomsheetContainerState
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.circular(10.0),),
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         child: child,
       ),
     );
@@ -63,7 +66,9 @@ class _AssignmentDetailsBottomsheetContainerState
             height: 5.0,
           ),
           Text(
-            widget.assignment.subject.name,
+            widget.assignment.subject.showType
+                ? widget.assignment.subject.subjectNameWithType
+                : widget.assignment.subject.name,
             style: _getAssignmentDetailsLabelValueTextStyle(),
           ),
         ],
@@ -168,96 +173,79 @@ class _AssignmentDetailsBottomsheetContainerState
 
   Widget _buildAssignmentReferenceMaterialsContainer() {
     return _buildAssignmentDetailBackgroundContainer(
-      LayoutBuilder(builder: (context, boxConstraints) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              UiUtils.getTranslatedLabel(context, referenceMaterialsKey),
-              style: _getAssignmentDetailsLabelTextStyle(),
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            ...List.generate(
-              widget.assignment.studyMaterial.length,
-              (index) => Transform.translate(
-                offset: const Offset(-15, 0),
-                child: AnnouncementAttachmentContainer(
+      LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                UiUtils.getTranslatedLabel(context, referenceMaterialsKey),
+                style: _getAssignmentDetailsLabelTextStyle(),
+              ),
+              const SizedBox(
+                height: 5.0,
+              ),
+              ...List.generate(
+                widget.assignment.studyMaterial.length,
+                (index) => Transform.translate(
+                  offset: const Offset(-15, 0),
+                  child: AnnouncementAttachmentContainer(
                     backgroundColor: Colors.transparent,
                     showDeleteButton: false,
-                    studyMaterial: widget.assignment.studyMaterial[index],),
+                    studyMaterial: widget.assignment.studyMaterial[index],
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 15.0,
-            ),
-          ],
-        );
-      },),
+              const SizedBox(
+                height: 15.0,
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
-  // Widget _buildLateSubmissionToggleContainer() {
-  //   bool isLateSubmission =
-  //       widget.assignment.extraDaysForResubmission == null ? false : true;
-  //   return _buildAssignmentDetailBackgroundContainer(
-  //       LayoutBuilder(builder: (context, boxConstraints) {
-  //     return Row(
-  //       children: [
-  //         Flexible(
-  //           child: SizedBox(
-  //             width: boxConstraints.maxWidth * (0.8),
-  //             child: Text(
-  //               UiUtils.getTranslatedLabel(context, lateSubmissionKey),
-  //               style: _getAssignmentDetailsLabelValueTextStyle(),
-  //             ),
-  //           ),
-  //         ),
-  //         Spacer(),
-  //         SizedBox(
-  //           width: 30,
-  //           child: CustomCupertinoSwitch(
-  //               onChanged: (_) {}, value: isLateSubmission),
-  //         )
-  //       ],
-  //     );
-  //   }));
-  // }
-
   //Add
   Widget _buildReSubmissionOfRejectedASsignmentToggleContainer() {
-    bool isResubmission = widget.assignment.resubmission == 0 ? false : true;
+    final bool isResubmission = widget.assignment.resubmission != 0;
     return _buildAssignmentDetailBackgroundContainer(
-        LayoutBuilder(builder: (context, boxConstraints) {
-      return Row(
-        children: [
-          Flexible(
-            child: SizedBox(
-              width: boxConstraints.maxWidth * (0.825),
-              child: Text(
-                UiUtils.getTranslatedLabel(
-                    context, resubmissionOfRejectedAssignmentKey,),
-                style: _getAssignmentDetailsLabelValueTextStyle(),
+      LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Row(
+            children: [
+              Flexible(
+                child: SizedBox(
+                  width: boxConstraints.maxWidth * (0.825),
+                  child: Text(
+                    UiUtils.getTranslatedLabel(
+                      context,
+                      resubmissionOfRejectedAssignmentKey,
+                    ),
+                    style: _getAssignmentDetailsLabelValueTextStyle(),
+                  ),
+                ),
               ),
-            ),
-          ),
-          SizedBox(
-            width: boxConstraints.maxWidth * (0.075),
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            width: boxConstraints.maxWidth * (0.1),
-            child: SizedBox(
-              width: 30,
-              child: CustomCupertinoSwitch(
-                  onChanged: (_) {}, value: isResubmission,),
-            ),
-          )
-        ],
-      );
-    },),);
+              SizedBox(
+                width: boxConstraints.maxWidth * (0.075),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                width: boxConstraints.maxWidth * (0.1),
+                child: SizedBox(
+                  width: 30,
+                  child: CustomCupertinoSwitch(
+                    onChanged: (_) {},
+                    value: isResubmission,
+                  ),
+                ),
+              )
+            ],
+          );
+        },
+      ),
+    );
   }
 
   Widget _buildExtraDayForRejectedAssignmentContainer() {
@@ -268,7 +256,9 @@ class _AssignmentDetailsBottomsheetContainerState
         children: [
           Text(
             UiUtils.getTranslatedLabel(
-                context, extraDaysForRejectedAssignmentKey,),
+              context,
+              extraDaysForRejectedAssignmentKey,
+            ),
             style: _getAssignmentDetailsLabelTextStyle(),
           ),
           const SizedBox(
@@ -296,83 +286,97 @@ class _AssignmentDetailsBottomsheetContainerState
       padding:
           EdgeInsets.only(top: UiUtils.bottomSheetHorizontalContentPadding),
       constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * (0.875),),
+        maxHeight: MediaQuery.of(context).size.height * (0.875),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           //
           Container(
             decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                border: Border(
-                    bottom: BorderSide(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onBackground
-                            .withOpacity(0.5),),),),
+              color: Theme.of(context).scaffoldBackgroundColor,
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0.5),
+                ),
+              ),
+            ),
             padding: EdgeInsets.symmetric(
-                horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
-            child: LayoutBuilder(builder: (context, boxConstraints) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: SizedBox(
-                      width: boxConstraints.maxWidth * (0.75),
-                      child: Text(
-                        widget.assignment.name,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
+              horizontal: UiUtils.bottomSheetHorizontalContentPadding,
+            ),
+            child: LayoutBuilder(
+              builder: (context, boxConstraints) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: SizedBox(
+                        width: boxConstraints.maxWidth * (0.75),
+                        child: Text(
+                          widget.assignment.name,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
                             fontSize: 16,
                             color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w600,),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  TextButton(
+                    TextButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.assignment,
-                            arguments: {"assignment": widget.assignment},);
+                        Navigator.of(context).pushNamed(
+                          Routes.assignment,
+                          arguments: {"assignment": widget.assignment},
+                        );
                       },
                       child: Text(
                         UiUtils.getTranslatedLabel(context, viewKey),
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,),
-                      ),),
-                ],
-              );
-            },),
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
 
           Expanded(
-              child: ListView(
-            padding: EdgeInsets.symmetric(
-                horizontal: UiUtils.bottomSheetHorizontalContentPadding,),
-            children: [
-              SizedBox(
-                height: UiUtils.bottomSheetHorizontalContentPadding,
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                horizontal: UiUtils.bottomSheetHorizontalContentPadding,
               ),
-              _buildAssignmentSubjectNameContainer(),
-              _buildAssignmentAssignedDateContainer(),
-              _buildAssignmentDueDateContainer(),
-              if (widget.assignment.instructions.isNotEmpty)
-                _buildAssignmentInstructionsContainer(),
-              if (widget.assignment.studyMaterial.isNotEmpty &&
-                  widget.assignment.studyMaterial != [])
-                _buildAssignmentReferenceMaterialsContainer(),
+              children: [
+                SizedBox(
+                  height: UiUtils.bottomSheetHorizontalContentPadding,
+                ),
+                _buildAssignmentSubjectNameContainer(),
+                _buildAssignmentAssignedDateContainer(),
+                _buildAssignmentDueDateContainer(),
+                if (widget.assignment.instructions.isNotEmpty)
+                  _buildAssignmentInstructionsContainer(),
+                if (widget.assignment.studyMaterial.isNotEmpty &&
+                    widget.assignment.studyMaterial != [])
+                  _buildAssignmentReferenceMaterialsContainer(),
 
-              _buildAssignmentPointsContainer(),
-              // _buildLateSubmissionToggleContainer(),
+                _buildAssignmentPointsContainer(),
+                // _buildLateSubmissionToggleContainer(),
 
-              _buildReSubmissionOfRejectedASsignmentToggleContainer(),
-              if (widget.assignment.resubmission == 1)
-                _buildExtraDayForRejectedAssignmentContainer(),
-              //_buildDeleteAndEditButtonContainer(),
-              SizedBox(
-                height: UiUtils.bottomSheetHorizontalContentPadding,
-              ),
-            ],
-          ),)
+                _buildReSubmissionOfRejectedASsignmentToggleContainer(),
+                if (widget.assignment.resubmission == 1)
+                  _buildExtraDayForRejectedAssignmentContainer(),
+                //_buildDeleteAndEditButtonContainer(),
+                SizedBox(
+                  height: UiUtils.bottomSheetHorizontalContentPadding,
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

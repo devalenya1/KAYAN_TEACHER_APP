@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -49,14 +49,16 @@ class _SplashScreenState extends State<SplashScreen> {
           if (state is AppConfigurationFetchFailure) {
             return Center(
               child: ErrorContainer(
-                  onTapRetry: () {
-                    fetchAppConfiguration();
-                  },
-                  errorMessageCode: state.errorMessage,),
+                onTapRetry: () {
+                  fetchAppConfiguration();
+                },
+                errorMessageCode: state.errorMessage,
+              ),
             );
           }
           return Center(
-              child: SvgPicture.asset(UiUtils.getImagePath("appLogo.svg")),);
+            child: SvgPicture.asset(UiUtils.getImagePath("appLogo.svg")),
+          );
         },
       ),
     );

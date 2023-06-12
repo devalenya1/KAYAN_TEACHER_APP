@@ -17,9 +17,9 @@ class Subject {
   late final String type;
   late final bool isSubjectImageSvg;
 
-  String getSubjectName() {
-    return name;
-  }
+  String get subjectNameWithType => "$name ($type)";
+
+  bool get showType => type == "Practical";
 
   Subject.fromJson(Map<String, dynamic> json) {
     print('sub json is $json');
@@ -35,14 +35,14 @@ class Subject {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    _data['code'] = code;
-    _data['bg_color'] = bgColor;
-    _data['image'] = image;
-    _data['medium_id'] = mediumId;
-    _data['type'] = type;
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['code'] = code;
+    data['bg_color'] = bgColor;
+    data['image'] = image;
+    data['medium_id'] = mediumId;
+    data['type'] = type;
+    return data;
   }
 }

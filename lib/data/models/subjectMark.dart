@@ -1,4 +1,3 @@
-
 class SubjectMark {
   // final Subject subject;
   final int totalMarks;
@@ -11,7 +10,8 @@ class SubjectMark {
   // final int passingMarks;
   // final DateTime examDate;
 
-  SubjectMark({required this.grade,
+  SubjectMark({
+    required this.grade,
     //required this.examDate,
     // required this.passingStatus,
     required this.obtainedMarks,
@@ -36,6 +36,7 @@ class SubjectMark {
             ? DateTime.now()
             : json['timetable']['date'] == null
                 ? DateTime.now()
-                : DateTime.parse(json['timetable']['date']),*/);
+                : DateTime.parse(json['timetable']['date']),*/
+    );
   }
 }

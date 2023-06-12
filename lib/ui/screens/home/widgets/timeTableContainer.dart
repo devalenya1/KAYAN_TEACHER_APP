@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TimeTableContainer extends StatefulWidget {
-  TimeTableContainer({Key? key}) : super(key: key);
+  const TimeTableContainer({Key? key}) : super(key: key);
 
   @override
   State<TimeTableContainer> createState() => _TimeTableContainerState();
@@ -32,7 +32,7 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
   Widget _buildAppBar() {
     return ScreenTopBackgroundContainer(
       heightPercentage: UiUtils.appBarSmallerHeightPercentage,
-      padding: const EdgeInsets.all(0),
+      padding: EdgeInsets.zero,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -40,8 +40,9 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
             child: Text(
               UiUtils.getTranslatedLabel(context, scheduleKey),
               style: TextStyle(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  fontSize: UiUtils.screenTitleFontSize,),
+                color: Theme.of(context).scaffoldBackgroundColor,
+                fontSize: UiUtils.screenTitleFontSize,
+              ),
             ),
           ),
         ],
@@ -60,19 +61,21 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0),
-            color: index == _currentSelectedDayIndex
-                ? Theme.of(context).colorScheme.primary
-                : Colors.transparent,),
+          borderRadius: BorderRadius.circular(5.0),
+          color: index == _currentSelectedDayIndex
+              ? Theme.of(context).colorScheme.primary
+              : Colors.transparent,
+        ),
         padding: const EdgeInsets.all(7.5),
         child: Text(
           UiUtils.weekDays[index],
           style: TextStyle(
-              fontSize: 13.0,
-              fontWeight: FontWeight.w600,
-              color: index == _currentSelectedDayIndex
-                  ? Theme.of(context).scaffoldBackgroundColor
-                  : Theme.of(context).colorScheme.primary,),
+            fontSize: 13.0,
+            fontWeight: FontWeight.w600,
+            color: index == _currentSelectedDayIndex
+                ? Theme.of(context).scaffoldBackgroundColor
+                : Theme.of(context).colorScheme.primary,
+          ),
         ),
       ),
     );
@@ -98,73 +101,82 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color:
-                    Theme.of(context).colorScheme.secondary.withOpacity(0.05),
-                offset: const Offset(2.5, 2.5),
-                blurRadius: 10,)
-          ],
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(10),),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.secondary.withOpacity(0.05),
+            offset: const Offset(2.5, 2.5),
+            blurRadius: 10,
+          )
+        ],
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
       height: 80,
       width: MediaQuery.of(context).size.width * (0.85),
       padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Row(
-          children: [
-            SubjectImageContainer(
-              showShadow: false,
-              height: 60,
-              width: boxConstraints.maxWidth * (0.2),
-              radius: 7.5,
-              subject: timeTableSlot.subject,
-            ),
-            SizedBox(
-              width: boxConstraints.maxWidth * (0.05),
-            ),
-            SizedBox(
-              width: boxConstraints.maxWidth * (0.75),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "${UiUtils.formatTime(timeTableSlot.startTime)} - ${UiUtils.formatTime(timeTableSlot.endTime)}",
-                        style: TextStyle(
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Row(
+            children: [
+              SubjectImageContainer(
+                showShadow: false,
+                height: 60,
+                width: boxConstraints.maxWidth * (0.2),
+                radius: 7.5,
+                subject: timeTableSlot.subject,
+              ),
+              SizedBox(
+                width: boxConstraints.maxWidth * (0.05),
+              ),
+              SizedBox(
+                width: boxConstraints.maxWidth * (0.75),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "${UiUtils.formatTime(timeTableSlot.startTime)} - ${UiUtils.formatTime(timeTableSlot.endTime)}",
+                          style: TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontWeight: FontWeight.w600,
-                            fontSize: 14.0,),
-                      ),
-                      const Spacer(),
-                      Text(
-                        timeTableSlot.classSectionDetails.getClassSectionName(),
-                        style: TextStyle(
+                            fontSize: 14.0,
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          timeTableSlot.classSectionDetails
+                              .getClassSectionName(),
+                          style: TextStyle(
                             color: Theme.of(context).colorScheme.onBackground,
                             fontWeight: FontWeight.w400,
-                            fontSize: 12.0,),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    timeTableSlot.subject.name,
-                    style: TextStyle(
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      timeTableSlot.subject.showType
+                          ? timeTableSlot.subject.subjectNameWithType
+                          : timeTableSlot.subject.name,
+                      style: TextStyle(
                         color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.w400,
-                        fontSize: 12.0,),
-                  )
-                ],
+                        fontSize: 12.0,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
-        );
-      },),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -180,39 +192,42 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
       margin: const EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(
-          horizontal: UiUtils.screenContentHorizontalPaddingPercentage *
-              MediaQuery.of(context).size.width,),
+        horizontal: UiUtils.screenContentHorizontalPaddingPercentage *
+            MediaQuery.of(context).size.width,
+      ),
       child: ShimmerLoadingContainer(
-        child: LayoutBuilder(builder: (context, boxConstraints) {
-          return Row(
-            children: [
-              CustomShimmerContainer(
-                height: 60,
-                width: boxConstraints.maxWidth * (0.25),
-              ),
-              SizedBox(
-                width: boxConstraints.maxWidth * (0.05),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomShimmerContainer(
-                    height: 9,
-                    width: boxConstraints.maxWidth * (0.6),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomShimmerContainer(
-                    height: 8,
-                    width: boxConstraints.maxWidth * (0.5),
-                  ),
-                ],
-              )
-            ],
-          );
-        },),
+        child: LayoutBuilder(
+          builder: (context, boxConstraints) {
+            return Row(
+              children: [
+                CustomShimmerContainer(
+                  height: 60,
+                  width: boxConstraints.maxWidth * (0.25),
+                ),
+                SizedBox(
+                  width: boxConstraints.maxWidth * (0.05),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomShimmerContainer(
+                      height: 9,
+                      width: boxConstraints.maxWidth * (0.6),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomShimmerContainer(
+                      height: 8,
+                      width: boxConstraints.maxWidth * (0.5),
+                    ),
+                  ],
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -229,7 +244,8 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
                   child: Column(
                     children: timetableSlots
                         .map(
-                            (slot) => _buildTimeTableSlotDetainsContainer(slot),)
+                          (slot) => _buildTimeTableSlotDetainsContainer(slot),
+                        )
                         .toList(),
                   ),
                 );
@@ -246,9 +262,9 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
 
         return Column(
           children: List.generate(
-                  UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
-              .map((e) => _buildTimeTableShimmerLoadingContainer())
-              .toList(),
+            UiUtils.defaultShimmerLoadingContentCount,
+            (index) => index,
+          ).map((e) => _buildTimeTableShimmerLoadingContainer()).toList(),
         );
       },
     );
@@ -262,11 +278,12 @@ class _TimeTableContainerState extends State<TimeTableContainer> {
           alignment: Alignment.topCenter,
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
-                bottom: UiUtils.getScrollViewBottomPadding(context),
-                top: UiUtils.getScrollViewTopPadding(
-                    context: context,
-                    appBarHeightPercentage:
-                        UiUtils.appBarSmallerHeightPercentage,),),
+              bottom: UiUtils.getScrollViewBottomPadding(context),
+              top: UiUtils.getScrollViewTopPadding(
+                context: context,
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+              ),
+            ),
             child: Column(
               children: [
                 _buildDays(),

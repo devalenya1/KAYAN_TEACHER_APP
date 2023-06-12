@@ -26,56 +26,64 @@ class AnnouncementsContainer extends StatelessWidget {
   final Subject subject;
   final ClassSectionDetails classSectionDetails;
 
-  AnnouncementsContainer(
-      {Key? key, required this.classSectionDetails, required this.subject,})
-      : super(key: key);
+  const AnnouncementsContainer({
+    Key? key,
+    required this.classSectionDetails,
+    required this.subject,
+  }) : super(key: key);
 
   Widget _buildAnnouncementShimmerLoading(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 25.0),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12.5),
       width: MediaQuery.of(context).size.width * (0.8),
-      child: LayoutBuilder(builder: (context, boxConstraints) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ShimmerLoadingContainer(
+      child: LayoutBuilder(
+        builder: (context, boxConstraints) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
-              borderRadius: 4.0,
-              width: boxConstraints.maxWidth * (0.65),
-            ),),
-            const SizedBox(
-              height: 10,
-            ),
-            ShimmerLoadingContainer(
+                  borderRadius: 4.0,
+                  width: boxConstraints.maxWidth * (0.65),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
-              borderRadius: 3.0,
-              width: boxConstraints.maxWidth * (0.5),
-            ),),
-            const SizedBox(
-              height: 20,
-            ),
-            ShimmerLoadingContainer(
+                  borderRadius: 3.0,
+                  width: boxConstraints.maxWidth * (0.5),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ShimmerLoadingContainer(
                 child: CustomShimmerContainer(
-              borderRadius: 3.0,
-              height: UiUtils.shimmerLoadingContainerDefaultHeight - 2,
-              width: boxConstraints.maxWidth * (0.3),
-            ),),
-          ],
-        );
-      },),
+                  borderRadius: 3.0,
+                  height: UiUtils.shimmerLoadingContainerDefaultHeight - 2,
+                  width: boxConstraints.maxWidth * (0.3),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildAnnouncementContainer(
-      {required Announcement announcement,
-      required BuildContext context,
-      required int index,
-      required int totalAnnouncements,
-      required bool hasMoreAnnouncements,
-      required bool hasMoreAnnouncementsInProgress,
-      required bool fetchMoreAnnouncementsFailure,}) {
+  Widget _buildAnnouncementContainer({
+    required Announcement announcement,
+    required BuildContext context,
+    required int index,
+    required int totalAnnouncements,
+    required bool hasMoreAnnouncements,
+    required bool hasMoreAnnouncementsInProgress,
+    required bool fetchMoreAnnouncementsFailure,
+  }) {
     //show announcement loading container for last announcement container
     if (index == (totalAnnouncements - 1)) {
       //If has more assignment
@@ -86,12 +94,14 @@ class AnnouncementsContainer extends StatelessWidget {
         if (fetchMoreAnnouncementsFailure) {
           return Center(
             child: CupertinoButton(
-                child: Text(UiUtils.getTranslatedLabel(context, retryKey)),
-                onPressed: () {
-                  context.read<AnnouncementsCubit>().fetchMoreAnnouncements(
+              child: Text(UiUtils.getTranslatedLabel(context, retryKey)),
+              onPressed: () {
+                context.read<AnnouncementsCubit>().fetchMoreAnnouncements(
                       classSectionId: classSectionDetails.id,
-                      subjectId: subject.id,);
-                },),
+                      subjectId: subject.id,
+                    );
+              },
+            ),
           );
         }
       }
@@ -99,141 +109,163 @@ class AnnouncementsContainer extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => DeleteAnnouncementCubit(AnnouncementRepository()),
-      child: Builder(builder: (context) {
-        return BlocConsumer<DeleteAnnouncementCubit, DeleteAnnouncementState>(
-          listener: (context, state) {
-            if (state is DeleteAnnouncementSuccess) {
-              context
-                  .read<AnnouncementsCubit>()
-                  .deleteAnnouncement(announcement.id);
-            } else if (state is DeleteAnnouncementFailure) {
-              UiUtils.showBottomToastOverlay(
+      child: Builder(
+        builder: (context) {
+          return BlocConsumer<DeleteAnnouncementCubit, DeleteAnnouncementState>(
+            listener: (context, state) {
+              if (state is DeleteAnnouncementSuccess) {
+                context
+                    .read<AnnouncementsCubit>()
+                    .deleteAnnouncement(announcement.id);
+              } else if (state is DeleteAnnouncementFailure) {
+                UiUtils.showBottomToastOverlay(
                   context: context,
                   errorMessage:
                       UiUtils.getTranslatedLabel(context, unableToDeleteKey),
-                  backgroundColor: Theme.of(context).colorScheme.error,);
-            }
-          },
-          builder: (context, state) {
-            return Opacity(
-              opacity: state is DeleteAnnouncementInProgress ? 0.5 : 1.0,
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 20),
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                decoration: BoxDecoration(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                );
+              }
+            },
+            builder: (context, state) {
+              return Opacity(
+                opacity: state is DeleteAnnouncementInProgress ? 0.5 : 1.0,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 15.0),
+                  decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background,
-                    borderRadius: BorderRadius.circular(10.0),),
-                width: MediaQuery.of(context).size.width * (0.85),
-                child: LayoutBuilder(builder: (context, boxConstraints) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  width: MediaQuery.of(context).size.width * (0.85),
+                  child: LayoutBuilder(
+                    builder: (context, boxConstraints) {
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: boxConstraints.maxWidth * (0.75),
-                            child: Text(
-                              announcement.title,
-                              style: TextStyle(
-                                height: 1.1,
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          EditButton(onTap: () {
-                            if (state is DeleteAnnouncementInProgress) {
-                              return;
-                            }
-                            Navigator.of(context).pushNamed<bool?>(
-                                Routes.addOrEditAnnouncement,
-                                arguments: {
-                                  "subject": subject,
-                                  "classSectionDetails": classSectionDetails,
-                                  "announcement": announcement
-                                },).then((value) {
-                              if (value != null && value) {
-                                context
-                                    .read<AnnouncementsCubit>()
-                                    .fetchAnnouncements(
-                                        classSectionId: classSectionDetails.id,
-                                        subjectId: subject.id,);
-                              }
-                            });
-                          },),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          DeleteButton(onTap: () {
-                            if (state is DeleteAnnouncementInProgress) {
-                              return;
-                            }
-                            showDialog<bool>(
-                                    context: context,
-                                    builder: (_) => const ConfirmDeleteDialog(),)
-                                .then((value) {
-                              if (value != null && value) {
-                                context
-                                    .read<DeleteAnnouncementCubit>()
-                                    .deleteAnnouncement(announcement.id);
-                              }
-                            });
-                          },)
-                        ],
-                      ),
-                      announcement.description.isEmpty
-                          ? const SizedBox()
-                          : Text(
-                              announcement.description,
-                              style: TextStyle(
-                                height: 1.2,
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 11.5,
-                              ),
-                            ),
-                      announcement.files.isNotEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 5.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  UiUtils.showBottomSheet(
-                                      child: AttachmentBottomsheetContainer(
-                                        fromAnnouncementsContainer: true,
-                                        studyMaterials: announcement.files,
-                                      ),
-                                      context: context,);
-                                },
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: boxConstraints.maxWidth * (0.75),
                                 child: Text(
-                                  "${announcement.files.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
-                                  style: const TextStyle(
-                                      color: assignmentViewButtonColor,),
+                                  announcement.title,
+                                  style: TextStyle(
+                                    height: 1.1,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    fontSize: 15.0,
+                                  ),
                                 ),
                               ),
-                            )
-                          : const SizedBox(),
-                      SizedBox(
-                        height: announcement.files.isNotEmpty ? 0 : 5,
-                      ),
-                      Text(timeago.format(announcement.createdAt),
-                          style: TextStyle(
+                              const Spacer(),
+                              EditButton(
+                                onTap: () {
+                                  if (state is DeleteAnnouncementInProgress) {
+                                    return;
+                                  }
+                                  Navigator.of(context).pushNamed<bool?>(
+                                    Routes.addOrEditAnnouncement,
+                                    arguments: {
+                                      "subject": subject,
+                                      "classSectionDetails":
+                                          classSectionDetails,
+                                      "announcement": announcement
+                                    },
+                                  ).then((value) {
+                                    if (value != null && value) {
+                                      context
+                                          .read<AnnouncementsCubit>()
+                                          .fetchAnnouncements(
+                                            classSectionId:
+                                                classSectionDetails.id,
+                                            subjectId: subject.id,
+                                          );
+                                    }
+                                  });
+                                },
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              DeleteButton(
+                                onTap: () {
+                                  if (state is DeleteAnnouncementInProgress) {
+                                    return;
+                                  }
+                                  showDialog<bool>(
+                                    context: context,
+                                    builder: (_) => const ConfirmDeleteDialog(),
+                                  ).then((value) {
+                                    if (value != null && value) {
+                                      context
+                                          .read<DeleteAnnouncementCubit>()
+                                          .deleteAnnouncement(announcement.id);
+                                    }
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                          announcement.description.isEmpty
+                              ? const SizedBox()
+                              : Text(
+                                  announcement.description,
+                                  style: TextStyle(
+                                    height: 1.2,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 11.5,
+                                  ),
+                                ),
+                          announcement.files.isNotEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 5.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      UiUtils.showBottomSheet(
+                                        child: AttachmentBottomsheetContainer(
+                                          fromAnnouncementsContainer: true,
+                                          studyMaterials: announcement.files,
+                                        ),
+                                        context: context,
+                                      );
+                                    },
+                                    child: Text(
+                                      "${announcement.files.length} ${UiUtils.getTranslatedLabel(context, attachmentsKey)}",
+                                      style: const TextStyle(
+                                        color: assignmentViewButtonColor,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
+                          SizedBox(
+                            height: announcement.files.isNotEmpty ? 0 : 5,
+                          ),
+                          Text(
+                            timeago.format(announcement.createdAt),
+                            style: TextStyle(
                               color: Theme.of(context)
                                   .colorScheme
                                   .onBackground
                                   .withOpacity(0.75),
                               fontWeight: FontWeight.w400,
-                              fontSize: 10,),
-                          textAlign: TextAlign.start,)
-                    ],
-                  );
-                },),
-              ),
-            );
-          },
-        );
-      },),
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.start,
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -246,8 +278,11 @@ class AnnouncementsContainer extends StatelessWidget {
               ? const NoDataContainer(titleKey: noAnnouncementsKey)
               : Column(
                   children: List.generate(
-                          state.announcements.length, (index) => index,)
-                      .map((index) => _buildAnnouncementContainer(
+                    state.announcements.length,
+                    (index) => index,
+                  )
+                      .map(
+                        (index) => _buildAnnouncementContainer(
                           context: context,
                           announcement: state.announcements[index],
                           index: index,
@@ -257,7 +292,9 @@ class AnnouncementsContainer extends StatelessWidget {
                           hasMoreAnnouncementsInProgress:
                               state.fetchMoreAnnouncementsInProgress,
                           fetchMoreAnnouncementsFailure:
-                              state.moreAnnouncementsFetchError,),)
+                              state.moreAnnouncementsFetchError,
+                        ),
+                      )
                       .toList(),
                 );
         }
@@ -267,8 +304,9 @@ class AnnouncementsContainer extends StatelessWidget {
               errorMessageCode: state.errorMessage,
               onTapRetry: () {
                 context.read<AnnouncementsCubit>().fetchAnnouncements(
-                    classSectionId: classSectionDetails.id,
-                    subjectId: subject.id,);
+                      classSectionId: classSectionDetails.id,
+                      subjectId: subject.id,
+                    );
               },
             ),
           );
@@ -276,9 +314,9 @@ class AnnouncementsContainer extends StatelessWidget {
 
         return Column(
           children: List.generate(
-                  UiUtils.defaultShimmerLoadingContentCount, (index) => index,)
-              .map((e) => _buildAnnouncementShimmerLoading(context))
-              .toList(),
+            UiUtils.defaultShimmerLoadingContentCount,
+            (index) => index,
+          ).map((e) => _buildAnnouncementShimmerLoading(context)).toList(),
         );
       },
     );

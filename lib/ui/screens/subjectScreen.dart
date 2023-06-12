@@ -24,9 +24,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SubjectScreen extends StatefulWidget {
   final Subject subject;
   final ClassSectionDetails classSectionDetails;
-  SubjectScreen(
-      {Key? key, required this.subject, required this.classSectionDetails,})
-      : super(key: key);
+  const SubjectScreen({
+    Key? key,
+    required this.subject,
+    required this.classSectionDetails,
+  }) : super(key: key);
 
   @override
   State<SubjectScreen> createState() => _SubjectScreenState();
@@ -34,21 +36,21 @@ class SubjectScreen extends StatefulWidget {
   static Route<dynamic> route(RouteSettings routeSettings) {
     final arguments = routeSettings.arguments as Map<String, dynamic>;
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => LessonsCubit(LessonRepository()),
-                ),
-                BlocProvider(
-                  create: (context) =>
-                      AnnouncementsCubit(AnnouncementRepository()),
-                ),
-              ],
-              child: SubjectScreen(
-                classSectionDetails: arguments['classSectionDetails'],
-                subject: arguments['subject'],
-              ),
-            ),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LessonsCubit(LessonRepository()),
+          ),
+          BlocProvider(
+            create: (context) => AnnouncementsCubit(AnnouncementRepository()),
+          ),
+        ],
+        child: SubjectScreen(
+          classSectionDetails: arguments['classSectionDetails'],
+          subject: arguments['subject'],
+        ),
+      ),
+    );
   }
 }
 
@@ -63,11 +65,13 @@ class _SubjectScreenState extends State<SubjectScreen> {
     super.initState();
     Future.delayed(Duration.zero, () {
       context.read<LessonsCubit>().fetchLessons(
-          classSectionId: widget.classSectionDetails.id,
-          subjectId: widget.subject.id,);
+            classSectionId: widget.classSectionDetails.id,
+            subjectId: widget.subject.id,
+          );
       context.read<AnnouncementsCubit>().fetchAnnouncements(
-          classSectionId: widget.classSectionDetails.id,
-          subjectId: widget.subject.id,);
+            classSectionId: widget.classSectionDetails.id,
+            subjectId: widget.subject.id,
+          );
     });
   }
 
@@ -92,54 +96,63 @@ class _SubjectScreenState extends State<SubjectScreen> {
 
   void _onTapFloatingActionAddButton() {
     Navigator.of(context).pushNamed(
-        _selectedTabTitle == chaptersKey
-            ? Routes.addOrEditLesson
-            : Routes.addOrEditAnnouncement,
-        arguments: _selectedTabTitle == chaptersKey
-            ? {
-                "subject": widget.subject,
-                "classSectionDetails": widget.classSectionDetails
-              }
-            : {
-                "subject": widget.subject,
-                "classSectionDetails": widget.classSectionDetails
-              },);
+      _selectedTabTitle == chaptersKey
+          ? Routes.addOrEditLesson
+          : Routes.addOrEditAnnouncement,
+      arguments: _selectedTabTitle == chaptersKey
+          ? {
+              "subject": widget.subject,
+              "classSectionDetails": widget.classSectionDetails
+            }
+          : {
+              "subject": widget.subject,
+              "classSectionDetails": widget.classSectionDetails
+            },
+    );
   }
 
   Widget _buildAppBar() {
     return Align(
       alignment: Alignment.topCenter,
       child: ScreenTopBackgroundContainer(
-        child: LayoutBuilder(builder: (context, boxConstraints) {
-          return Stack(
-            children: [
-              Align(
-                alignment: AlignmentDirectional.topStart,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: UiUtils.screenContentHorizontalPadding,),
-                  child: SvgButton(
+        child: LayoutBuilder(
+          builder: (context, boxConstraints) {
+            return Stack(
+              children: [
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: UiUtils.screenContentHorizontalPadding,
+                    ),
+                    child: SvgButton(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      svgIconUrl: UiUtils.getImagePath("back_icon.svg"),),
+                      svgIconUrl: UiUtils.getImagePath("back_icon.svg"),
+                    ),
+                  ),
                 ),
-              ),
-              AppBarTitleContainer(
-                  boxConstraints: boxConstraints, title: widget.subject.name,),
-              AppBarSubTitleContainer(
+                AppBarTitleContainer(
+                  boxConstraints: boxConstraints,
+                  title: widget.subject.showType
+                      ? widget.subject.subjectNameWithType
+                      : widget.subject.name,
+                ),
+                AppBarSubTitleContainer(
                   boxConstraints: boxConstraints,
                   subTitle:
-                      "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSectionDetails.getClassSectionName()}",),
-              AnimatedAlign(
-                curve: UiUtils.tabBackgroundContainerAnimationCurve,
-                duration: UiUtils.tabBackgroundContainerAnimationDuration,
-                alignment: _selectedTabTitle == chaptersKey
-                    ? AlignmentDirectional.centerStart
-                    : AlignmentDirectional.centerEnd,
-                child: TabBackgroundContainer(boxConstraints: boxConstraints),
-              ),
-              CustomTabBarContainer(
+                      "${UiUtils.getTranslatedLabel(context, classKey)} ${widget.classSectionDetails.getClassSectionName()}",
+                ),
+                AnimatedAlign(
+                  curve: UiUtils.tabBackgroundContainerAnimationCurve,
+                  duration: UiUtils.tabBackgroundContainerAnimationDuration,
+                  alignment: _selectedTabTitle == chaptersKey
+                      ? AlignmentDirectional.centerStart
+                      : AlignmentDirectional.centerEnd,
+                  child: TabBackgroundContainer(boxConstraints: boxConstraints),
+                ),
+                CustomTabBarContainer(
                   boxConstraints: boxConstraints,
                   alignment: AlignmentDirectional.centerStart,
                   isSelected: _selectedTabTitle == chaptersKey,
@@ -148,8 +161,9 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       _selectedTabTitle = chaptersKey;
                     });
                   },
-                  titleKey: chaptersKey,),
-              CustomTabBarContainer(
+                  titleKey: chaptersKey,
+                ),
+                CustomTabBarContainer(
                   boxConstraints: boxConstraints,
                   alignment: AlignmentDirectional.centerEnd,
                   isSelected: _selectedTabTitle == announcementKey,
@@ -158,10 +172,12 @@ class _SubjectScreenState extends State<SubjectScreen> {
                       _selectedTabTitle = announcementKey;
                     });
                   },
-                  titleKey: announcementKey,)
-            ],
-          );
-        },),
+                  titleKey: announcementKey,
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -179,24 +195,29 @@ class _SubjectScreenState extends State<SubjectScreen> {
               onRefreshCallback: () {
                 if (_selectedTabTitle == chaptersKey) {
                   context.read<LessonsCubit>().fetchLessons(
-                      classSectionId: widget.classSectionDetails.id,
-                      subjectId: widget.subject.id,);
+                        classSectionId: widget.classSectionDetails.id,
+                        subjectId: widget.subject.id,
+                      );
                 } else {
                   context.read<AnnouncementsCubit>().fetchAnnouncements(
-                      classSectionId: widget.classSectionDetails.id,
-                      subjectId: widget.subject.id,);
+                        classSectionId: widget.classSectionDetails.id,
+                        subjectId: widget.subject.id,
+                      );
                 }
               },
               displacment: UiUtils.getScrollViewTopPadding(
-                  context: context,
-                  appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage,),
+                context: context,
+                appBarHeightPercentage: UiUtils.appBarBiggerHeightPercentage,
+              ),
               child: ListView(
                 padding: EdgeInsets.only(
-                    bottom: UiUtils.getScrollViewBottomPadding(context),
-                    top: UiUtils.getScrollViewTopPadding(
-                        context: context,
-                        appBarHeightPercentage:
-                            UiUtils.appBarBiggerHeightPercentage,),),
+                  bottom: UiUtils.getScrollViewBottomPadding(context),
+                  top: UiUtils.getScrollViewTopPadding(
+                    context: context,
+                    appBarHeightPercentage:
+                        UiUtils.appBarBiggerHeightPercentage,
+                  ),
+                ),
                 children: [
                   _selectedTabTitle == chaptersKey
                       ? LessonsContainer(
@@ -205,7 +226,8 @@ class _SubjectScreenState extends State<SubjectScreen> {
                         )
                       : AnnouncementsContainer(
                           classSectionDetails: widget.classSectionDetails,
-                          subject: widget.subject,)
+                          subject: widget.subject,
+                        )
                 ],
               ),
             ),

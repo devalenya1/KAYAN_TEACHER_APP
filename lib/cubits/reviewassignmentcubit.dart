@@ -1,5 +1,7 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:eschool_teacher/data/repositories/reviewAssignmentRepository.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
 import 'package:eschool_teacher/data/models/reviewAssignmentssubmition.dart';
@@ -46,26 +48,27 @@ class ReviewAssignmentCubit extends Cubit<ReviewAssignmentState> {
         );
       });
     } catch (e) {
-      print(" reviewassignment${e.toString()}");
+      print(" reviewassignment${e}");
       emit(ReviewAssignmentFailure(errorMessage: e.toString()));
     }
   }
 
-  Future<void> updateReviewAssignmet(
-      {required ReviewAssignmentssubmition
-          updatedReviewAssignmentSubmition,}) async {
+  Future<void> updateReviewAssignmet({
+    required ReviewAssignmentssubmition updatedReviewAssignmentSubmition,
+  }) async {
     try {
       List<ReviewAssignmentssubmition> currentassignment =
           (state as ReviewAssignmentSuccess).reviewAssignment;
       List<ReviewAssignmentssubmition> updateassignment =
           List.from(currentassignment);
       int reviewAssignmentIndex = currentassignment.indexWhere(
-          (element) => element.id == updatedReviewAssignmentSubmition.id,);
+        (element) => element.id == updatedReviewAssignmentSubmition.id,
+      );
       updateassignment[reviewAssignmentIndex] =
           updatedReviewAssignmentSubmition;
       emit(ReviewAssignmentSuccess(reviewAssignment: updateassignment));
     } catch (e) {
-      print(e.toString());
+      print(e);
       emit(ReviewAssignmentFailure(errorMessage: e.toString()));
     }
   }

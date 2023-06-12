@@ -19,8 +19,9 @@ class AppSettingsBlocBuilder extends StatelessWidget {
         if (state is AppSettingsFetchSuccess) {
           return SingleChildScrollView(
             padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height *
-                    (UiUtils.appBarSmallerHeightPercentage + 0.025),),
+              top: MediaQuery.of(context).size.height *
+                  (UiUtils.appBarSmallerHeightPercentage + 0.025),
+            ),
             child: Column(
               children: [
                 Padding(
@@ -34,17 +35,21 @@ class AppSettingsBlocBuilder extends StatelessWidget {
           );
         }
         if (state is AppSettingsFetchFailure) {
-          return ErrorContainer(
-            errorMessageCode: state.errorMessage,
-            onTapRetry: () {
-              context
-                  .read<AppSettingsCubit>()
-                  .fetchAppSettings(type: appSettingsType);
-            },
+          return Center(
+            child: ErrorContainer(
+              errorMessageCode: state.errorMessage,
+              onTapRetry: () {
+                context
+                    .read<AppSettingsCubit>()
+                    .fetchAppSettings(type: appSettingsType);
+              },
+            ),
           );
         }
-        return CustomCircularProgressIndicator(
-          indicatorColor: Theme.of(context).colorScheme.primary,
+        return Center(
+          child: CustomCircularProgressIndicator(
+            indicatorColor: Theme.of(context).colorScheme.primary,
+          ),
         );
       },
     );

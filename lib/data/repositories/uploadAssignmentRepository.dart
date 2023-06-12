@@ -8,17 +8,18 @@ class UploadAssignmentRepository {
 
   late Dio dio;
 
-  Future<void> uploadassignment(
-      {required int assignmentId,
-      required int classSelectionId,
-      required int subjectId,
-      required String name,
-      required String dateTime,
-      String? instruction,
-      int? points,
-      bool? resubmission,
-      int? extraDayForResubmission,
-      List? files,}) async {
+  Future<void> uploadassignment({
+    required int assignmentId,
+    required int classSelectionId,
+    required int subjectId,
+    required String name,
+    required String dateTime,
+    String? instruction,
+    int? points,
+    bool? resubmission,
+    int? extraDayForResubmission,
+    List? files,
+  }) async {
     try {
       var body = {
         "assignment_id": assignmentId,

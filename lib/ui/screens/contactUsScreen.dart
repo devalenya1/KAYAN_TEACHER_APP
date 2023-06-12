@@ -9,17 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ContactUsScreen extends StatefulWidget {
-  ContactUsScreen({Key? key}) : super(key: key);
+  const ContactUsScreen({Key? key}) : super(key: key);
 
   @override
   State<ContactUsScreen> createState() => _ContactUsScreenState();
 
   static Route route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => BlocProvider<AppSettingsCubit>(
-              create: (context) => AppSettingsCubit(SystemRepository()),
-              child: ContactUsScreen(),
-            ),);
+      builder: (_) => BlocProvider<AppSettingsCubit>(
+        create: (context) => AppSettingsCubit(SystemRepository()),
+        child: const ContactUsScreen(),
+      ),
+    );
   }
 }
 
@@ -40,7 +41,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         children: [
           AppSettingsBlocBuilder(appSettingsType: contactUsType),
           CustomAppBar(
-              title: UiUtils.getTranslatedLabel(context, contactUsKey),),
+            title: UiUtils.getTranslatedLabel(context, contactUsKey),
+          ),
         ],
       ),
     );

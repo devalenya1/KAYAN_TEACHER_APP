@@ -14,7 +14,8 @@ class TeacherRepository {
         "primaryClass": result['data']['class_teacher'].isEmpty
             ? null
             : ClassSectionDetails.fromJson(
-                Map.from(result['data']['class_teacher']),),
+                Map.from(result['data']['class_teacher']),
+              ),
         "classes": (result['data']['other'] as List)
             .map((e) => ClassSectionDetails.fromJson(Map.from(e)))
             .toList()
@@ -27,38 +28,44 @@ class TeacherRepository {
   Future<List<Subject>> subjectsByClassSection(int classSectionId) async {
     try {
       final result = await Api.get(
-          url: Api.getSubjectByClassSection,
-          useAuthToken: true,
-          queryParameters: {"class_section_id": classSectionId},);
+        url: Api.getSubjectByClassSection,
+        useAuthToken: true,
+        queryParameters: {"class_section_id": classSectionId},
+      );
 
       return (result['data'] as List)
-          .map((subjectJson) =>
-              Subject.fromJson(Map.from(subjectJson['subject'])),)
+          .map(
+            (subjectJson) => Subject.fromJson(Map.from(subjectJson['subject'])),
+          )
           .toList();
     } catch (e) {
       throw ApiException(e.toString());
     }
   }
 
-  Future<Map<String, dynamic>> getClassAttendanceReports(
-      {required int classSectionId, required String date,}) async {
+  Future<Map<String, dynamic>> getClassAttendanceReports({
+    required int classSectionId,
+    required String date,
+  }) async {
     try {
       final result = await Api.get(
-          url: Api.getAttendance,
-          useAuthToken: true,
-          queryParameters: {"class_section_id": classSectionId, "date": date},);
+        url: Api.getAttendance,
+        useAuthToken: true,
+        queryParameters: {"class_section_id": classSectionId, "date": date},
+      );
 
       return {
         "attendanceReports": (result['data'] as List)
-            .map((attendanceReport) =>
-                AttendanceReport.fromJson(attendanceReport),)
+            .map(
+              (attendanceReport) => AttendanceReport.fromJson(attendanceReport),
+            )
             .toList(),
         "isHoliday": result['is_holiday'],
         "holidayDetails": Holiday.fromJson(
           //
-          Map.from(result['holiday'] == null
-              ? {}
-              : (result['holiday'] as List).first,),
+          Map.from(
+            result['holiday'] == null ? {} : (result['holiday'] as List).first,
+          ),
         )
       };
     } catch (e) {
@@ -66,16 +73,21 @@ class TeacherRepository {
     }
   }
 
-  Future<void> submitClassAttendance(
-      {required int classSectionId,
-      required String date,
-      required List<Map<String, dynamic>> attendance,}) async {
+  Future<void> submitClassAttendance({
+    required int classSectionId,
+    required String date,
+    required List<Map<String, dynamic>> attendance,
+  }) async {
     try {
-      await Api.post(url: Api.submitAttendance, useAuthToken: true, body: {
-        "class_section_id": classSectionId,
-        "date": date,
-        "attendance": attendance,
-      },);
+      await Api.post(
+        url: Api.submitAttendance,
+        useAuthToken: true,
+        body: {
+          "class_section_id": classSectionId,
+          "date": date,
+          "attendance": attendance,
+        },
+      );
     } catch (e) {
       throw ApiException(e.toString());
     }
@@ -86,11 +98,12 @@ class TeacherRepository {
       final result = await Api.get(url: Api.timeTable, useAuthToken: true);
 
       return (result['data'] as List)
-          .map((timetableSlot) =>
-              TimeTableSlot.fromJson(Map.from(timetableSlot)),)
+          .map(
+            (timetableSlot) => TimeTableSlot.fromJson(Map.from(timetableSlot)),
+          )
           .toList();
     } catch (e) {
-      print(e.toString());
+      print(e);
       throw ApiException(e.toString());
     }
   }

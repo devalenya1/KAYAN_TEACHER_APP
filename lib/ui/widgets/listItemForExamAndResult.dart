@@ -9,25 +9,28 @@ class ListItemForExamAndResult extends StatelessWidget {
   final double resultPercentage;
   final VoidCallback onItemTap;
 
-  ListItemForExamAndResult(
-      {Key? key,
-        required this.examStartingDate,
-        required this.examName,
-        required this.resultGrade,
-        required this.resultPercentage,
-        required this.onItemTap,})
-      : super(key: key);
+  const ListItemForExamAndResult({
+    Key? key,
+    required this.examStartingDate,
+    required this.examName,
+    required this.resultGrade,
+    required this.resultPercentage,
+    required this.onItemTap,
+  }) : super(key: key);
 
-  Widget _buildDetailsBackgroundContainer(
-      {required Widget child, required BuildContext context,}) {
+  Widget _buildDetailsBackgroundContainer({
+    required Widget child,
+    required BuildContext context,
+  }) {
     return Center(
       child: Container(
         margin: const EdgeInsets.only(bottom: 30),
         width: MediaQuery.of(context).size.width * (0.85),
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            borderRadius: BorderRadius.circular(10.0),),
+          color: Theme.of(context).colorScheme.background,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
         child: child,
       ),
     );
@@ -35,13 +38,16 @@ class ListItemForExamAndResult extends StatelessWidget {
 
   TextStyle _getExamDetailsLabelTextStyle({required BuildContext context}) {
     return TextStyle(
-        color: Theme.of(context).colorScheme.onBackground,
-        fontSize: 12,
-        fontWeight: FontWeight.w400,);
+      color: Theme.of(context).colorScheme.onBackground,
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+    );
   }
 
-  Widget _buildExamNameLabelAndDateContainer(
-      {required BuildContext context, String? examDate,}) {
+  Widget _buildExamNameLabelAndDateContainer({
+    required BuildContext context,
+    String? examDate,
+  }) {
     return Row(
       children: [
         Text(
@@ -61,16 +67,20 @@ class ListItemForExamAndResult extends StatelessWidget {
     );
   }
 
-  TextStyle _getExamNameValueTextStyle(
-      {required BuildContext context,}) {
+  TextStyle _getExamNameValueTextStyle({
+    required BuildContext context,
+  }) {
     return TextStyle(
-        color: Theme.of(context).colorScheme.secondary,
-        fontSize: 14,
-        fontWeight: FontWeight.w600,);
+      color: Theme.of(context).colorScheme.secondary,
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
+    );
   }
 
-  Widget _buildExamNameContainer(
-      {required String examName, required BuildContext context,}) {
+  Widget _buildExamNameContainer({
+    required String examName,
+    required BuildContext context,
+  }) {
     return Text(
       examName,
       style: _getExamNameValueTextStyle(context: context),
@@ -82,27 +92,31 @@ class ListItemForExamAndResult extends StatelessWidget {
     return GestureDetector(
       onTap: onItemTap,
       child: _buildDetailsBackgroundContainer(
-          context: context,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildExamNameLabelAndDateContainer(
-                  context: context, examDate: examStartingDate,),
-              const SizedBox(
-                height: 5.0,
-              ),
-              _buildExamNameContainer(examName: examName, context: context),
-              resultGrade != '' && resultPercentage != 0
-                  ? _buildResultGradeAndPercentageContainer(context: context)
-                  : Container()
-            ],
-          ),),
+        context: context,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildExamNameLabelAndDateContainer(
+              context: context,
+              examDate: examStartingDate,
+            ),
+            const SizedBox(
+              height: 5.0,
+            ),
+            _buildExamNameContainer(examName: examName, context: context),
+            resultGrade != '' && resultPercentage != 0
+                ? _buildResultGradeAndPercentageContainer(context: context)
+                : Container()
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildResultGradeAndPercentageContainer(
-      {required BuildContext context,}) {
+  Widget _buildResultGradeAndPercentageContainer({
+    required BuildContext context,
+  }) {
     return Column(
       children: [
         const Divider(),
@@ -110,16 +124,20 @@ class ListItemForExamAndResult extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text("${UiUtils.getTranslatedLabel(context, gradeKey)} - ",
-                  style: _getExamNameValueTextStyle(context: context),),
+                Text(
+                  "${UiUtils.getTranslatedLabel(context, gradeKey)} - ",
+                  style: _getExamNameValueTextStyle(context: context),
+                ),
                 Text(resultGrade),
               ],
             ),
             const Spacer(),
             Row(
               children: [
-                Text( "${UiUtils.getTranslatedLabel(context, percentageKey)} : ",
-                  style: _getExamNameValueTextStyle(context: context),),
+                Text(
+                  "${UiUtils.getTranslatedLabel(context, percentageKey)} : ",
+                  style: _getExamNameValueTextStyle(context: context),
+                ),
                 Text('${resultPercentage.toStringAsFixed(2)}%'),
               ],
             ),

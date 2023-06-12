@@ -14,6 +14,7 @@ import 'package:open_filex/open_filex.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class UiUtils {
   //This extra padding will add to MediaQuery.of(context).padding.top in orderto give same top padding in every screen
 
@@ -62,27 +63,32 @@ class UiUtils {
         UiUtils.bottomNavigationBottomMargin * (1.5);
   }
 
-  static Future<dynamic> showBottomSheet(
-      {required Widget child,
-      required BuildContext context,
-      bool? enableDrag,}) async {
+  static Future<dynamic> showBottomSheet({
+    required Widget child,
+    required BuildContext context,
+    bool? enableDrag,
+  }) async {
     final result = await showModalBottomSheet(
-        enableDrag: enableDrag ?? false,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(bottomSheetTopRadius),
-                topRight: Radius.circular(bottomSheetTopRadius),),),
-        context: context,
-        builder: (_) => child,);
+      enableDrag: enableDrag ?? false,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(bottomSheetTopRadius),
+          topRight: Radius.circular(bottomSheetTopRadius),
+        ),
+      ),
+      context: context,
+      builder: (_) => child,
+    );
 
     return result;
   }
 
-  static Future<void> showBottomToastOverlay(
-      {required BuildContext context,
-      required String errorMessage,
-      required Color backgroundColor,}) async {
+  static Future<void> showBottomToastOverlay({
+    required BuildContext context,
+    required String errorMessage,
+    required Color backgroundColor,
+  }) async {
     OverlayState? overlayState = Overlay.of(context);
     OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) => BottomToastOverlayContainer(
@@ -97,15 +103,21 @@ class UiUtils {
   }
 
   static String getErrorMessageFromErrorCode(
-      BuildContext context, String errorCode,) {
+    BuildContext context,
+    String errorCode,
+  ) {
     return UiUtils.getTranslatedLabel(
-        context, ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode),);
+      context,
+      ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode),
+    );
   }
 
   //to give top scroll padding to screen content
   //
-  static double getScrollViewTopPadding(
-      {required BuildContext context, required double appBarHeightPercentage,}) {
+  static double getScrollViewTopPadding({
+    required BuildContext context,
+    required double appBarHeightPercentage,
+  }) {
     return MediaQuery.of(context).size.height *
         (appBarHeightPercentage + extraScreenContentTopPaddingForScrolling);
   }
@@ -159,7 +171,9 @@ class UiUtils {
   }
 
   static List<String> buildMonthYearsBetweenTwoDates(
-      DateTime startDate, DateTime endDate,) {
+    DateTime startDate,
+    DateTime endDate,
+  ) {
     List<String> dateTimes = [];
     DateTime current = startDate;
     while (current.difference(endDate).isNegative) {
@@ -181,10 +195,11 @@ class UiUtils {
 
   static void showFeatureDisableInDemoVersion(BuildContext context) {
     showBottomToastOverlay(
-        context: context,
-        errorMessage:
-            UiUtils.getTranslatedLabel(context, featureDisableInDemoVersionKey),
-        backgroundColor: Theme.of(context).colorScheme.error,);
+      context: context,
+      errorMessage:
+          UiUtils.getTranslatedLabel(context, featureDisableInDemoVersionKey),
+      backgroundColor: Theme.of(context).colorScheme.error,
+    );
   }
 
   static bool isDemoVersionEnable() {
@@ -193,7 +208,9 @@ class UiUtils {
   }
 
   static int getStudyMaterialId(
-      String studyMaterialLabel, BuildContext context,) {
+    String studyMaterialLabel,
+    BuildContext context,
+  ) {
     if (studyMaterialLabel == getTranslatedLabel(context, fileUploadKey)) {
       return 1;
     }
@@ -207,7 +224,9 @@ class UiUtils {
   }
 
   static int getStudyMaterialIdByEnum(
-      StudyMaterialType studyMaterialType, BuildContext context,) {
+    StudyMaterialType studyMaterialType,
+    BuildContext context,
+  ) {
     if (studyMaterialType == StudyMaterialType.file) {
       return 1;
     }
@@ -227,7 +246,9 @@ class UiUtils {
   }
 
   static String getStudyMaterialTypeLabelByEnum(
-      StudyMaterialType studyMaterialType, BuildContext context,) {
+    StudyMaterialType studyMaterialType,
+    BuildContext context,
+  ) {
     if (studyMaterialType == StudyMaterialType.file) {
       return UiUtils.getTranslatedLabel(context, fileUploadKey);
     }
@@ -241,60 +262,68 @@ class UiUtils {
     return "Other";
   }
 
-  static Future<void> openFileInBrowser(String fileUrl, BuildContext context) async {
+  static Future<void> openFileInBrowser(
+      String fileUrl, BuildContext context) async {
     try {
       final canLaunch = await canLaunchUrl(Uri.parse(fileUrl));
       if (canLaunch) {
         launchUrl(Uri.parse(fileUrl), mode: LaunchMode.externalApplication);
       } else {
         UiUtils.showBottomToastOverlay(
-            context: context,
-            errorMessage:
-                UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
-            backgroundColor: Theme.of(context).colorScheme.error,);
-      }
-    } catch (e) {
-      UiUtils.showBottomToastOverlay(
           context: context,
           errorMessage:
               UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
-          backgroundColor: Theme.of(context).colorScheme.error,);
+          backgroundColor: Theme.of(context).colorScheme.error,
+        );
+      }
+    } catch (e) {
+      UiUtils.showBottomToastOverlay(
+        context: context,
+        errorMessage: UiUtils.getTranslatedLabel(context, unableToOpenFileKey),
+        backgroundColor: Theme.of(context).colorScheme.error,
+      );
     }
   }
 
-  static void openDownloadBottomsheet(
-      {required BuildContext context,
-      required bool storeInExternalStorage,
-      required StudyMaterial studyMaterial,}) {
+  static void openDownloadBottomsheet({
+    required BuildContext context,
+    required bool storeInExternalStorage,
+    required StudyMaterial studyMaterial,
+  }) {
     showBottomSheet(
-            child: BlocProvider<DownloadFileCubit>(
-              create: (context) => DownloadFileCubit(StudyMaterialRepository()),
-              child: DownloadFileBottomsheetContainer(
-                storeInExternalStorage: storeInExternalStorage,
-                studyMaterial: studyMaterial,
-              ),
-            ),
-            context: context,)
-        .then((result) {
+      child: BlocProvider<DownloadFileCubit>(
+        create: (context) => DownloadFileCubit(StudyMaterialRepository()),
+        child: DownloadFileBottomsheetContainer(
+          storeInExternalStorage: storeInExternalStorage,
+          studyMaterial: studyMaterial,
+        ),
+      ),
+      context: context,
+    ).then((result) {
       if (result != null) {
         if (result['error']) {
           showBottomToastOverlay(
-              context: context,
-              errorMessage: getErrorMessageFromErrorCode(
-                  context, result['message'].toString(),),
-              backgroundColor: Theme.of(context).colorScheme.error,);
+            context: context,
+            errorMessage: getErrorMessageFromErrorCode(
+              context,
+              result['message'].toString(),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          );
         } else {
           try {
             OpenFilex.open(result['filePath'].toString());
           } catch (e) {
             showBottomToastOverlay(
-                context: context,
-                errorMessage: getTranslatedLabel(
-                    context,
-                    storeInExternalStorage
-                        ? fileDownloadedSuccessfullyKey
-                        : unableToOpenKey,),
-                backgroundColor: Theme.of(context).colorScheme.error,);
+              context: context,
+              errorMessage: getTranslatedLabel(
+                context,
+                storeInExternalStorage
+                    ? fileDownloadedSuccessfullyKey
+                    : unableToOpenKey,
+              ),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            );
           }
         }
       }
@@ -309,7 +338,9 @@ class UiUtils {
     }
 
     bool updateBasedOnVersion = _shouldUpdateBasedOnVersion(
-        currentVersion.split("+").first, updatedVersion.split("+").first,);
+      currentVersion.split("+").first,
+      updatedVersion.split("+").first,
+    );
 
     if (updatedVersion.split("+").length == 1 ||
         currentVersion.split("+").length == 1) {
@@ -317,13 +348,17 @@ class UiUtils {
     }
 
     bool updateBasedOnBuildNumber = _shouldUpdateBasedOnBuildNumber(
-        currentVersion.split("+").last, updatedVersion.split("+").last,);
+      currentVersion.split("+").last,
+      updatedVersion.split("+").last,
+    );
 
     return updateBasedOnVersion || updateBasedOnBuildNumber;
   }
 
   static bool _shouldUpdateBasedOnVersion(
-      String currentVersion, String updatedVersion,) {
+    String currentVersion,
+    String updatedVersion,
+  ) {
     List<int> currentVersionList =
         currentVersion.split(".").map((e) => int.parse(e)).toList();
     List<int> updatedVersionList =
@@ -362,7 +397,9 @@ class UiUtils {
   }
 
   static bool _shouldUpdateBasedOnBuildNumber(
-      String currentBuildNumber, String updatedBuildNumber,) {
+    String currentBuildNumber,
+    String updatedBuildNumber,
+  ) {
     return int.parse(updatedBuildNumber) > int.parse(currentBuildNumber);
   }
 

@@ -17,6 +17,7 @@ class ApiException implements Exception {
   }
 }
 
+// ignore: avoid_classes_with_only_static_members
 class Api {
   static Map<String, dynamic> headers() {
     final String jwtToken = Hive.box(authBoxKey).get(jwtTokenKey) ?? "";
@@ -100,13 +101,15 @@ class Api {
       final FormData formData =
           FormData.fromMap(body, ListFormat.multiCompatible);
       print('url is $url and query $queryParameters and $useAuthToken');
-      final response = await dio.post(url,
-          data: formData,
-          queryParameters: queryParameters,
-          cancelToken: cancelToken,
-          onReceiveProgress: onReceiveProgress,
-          onSendProgress: onSendProgress,
-          options: useAuthToken ? Options(headers: headers()) : null,);
+      final response = await dio.post(
+        url,
+        data: formData,
+        queryParameters: queryParameters,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+        onSendProgress: onSendProgress,
+        options: useAuthToken ? Options(headers: headers()) : null,
+      );
 
       if (response.data['error']) {
         print(response.data);
@@ -114,11 +117,13 @@ class Api {
       }
       print(response.data);
       return Map.from(response.data);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e.error);
-      throw ApiException(e.error is SocketException
-          ? ErrorMessageKeysAndCode.noInternetCode
-          : ErrorMessageKeysAndCode.defaultErrorMessageCode,);
+      throw ApiException(
+        e.error is SocketException
+            ? ErrorMessageKeysAndCode.noInternetCode
+            : ErrorMessageKeysAndCode.defaultErrorMessageCode,
+      );
     } on ApiException catch (e) {
       throw ApiException(e.errorMessage);
     } catch (e) {
@@ -136,9 +141,11 @@ class Api {
     try {
       //
       final Dio dio = Dio();
-      final response = await dio.get(url,
-          queryParameters: queryParameters,
-          options: useAuthToken ? Options(headers: headers()) : null,);
+      final response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: useAuthToken ? Options(headers: headers()) : null,
+      );
       print('url is $url and query $queryParameters and $useAuthToken');
       if (response.data['error']) {
         print(response.data['error']);
@@ -146,11 +153,13 @@ class Api {
       }
       print(response.data);
       return Map.from(response.data);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print('error is ${e.response}');
-      throw ApiException(e.error is SocketException
-          ? ErrorMessageKeysAndCode.noInternetCode
-          : ErrorMessageKeysAndCode.defaultErrorMessageCode,);
+      throw ApiException(
+        e.error is SocketException
+            ? ErrorMessageKeysAndCode.noInternetCode
+            : ErrorMessageKeysAndCode.defaultErrorMessageCode,
+      );
     } on ApiException catch (e) {
       print(e.toString());
       throw ApiException(e.errorMessage);
@@ -160,21 +169,28 @@ class Api {
     }
   }
 
-  static Future<void> download(
-      {required String url,
-      required CancelToken cancelToken,
-      required String savePath,
-      required Function updateDownloadedPercentage,}) async {
+  static Future<void> download({
+    required String url,
+    required CancelToken cancelToken,
+    required String savePath,
+    required Function updateDownloadedPercentage,
+  }) async {
     try {
       final Dio dio = Dio();
-      await dio.download(url, savePath, cancelToken: cancelToken,
-          onReceiveProgress: (count, total) {
-        updateDownloadedPercentage((count / total) * 100);
-      },);
-    } on DioError catch (e) {
-      throw ApiException(e.error is SocketException
-          ? ErrorMessageKeysAndCode.noInternetCode
-          : ErrorMessageKeysAndCode.defaultErrorMessageCode,);
+      await dio.download(
+        url,
+        savePath,
+        cancelToken: cancelToken,
+        onReceiveProgress: (count, total) {
+          updateDownloadedPercentage((count / total) * 100);
+        },
+      );
+    } on DioException catch (e) {
+      throw ApiException(
+        e.error is SocketException
+            ? ErrorMessageKeysAndCode.noInternetCode
+            : ErrorMessageKeysAndCode.defaultErrorMessageCode,
+      );
     } on ApiException catch (e) {
       throw ApiException(e.errorMessage);
     } catch (e) {

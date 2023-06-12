@@ -51,8 +51,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
   }
   */
 
-  Widget _buildProfileDetailsTile(
-      {required String label, required String value, required String iconUrl,}) {
+  Widget _buildProfileDetailsTile({
+    required String label,
+    required String value,
+    required String iconUrl,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14.0),
       child: Row(
@@ -63,14 +66,16 @@ class _ProfileContainerState extends State<ProfileContainer> {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-                boxShadow: const [
-                  BoxShadow(
-                      color: Color(0x1a212121),
-                      offset: Offset(0, 10),
-                      blurRadius: 16,)
-                ],
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(15.0),),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x1a212121),
+                  offset: Offset(0, 10),
+                  blurRadius: 16,
+                )
+              ],
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(15.0),
+            ),
             child: SvgPicture.asset(iconUrl),
           ),
           SizedBox(
@@ -85,16 +90,18 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   Text(
                     label,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.0,),
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.0,
+                    ),
                   ),
                   Text(
                     value,
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14.0,),
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.0,
+                    ),
                   )
                 ],
               ),
@@ -112,7 +119,8 @@ class _ProfileContainerState extends State<ProfileContainer> {
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         padding: EdgeInsets.only(
-            bottom: UiUtils.getScrollViewBottomPadding(context),),
+          bottom: UiUtils.getScrollViewBottomPadding(context),
+        ),
         child: Column(
           children: [
             SizedBox(
@@ -124,54 +132,61 @@ class _ProfileContainerState extends State<ProfileContainer> {
                     child: Stack(
                       children: [
                         Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                              UiUtils.getTranslatedLabel(context, profileKey),
-                              style: TextStyle(
-                                  fontSize: UiUtils.screenTitleFontSize,
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context)
-                                      .scaffoldBackgroundColor,),
-                            ),)
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            UiUtils.getTranslatedLabel(context, profileKey),
+                            style: TextStyle(
+                              fontSize: UiUtils.screenTitleFontSize,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
                   Align(
-                      alignment: Alignment.bottomCenter,
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: const EdgeInsets.all(10.0),
+                      width: MediaQuery.of(context).size.width * (0.3),
+                      height: MediaQuery.of(context).size.width * (0.3),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
                       child: Container(
-                        padding: const EdgeInsets.all(10.0),
-                        width: MediaQuery.of(context).size.width * (0.3),
-                        height: MediaQuery.of(context).size.width * (0.3),
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).scaffoldBackgroundColor,),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: CachedNetworkImageProvider(
-                                    teacher.image,
-                                  ),),
-                              color: Theme.of(context).colorScheme.onBackground,
-                              shape: BoxShape.circle,),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: CachedNetworkImageProvider(
+                              teacher.image,
+                            ),
+                          ),
+                          color: Theme.of(context).colorScheme.onBackground,
+                          shape: BoxShape.circle,
                         ),
-                      ),),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
             Text(
               teacher.getFullName(),
               style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 18.0,),
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 18.0,
+              ),
             ),
             const SizedBox(
               height: 5.0,
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * (0.075),),
+                horizontal: MediaQuery.of(context).size.width * (0.075),
+              ),
               child: Divider(
                 color: Theme.of(context)
                     .colorScheme
@@ -184,7 +199,8 @@ class _ProfileContainerState extends State<ProfileContainer> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * (0.075),),
+                horizontal: MediaQuery.of(context).size.width * (0.075),
+              ),
               child: Column(
                 children: [
                   Align(
@@ -192,48 +208,56 @@ class _ProfileContainerState extends State<ProfileContainer> {
                     child: Text(
                       UiUtils.getTranslatedLabel(context, personalDetailsKey),
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500,),
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   _buildProfileDetailsTile(
-                      label: UiUtils.getTranslatedLabel(context, emailKey),
-                      value: teacher.email,
-                      iconUrl: UiUtils.getImagePath("user_pro_icon.svg"),),
+                    label: UiUtils.getTranslatedLabel(context, emailKey),
+                    value: teacher.email,
+                    iconUrl: UiUtils.getImagePath("user_pro_icon.svg"),
+                  ),
                   _buildProfileDetailsTile(
-                      label:
-                          UiUtils.getTranslatedLabel(context, phoneNumberKey),
-                      value: teacher.mobile,
-                      iconUrl: UiUtils.getImagePath("phone-call.svg"),),
+                    label: UiUtils.getTranslatedLabel(context, phoneNumberKey),
+                    value: teacher.mobile,
+                    iconUrl: UiUtils.getImagePath("phone-call.svg"),
+                  ),
                   _buildProfileDetailsTile(
-                      label:
-                          UiUtils.getTranslatedLabel(context, dateOfBirthKey),
-                      value: UiUtils.formatStringDate(teacher.dob),
-                      iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg"),),
+                    label: UiUtils.getTranslatedLabel(context, dateOfBirthKey),
+                    value: UiUtils.formatStringDate(teacher.dob),
+                    iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg"),
+                  ),
 
                   _buildProfileDetailsTile(
-                      label: UiUtils.getTranslatedLabel(context, genderKey),
-                      value: teacher.gender,
-                      iconUrl: UiUtils.getImagePath("gender.svg"),),
+                    label: UiUtils.getTranslatedLabel(context, genderKey),
+                    value: teacher.gender,
+                    iconUrl: UiUtils.getImagePath("gender.svg"),
+                  ),
 
                   _buildProfileDetailsTile(
-                      label:
-                          UiUtils.getTranslatedLabel(context, qualificationKey),
-                      value: teacher.qualification,
-                      iconUrl: UiUtils.getImagePath("qualification.svg"),),
+                    label:
+                        UiUtils.getTranslatedLabel(context, qualificationKey),
+                    value: teacher.qualification,
+                    iconUrl: UiUtils.getImagePath("qualification.svg"),
+                  ),
                   _buildProfileDetailsTile(
-                      label: UiUtils.getTranslatedLabel(
-                          context, currentAddressKey,),
-                      value: teacher.currentAddress,
-                      iconUrl:
-                          UiUtils.getImagePath("user_pro_address_icon.svg"),),
+                    label: UiUtils.getTranslatedLabel(
+                      context,
+                      currentAddressKey,
+                    ),
+                    value: teacher.currentAddress,
+                    iconUrl: UiUtils.getImagePath("user_pro_address_icon.svg"),
+                  ),
                   _buildProfileDetailsTile(
-                      label: UiUtils.getTranslatedLabel(
-                          context, permantantAddressKey,),
-                      value: teacher.permanentAddress,
-                      iconUrl:
-                          UiUtils.getImagePath("user_pro_address_icon.svg"),),
+                    label: UiUtils.getTranslatedLabel(
+                      context,
+                      permanentAddressKey,
+                    ),
+                    value: teacher.permanentAddress,
+                    iconUrl: UiUtils.getImagePath("user_pro_address_icon.svg"),
+                  ),
                   const SizedBox(
                     height: 7.5,
                   ),
