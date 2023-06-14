@@ -92,11 +92,11 @@ class _AddOrEditTopicScreenState extends State<AddOrEditTopicScreen> {
       ? widget.lesson!.name
       : UiUtils.getTranslatedLabel(context, fetchingLessonsKey);
 
-  late TextEditingController _topicNameTextEditingController =
+  late final TextEditingController _topicNameTextEditingController =
       TextEditingController(
     text: widget.topic != null ? widget.topic!.name : null,
   );
-  late TextEditingController _topicDescriptionTextEditingController =
+  late final TextEditingController _topicDescriptionTextEditingController =
       TextEditingController(
     text: widget.topic != null ? widget.topic!.description : null,
   );

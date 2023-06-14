@@ -23,6 +23,7 @@ import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -34,7 +35,7 @@ class AddAssignmentScreen extends StatefulWidget {
   final bool editassignment;
   final Assignment? assignment;
 
-  AddAssignmentScreen({
+  const AddAssignmentScreen({
     Key? key,
     required this.editassignment,
     this.assignment,
@@ -52,8 +53,8 @@ class AddAssignmentScreen extends StatefulWidget {
             BlocProvider<CreateAssignmentCubit>(
               create: (_) => CreateAssignmentCubit(AssignmentRepository()),
             ),
-            BlocProvider<editAssignmentCubit>(
-              create: (context) => editAssignmentCubit(AssignmentRepository()),
+            BlocProvider<EditAssignmentCubit>(
+              create: (context) => EditAssignmentCubit(AssignmentRepository()),
             )
           ],
           child: AddAssignmentScreen(
@@ -208,7 +209,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       IconButton(
                         onPressed: () {
                           if (context.read<CreateAssignmentCubit>().state
-                              is createAssignmentInProcess) {
+                              is CreateAssignmentInProcess) {
                             return;
                           }
                           uploadedFiles.removeAt(fileIndex);
@@ -258,7 +259,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       IconButton(
                         onPressed: () {
                           if (context.read<CreateAssignmentCubit>().state
-                              is createAssignmentInProcess) {
+                              is CreateAssignmentInProcess) {
                             return;
                           }
 
@@ -410,7 +411,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     }
 
     print("uploadedFiles upload $uploadedFiles");
-    context.read<editAssignmentCubit>().editAssignment(
+    context.read<EditAssignmentCubit>().editAssignment(
           classSelectionId: widget.assignment!.classSectionId,
           subjectId: widget.assignment!.subjectId,
           name: _assignmentNameTextEditingController.text.trim(),
@@ -436,11 +437,11 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
         ),
         onPressBackButton: () {
           if (context.read<CreateAssignmentCubit>().state
-              is createAssignmentInProcess) {
+              is CreateAssignmentInProcess) {
             return;
           }
-          if (context.read<editAssignmentCubit>().state
-              is editAssignmentInProgress) {
+          if (context.read<EditAssignmentCubit>().state
+              is EditAssignmentInProgress) {
             return;
           }
           Navigator.of(context).pop();
@@ -709,9 +710,9 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
               .toList(),
 
           widget.editassignment
-              ? BlocConsumer<editAssignmentCubit, EditAssignmentState>(
+              ? BlocConsumer<EditAssignmentCubit, EditAssignmentState>(
                   listener: (context, state) {
-                    if (state is editAssignmentSuccess) {
+                    if (state is EditAssignmentSuccess) {
                       UiUtils.showBottomToastOverlay(
                         context: context,
                         errorMessage: UiUtils.getTranslatedLabel(
@@ -723,7 +724,7 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                       );
                       Navigator.of(context).pop(true);
                     }
-                    if (state is editAssignmentFailure) {
+                    if (state is EditAssignmentFailure) {
                       UiUtils.showBottomToastOverlay(
                         context: context,
                         errorMessage: UiUtils.getTranslatedLabel(
@@ -754,14 +755,14 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                               editassignmentkey,
                             ),
                             showBorder: false,
-                            child: state is editAssignmentInProgress
+                            child: state is EditAssignmentInProgress
                                 ? const CustomCircularProgressIndicator(
                                     strokeWidth: 2,
                                     widthAndHeight: 20,
                                   )
                                 : null,
                             onTap: () {
-                              if (state is editAssignmentInProgress) {
+                              if (state is EditAssignmentInProgress) {
                                 return;
                               }
                               editAssignment();
@@ -772,21 +773,21 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                     );
                   },
                 )
-              : BlocConsumer<CreateAssignmentCubit, createAssignmentState>(
+              : BlocConsumer<CreateAssignmentCubit, CreateAssignmentState>(
                   listener: (context, state) {
-                    if (state is createAssignmentSuccess) {
+                    if (state is CreateAssignmentSuccess) {
                       UiUtils.showBottomToastOverlay(
                         context: context,
                         errorMessage: UiUtils.getTranslatedLabel(
                           context,
-                          sucessfullycreateassignmentkey,
+                          sucessfullyCreateAssignmentKey,
                         ),
                         backgroundColor:
                             Theme.of(context).colorScheme.onPrimary,
                       );
                       Navigator.of(context).pop();
                     }
-                    if (state is createAssignmentFailure) {
+                    if (state is CreateAssignmentFailure) {
                       UiUtils.showBottomToastOverlay(
                         context: context,
                         errorMessage: UiUtils.getTranslatedLabel(
@@ -808,14 +809,14 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
                         createAssignmentKey,
                       ),
                       showBorder: false,
-                      child: state is createAssignmentInProcess
+                      child: state is CreateAssignmentInProcess
                           ? const CustomCircularProgressIndicator(
                               strokeWidth: 2,
                               widthAndHeight: 20,
                             )
                           : null,
                       onTap: () {
-                        if (state is createAssignmentInProcess) {
+                        if (state is CreateAssignmentInProcess) {
                           return;
                         }
                         createAssignment();
@@ -836,11 +837,11 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     return WillPopScope(
       onWillPop: () {
         if (context.read<CreateAssignmentCubit>().state
-            is createAssignmentInProcess) {
+            is CreateAssignmentInProcess) {
           return Future.value(false);
         }
-        if (context.read<editAssignmentCubit>().state
-            is editAssignmentInProgress) {
+        if (context.read<EditAssignmentCubit>().state
+            is EditAssignmentInProgress) {
           return Future.value(false);
         }
         Navigator.of(context).pop();

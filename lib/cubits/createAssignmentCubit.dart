@@ -2,26 +2,26 @@ import 'package:eschool_teacher/data/repositories/assignmentRepository.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class createAssignmentState {}
+abstract class CreateAssignmentState {}
 
-class createAssignmentInitial extends createAssignmentState {}
+class CreateAssignmentInitial extends CreateAssignmentState {}
 
-class createAssignmentInProcess extends createAssignmentState {}
+class CreateAssignmentInProcess extends CreateAssignmentState {}
 
-class createAssignmentSuccess extends createAssignmentState {}
+class CreateAssignmentSuccess extends CreateAssignmentState {}
 
-class createAssignmentFailure extends createAssignmentState {
+class CreateAssignmentFailure extends CreateAssignmentState {
   final String errormessage;
-  createAssignmentFailure({
+  CreateAssignmentFailure({
     required this.errormessage,
   });
 }
 
-class CreateAssignmentCubit extends Cubit<createAssignmentState> {
+class CreateAssignmentCubit extends Cubit<CreateAssignmentState> {
   final AssignmentRepository _assignmentRepository;
 
   CreateAssignmentCubit(this._assignmentRepository)
-      : super(createAssignmentInitial());
+      : super(CreateAssignmentInitial());
 
   Future<void> createAssignment({
     required int classsId,
@@ -35,7 +35,7 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
     List<PlatformFile>? file,
   }) async {
     print("bodypoints $points");
-    emit(createAssignmentInProcess());
+    emit(CreateAssignmentInProcess());
     try {
       await _assignmentRepository
           .createAssignment(
@@ -51,10 +51,10 @@ class CreateAssignmentCubit extends Cubit<createAssignmentState> {
             instruction: instruction,
             points: int.parse(points.isEmpty ? "0" : points),
           )
-          .then((value) => emit(createAssignmentSuccess()));
+          .then((value) => emit(CreateAssignmentSuccess()));
     } catch (e) {
       print(e);
-      emit(createAssignmentFailure(errormessage: e.toString()));
+      emit(CreateAssignmentFailure(errormessage: e.toString()));
     }
   }
 }

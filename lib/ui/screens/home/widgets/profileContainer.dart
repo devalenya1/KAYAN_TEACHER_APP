@@ -8,49 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileContainer extends StatefulWidget {
-  ProfileContainer({Key? key}) : super(key: key);
+  const ProfileContainer({Key? key}) : super(key: key);
 
   @override
   State<ProfileContainer> createState() => _ProfileContainerState();
 }
 
 class _ProfileContainerState extends State<ProfileContainer> {
-  /*
-  Widget _buildLogoutButton() {
-    return Container(
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-                height: 16,
-                width: 16,
-                child:
-                    SvgPicture.asset(UiUtils.getImagePath("logout_icon.svg"))),
-            SizedBox(
-              width: 10.0,
-            ),
-            Text(
-              UiUtils.getTranslatedLabel(context, logoutKey),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 15.0,
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-            ),
-          ],
-        ),
-      ),
-      width: MediaQuery.of(context).size.width * (0.4),
-      height: 40,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.0),
-          color: Theme.of(context).colorScheme.secondary),
-    );
-  }
-  */
-
   Widget _buildProfileDetailsTile({
     required String label,
     required String value,

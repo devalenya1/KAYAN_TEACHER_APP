@@ -12,9 +12,9 @@ class Medium {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['name'] = name;
-    _data['id'] = id;
-    return _data;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['id'] = id;
+    return data;
   }
 }

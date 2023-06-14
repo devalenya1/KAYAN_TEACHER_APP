@@ -1,5 +1,6 @@
 import 'package:eschool_teacher/ui/widgets/announcementAttachmentContainer.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:eschool_teacher/app/routes.dart';
 import 'package:eschool_teacher/data/models/assignment.dart';

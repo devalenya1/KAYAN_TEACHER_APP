@@ -133,16 +133,15 @@ class _LoginScreenState extends State<LoginScreen>
             UiUtils.showBottomSheet(
               child: BlocProvider(
                 create: (_) => ForgotPasswordRequestCubit(AuthRepository()),
-                child: ForgotPasswordRequestBottomsheet(),
+                child: const ForgotPasswordRequestBottomsheet(),
               ),
               context: context,
             ).then((value) {
               if (value != null && !value['error']) {
                 UiUtils.showBottomToastOverlay(
                   context: context,
-                  errorMessage: UiUtils.getTranslatedLabel(
-                          context, passwordUpdateLinkSentKey) +
-                      " ${value['email']}",
+                  errorMessage:
+                      "${UiUtils.getTranslatedLabel(context, passwordUpdateLinkSentKey)} ${value['email']}",
                   backgroundColor: Theme.of(context).colorScheme.onPrimary,
                 );
               }
@@ -299,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen>
                 const SizedBox(
                   height: 20,
                 ),
-                TermsAndConditionAndPrivacyPolicyContainer(),
+                const TermsAndConditionAndPrivacyPolicyContainer(),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * (0.025),
                 ),

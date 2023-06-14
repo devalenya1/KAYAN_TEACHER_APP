@@ -27,7 +27,7 @@ class AssignmentsFetchSuccess extends AssignmentState {
     final int? newTotalPage,
     final int? newCurrentPage,
     final bool? newMoreAssignmentsFetchError,
-    final bool? NewFetchMoreAssignmentsInProgress,
+    final bool? newFetchMoreAssignmentsInProgress,
   }) {
     return AssignmentsFetchSuccess(
       assignment: newAssignment ?? assignment,
@@ -36,7 +36,7 @@ class AssignmentsFetchSuccess extends AssignmentState {
       moreAssignmentsFetchError:
           newMoreAssignmentsFetchError ?? moreAssignmentsFetchError,
       fetchMoreAssignmentsInProgress:
-          NewFetchMoreAssignmentsInProgress ?? fetchMoreAssignmentsInProgress,
+          newFetchMoreAssignmentsInProgress ?? fetchMoreAssignmentsInProgress,
     );
   }
 }
@@ -103,7 +103,7 @@ class AssignmentCubit extends Cubit<AssignmentState> {
     try {
       emit(
         (state as AssignmentsFetchSuccess)
-            .copywith(NewFetchMoreAssignmentsInProgress: true),
+            .copywith(newFetchMoreAssignmentsInProgress: true),
       );
 
       final fetchMoreAssignment = await _assignmentRepository.fetchassignment(
@@ -131,7 +131,7 @@ class AssignmentCubit extends Cubit<AssignmentState> {
       emit(
         (state as AssignmentsFetchSuccess).copywith(
           newMoreAssignmentsFetchError: true,
-          NewFetchMoreAssignmentsInProgress: false,
+          newFetchMoreAssignmentsInProgress: false,
         ),
       );
       // throw ApiException(e.toString());

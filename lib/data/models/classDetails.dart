@@ -20,11 +20,11 @@ class ClassDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    _data['medium_id'] = mediumId;
-    _data['medium'] = medium.toJson();
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['medium_id'] = mediumId;
+    data['medium'] = medium.toJson();
+    return data;
   }
 }

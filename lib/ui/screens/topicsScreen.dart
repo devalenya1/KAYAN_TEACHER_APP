@@ -21,24 +21,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TopicsScreen extends StatefulWidget {
-  TopicsScreen({
+  const TopicsScreen({
     Key? key,
   }) : super(key: key);
 
   static Route<dynamic> route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(providers: [
-              BlocProvider(
-                create: (context) => LessonsCubit(LessonRepository()),
-              ),
-              BlocProvider(
-                create: (context) =>
-                    SubjectsOfClassSectionCubit(TeacherRepository()),
-              ),
-              BlocProvider(
-                create: (context) => TopicsCubit(TopicRepository()),
-              ),
-            ], child: TopicsScreen(),),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LessonsCubit(LessonRepository()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                SubjectsOfClassSectionCubit(TeacherRepository()),
+          ),
+          BlocProvider(
+            create: (context) => TopicsCubit(TopicRepository()),
+          ),
+        ],
+        child: const TopicsScreen(),
+      ),
+    );
   }
 
   @override
@@ -57,18 +61,22 @@ class _TopicsScreenState extends State<TopicsScreen> {
 
   @override
   void initState() {
-    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
-        .read<MyClassesCubit>()
-        .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-        .id,);
+    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
+          context
+              .read<MyClassesCubit>()
+              .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection)
+              .id,
+        );
     super.initState();
   }
 
   Widget _buildClassSubjectAndLessonDropDowns() {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Column(
-        children: [
-          MyClassesDropDownMenu(
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Column(
+          children: [
+            MyClassesDropDownMenu(
               currentSelectedItem: currentSelectedClassSection,
               width: boxConstraints.maxWidth,
               changeSelectedItem: (value) {
@@ -76,8 +84,9 @@ class _TopicsScreenState extends State<TopicsScreen> {
                 context.read<LessonsCubit>().updateState(LessonsInitial());
                 context.read<TopicsCubit>().updateState(TopicsInitial());
                 setState(() {});
-              },),
-          ClassSubjectsDropDownMenu(
+              },
+            ),
+            ClassSubjectsDropDownMenu(
               changeSelectedItem: (result) {
                 setState(() {
                   currentSelectedSubject = result;
@@ -87,68 +96,82 @@ class _TopicsScreenState extends State<TopicsScreen> {
                     .getSubjectIdByName(currentSelectedSubject);
                 if (subjectId != -1) {
                   context.read<LessonsCubit>().fetchLessons(
-                      classSectionId: context
-                          .read<MyClassesCubit>()
-                          .getClassSectionDetails(
-                              classSectionName: currentSelectedClassSection,)
-                          .id,
-                      subjectId: subjectId,);
+                        classSectionId: context
+                            .read<MyClassesCubit>()
+                            .getClassSectionDetails(
+                              classSectionName: currentSelectedClassSection,
+                            )
+                            .id,
+                        subjectId: subjectId,
+                      );
 
                   context.read<TopicsCubit>().updateState(TopicsInitial());
                 }
               },
               currentSelectedItem: currentSelectedSubject,
-              width: boxConstraints.maxWidth,),
-          //
+              width: boxConstraints.maxWidth,
+            ),
+            //
 
-          BlocConsumer<LessonsCubit, LessonsState>(builder: (context, state) {
-            return state is LessonsFetchSuccess
-                ? state.lessons.isEmpty
-                    ? DefaultDropDownLabelContainer(
-                        titleLabelKey:
-                            UiUtils.getTranslatedLabel(context, noLessonsKey),
-                        width: boxConstraints.maxWidth,)
-                    : CustomDropDownMenu(
+            BlocConsumer<LessonsCubit, LessonsState>(
+              builder: (context, state) {
+                return state is LessonsFetchSuccess
+                    ? state.lessons.isEmpty
+                        ? DefaultDropDownLabelContainer(
+                            titleLabelKey: UiUtils.getTranslatedLabel(
+                                context, noLessonsKey),
+                            width: boxConstraints.maxWidth,
+                          )
+                        : CustomDropDownMenu(
+                            width: boxConstraints.maxWidth,
+                            onChanged: (value) {
+                              currentSelectedLesson = value!;
+                              setState(() {});
+                              context.read<TopicsCubit>().fetchTopics(
+                                    lessonId: context
+                                        .read<LessonsCubit>()
+                                        .getLessonByName(currentSelectedLesson)
+                                        .id,
+                                  );
+                            },
+                            menu: state.lessons.map((e) => e.name).toList(),
+                            currentSelectedItem: currentSelectedLesson,
+                          )
+                    : DefaultDropDownLabelContainer(
+                        titleLabelKey: fetchingLessonsKey,
                         width: boxConstraints.maxWidth,
-                        onChanged: (value) {
-                          currentSelectedLesson = value!;
-                          setState(() {});
-                          context.read<TopicsCubit>().fetchTopics(
-                              lessonId: context
-                                  .read<LessonsCubit>()
-                                  .getLessonByName(currentSelectedLesson)
-                                  .id,);
-                        },
-                        menu: state.lessons.map((e) => e.name).toList(),
-                        currentSelectedItem: currentSelectedLesson,)
-                : DefaultDropDownLabelContainer(
-                    titleLabelKey: fetchingLessonsKey,
-                    width: boxConstraints.maxWidth,);
-          }, listener: (context, state) {
-            if (state is LessonsFetchSuccess) {
-              if (state.lessons.isNotEmpty) {
-                setState(() {
-                  currentSelectedLesson = state.lessons.first.name;
-                });
-                context.read<TopicsCubit>().fetchTopics(
-                    lessonId: context
-                        .read<LessonsCubit>()
-                        .getLessonByName(currentSelectedLesson)
-                        .id,);
-              }
-            }
-          },),
-        ],
-      );
-    },);
+                      );
+              },
+              listener: (context, state) {
+                if (state is LessonsFetchSuccess) {
+                  if (state.lessons.isNotEmpty) {
+                    setState(() {
+                      currentSelectedLesson = state.lessons.first.name;
+                    });
+                    context.read<TopicsCubit>().fetchTopics(
+                          lessonId: context
+                              .read<LessonsCubit>()
+                              .getLessonByName(currentSelectedLesson)
+                              .id,
+                        );
+                  }
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {
-        Navigator.of(context).pushNamed(Routes.addOrEditTopic);
-      },),
+      floatingActionButton: FloatingActionAddButton(
+        onTap: () {
+          Navigator.of(context).pushNamed(Routes.addOrEditTopic);
+        },
+      ),
       body: Stack(
         children: [
           Align(
@@ -156,25 +179,28 @@ class _TopicsScreenState extends State<TopicsScreen> {
             child: CustomRefreshIndicator(
               onRefreshCallback: () {
                 context.read<TopicsCubit>().fetchTopics(
-                    lessonId: context
-                        .read<LessonsCubit>()
-                        .getLessonByName(currentSelectedLesson)
-                        .id,);
+                      lessonId: context
+                          .read<LessonsCubit>()
+                          .getLessonByName(currentSelectedLesson)
+                          .id,
+                    );
               },
               displacment: UiUtils.getScrollViewTopPadding(
-                  context: context,
-                  appBarHeightPercentage:
-                      UiUtils.appBarSmallerHeightPercentage,),
+                context: context,
+                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+              ),
               child: ListView(
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width *
-                        UiUtils.screenContentHorizontalPaddingPercentage,
-                    right: MediaQuery.of(context).size.width *
-                        UiUtils.screenContentHorizontalPaddingPercentage,
-                    top: UiUtils.getScrollViewTopPadding(
-                        context: context,
-                        appBarHeightPercentage:
-                            UiUtils.appBarSmallerHeightPercentage,),),
+                  left: MediaQuery.of(context).size.width *
+                      UiUtils.screenContentHorizontalPaddingPercentage,
+                  right: MediaQuery.of(context).size.width *
+                      UiUtils.screenContentHorizontalPaddingPercentage,
+                  top: UiUtils.getScrollViewTopPadding(
+                    context: context,
+                    appBarHeightPercentage:
+                        UiUtils.appBarSmallerHeightPercentage,
+                  ),
+                ),
                 children: [
                   //
                   _buildClassSubjectAndLessonDropDowns(),
@@ -189,17 +215,18 @@ class _TopicsScreenState extends State<TopicsScreen> {
                         return const SizedBox();
                       }
                       return TopicsContainer(
-                          classSectionDetails: context
-                              .read<MyClassesCubit>()
-                              .getClassSectionDetails(
-                                  classSectionName:
-                                      currentSelectedClassSection,),
-                          subject: context
-                              .read<SubjectsOfClassSectionCubit>()
-                              .getSubjectDetailsByName(currentSelectedSubject),
-                          lesson: context.read<LessonsCubit>().getLessonByName(
-                                currentSelectedLesson,
-                              ),);
+                        classSectionDetails: context
+                            .read<MyClassesCubit>()
+                            .getClassSectionDetails(
+                              classSectionName: currentSelectedClassSection,
+                            ),
+                        subject: context
+                            .read<SubjectsOfClassSectionCubit>()
+                            .getSubjectDetailsByName(currentSelectedSubject),
+                        lesson: context.read<LessonsCubit>().getLessonByName(
+                              currentSelectedLesson,
+                            ),
+                      );
                     },
                   ),
                 ],

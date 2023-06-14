@@ -201,7 +201,7 @@ const String unableToDeleteLessonKey = "unableToDeleteLesson";
 const String unableToDeleteTopicKey = "unableToDeleteTopic";
 const String unableToDeleteAssignmentKey = "unableToDeleteAssignment";
 
-const String sucessfullycreateassignmentkey = "Sucessfullycreatessignment";
+const String sucessfullyCreateAssignmentKey = "sucessfullyCreateAssignment";
 const String failureAssignmentReviewkey = "failureReviewAssignmet";
 const String reviewAssignmentsucessfullukey = "reviewAssignmentSucessfully";
 const String editsucessfullyassignmentkey = "editsucessfullassignment";

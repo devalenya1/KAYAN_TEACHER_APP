@@ -192,7 +192,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                           ),
                         ),
                         Text(
-                          ":  " + widget.student.currentAddress,
+                          ":  ${widget.student.currentAddress}",
                           style: _getLabelTextStyle(),
                         )
                       ],
@@ -226,7 +226,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
           Flexible(
             child: LayoutBuilder(
               builder: (context, boxConstraints) {
-                final titleWidthPercentage = 0.28;
+                const titleWidthPercentage = 0.28;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

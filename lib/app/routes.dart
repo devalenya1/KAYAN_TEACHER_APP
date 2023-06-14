@@ -92,7 +92,7 @@ class Routes {
     switch (routeSettings.name) {
       case splash:
         {
-          return CupertinoPageRoute(builder: (_) => SplashScreen());
+          return CupertinoPageRoute(builder: (_) => const SplashScreen());
         }
       case login:
         {

@@ -57,7 +57,7 @@ class SubjectScreen extends StatefulWidget {
 class _SubjectScreenState extends State<SubjectScreen> {
   late String _selectedTabTitle = chaptersKey;
 
-  late ScrollController _scrollController = ScrollController()
+  late final ScrollController _scrollController = ScrollController()
     ..addListener(_announcementsScrollListener);
 
   @override

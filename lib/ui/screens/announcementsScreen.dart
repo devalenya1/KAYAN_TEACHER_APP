@@ -24,18 +24,19 @@ class AnnouncementsScreen extends StatefulWidget {
 
   static Route<dynamic> route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) =>
-                      SubjectsOfClassSectionCubit(TeacherRepository()),
-                ),
-                BlocProvider(
-                    create: (context) =>
-                        AnnouncementsCubit(AnnouncementRepository()),)
-              ],
-              child: const AnnouncementsScreen(),
-            ),);
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                SubjectsOfClassSectionCubit(TeacherRepository()),
+          ),
+          BlocProvider(
+            create: (context) => AnnouncementsCubit(AnnouncementRepository()),
+          )
+        ],
+        child: const AnnouncementsScreen(),
+      ),
+    );
   }
 }
 
@@ -46,7 +47,7 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
   late String currentSelectedSubject =
       UiUtils.getTranslatedLabel(context, fetchingSubjectsKey);
 
-  late ScrollController _scrollController = ScrollController()
+  late final ScrollController _scrollController = ScrollController()
     ..addListener(_announcementsScrollListener);
 
   void _announcementsScrollListener() {
@@ -61,7 +62,8 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
               classSectionId: context
                   .read<MyClassesCubit>()
                   .getClassSectionDetails(
-                      classSectionName: currentSelectedClassSection,)
+                    classSectionName: currentSelectedClassSection,
+                  )
                   .id,
             );
       }
@@ -70,10 +72,13 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
 
   @override
   void initState() {
-    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(context
-        .read<MyClassesCubit>()
-        .getClassSectionDetails(classSectionName: currentSelectedClassSection)
-        .id,);
+    context.read<SubjectsOfClassSectionCubit>().fetchSubjects(
+          context
+              .read<MyClassesCubit>()
+              .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection)
+              .id,
+        );
     super.initState();
   }
 
@@ -84,20 +89,23 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
         .id;
     if (subjectId != -1) {
       context.read<AnnouncementsCubit>().fetchAnnouncements(
-          classSectionId: context
-              .read<MyClassesCubit>()
-              .getClassSectionDetails(
-                  classSectionName: currentSelectedClassSection,)
-              .id,
-          subjectId: subjectId,);
+            classSectionId: context
+                .read<MyClassesCubit>()
+                .getClassSectionDetails(
+                  classSectionName: currentSelectedClassSection,
+                )
+                .id,
+            subjectId: subjectId,
+          );
     }
   }
 
   Widget _buildClassAndSubjectDropDowns() {
-    return LayoutBuilder(builder: (context, boxConstraints) {
-      return Column(
-        children: [
-          MyClassesDropDownMenu(
+    return LayoutBuilder(
+      builder: (context, boxConstraints) {
+        return Column(
+          children: [
+            MyClassesDropDownMenu(
               currentSelectedItem: currentSelectedClassSection,
               width: boxConstraints.maxWidth,
               changeSelectedItem: (result) {
@@ -108,8 +116,9 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                 context
                     .read<AnnouncementsCubit>()
                     .updateState(AnnouncementsInitial());
-              },),
-          ClassSubjectsDropDownMenu(
+              },
+            ),
+            ClassSubjectsDropDownMenu(
               changeSelectedItem: (result) {
                 setState(() {
                   currentSelectedSubject = result;
@@ -117,24 +126,29 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
                 fetchAnnouncements();
               },
               currentSelectedItem: currentSelectedSubject,
-              width: boxConstraints.maxWidth,),
-        ],
-      );
-    },);
+              width: boxConstraints.maxWidth,
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionAddButton(onTap: () {
-        Navigator.of(context).pushNamed<bool?>(Routes.addOrEditAnnouncement);
-      },),
+      floatingActionButton: FloatingActionAddButton(
+        onTap: () {
+          Navigator.of(context).pushNamed<bool?>(Routes.addOrEditAnnouncement);
+        },
+      ),
       body: Stack(
         children: [
           CustomRefreshIndicator(
             displacment: UiUtils.getScrollViewTopPadding(
-                context: context,
-                appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,),
+              context: context,
+              appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+            ),
             onRefreshCallback: () {
               fetchAnnouncements();
             },
@@ -142,34 +156,37 @@ class _AnnouncementsScreenState extends State<AnnouncementsScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               controller: _scrollController,
               padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  right: MediaQuery.of(context).size.width *
-                      UiUtils.screenContentHorizontalPaddingPercentage,
-                  top: UiUtils.getScrollViewTopPadding(
-                      context: context,
-                      appBarHeightPercentage:
-                          UiUtils.appBarSmallerHeightPercentage,),),
+                left: MediaQuery.of(context).size.width *
+                    UiUtils.screenContentHorizontalPaddingPercentage,
+                right: MediaQuery.of(context).size.width *
+                    UiUtils.screenContentHorizontalPaddingPercentage,
+                top: UiUtils.getScrollViewTopPadding(
+                  context: context,
+                  appBarHeightPercentage: UiUtils.appBarSmallerHeightPercentage,
+                ),
+              ),
               children: [
                 _buildClassAndSubjectDropDowns(),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * (0.0125),
                 ),
                 AnnouncementsContainer(
-                    classSectionDetails: context
-                        .read<MyClassesCubit>()
-                        .getClassSectionDetails(
-                            classSectionName: currentSelectedClassSection,),
-                    subject: context
-                        .read<SubjectsOfClassSectionCubit>()
-                        .getSubjectDetailsByName(currentSelectedSubject),),
+                  classSectionDetails:
+                      context.read<MyClassesCubit>().getClassSectionDetails(
+                            classSectionName: currentSelectedClassSection,
+                          ),
+                  subject: context
+                      .read<SubjectsOfClassSectionCubit>()
+                      .getSubjectDetailsByName(currentSelectedSubject),
+                ),
               ],
             ),
           ),
           Align(
             alignment: Alignment.topCenter,
             child: CustomAppBar(
-                title: UiUtils.getTranslatedLabel(context, announcementsKey),),
+              title: UiUtils.getTranslatedLabel(context, announcementsKey),
+            ),
           ),
         ],
       ),

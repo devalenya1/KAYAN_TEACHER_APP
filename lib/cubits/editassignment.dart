@@ -4,23 +4,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class EditAssignmentState {}
 
-class editAssignmentInitial extends EditAssignmentState {}
+class EditAssignmentInitial extends EditAssignmentState {}
 
-class editAssignmentInProgress extends EditAssignmentState {}
+class EditAssignmentInProgress extends EditAssignmentState {}
 
-class editAssignmentSuccess extends EditAssignmentState {}
+class EditAssignmentSuccess extends EditAssignmentState {}
 
-class editAssignmentFailure extends EditAssignmentState {
+class EditAssignmentFailure extends EditAssignmentState {
   final String errorMessage;
 
-  editAssignmentFailure(this.errorMessage);
+  EditAssignmentFailure(this.errorMessage);
 }
 
-class editAssignmentCubit extends Cubit<EditAssignmentState> {
+class EditAssignmentCubit extends Cubit<EditAssignmentState> {
   final AssignmentRepository _assignmentRepository;
 
-  editAssignmentCubit(this._assignmentRepository)
-      : super(editAssignmentInitial());
+  EditAssignmentCubit(this._assignmentRepository)
+      : super(EditAssignmentInitial());
 
   Future<void> editAssignment({
     required int assignmentId,
@@ -34,7 +34,7 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
     required String extraDayForResubmission,
     required List<PlatformFile> filePaths,
   }) async {
-    emit(editAssignmentInProgress());
+    emit(EditAssignmentInProgress());
     try {
       await _assignmentRepository.editassignment(
         assignmentId: assignmentId,
@@ -50,10 +50,10 @@ class editAssignmentCubit extends Cubit<EditAssignmentState> {
         resubmission: resubmission,
         filePaths: filePaths,
       );
-      emit(editAssignmentSuccess());
+      emit(EditAssignmentSuccess());
     } catch (e) {
       print(e);
-      emit(editAssignmentFailure(e.toString()));
+      emit(EditAssignmentFailure(e.toString()));
     }
   }
 }

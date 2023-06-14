@@ -15,17 +15,19 @@ class ExamScreen extends StatelessWidget {
 
   static Route route(RouteSettings routeSettings) {
     return CupertinoPageRoute(
-        builder: (_) => BlocProvider<ExamDetailsCubit>(
-              create: (context) => ExamDetailsCubit(StudentRepository()),
-              child: const ExamScreen(),
-            ),);
+      builder: (_) => BlocProvider<ExamDetailsCubit>(
+        create: (context) => ExamDetailsCubit(StudentRepository()),
+        child: const ExamScreen(),
+      ),
+    );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          ExamListContainer(),
+          const ExamListContainer(),
           Align(
             alignment: Alignment.topCenter,
             child: CustomAppBar(

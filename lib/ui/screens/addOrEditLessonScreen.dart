@@ -79,11 +79,11 @@ class _AddOrEditLessonScreenState extends State<AddOrEditLessonScreen> {
       ? UiUtils.getTranslatedLabel(context, fetchingSubjectsKey)
       : widget.subject!.name;
 
-  late TextEditingController _lessonNameTextEditingController =
+  late final TextEditingController _lessonNameTextEditingController =
       TextEditingController(
     text: widget.lesson != null ? widget.lesson!.name : null,
   );
-  late TextEditingController _lessonDescriptionTextEditingController =
+  late final TextEditingController _lessonDescriptionTextEditingController =
       TextEditingController(
     text: widget.lesson != null ? widget.lesson!.description : null,
   );

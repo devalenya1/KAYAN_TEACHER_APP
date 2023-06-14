@@ -129,19 +129,21 @@ class SettingsContainer extends StatelessWidget {
             UiUtils.showBottomSheet(
               child: BlocProvider<ChangePasswordCubit>(
                 create: (_) => ChangePasswordCubit(AuthRepository()),
-                child: ChangePasswordBottomsheet(),
+                child: const ChangePasswordBottomsheet(),
               ),
               context: context,
-            ).then((value) {
-              if (value != null && !value['error']) {
-                UiUtils.showBottomToastOverlay(
-                  context: context,
-                  errorMessage: UiUtils.getTranslatedLabel(
-                      context, passwordChangedSuccessfullyKey),
-                  backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                );
-              }
-            });
+            ).then(
+              (value) {
+                if (value != null && !value['error']) {
+                  UiUtils.showBottomToastOverlay(
+                    context: context,
+                    errorMessage: UiUtils.getTranslatedLabel(
+                        context, passwordChangedSuccessfullyKey),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                  );
+                }
+              },
+            );
           },
           context: context,
         ),

@@ -7,10 +7,11 @@ class BottomNavItem {
   final String activeImageUrl;
   final String disableImageUrl;
 
-  BottomNavItem(
-      {required this.activeImageUrl,
-      required this.disableImageUrl,
-      required this.title,});
+  BottomNavItem({
+    required this.activeImageUrl,
+    required this.disableImageUrl,
+    required this.title,
+  });
 }
 
 class BottomNavItemContainer extends StatefulWidget {
@@ -20,15 +21,15 @@ class BottomNavItemContainer extends StatefulWidget {
   final AnimationController animationController;
   final BottomNavItem bottomNavItem;
   final Function onTap;
-  BottomNavItemContainer(
-      {Key? key,
-      required this.boxConstraints,
-      required this.currentIndex,
-      required this.bottomNavItem,
-      required this.animationController,
-      required this.onTap,
-      required this.index,})
-      : super(key: key);
+  const BottomNavItemContainer({
+    Key? key,
+    required this.boxConstraints,
+    required this.currentIndex,
+    required this.bottomNavItem,
+    required this.animationController,
+    required this.onTap,
+    required this.index,
+  }) : super(key: key);
 
   @override
   State<BottomNavItemContainer> createState() => _BottomNavItemContainerState();
@@ -49,14 +50,19 @@ class _BottomNavItemContainerState extends State<BottomNavItemContainer> {
           children: [
             SlideTransition(
               position: Tween<Offset>(
-                      begin: const Offset(0.0, 0.05),
-                      end: const Offset(0.0, 0.4),)
-                  .animate(CurvedAnimation(
-                      parent: widget.animationController,
-                      curve: Curves.easeInOut,),),
-              child: SvgPicture.asset(widget.index == widget.currentIndex
-                  ? widget.bottomNavItem.activeImageUrl
-                  : widget.bottomNavItem.disableImageUrl,),
+                begin: const Offset(0.0, 0.05),
+                end: const Offset(0.0, 0.4),
+              ).animate(
+                CurvedAnimation(
+                  parent: widget.animationController,
+                  curve: Curves.easeInOut,
+                ),
+              ),
+              child: SvgPicture.asset(
+                widget.index == widget.currentIndex
+                    ? widget.bottomNavItem.activeImageUrl
+                    : widget.bottomNavItem.disableImageUrl,
+              ),
             ),
             SizedBox(
               height: widget.boxConstraints.maxHeight * (0.051),
@@ -66,14 +72,19 @@ class _BottomNavItemContainerState extends State<BottomNavItemContainer> {
                   .animate(widget.animationController),
               child: SlideTransition(
                 position: Tween<Offset>(
-                        begin: const Offset(0.0, 0.0),
-                        end: const Offset(0.0, 0.5),)
-                    .animate(CurvedAnimation(
-                        parent: widget.animationController,
-                        curve: Curves.easeInOut,),),
+                  begin: const Offset(0.0, 0.0),
+                  end: const Offset(0.0, 0.5),
+                ).animate(
+                  CurvedAnimation(
+                    parent: widget.animationController,
+                    curve: Curves.easeInOut,
+                  ),
+                ),
                 child: Text(
                   UiUtils.getTranslatedLabel(
-                      context, widget.bottomNavItem.title,),
+                    context,
+                    widget.bottomNavItem.title,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
