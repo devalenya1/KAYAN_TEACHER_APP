@@ -3,7 +3,7 @@
 import 'package:eschool_teacher/utils/labelKeys.dart';
 
 const String baseUrl =
-    "http://testschool.wrteam.in"; //https://testschool.wrteam.in
+    "https://e-school.wrteam.in"; //https://testschool.wrteam.in
 
 const String databaseUrl = "$baseUrl/api/";
 

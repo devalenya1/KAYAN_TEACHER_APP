@@ -193,13 +193,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
                     value: UiUtils.formatStringDate(teacher.dob),
                     iconUrl: UiUtils.getImagePath("user_pro_dob_icon.svg"),
                   ),
-
                   _buildProfileDetailsTile(
                     label: UiUtils.getTranslatedLabel(context, genderKey),
                     value: teacher.gender,
                     iconUrl: UiUtils.getImagePath("gender.svg"),
                   ),
-
                   _buildProfileDetailsTile(
                     label:
                         UiUtils.getTranslatedLabel(context, qualificationKey),
@@ -225,19 +223,6 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   const SizedBox(
                     height: 7.5,
                   ),
-                  //_buildLogoutButton(),
-                  /*
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Text(
-                      "${UiUtils.getTranslatedLabel(context, appVersionKey)}  1.0.0",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 11.0),
-                      textAlign: TextAlign.left)
-                      */
                 ],
               ),
             ),

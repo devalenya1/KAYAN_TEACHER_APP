@@ -79,27 +79,6 @@ class _SearchStudentScreenState extends State<SearchStudentScreen> {
     }
   }
 
-  /*
-  void setWaitForNextSearchRequestTimer() {
-    if (waitForNextRequestSearchQueryTimeInMilliSeconds != 400) {
-      waitForNextRequestSearchQueryTimeInMilliSeconds = 400;
-    }
-    waitForNextSearchRequestTimer =
-        Timer.periodic(Duration(milliseconds: 100), (timer) {
-      if (waitForNextRequestSearchQueryTimeInMilliSeconds == 0) {
-        timer.cancel();
-        if (searchQueryTextEditingController.text.trim().isNotEmpty) {
-          print(
-              "Call search student api : ${searchQueryTextEditingController.text}");
-        }
-      } else {
-        waitForNextRequestSearchQueryTimeInMilliSeconds =
-            waitForNextRequestSearchQueryTimeInMilliSeconds - 100;
-      }
-    });
-  }
-  */
-
   @override
   void dispose() {
     searchQueryTextEditingController.dispose();

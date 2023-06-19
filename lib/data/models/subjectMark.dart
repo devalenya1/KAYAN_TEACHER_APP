@@ -29,14 +29,6 @@ class SubjectMark {
       totalMarks: json['total_marks'] ?? 0,
       subjectName: json['subject_name'] ?? '',
       subjectType: json['subject_type'] ?? '',
-      // subject: Subject.fromJson(Map.from(json['subject'] ?? {})),
-      /*      passingStatus: json['passing_status'] ?? -1,
-        passingMarks: json['passing_marks'] ?? 0,
-        examDate: json['timetable'] == null
-            ? DateTime.now()
-            : json['timetable']['date'] == null
-                ? DateTime.now()
-                : DateTime.parse(json['timetable']['date']),*/
     );
   }
 }

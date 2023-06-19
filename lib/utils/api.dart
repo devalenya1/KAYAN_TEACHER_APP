@@ -21,7 +21,6 @@ class ApiException implements Exception {
 class Api {
   static Map<String, dynamic> headers() {
     final String jwtToken = Hive.box(authBoxKey).get(jwtTokenKey) ?? "";
-    print('token is $jwtToken');
     return {"Authorization": "Bearer $jwtToken"};
   }
 
@@ -100,7 +99,7 @@ class Api {
       final Dio dio = Dio();
       final FormData formData =
           FormData.fromMap(body, ListFormat.multiCompatible);
-      print('url is $url and query $queryParameters and $useAuthToken');
+
       final response = await dio.post(
         url,
         data: formData,
@@ -112,13 +111,10 @@ class Api {
       );
 
       if (response.data['error']) {
-        print(response.data);
         throw ApiException(response.data['code'].toString());
       }
-      print(response.data);
       return Map.from(response.data);
     } on DioException catch (e) {
-      print(e.error);
       throw ApiException(
         e.error is SocketException
             ? ErrorMessageKeysAndCode.noInternetCode
@@ -127,7 +123,6 @@ class Api {
     } on ApiException catch (e) {
       throw ApiException(e.errorMessage);
     } catch (e) {
-      print(e.toString());
       throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
     }
   }
@@ -137,7 +132,6 @@ class Api {
     required bool useAuthToken,
     Map<String, dynamic>? queryParameters,
   }) async {
-    print('called');
     try {
       //
       final Dio dio = Dio();
@@ -146,25 +140,19 @@ class Api {
         queryParameters: queryParameters,
         options: useAuthToken ? Options(headers: headers()) : null,
       );
-      print('url is $url and query $queryParameters and $useAuthToken');
       if (response.data['error']) {
-        print(response.data['error']);
         throw ApiException(response.data['code'].toString());
       }
-      print(response.data);
       return Map.from(response.data);
     } on DioException catch (e) {
-      print('error is ${e.response}');
       throw ApiException(
         e.error is SocketException
             ? ErrorMessageKeysAndCode.noInternetCode
             : ErrorMessageKeysAndCode.defaultErrorMessageCode,
       );
     } on ApiException catch (e) {
-      print(e.toString());
       throw ApiException(e.errorMessage);
     } catch (e) {
-      print(e.toString());
       throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
     }
   }

@@ -858,18 +858,3 @@ class _AddAssignmentScreenState extends State<AddAssignmentScreen> {
     );
   }
 }
-/*context.read<editAssignmentCubit>().editAssignment(
-                          assignmentId: widget.assignment!.id,
-                          classSelectionId: widget.assignment!.classSectionId,
-                          dateTime:
-                              "${DateFormat('dd-MM-yyyy').format(dueDate!).toString()} ${dueTime!.hour}:${dueTime!.minute}",
-                          subjectId: widget.assignment!.sessionYearId,
-                          name: _assignmentNameTextEditingController.text,
-                          points: _assignmentPointsTextEditingController.text,
-                          resubmission:
-                              _allowedReSubmissionOfRejectedAssignment ? 1 : 0,
-                          extraDayForResubmission:
-                              _extraResubmissionDaysTextEditingController.text,
-                          filePaths: uploadedFiles.map((e) => e.path!).toList(),
-                          instruction:
-                              _assignmentInstructionTextEditingController.text)*/
