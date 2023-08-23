@@ -245,5 +245,6 @@
   "marksMoreThanTotalMarks": "अंक कुल प्राप्तांक से अधिक नहीं होना चाहिए ",
   "pleaseEnterSomeData": "कृपया ...  कुछ डेटा दर्ज करें ",
   "noDataFound": "कोई डेटा नहीं मिला ..!",
-  "pleaseEnterAllMarks": "कृपया सभी अंक दर्ज करें"
+  "pleaseEnterAllMarks": "कृपया सभी अंक दर्ज करें",
+  "noClassAssigned": "आपको अभी तक कोई कक्षा असाइन नहीं की गई है!"
 }

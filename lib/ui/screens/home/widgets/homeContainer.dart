@@ -6,6 +6,7 @@ import 'package:eschool_teacher/data/models/classSectionDetails.dart';
 import 'package:eschool_teacher/ui/widgets/customShimmerContainer.dart';
 import 'package:eschool_teacher/ui/widgets/errorContainer.dart';
 import 'package:eschool_teacher/ui/widgets/internetListenerWidget.dart';
+import 'package:eschool_teacher/ui/widgets/noDataContainer.dart';
 import 'package:eschool_teacher/ui/widgets/screenTopBackgroundContainer.dart';
 import 'package:eschool_teacher/ui/widgets/shimmerLoadingContainer.dart';
 import 'package:eschool_teacher/utils/labelKeys.dart';
@@ -534,6 +535,17 @@ class _HomeContainerState extends State<HomeContainer> {
                 builder: (context, state) {
                   if (state is MyClassesFetchSuccess) {
                     final primaryClass = state.primaryClass;
+                    if (primaryClass == null && state.classes.isEmpty) {
+                      return Center(
+                        child: NoDataContainer(
+                          titleKey: noClassAssignedKey,
+                          showRetryButton: true,
+                          onTapRetry: () {
+                            context.read<MyClassesCubit>().fetchMyClasses();
+                          },
+                        ),
+                      );
+                    }
                     return Column(
                       children: [
                         _buildMyClasses(),

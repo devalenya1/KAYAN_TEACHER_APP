@@ -366,17 +366,19 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 89C47N4UTZ;
+				DEVELOPMENT_TEAM = 6T7X554APG;
 				ENABLE_BITCODE = NO;
+				FLUTTER_BUILD_NUMBER = 6;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "eSchool Teacher";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kayan Teacher";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wrteam.eschool.teacher;
+				MARKETING_VERSION = 1.0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kayan.teache;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -504,17 +506,19 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 89C47N4UTZ;
+				DEVELOPMENT_TEAM = 6T7X554APG;
 				ENABLE_BITCODE = NO;
+				FLUTTER_BUILD_NUMBER = 6;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "eSchool Teacher";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kayan Teacher";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wrteam.eschool.teacher;
+				MARKETING_VERSION = 1.0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kayan.teache;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -536,17 +540,19 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 89C47N4UTZ;
+				DEVELOPMENT_TEAM = 6T7X554APG;
 				ENABLE_BITCODE = NO;
+				FLUTTER_BUILD_NUMBER = 6;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "eSchool Teacher";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kayan Teacher";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = com.wrteam.eschool.teacher;
+				MARKETING_VERSION = 1.0.5;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kayan.teache;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

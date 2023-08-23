@@ -99,7 +99,6 @@ class Api {
       final Dio dio = Dio();
       final FormData formData =
           FormData.fromMap(body, ListFormat.multiCompatible);
-
       final response = await dio.post(
         url,
         data: formData,
@@ -109,7 +108,6 @@ class Api {
         onSendProgress: onSendProgress,
         options: useAuthToken ? Options(headers: headers()) : null,
       );
-
       if (response.data['error']) {
         throw ApiException(response.data['code'].toString());
       }

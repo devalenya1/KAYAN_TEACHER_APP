@@ -65,11 +65,13 @@ class CustomRoundedButton extends StatelessWidget {
                 "$buttonTitle",
                 maxLines: maxLines ?? 2,
                 overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: textSize ?? 17.0,
-                    color:
-                        titleColor ?? Theme.of(context).scaffoldBackgroundColor,
-                    fontWeight: fontWeight ?? FontWeight.normal,),
+                  fontSize: textSize ?? 17.0,
+                  color:
+                      titleColor ?? Theme.of(context).scaffoldBackgroundColor,
+                  fontWeight: fontWeight ?? FontWeight.normal,
+                ),
               ),
         ),
       ),

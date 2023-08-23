@@ -31,24 +31,26 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with TickerProviderStateMixin {
-  late AnimationController _animationController = AnimationController(
+  late final AnimationController _animationController = AnimationController(
       vsync: this, duration: const Duration(milliseconds: 1000));
 
-  late Animation<double> _patterntAnimation =
+  late final Animation<double> _patterntAnimation =
       Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
           parent: _animationController,
           curve: const Interval(0.0, 0.5, curve: Curves.easeInOut)));
 
-  late Animation<double> _formAnimation = Tween<double>(begin: 0.0, end: 1.0)
-      .animate(CurvedAnimation(
+  late final Animation<double> _formAnimation =
+      Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
           parent: _animationController,
           curve: const Interval(0.5, 1.0, curve: Curves.easeInOut)));
 
   bool _hidePassword = true;
-  TextEditingController _emailTextEditingController = TextEditingController();
 
-  TextEditingController _passwordTextEditingController =
-      TextEditingController();
+  final TextEditingController _emailTextEditingController =
+      TextEditingController(text: "teacher@gmail.com"); //DEFAULT EMAIL
+
+  final TextEditingController _passwordTextEditingController =
+      TextEditingController(text: "teacher123"); //DEFAULT PASSWORD
 
   @override
   void initState() {

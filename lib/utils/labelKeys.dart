@@ -282,6 +282,7 @@ const String attendanceSubmittedSuccessfullyKey =
     "attendanceSubmittedSuccessfully";
 const String todayAttendanceKey = "todayAttendance";
 const String holidaysKey = "holidays";
+const String noClassAssignedKey = "noClassAssigned";
 const String noAnnouncementsKey = "noAnnouncements";
 const String noAssignmentsKey = "noAssignments";
 const String noTopicsKey = "noTopics";

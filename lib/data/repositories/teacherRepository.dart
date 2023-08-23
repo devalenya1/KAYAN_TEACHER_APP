@@ -32,7 +32,6 @@ class TeacherRepository {
         useAuthToken: true,
         queryParameters: {"class_section_id": classSectionId},
       );
-
       return (result['data'] as List)
           .map(
             (subjectJson) => Subject.fromJson(Map.from(subjectJson['subject'])),

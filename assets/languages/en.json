@@ -245,5 +245,6 @@
   "marksMoreThanTotalMarks": "Marks Should not more than Total Marks",
   "pleaseEnterSomeData": "Please... Enter some data",
   "noDataFound": "No Data Found..!",
-  "pleaseEnterAllMarks": "Please Enter All Marks"
+  "pleaseEnterAllMarks": "Please Enter All Marks",
+  "noClassAssigned": "No class assigned to you yet!"
 }

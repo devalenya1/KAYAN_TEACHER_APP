@@ -63,14 +63,18 @@ class SubjectsContainer extends StatelessWidget {
                   SizedBox(
                     width: boxConstraints.maxWidth * (0.05),
                   ),
-                  Text(
-                    subject.showType
-                        ? subject.subjectNameWithType
-                        : subject.name,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.secondary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0,
+                  Expanded(
+                    child: Text(
+                      subject.showType
+                          ? subject.subjectNameWithType
+                          : subject.name,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14.0,
+                      ),
                     ),
                   )
                 ],

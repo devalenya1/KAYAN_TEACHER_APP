@@ -32,8 +32,12 @@ class MyClassesCubit extends Cubit<MyClassesState> {
     try {
       final result = await _teacherRepository.myClasses();
 
-      emit(MyClassesFetchSuccess(
-          classes: result['classes'], primaryClass: result['primaryClass'],),);
+      emit(
+        MyClassesFetchSuccess(
+          classes: result['classes'],
+          primaryClass: result['primaryClass'],
+        ),
+      );
     } catch (e) {
       emit(MyClassesFetchFailure(e.toString()));
     }
@@ -70,22 +74,29 @@ class MyClassesCubit extends Cubit<MyClassesState> {
         .toList();
   }
 
-  ClassSectionDetails getClassSectionDetails(
-      {required String classSectionName,}) {
+  ClassSectionDetails getClassSectionDetails({
+    required String classSectionName,
+  }) {
     final classAndSection = classSectionName.split("-");
     try {
-      print(getAllClasses()
-          .where((element) =>
-              element.classDetails.name == classAndSection.first.trim() &&
-              element.sectionDetails.name == classAndSection.last.trim(),)
-          .first,);
+      print(
+        getAllClasses()
+            .where(
+              (element) =>
+                  element.classDetails.name == classAndSection.first.trim() &&
+                  element.sectionDetails.name == classAndSection.last.trim(),
+            )
+            .first,
+      );
     } catch (e) {
       print('error: $e');
     }
     return getAllClasses()
-        .where((element) =>
-            element.classDetails.name == classAndSection.first.trim() &&
-            element.sectionDetails.name == classAndSection.last.trim(),)
+        .where(
+          (element) =>
+              element.classDetails.name == classAndSection.first.trim() &&
+              element.sectionDetails.name == classAndSection.last.trim(),
+        )
         .first;
   }
 

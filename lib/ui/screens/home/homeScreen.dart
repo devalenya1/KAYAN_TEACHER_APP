@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,7 +25,7 @@ class HomeScreen extends StatefulWidget {
     return CupertinoPageRoute(
       builder: (_) => BlocProvider(
         create: (context) => TimeTableCubit(TeacherRepository()),
-        child: HomeScreen(),
+        child: const HomeScreen(),
       ),
     );
   }
@@ -184,11 +184,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 children: [
                   IndexedStack(
                     index: _currentSelectedBottomNavIndex,
-                    children: [
+                    children: const [
                       HomeContainer(),
                       TimeTableContainer(),
                       ProfileContainer(),
-                      const SettingsContainer(),
+                      SettingsContainer(),
                     ],
                   ),
                   Align(

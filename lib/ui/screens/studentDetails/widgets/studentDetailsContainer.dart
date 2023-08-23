@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eschool_teacher/app/routes.dart';
+import 'package:eschool_teacher/cubits/authCubit.dart';
+import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
 import 'package:eschool_teacher/cubits/studentMoreDetailsCubit.dart';
 import 'package:eschool_teacher/data/models/guardianDetails.dart';
 import 'package:eschool_teacher/data/models/student.dart';
@@ -9,6 +11,15 @@ import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:url_launcher/link.dart';
+import 'package:url_launcher/url_launcher.dart';
+//import 'package:permission_handler/permission_handler.dart';
+//import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:async';
+//import 'package:webview_flutter_android/webview_flutter_android.dart';
+//import 'package:file_picker/file_picker.dart';
+//import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 class StudentDetailsContainer extends StatefulWidget {
   final Student student;
@@ -20,6 +31,49 @@ class StudentDetailsContainer extends StatefulWidget {
   State<StudentDetailsContainer> createState() =>
       _StudentDetailsContainerState();
 }
+
+
+
+// class YourWebView extends StatelessWidget {
+//    String url;
+//    YourWebView(this.url);
+   
+
+//   final Completer<WebViewController> _controller =
+//       Completer<WebViewController>();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         // appBar: AppBar(
+//         //   title: const Text('Flutter WebView example'),
+//         // ),
+//         body: Builder(builder: (BuildContext context) {
+//           return WebView(
+//             initialUrl: url,
+//             javascriptMode: JavascriptMode.unrestricted,
+//             onWebViewCreated: (WebViewController webViewController) {
+//               _controller.complete(webViewController);
+//             },
+//             // navigationDelegate: (NavigationRequest request) {
+//             //   if (request.url.startsWith('https://www.youtube.com/')) {
+//             //     print('blocking navigation to $request}');
+//             //     return NavigationDecision.prevent;
+//             //   }
+//             //   print('allowing navigation to $request');
+//             //   return NavigationDecision.navigate;
+//             // },
+//             onPageStarted: (String url) {
+//               print('Page started loading: $url');
+//             },
+//             onPageFinished: (String url) {
+//               print('Page finished loading: $url');
+//             },
+//             gestureNavigationEnabled: true,
+//           );
+//         }));
+//  
+// }
 
 class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
   final double _detailsInBetweenPadding = 8.5;
@@ -210,7 +264,25 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
   Widget _buildGuardianDetailsContainer({
     required String guardianRole,
     required GuardianDetails guardianDetails,
-  }) {
+  }) { 
+
+
+     // _launchURLTwitter() {
+     //    Navigator.push(
+     //       context,
+     //          MaterialPageRoute(
+     //             builder: (context) => YourWebView('https://kayan-bh.com/chat/chat-teacher/chat.php?user_id=${guardianDetails.email}&email=${teacher.email}&image=${guardianDetails.image}')));
+     // }
+     _launchURLTwitter() async {
+         var url = Uri.parse("https://kayan-bh.com/chat/chat-teacher/chat.php?user_id=${guardianDetails.email}&email=${teacher.email}&image=${guardianDetails.image}");
+            if (await canLaunchUrl(url)) {
+                await launchUrl(url);
+            } else {
+                throw 'Could not launch $url';
+            }
+     }
+
+
     return _buildDetailBackgroundContainer(
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,6 +296,7 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
             width: 10,
           ),
           Flexible(
+            child: InkWell(
             child: LayoutBuilder(
               builder: (context, boxConstraints) {
                 const titleWidthPercentage = 0.28;
@@ -265,6 +338,9 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
                   ],
                 );
               },
+            ),
+                 onTap: _launchURLTwitter,
+                 //onPressed: _launchURLTwitter,
             ),
           ),
         ],
