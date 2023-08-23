@@ -29,46 +29,46 @@ class StudentDetailsContainer extends StatefulWidget {
       _StudentDetailsContainerState();
 }
 
-class YourWebView extends StatelessWidget {
-   String url;
-   YourWebView(this.url);
+// class YourWebView extends StatelessWidget {
+//    String url;
+//    YourWebView(this.url);
    
 
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
+//   final Completer<WebViewController> _controller =
+//       Completer<WebViewController>();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('Flutter WebView example'),
-        // ),
-        body: Builder(builder: (BuildContext context) {
-          return WebView(
-            initialUrl: url,
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) {
-              _controller.complete(webViewController);
-            },
-            // navigationDelegate: (NavigationRequest request) {
-            //   if (request.url.startsWith('https://www.youtube.com/')) {
-            //     print('blocking navigation to $request}');
-            //     return NavigationDecision.prevent;
-            //   }
-            //   print('allowing navigation to $request');
-            //   return NavigationDecision.navigate;
-            // },
-            onPageStarted: (String url) {
-              print('Page started loading: $url');
-            },
-            onPageFinished: (String url) {
-              print('Page finished loading: $url');
-            },
-            gestureNavigationEnabled: true,
-          );
-        }));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         // appBar: AppBar(
+//         //   title: const Text('Flutter WebView example'),
+//         // ),
+//         body: Builder(builder: (BuildContext context) {
+//           return WebView(
+//             initialUrl: url,
+//             javascriptMode: JavascriptMode.unrestricted,
+//             onWebViewCreated: (WebViewController webViewController) {
+//               _controller.complete(webViewController);
+//             },
+//             // navigationDelegate: (NavigationRequest request) {
+//             //   if (request.url.startsWith('https://www.youtube.com/')) {
+//             //     print('blocking navigation to $request}');
+//             //     return NavigationDecision.prevent;
+//             //   }
+//             //   print('allowing navigation to $request');
+//             //   return NavigationDecision.navigate;
+//             // },
+//             onPageStarted: (String url) {
+//               print('Page started loading: $url');
+//             },
+//             onPageFinished: (String url) {
+//               print('Page finished loading: $url');
+//             },
+//             gestureNavigationEnabled: true,
+//           );
+//         }));
+//   }
+// }
 class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
   final double _detailsInBetweenPadding = 8.5;
 
@@ -238,20 +238,20 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
       {required String guardianRole, required GuardianDetails guardianDetails}) {
       final teacher = context.read<AuthCubit>().getTeacherDetails();
     
-     _launchURLTwitter() {
-        Navigator.push(
-           context,
-              MaterialPageRoute(
-                 builder: (context) => YourWebView('https://kayan-bh.com/chat/chat-teacher/chat.php?user_id=${guardianDetails.email}&email=${teacher.email}&image=${guardianDetails.image}')));
-     }
-     // _launchURLTwitter() async {
-     //     var url = Uri.parse("https://kayan-bh.com/chat/chat-teacher/chat.php?user_id=${guardianDetails.email}&email=${teacher.email}&image=${guardianDetails.image}");
-     //        if (await canLaunchUrl(url)) {
-     //            await launchUrl(url);
-     //        } else {
-     //            throw 'Could not launch $url';
-     //        }
+     // _launchURLTwitter() {
+     //    Navigator.push(
+     //       context,
+     //          MaterialPageRoute(
+     //             builder: (context) => YourWebView('https://kayan-bh.com/chat/chat-teacher/chat.php?user_id=${guardianDetails.email}&email=${teacher.email}&image=${guardianDetails.image}')));
      // }
+     _launchURLTwitter() async {
+         var url = Uri.parse("https://kayan-bh.com/chat/chat-teacher/chat.php?user_id=${guardianDetails.email}&email=${teacher.email}&image=${guardianDetails.image}");
+            if (await canLaunchUrl(url)) {
+                await launchUrl(url);
+            } else {
+                throw 'Could not launch $url';
+            }
+     }
     
     return _buildDetailBackgroundContainer(
       Row(
@@ -303,7 +303,6 @@ class _StudentDetailsContainerState extends State<StudentDetailsContainer> {
               );
             }),
                  onTap: _launchURLTwitter,
-                 //onPressed: _launchURLTwitter,
             ),
           ),
         ],
