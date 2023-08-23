@@ -468,9 +468,9 @@ class _HomeContainerState extends State<HomeContainer> {
       children: [
         _buildInformationAndMenuLabel(),
         _buildMenuContainer(
-          route: Routes.chat_parent,
+          route: Routes.chatparent,
           iconPath: UiUtils.getImagePath("assignment_icon.svg"),
-          title: UiUtils.getTranslatedLabel(context, Chat Parent),
+          title: UiUtils.getTranslatedLabel(context, "Chat Parent"),
         ),
         /*_buildMenuContainer(
           route: Routes.assignments,
