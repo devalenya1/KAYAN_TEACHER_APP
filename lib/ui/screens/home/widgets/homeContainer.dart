@@ -468,6 +468,11 @@ class _HomeContainerState extends State<HomeContainer> {
       children: [
         _buildInformationAndMenuLabel(),
         _buildMenuContainer(
+          route: Routes.chat_parent,
+          iconPath: UiUtils.getImagePath("assignment_icon.svg"),
+          title: UiUtils.getTranslatedLabel(context, Chat Parent),
+        ),
+        /*_buildMenuContainer(
           route: Routes.assignments,
           iconPath: UiUtils.getImagePath("assignment_icon.svg"),
           title: UiUtils.getTranslatedLabel(context, assignmentsKey),
@@ -486,7 +491,7 @@ class _HomeContainerState extends State<HomeContainer> {
           route: Routes.topics,
           iconPath: UiUtils.getImagePath("topics.svg"),
           title: UiUtils.getTranslatedLabel(context, topicsKey),
-        ),
+        ),*/
         _buildMenuContainer(
           route: Routes.holidays,
           iconPath: UiUtils.getImagePath("holiday_icon.svg"),
