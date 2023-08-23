@@ -1,13 +1,17 @@
 import 'package:eschool_teacher/cubits/appConfigurationCubit.dart';
-import 'package:eschool_teacher/cubits/timeTableCubit.dart';
 import 'package:eschool_teacher/data/repositories/teacherRepository.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/appUnderMaintenanceContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/bottomNavigationItemContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/forceUpdateDialogContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/homeContainer.dart';
 import 'package:eschool_teacher/ui/screens/home/widgets/profileContainer.dart';
-import 'package:eschool_teacher/ui/screens/home/widgets/timeTableContainer.dart';
+
 import 'package:eschool_teacher/ui/screens/home/widgets/settingsContainer.dart';
+import 'package:eschool_teacher/cubits/authCubit.dart';
+import 'package:eschool_teacher/cubits/appSettingsCubit.dart';
+import 'package:eschool_teacher/data/repositories/systemInfoRepository.dart';
+import 'package:eschool_teacher/ui/widgets/appSettingsBlocBuilder.dart';
+import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
 
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
