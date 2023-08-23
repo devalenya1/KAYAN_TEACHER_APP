@@ -19,23 +19,30 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
 
 
+class ChatparentScreen extends StatefulWidget {
+  ChatparentScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ChatparentScreen> createState() => _ChatparentScreenState();
+
+  static Route route(RouteSettings routeSettings) {
+    return CupertinoPageRoute(
+        builder: (_) => BlocProvider<AppSettingsCubit>(
+              create: (context) => AppSettingsCubit(SystemRepository()),
+              child: ChatparentScreen(),
+            ),);
+  }
+}
 
 
-
-class YourWebView extends StatelessWidget {
-   
-  
-  final Completer<WebViewController> _controller =
-      Completer<WebViewController>();
-
-
+class _ChatparentScreenState extends State<ChatparentScreen> {
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         appBar: AppBar(
-           title: const Text('Chat'),
-         ),
+          CustomAppBar(title: const Text('Chat'),),
+         //appBar: AppBar(title: const Text('Chat'),),
         body: Builder(builder: (BuildContext context) {
           return WebView(
             initialUrl: ('https://kayan-bh.com/chat/chat-teacher/user.php?email=${context.read<AuthCubit>().getTeacherDetails().email}'),
@@ -54,4 +61,6 @@ class YourWebView extends StatelessWidget {
           );
         }));
   }
+
+
 }
