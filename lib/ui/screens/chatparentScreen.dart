@@ -15,19 +15,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:async';
+
 
 
 
 
 class YourWebView extends StatelessWidget {
-   //String url;
-   //YourWebView(this.url);
-  
-
-
+   
   
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +38,6 @@ class YourWebView extends StatelessWidget {
          ),
         body: Builder(builder: (BuildContext context) {
           return WebView(
-            //initialUrl: url,
-            
             initialUrl: ('https://kayan-bh.com/chat/chat-teacher/user.php?email=${context.read<AuthCubit>().getTeacherDetails().email}'),
 
             javascriptMode: JavascriptMode.unrestricted,
