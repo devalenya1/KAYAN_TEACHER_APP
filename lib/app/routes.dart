@@ -5,7 +5,7 @@ import 'package:eschool_teacher/ui/screens/addOrEditLessonScreen.dart';
 import 'package:eschool_teacher/ui/screens/addOrEditTopicScreen.dart';
 import 'package:eschool_teacher/ui/screens/result/addResultOfStudentScreen.dart';
 import 'package:eschool_teacher/ui/screens/announcementsScreen.dart';
-import 'package:eschool_teacher/ui/screens/chat_parentScreen.dart';
+import 'package:eschool_teacher/ui/screens/chatparentScreen.dart';
 
 import 'package:eschool_teacher/ui/screens/assignment/assignmentScreen.dart';
 import 'package:eschool_teacher/ui/screens/assignments/assignmentsScreen.dart';
@@ -41,7 +41,7 @@ class Routes {
   static const String classScreen = "/class";
   static const String subject = "/subject";
 
-  static const String chat_parent = "/chat_parent";
+  static const String chatparent = "/chatparent";
 
   static const String assignments = "/assignments";
 
@@ -113,9 +113,9 @@ class Routes {
         {
           return SubjectScreen.route(routeSettings);
         }
-      case chat_parent:
+      case chatparent:
         {
-          return Chat_parentScreen.route(routeSettings);
+          return ChatparentScreen.route(routeSettings);
         }
       case assignments:
         {
