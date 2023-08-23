@@ -12,7 +12,6 @@ import 'package:eschool_teacher/cubits/appSettingsCubit.dart';
 import 'package:eschool_teacher/data/repositories/systemInfoRepository.dart';
 import 'package:eschool_teacher/ui/widgets/appSettingsBlocBuilder.dart';
 import 'package:eschool_teacher/ui/widgets/customAppbar.dart';
-
 import 'package:eschool_teacher/utils/labelKeys.dart';
 import 'package:eschool_teacher/utils/uiUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,8 +44,13 @@ class _ChatparentScreenState extends State<ChatparentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          CustomAppBar(title: const Text('Chat'),),
-         //appBar: AppBar(title: const Text('Chat'),),
+
+
+          //CustomAppBar(title: const Text('Chat'),),
+
+         appBar: AppBar(title: const Text('Chat'),),
+        
+
         body: Builder(builder: (BuildContext context) {
           return WebView(
             initialUrl: ('https://kayan-bh.com/chat/chat-teacher/user.php?email=${context.read<AuthCubit>().getTeacherDetails().email}'),
