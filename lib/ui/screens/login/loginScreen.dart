@@ -47,10 +47,10 @@ class _LoginScreenState extends State<LoginScreen>
   bool _hidePassword = true;
 
   final TextEditingController _emailTextEditingController =
-      TextEditingController(text: "teacher@gmail.com"); //DEFAULT EMAIL
+      TextEditingController(text: ""); //DEFAULT EMAIL
 
   final TextEditingController _passwordTextEditingController =
-      TextEditingController(text: "teacher123"); //DEFAULT PASSWORD
+      TextEditingController(text: ""); //DEFAULT PASSWORD
 
   @override
   void initState() {
