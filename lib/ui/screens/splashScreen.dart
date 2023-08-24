@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
             );
           }
           return Center(
-            child: SvgPicture.asset(UiUtils.getImagePath("appLogo.svg")),
+            child: SvgPicture.asset(UiUtils.getImagePath("appLogo.png")),
           );
         },
       ),
